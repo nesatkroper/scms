@@ -4,13 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta <title>Welcome to School MS</title>
+    <title>Welcome to School MS</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-100 font-sans">
     <div class="min-h-screen flex flex-col">
-        <!-- Header -->
         <header class="bg-blue-600 text-white shadow-md">
             <div class="container mx-auto px-4 py-6 flex justify-between items-center">
                 <h1 class="text-2xl font-bold">School Management System</h1>
@@ -21,7 +22,6 @@
                         <li><a href="{{ route('register') }}" class="hover:underline">Register</a></li>
                         @endguest
                         @auth
-                        <li><a href="{{ route('dashboard') }}" class="hover:underline">Dashboard</a></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

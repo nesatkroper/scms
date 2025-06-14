@@ -13,26 +13,7 @@
         <!-- Sidebar -->
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 280px;">
             <h2 class="fs-4 fw-bold">School MS</h2>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link active bg-light text-dark"
-                        aria-current="page">Dashboard</a>
-                </li>
-                <li>
-                    <a href="{{ route('students') }}" class="nav-link text-white">Students</a>
-                </li>
-                <li>
-                    <a href="{{ route('classes') }}" class="nav-link text-white">Classes</a>
-                </li>
-                <li>
-                    <a href="{{ route('reports') }}" class="nav-link text-white">Reports</a>
-                </li>
-                <li>
-                    <a href="{{ route('settings') }}" class="nav-link text-white">Settings</a>
-                </li>
-            </ul>
-            <hr>
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="btn btn-outline-light w-100 text-start">Logout</button>
