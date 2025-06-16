@@ -10,6 +10,7 @@
 
 <body>
     <div class="d-flex min-vh-100">
+        
         <!-- Sidebar -->
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 280px;">
             <h2 class="fs-4 fw-bold">School MS</h2>
