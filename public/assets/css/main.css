@@ -1,0 +1,266 @@
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+ body {
+     font-family: 'Poppins', sans-serif;
+ }
+
+ .sidebar-backdrop {
+     background-color: rgba(0, 0, 0, 0.5);
+     transition: opacity 0.3s ease;
+ }
+
+ .sidebar {
+     transition: all 0.3s ease;
+     display: flex;
+     flex-direction: column;
+ }
+
+ .menu-item {
+     transition: all 0.3s ease;
+ }
+
+ aside.sidebar-collapsed .menu-item>:where(div, a) {
+     justify-content: center;
+ }
+
+ /* On small screens, keep the text for collapsed dropdowns */
+ @media (max-width: 767.98px) {
+     aside.sidebar-collapsed .menu-item>:where(div, a) {
+         justify-content: space-between;
+     }
+ }
+
+ nav {
+     overflow-y: auto;
+     overflow-x: hidden;
+ }
+
+ nav::-webkit-scrollbar {
+     width: 0px;
+ }
+
+ .sidebar-collapsed nav {
+     overflow: visible;
+ }
+
+ nav ul li .submenu .submenu {
+     margin-left: 0.5rem;
+ }
+
+ nav ul>li>div.submenu {
+     margin-left: 2rem;
+ }
+
+ div.submenu {
+     border-left: 1px solid rgba(255, 255, 255, 0.1);
+     display: grid;
+     grid-template-rows: 0fr;
+     transition: grid-template-rows 0.3s ease-in-out;
+     overflow: hidden;
+ }
+
+ div.submenu>ul {
+     min-height: 0;
+     transition: opacity 0.2s ease;
+     opacity: 0;
+ }
+
+ div.submenu.active {
+     grid-template-rows: 1fr;
+ }
+
+ div.submenu.active>ul {
+     opacity: 1;
+ }
+
+ .menu-icon {
+     transition: transform 0.3s ease;
+ }
+
+ .rotate-icon {
+     transform: rotate(90deg);
+ }
+
+ .notification-dot {
+     top: 3px;
+     right: 3px;
+ }
+
+ /* Dropdown positioning for collapsed sidebar */
+ .collapsed-dropdown {
+     position: absolute;
+     left: 100%;
+     top: 0;
+     width: 220px;
+     background-color: inherit;
+     border-radius: 0 8px 8px 0;
+     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+     z-index: 40;
+     display: none;
+     padding: 0.5rem;
+ }
+
+ .collapsed-dropdown.show {
+     display: block;
+     animation: fadeIn 0.2s ease forwards;
+ }
+
+ /* Tooltip for collapsed sidebar */
+ .menu-tooltip {
+     position: absolute;
+     left: 100%;
+     top: 50%;
+     transform: translateY(-50%);
+     background-color: #4338ca;
+     color: white;
+     padding: 5px 10px;
+     border-radius: 4px;
+     font-size: 12px;
+     white-space: nowrap;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.2s ease;
+     z-index: 35;
+     margin-left: 10px;
+ }
+
+ aside.sidebar-collapsed .menu-tooltip::before {
+     content: '';
+     position: absolute;
+     left: -8px;
+     top: 50%;
+     transform: translateY(-50%);
+     border-width: 6px;
+     border-style: solid;
+     border-color: transparent #4338ca transparent transparent;
+ }
+
+ aside.sidebar-collapsed .menu-item:hover .menu-tooltip {
+     opacity: 1;
+ }
+
+ /* Sidebar footer */
+ .sidebar-footer {
+     margin-top: auto;
+     border-top: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .sidebar-footer-dropdown {
+     position: absolute;
+     bottom: 100%;
+     top: auto;
+     width: 100%;
+     min-width: 200px;
+     background-color: inherit;
+     border-radius: 8px 8px 0 0;
+     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+     z-index: 40;
+     visibility: hidden;
+     opacity: 0;
+ }
+
+ .sidebar-footer-dropdown.show {
+     visibility: visible;
+     opacity: 1;
+     animation: slideUp 0.2s ease forwards;
+ }
+
+ .footer-tooltip {
+     position: absolute;
+     left: 100%;
+     top: 50%;
+     transform: translateY(-50%);
+     background-color: #4338ca;
+     color: white;
+     padding: 5px 10px;
+     border-radius: 4px;
+     font-size: 12px;
+     white-space: nowrap;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.2s ease;
+     z-index: 50;
+     margin-left: 10px;
+ }
+
+ .sidebar-footer:hover .footer-tooltip {
+     opacity: 1;
+ }
+
+ /* Custom scrollbar */
+ ::-webkit-scrollbar {
+     width: 6px;
+ }
+
+ ::-webkit-scrollbar-track {
+     background: #f1f1f1;
+ }
+
+ ::-webkit-scrollbar-thumb {
+     background: #888;
+     border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb:hover {
+     background: #555;
+ }
+
+ /* Animations */
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+     }
+
+     to {
+         opacity: 1;
+     }
+ }
+
+ .animate-fadeIn {
+     animation: fadeIn 0.3s ease forwards;
+ }
+
+ @keyframes slideIn {
+     from {
+         transform: translateX(-20px);
+         opacity: 0;
+     }
+
+     to {
+         transform: translateX(0);
+         opacity: 1;
+     }
+ }
+
+ .animate-slideIn {
+     animation: slideIn 0.3s ease forwards;
+ }
+
+ @keyframes slideUp {
+     from {
+         transform: translateY(10px);
+         opacity: 0;
+     }
+
+     to {
+         transform: translateY(0);
+         opacity: 1;
+     }
+ }
+
+ .text-hidden {
+     /* transition: opacity 0.5s, width 5s,padding 0.3s margin 0.3s visibility 0.3s; */
+     transition: all 0.3s;
+ }
+
+ .hidden.text-hidden {
+     display: block !important;
+ }
+
+ .hidden.text-hidden {
+     opacity: 0;
+     visibility: hidden;
+     width: 0;
+     padding: 0;
+     margin: 0;
+ }
