@@ -45,3 +45,8 @@
     </div>
 </div>
 @endsection
+@push("scripts")
+    <script>
+        alert("Test Reset Password")
+    </script>
+@endpush

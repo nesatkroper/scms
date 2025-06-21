@@ -1,85 +1,272 @@
 @extends('layouts.app')
 @section('content')
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Dashboard Overview</h1>
-    <!-- Stats Cards -->
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Dashboard Overview</h1>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <!-- Total Students -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
+            x-data="{ open: false }">
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Students</p>
                     <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">1,248</h3>
                 </div>
-                <div class="h-12 w-12 rounded-lg bg-blue-500 bg-opacity-20 flex items-center justify-center">
-                    <i class="fas fa-user-graduate text-blue-500 dark:text-blue-400 text-xl"></i>
+                <div class="h-12 w-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-user-graduate text-blue-100 dark:text-blue-200 text-xl"></i>
                 </div>
             </div>
-            <div class="flex items-center mt-4">
-                <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 12.5%
-                </span>
-                <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+            <div class="flex items-center justify-between mt-4">
+                <div>
+                    <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i> 12.5%
+                    </span>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm">vs last month</span>
+                </div>
+
+                <!-- Dropdown button -->
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button @click="open = !open" type="button"
+                            class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-900 hover:text-blue-500 transition-colors"
+                            aria-expanded="true" aria-haspopup="true">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                        role="menu" aria-orientation="vertical" tabindex="-1">
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
+                                View Details
+                            </a>
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
+                                Export Data
+                            </a>
+                        </div>
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
+                                Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Total Teachers -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
+            x-data="{ open: false }">
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Teachers</p>
                     <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">64</h3>
                 </div>
-                <div class="h-12 w-12 rounded-lg bg-purple-500 bg-opacity-20 flex items-center justify-center">
-                    <i class="fas fa-chalkboard-teacher text-purple-500 dark:text-purple-400 text-xl"></i>
+                <div class="h-12 w-12 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-chalkboard-teacher text-purple-100 dark:text-purple-200 text-xl"></i>
                 </div>
             </div>
-            <div class="flex items-center mt-4">
-                <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 5.2%
-                </span>
-                <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+            <div class="flex items-center justify-between mt-4">
+                <div>
+                    <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i> 5.2%
+                    </span>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+                </div>
+
+                <!-- Dropdown button -->
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button @click="open = !open" type="button"
+                            class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-purple-100 dark:hover:bg-gray-900 hover:text-purple-500 transition-colors"
+                            aria-expanded="true" aria-haspopup="true">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                        role="menu" aria-orientation="vertical" tabindex="-1">
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
+                                View Details
+                            </a>
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
+                                Export Data
+                            </a>
+                        </div>
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
+                                Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Active Classes -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
+            x-data="{ open: false }">
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Classes</p>
                     <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">32</h3>
                 </div>
-                <div class="h-12 w-12 rounded-lg bg-green-500 bg-opacity-20 flex items-center justify-center">
-                    <i class="fas fa-book text-green-500 dark:text-green-400 text-xl"></i>
+                <div class="h-12 w-12 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-book text-green-100 dark:text-green-200 text-xl"></i>
                 </div>
             </div>
-            <div class="flex items-center mt-4">
-                <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 3.1%
-                </span>
-                <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+            <div class="flex items-center justify-between mt-4">
+                <div>
+                    <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i> 3.1%
+                    </span>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+                </div>
+
+                <!-- Dropdown button -->
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button @click="open = !open" type="button"
+                            class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-green-500 transition-colors"
+                            aria-expanded="true" aria-haspopup="true">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                        role="menu" aria-orientation="vertical" tabindex="-1">
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
+                                View Details
+                            </a>
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
+                                Export Data
+                            </a>
+                        </div>
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
+                                Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Fees Collected -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
+            x-data="{ open: false }">
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Fees Collected</p>
                     <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">$48,750</h3>
                 </div>
-                <div class="h-12 w-12 rounded-lg bg-amber-500 bg-opacity-20 flex items-center justify-center">
-                    <i class="fas fa-dollar-sign text-amber-500 dark:text-amber-400 text-xl"></i>
+                <div class="h-12 w-12 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
                 </div>
             </div>
-            <div class="flex items-center mt-4">
-                <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
-                    <i class="fas fa-arrow-down mr-1"></i> 2.8%
-                </span>
-                <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+            <div class="flex items-center justify-between mt-4">
+                <div>
+                    <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
+                        <i class="fas fa-arrow-down mr-1"></i> 2.8%
+                    </span>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+                </div>
+
+                <!-- Dropdown button -->
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button @click="open = !open" type="button"
+                            class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-amber-500 transition-colors"
+                            aria-expanded="true" aria-haspopup="true">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                        role="menu" aria-orientation="vertical" tabindex="-1">
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
+                                View Details
+                            </a>
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
+                                Export Data
+                            </a>
+                        </div>
+                        <div class="py-1" role="none">
+                            <a href="#"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                role="menuitem">
+                                <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
+                                Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
     <!-- Charts and Activity Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <!-- Attendance Chart -->
@@ -108,7 +295,7 @@
                 <div class="flex items-start">
                     <div
                         class="h-9 w-9 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-user-plus text-green-500 dark:text-green-400"></i>
+                        <i class="fas fa-user-plus text-green-200"></i>
                     </div>
                     <div>
                         <p class="text-gray-800 dark:text-white font-medium text-sm">New student enrolled
@@ -122,7 +309,7 @@
                 <div class="flex items-start">
                     <div
                         class="h-9 w-9 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-money-bill-wave text-blue-500 dark:text-blue-400"></i>
+                        <i class="fas fa-money-bill-wave text-blue-200"></i>
                     </div>
                     <div>
                         <p class="text-gray-800 dark:text-white font-medium text-sm">Fee payment received
@@ -135,7 +322,7 @@
                 <div class="flex items-start">
                     <div
                         class="h-9 w-9 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-calendar-alt text-purple-500 dark:text-purple-400"></i>
+                        <i class="fas fa-calendar-alt text-purple-200"></i>
                     </div>
                     <div>
                         <p class="text-gray-800 dark:text-white font-medium text-sm">Class schedule updated
@@ -149,7 +336,7 @@
                 <div class="flex items-start">
                     <div
                         class="h-9 w-9 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-exclamation-triangle text-red-500 dark:text-red-400"></i>
+                        <i class="fas fa-exclamation-triangle text-red-200"></i>
                     </div>
                     <div>
                         <p class="text-gray-800 dark:text-white font-medium text-sm">Attendance alert</p>
@@ -167,7 +354,8 @@
     </div>
 
     <!-- Recently Enrolled Students Table -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
         <div class="p-4 md:flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">Recently Enrolled
                 Students</h2>
