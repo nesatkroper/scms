@@ -2,55 +2,41 @@
 
 namespace App\Http\Controllers;
 
+
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreClassroomRequest;
+use App\Http\Requests\UpdateClassroomRequest;
+use App\Http\Resources\ClassroomResource;
 use App\Models\Classroom;
-use Illuminate\Http\Request;
 
 class ClassroomController extends Controller
 {
     public function index()
     {
-        try {
-            $classroom = Classroom::all();
-            if ($classroom->count() == 0)
-                return response()->json(['msg', 'Empty item'], 400);
-            else
-                return response()->json(['msg' => 'success', 'data' => $classroom]);
-        } catch (\Exception $e) {
-            return response()->json(['msg' => $e->getMessage()], 400);
-        }
+        return ClassroomResource::collection(Classroom::paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreClassroomRequest $request)
     {
-        //
-        $classroom = Classroom::create($request->all());
-        return response()->json(['msg' => 'success', 'data' => $classroom], 201);
+        $classroom = Classroom::create($request->validated());
+        return new ClassroomResource($classroom);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Classroom $classroom)
     {
-        //
+        return new ClassroomResource($classroom);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Classroom $classroom)
+    public function update(UpdateClassroomRequest $request, Classroom $classroom)
     {
-        //
+        $classroom->update($request->validated());
+        return new ClassroomResource($classroom);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Classroom $classroom)
     {
-        //
+        $classroom->delete();
+        return response()->json(['message' => 'Classroom deleted'], 204);
     }
 }

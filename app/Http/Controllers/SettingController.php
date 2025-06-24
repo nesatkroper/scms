@@ -2,58 +2,40 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSettingRequest;
+use App\Http\Requests\UpdateSettingRequest;
+use App\Http\Resources\SettingResource;
 use App\Models\Setting;
-use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        try {
-            $setting = Setting::all();
-            if ($setting->count() == 0)
-                return response()->json(['msg', 'Empty item'], 400);
-            else
-                return response()->json(['msg' => true, 'data' => $setting], 200);
-        } catch (\Exception $e) {
-            return response()->json(['msg' => $e->getMessage()], 400);
-        }
+        return SettingResource::collection(Setting::paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreSettingRequest $request)
     {
-        //
-        $setting = Setting::create($request->all());
-        return response()->json(["msg" => true, "data" => $setting], 201);
+        $setting = Setting::create($request->validated());
+        return new SettingResource($setting);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Setting $setting)
     {
-        //
+        return new SettingResource($setting);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Setting $setting)
+    public function update(UpdateSettingRequest $request, Setting $setting)
     {
-        //
+        $setting->update($request->validated());
+        return new SettingResource($setting);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Setting $setting)
     {
-        //
+        $setting->delete();
+        return response()->json(['message' => 'Setting deleted'], 204);
     }
 }
