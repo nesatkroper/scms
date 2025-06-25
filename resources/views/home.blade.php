@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Dashboard Overview</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -9,7 +10,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Students</p>
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">1,248</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalStudents }}</h3>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
                     <i class="fas fa-user-graduate text-blue-100 dark:text-blue-200 text-xl"></i>
@@ -75,7 +76,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Teachers</p>
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">64</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalTeachers }}</h3>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center">
                     <i class="fas fa-chalkboard-teacher text-purple-100 dark:text-purple-200 text-xl"></i>
@@ -141,7 +142,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Classes</p>
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">32</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $activeClasses }}</h3>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
                     <i class="fas fa-book text-green-100 dark:text-green-200 text-xl"></i>
@@ -207,7 +208,8 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Fees Collected</p>
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">$48,750</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+                        ${{ number_format($feesCollected, 2) }}</h3>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center">
                     <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
@@ -292,59 +294,21 @@
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Recent Activities</h3>
             <div class="space-y-4">
                 <!-- Activity Item -->
-                <div class="flex items-start">
-                    <div
-                        class="h-9 w-9 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-user-plus text-green-200"></i>
+                
+                @foreach ($recentActivities as $activity)
+                    <div class="flex items-start">
+                        <div
+                            class="h-9 w-9 rounded-full bg-{{ $activity['color'] }}-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                            <i class="fas fa-{{ $activity['icon'] }} text-{{ $activity['color'] }}-200"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-800 dark:text-white font-medium text-sm">{{ $activity['title'] }}</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $activity['description'] }}</p>
+                            <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">
+                                {{ $activity['time']->diffForHumans() }}</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-gray-800 dark:text-white font-medium text-sm">New student enrolled
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Sarah Johnson joined Grade 10
-                        </p>
-                        <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">2 hours ago</p>
-                    </div>
-                </div>
-                <!-- Activity Item -->
-                <div class="flex items-start">
-                    <div
-                        class="h-9 w-9 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-money-bill-wave text-blue-200"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-800 dark:text-white font-medium text-sm">Fee payment received
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">$350 from Michael Brown</p>
-                        <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">5 hours ago</p>
-                    </div>
-                </div>
-                <!-- Activity Item -->
-                <div class="flex items-start">
-                    <div
-                        class="h-9 w-9 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-calendar-alt text-purple-200"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-800 dark:text-white font-medium text-sm">Class schedule updated
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Chemistry lab moved to Room 205
-                        </p>
-                        <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Yesterday</p>
-                    </div>
-                </div>
-                <!-- Activity Item -->
-                <div class="flex items-start">
-                    <div
-                        class="h-9 w-9 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <i class="fas fa-exclamation-triangle text-red-200"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-800 dark:text-white font-medium text-sm">Attendance alert</p>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">15 students absent in Grade
-                            11-B</p>
-                        <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Yesterday</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <button
                 class="w-full mt-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors">
@@ -383,74 +347,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img class="w-9 h-9 rounded-full" src="https://placehold.co/40x40/FFC107/000000?text=JD"
-                                    alt="Jese image">
-                                <div class="pl-3">
-                                    <div class="text-base font-semibold">John Doe</div>
-                                    <div class="font-normal text-gray-500">john.doe@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">10</td>
-                        <td class="px-6 py-4">
-                            <span
-                                class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
-                        </td>
-                        <td class="px-6 py-4">2024-08-15</td>
-                        <td class="px-6 py-4 text-right">
-                            <button
-                                class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img class="w-9 h-9 rounded-full" src="https://placehold.co/40x40/E91E63/FFFFFF?text=JW"
-                                    alt="Jane image">
-                                <div class="pl-3">
-                                    <div class="text-base font-semibold">Jane Wilson</div>
-                                    <div class="font-normal text-gray-500">jane.wilson@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">9</td>
-                        <td class="px-6 py-4">
-                            <span
-                                class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
-                        </td>
-                        <td class="px-6 py-4">2024-08-14</td>
-                        <td class="px-6 py-4 text-right">
-                            <button
-                                class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img class="w-9 h-9 rounded-full" src="https://placehold.co/40x40/4CAF50/FFFFFF?text=MS"
-                                    alt="Mike image">
-                                <div class="pl-3">
-                                    <div class="text-base font-semibold">Mike Smith</div>
-                                    <div class="font-normal text-gray-500">mike.smith@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">11</td>
-                        <td class="px-6 py-4">
-                            <span
-                                class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
-                        </td>
-                        <td class="px-6 py-4">2024-08-12</td>
-                        <td class="px-6 py-4 text-right">
-                            <button
-                                class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</button>
-                        </td>
-                    </tr>
+
+                    @if (count($recentStudents) > 0)
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <tbody>
+                                @foreach ($recentStudents as $student)
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <img class="w-9 h-9 rounded-full"
+                                                    src="{{ $student['user']['profile_photo_path'] ? asset('storage/' . $student['user']['profile_photo_path']) : 'https://placehold.co/40x40/FFC107/000000?text=' . substr($student['user']['name'], 0, 2) }}"
+                                                    alt="{{ $student['user']['name'] }} image">
+                                                <div class="pl-3">
+                                                    <div class="text-base font-semibold">{{ $student['user']['name'] }}
+                                                    </div>
+                                                    <div class="font-normal text-gray-500">{{ $student['user']['email'] }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">{{ $student['class_id'] }}</td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ \Carbon\Carbon::parse($student['created_at'])->format('Y-m-d') }}</td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button
+                                                class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <div class="p-4 text-center text-red-500 dark:text-gray-400">
+                            No recent students found.
+                        </div>
+                    @endif
                 </tbody>
             </table>
         </div>
     </div>
+
 @endsection

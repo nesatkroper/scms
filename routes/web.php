@@ -26,7 +26,8 @@ use App\Http\Controllers\{
     SubjectController,
     TeacherController,
     TimetableController,
-    TimetableEntryController
+    TimetableEntryController,
+    HomeController
 };
 use Illuminate\Support\Facades\Auth;
 
@@ -37,13 +38,8 @@ Route::get('/', function () {
 });
 
 
-
-
 Route::middleware('auth')->group(function () {
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
-
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::resources([
         'attendances' => AttendanceController::class,
         'books' => BookController::class,
