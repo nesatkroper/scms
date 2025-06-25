@@ -1,11 +1,11 @@
 <?php
 
-namespace AppHttp\Controllers;
+namespace App\Http\Controllers;
 
-use AppHttpRequests\StoreSubjectRequest;
-use AppHttpRequests\UpdateSubjectRequest;
-use AppModels\Subject;
-use AppModels\Department; 
+use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\Subject;
+use App\Models\Department;
 
 class SubjectController extends Controller
 {
