@@ -158,32 +158,15 @@
                         </div>
                     </li>
                     <li class="menu-item relative">
-                        <div
-                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+                        <a href="{{ route('departments.index') }}"
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="flex items-center">
-                                <i class="fas fa-chalkboard-teacher w-6 text-center"></i>
+                                <i class="fas fa-tachometer-alt w-6 text-center"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Departments</span>
                             </div>
-                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
                             <span class="menu-tooltip">Departments</span>
-                        </div>
-                        <div class="submenu">
-                            <ul class="pl-4 pr-4">
-                                <li>
-                                    <a href="{{ route('departments.create') }}"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Add
-                                        New</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('departments.index') }}"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">
-                                        <i class="fas fa-chalkboard-teacher w-6 text-center"></i> list
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        </a>
                     </li>
-
 
                     <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
                         <span class="ml-5">Separator</span>
@@ -561,7 +544,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    @stack("scripts")
+    @stack('scripts')
 </body>
 
 </html>
