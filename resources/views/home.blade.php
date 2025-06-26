@@ -298,7 +298,7 @@
                 @foreach ($recentActivities as $activity)
                     <div class="flex items-start">
                         <div
-                            class="h-9 w-9 rounded-full bg-{{ $activity['color'] }}-500 bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                            class="h-9 w-9 rounded-full bg-{{ $activity['color'] }}-500 text-white bg-opacity-20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
                             <i class="fas fa-{{ $activity['icon'] }} text-{{ $activity['color'] }}-200"></i>
                         </div>
                         <div>
@@ -322,7 +322,8 @@
         class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
         <div class="p-4 md:flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">Recently Enrolled
-                Students</h2>
+                Students
+            </h2>
             <div class="flex items-center gap-2">
                 <div class="relative">
                     <input type="text" placeholder="Search students..."

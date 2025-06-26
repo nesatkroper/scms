@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -38,7 +39,7 @@
                 <ul>
                     <!-- Dashboard -->
                     <li class="menu-item relative">
-                        <a href="#"
+                        <a href="{{ route('home') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="flex items-center">
                                 <i class="fas fa-tachometer-alt w-6 text-center"></i>
@@ -156,6 +157,34 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="menu-item relative">
+                        <div
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+                            <div class="flex items-center">
+                                <i class="fas fa-chalkboard-teacher w-6 text-center"></i>
+                                <span class="ml-3 sidebar-text text-hidden">Departments</span>
+                            </div>
+                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
+                            <span class="menu-tooltip">Departments</span>
+                        </div>
+                        <div class="submenu">
+                            <ul class="pl-4 pr-4">
+                                <li>
+                                    <a href="{{ route('departments.create') }}"
+                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Add
+                                        New</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('departments.index') }}"
+                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">
+                                        <i class="fas fa-chalkboard-teacher w-6 text-center"></i> list
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+
                     <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
                         <span class="ml-5">Separator</span>
                     </li>
@@ -447,11 +476,12 @@
                                 d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
                         </svg>
                         <!-- Sun icon (shown in dark mode) -->
-                        <svg id="sun-icon" class="size-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                        </path>
-                    </svg>
+                        <svg id="sun-icon" class="size-5 hidden dark:block" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                            </path>
+                        </svg>
                     </button>
 
                     <!-- Notifications -->
@@ -515,7 +545,11 @@
             </header>
 
             <!-- Main content area -->
-            <main class="flex-1 bg-violet-50 dark:bg-gray-900 p-4">
+            <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
+                <div
+                    class="flex justify-between items-center border-b bg-white border-gray-200 dark:border-gray-700 px-4 py-2">
+                    bradram
+                </div>
                 @yield('content')
             </main>
             <footer class="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
@@ -524,9 +558,10 @@
             </footer>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    @stack("scripts")
 </body>
 
 </html>
