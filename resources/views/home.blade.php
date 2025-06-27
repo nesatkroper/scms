@@ -28,7 +28,8 @@
                 <div class="relative inline-block text-left">
                     <div>
                         <button @click="open = !open" type="button"
-                            class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-900 hover:text-blue-500 transition-colors"
+                            class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400
+                             hover:bg-blue-100 dark:hover:bg-gray-900 hover:text-blue-500 transition-colors"
                             aria-expanded="true" aria-haspopup="true">
                             <i class="fas fa-ellipsis-v"></i>
                         </button>

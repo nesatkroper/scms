@@ -14,15 +14,15 @@
                     <td class="px-4 py-4">{{ $department->name }}</td>
                     <td class="px-4 py-4">{{ Str::limit($department->description, 50) }}</td>
                     <td class="px-4 py-4">
-                        {{ $department->created_at->format('Y-m-d') }}
+                       {{ $department->created_at->format('Y-m-d') }}
                     </td>
-
+                    
                     <td class="px-4 py-4 text-right">
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open"
+                        <div class="relative">
+                            <button
                                 class="font-medium btn-action text-indigo-600 dark:text-indigo-700 p-1 size-8 flex items-center justify-center 
-                                border border-indigo-100 dark:border-gray-600 dark:hover:bg-gray-700 hover:bg-indigo-200 rounded-full cursor-pointer transition-colors"
-                               >
+                                border border-indigo-100  dark:border-gray-600 dark:hover:bg-gray-700 hover:bg-indigo-200 rounded-full cursor-pointer transition-colors"
+                                data-id="{{ $department->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-8" fill="currentColor"
                                     viewBox="0 0 20 20">
                                     <path
@@ -31,15 +31,9 @@
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div x-show="open" @click.away="open = false"
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
-                                role="menu">
+                            <div id="dropdown-{{ $department->id }}"
+                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg hidden 
+                                transition-all duration-200 transform opacity-0 scale-95 border border-gray-200 dark:border-gray-700">
                                 <div class="py-1" role="none">
                                     <a href="#"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 edit-btn"

@@ -52,3 +52,115 @@ class SubjectController extends Controller
         return redirect()->route('subjects.index')->with('success', 'Subject deleted successfully!');
     }
 }
+
+
+//===============
+
+// <?php
+
+// namespace App\Http\Controllers;
+
+// use App\Http\Requests\StoreSubjectRequest;
+// use App\Http\Requests\UpdateSubjectRequest;
+// use App\Models\Subject;
+// use App\Models\Department;
+// use Illuminate\Http\Request;
+// use Illuminate\Http\JsonResponse;
+
+// class SubjectController extends Controller
+// {
+//     public function index(Request $request)
+//     {
+//         $search = $request->input('search');
+//         $perPage = $request->input('per_page', 2);
+
+//         $subjects = Subject::with('department')
+//             ->when($search, function ($query) use ($search) {
+//                 return $query->where('name', 'like', "%{$search}%")
+//                     ->orWhere('code', 'like', "%{$search}%")
+//                     ->orWhereHas('department', function ($q) use ($search) {
+//                         $q->where('name', 'like', "%{$search}%");
+//                     });
+//             })
+//             ->orderBy('created_at', 'desc')
+//             ->paginate($perPage);
+
+//         $departments = Department::all(); // Add this line
+
+//         if ($request->ajax()) {
+//             return response()->json([
+//                 'html' => view('subjects.partials.table', compact('subjects', 'departments'))->render(),
+//                 'pagination' => $subjects->links()->toHtml()
+//             ]);
+//         }
+
+//         return view('subjects.index', compact('subjects', 'departments')); // Add departments here
+//     }
+
+//     public function create(): JsonResponse
+//     {
+//         $departments = Department::all();
+
+//         return response()->json([
+//             'html' => view('subjects.partials.create_form', compact('departments'))->render()
+//         ]);
+//     }
+
+//     public function store(StoreSubjectRequest $request): JsonResponse
+//     {
+//         $subject = Subject::create($request->validated());
+
+//         return response()->json([
+//             'success' => true,
+//             'message' => 'Subject created successfully!',
+//             'subject' => $subject->load('department'),
+//             'html' => view('subjects.partials.table_row', ['subject' => $subject])->render()
+//         ]);
+//     }
+
+//     public function show(Subject $subject): JsonResponse
+//     {
+//         $subject->load('department');
+
+//         return response()->json([
+//             'subject' => $subject,
+//             'created_at' => $subject->created_at->format('Y-m-d H:i:s'),
+//             'updated_at' => $subject->updated_at->format('Y-m-d H:i:s'),
+//             'html' => view('subjects.partials.show_details', compact('subject'))->render()
+//         ]);
+//     }
+
+//     public function edit(Subject $subject): JsonResponse
+//     {
+//         $subject->load('department');
+//         $departments = Department::all();
+
+//         return response()->json([
+//             'html' => view('subjects.partials.edit_form', compact('subject', 'departments'))->render()
+//         ]);
+//     }
+
+//     public function update(UpdateSubjectRequest $request, Subject $subject): JsonResponse
+//     {
+//         $subject->update($request->validated());
+
+//         return response()->json([
+//             'success' => true,
+//             'message' => 'Subject updated successfully!',
+//             'subject' => $subject->fresh('department'),
+//             'html' => view('subjects.partials.table_row', ['subject' => $subject])->render()
+//         ]);
+//     }
+
+//     public function destroy(Subject $subject): JsonResponse
+//     {
+//         $subject->delete();
+
+//         return response()->json([
+//             'success' => true,
+//             'message' => 'Subject deleted successfully!',
+//             'id' => $subject->id
+//         ]);
+//     }
+// }
+

@@ -529,19 +529,18 @@
 
             <!-- Main content area -->
             <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
-                <div
-                    class="flex justify-between items-center border-b bg-white border-gray-200 dark:border-gray-700 px-4 py-2">
-                    bradram
+                <div class="p-4">
+                    @yield('content')
                 </div>
-                @yield('content')
             </main>
             <footer class="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                 <p class="mb-0 text-center">© {{ date('Y') }} School Management System. All rights reserved. Team
-                    work</p>
+                    work
+                </p>
             </footer>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     @stack('scripts')
