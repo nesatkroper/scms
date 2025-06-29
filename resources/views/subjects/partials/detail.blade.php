@@ -3,9 +3,11 @@
         <div
             class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
             <!-- Header -->
-            <div class="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+                        viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
                             clip-rule="evenodd" />
@@ -22,7 +24,7 @@
             </div>
 
             <!-- Content -->
-            <div class="p-6">
+            <div class="p-4 px-6">
                 <div class="mb-4">
                     <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Department Name</h4>
                     <p id="detail_name" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
@@ -45,7 +47,7 @@
             </div>
 
             <!-- Footer -->
-            <div class="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-end space-x-3 p-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" id="closeDetailModalBtn"
                     class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
                     Close

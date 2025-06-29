@@ -1,6 +1,3 @@
-if (window.innerWidth <= 768) {
-    sidebar.classList.add('-translate-x-full');
-}
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTS ---
     const sidebar = document.getElementById('sidebar');
@@ -12,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const userMenuButton = document.getElementById('user-menu-button');
     const userDropdown = document.getElementById('user-dropdown');
     const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const attendanceChart = document.getElementById('attendanceChart');
+
+    // If none of the sidebar elements exist, exit early (not a page with sidebar)
+    if (!sidebar || !toggleSidebarBtn) return;
 
     // --- STATE ---
     let sidebarCollapsed = false; // Start with expanded sidebar (w-72)
@@ -23,9 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle Sidebar: Handles mobile off-canvas and desktop collapse
     const toggleSidebar = () => {
         if (window.innerWidth < 768) {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarBackdrop.classList.toggle('hidden');
-            sidebarBackdrop.classList.toggle('opacity-0');
+            sidebar?.classList?.toggle('-translate-x-full');
+            sidebarBackdrop?.classList?.toggle('hidden');
+            sidebarBackdrop?.classList?.toggle('opacity-0');
         } else {
             sidebarCollapsed = !sidebarCollapsed;
             updateDesktopSidebar();
@@ -34,15 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Desktop Sidebar View: Toggles classes for collapsed/expanded state
     const updateDesktopSidebar = () => {
+        if (!sidebar || !mainContent) return;
+
         sidebar.classList.toggle('w-72', !sidebarCollapsed);
         sidebar.classList.toggle('w-16', sidebarCollapsed);
         sidebar.classList.toggle('sidebar-collapsed', sidebarCollapsed);
         mainContent.classList.toggle('md:ml-72', !sidebarCollapsed);
         mainContent.classList.toggle('md:ml-16', sidebarCollapsed);
 
-        document.querySelectorAll('.sidebar-text').forEach(el => el.classList.toggle('hidden', sidebarCollapsed));
-        document.getElementById('sidebar-footer-profile').classList.toggle('hidden', sidebarCollapsed);
-        document.getElementById('sidebar-footer-collapsed').classList.toggle('hidden', !sidebarCollapsed);
+        document.querySelectorAll('.sidebar-text').forEach(el => el?.classList?.toggle('hidden', sidebarCollapsed));
+        document.getElementById('sidebar-footer-profile')?.classList?.toggle('hidden', sidebarCollapsed);
+        document.getElementById('sidebar-footer-collapsed')?.classList?.toggle('hidden', !sidebarCollapsed);
 
         if (sidebarCollapsed) {
             closeAllSubmenus();
@@ -54,10 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Submenu Logic
     const toggleSubmenu = (element) => {
+        if (!element) return;
+        
         const submenu = element.nextElementSibling;
         const icon = element.querySelector('.menu-icon');
 
-        if (submenu.classList.contains('active')) {
+        if (submenu?.classList?.contains('active')) {
             submenu.classList.remove('active');
             if (icon) icon.classList.remove('rotate-icon');
         } else {
@@ -67,38 +72,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 parentMenu.querySelectorAll('.submenu.active').forEach(menu => {
                     if (menu !== submenu) {
                         menu.classList.remove('active');
-                        const prevIcon = menu.previousElementSibling.querySelector('.menu-icon');
+                        const prevIcon = menu.previousElementSibling?.querySelector('.menu-icon');
                         if (prevIcon) prevIcon.classList.remove('rotate-icon');
                     }
                 });
             }
 
-            submenu.classList.add('active');
+            submenu?.classList?.add('active');
             if (icon) icon.classList.add('rotate-icon');
         }
     };
 
     const closeAllSubmenus = (parentUl = document) => {
         parentUl.querySelectorAll('.submenu.active').forEach(menu => {
-            menu.classList.remove('active');
-            const prevIcon = menu.previousElementSibling.querySelector('.menu-icon');
+            menu?.classList?.remove('active');
+            const prevIcon = menu.previousElementSibling?.querySelector('.menu-icon');
             if (prevIcon) prevIcon.classList.remove('rotate-icon');
         });
     };
 
     const closeAllCollapsedDropdowns = () => {
-        document.querySelectorAll('.collapsed-dropdown.show').forEach(d => d.classList.remove('show'));
+        document.querySelectorAll('.collapsed-dropdown.show').forEach(d => d?.classList?.remove('show'));
         activeDropdown = null;
     };
 
     // Footer Dropdown
     const toggleFooterDropdown = () => {
+        if (!sidebarFooterDropdown) return;
+        
         footerDropdownActive = !footerDropdownActive;
         sidebarFooterDropdown.classList.toggle('show', footerDropdownActive);
         if (footerDropdownActive) closeAllCollapsedDropdowns();
     };
 
     const closeFooterDropdown = () => {
+        if (!sidebarFooterDropdown) return;
+        
         sidebarFooterDropdown.classList.remove('show');
         footerDropdownActive = false;
     };
@@ -107,8 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyDarkMode = (isDark) => {
         if (isDark) {
             document.documentElement.classList.add('dark');
+            if (darkModeToggle) darkModeToggle.checked = true; 
         } else {
             document.documentElement.classList.remove('dark');
+            if (darkModeToggle) darkModeToggle.checked = false; 
         }
     };
 
@@ -119,13 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- EVENT LISTENERS ---
-    toggleSidebarBtn.addEventListener('click', toggleSidebar);
-    closeSidebarBtn.addEventListener('click', toggleSidebar);
-    sidebarBackdrop.addEventListener('click', toggleSidebar);
+    if (toggleSidebarBtn) toggleSidebarBtn.addEventListener('click', toggleSidebar);
+    if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
+    if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
 
     // Global click listener to close dropdowns
     document.addEventListener('click', (e) => {
-        if (!userMenuButton.contains(e.target) && !userDropdown.contains(e.target)) {
+        if (userMenuButton && userDropdown && !userMenuButton.contains(e.target) && !userDropdown.contains(e.target)) {
             userDropdown.classList.add('hidden');
         }
         if (footerDropdownActive && !e.target.closest('.sidebar-footer')) {
@@ -137,8 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Toggles on click
-    userMenuButton.addEventListener('click', () => userDropdown.classList.toggle('hidden'));
-    darkModeToggle.addEventListener('click', toggleDarkMode);
+    if (userMenuButton) userMenuButton.addEventListener('click', () => userDropdown?.classList?.toggle('hidden'));
+    if (darkModeToggle) darkModeToggle.addEventListener('click', toggleDarkMode);
 
     // Handle all submenu toggles
     document.addEventListener('click', (e) => {
@@ -163,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeAllCollapsedDropdowns();
                 closeFooterDropdown();
                 const dropdown = item.querySelector('.collapsed-dropdown') || createCollapsedDropdown(item);
-                dropdown.classList.add('show');
+                dropdown?.classList?.add('show');
                 activeDropdown = dropdown;
             }
         });
@@ -181,107 +192,103 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', () => {
         if (window.innerWidth >= 768) { // Desktop
-           sidebar.classList.add('-translate-x-full');
-            if (sidebar.classList.contains('-translate-x-full')) {
+            if (sidebar && sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.remove('-translate-x-full');
             }
-        }
-
-        else { // Mobile
+        } else { // Mobile
             sidebarCollapsed = false;
-            if (!sidebar.classList.contains('-translate-x-full')) {
+            if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.add('-translate-x-full');
-                sidebarBackdrop.classList.add('hidden', 'opacity-0');
+                if (sidebarBackdrop) sidebarBackdrop.classList.add('hidden', 'opacity-0');
             }
         }
         updateDesktopSidebar();
     });
 
-
-
-    // --- CHART.JS ---
-    const chartColors = {
-        light: {
-            grid: 'rgba(0, 0, 0, 0.1)',
-            ticks: '#6b7280',
-            labels: '#1f2937'
-        },
-        dark: {
-            grid: 'rgba(255, 255, 255, 0.1)',
-            ticks: '#9ca3af',
-            labels: '#e5e7eb'
-        }
-    };
-
-    const ctx = document.getElementById('attendanceChart').getContext('2d');
-    const attendanceChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            datasets: [{
-                label: 'Present',
-                data: [92, 88, 90, 85, 87, 94],
-                borderColor: '#4ade80',
-                backgroundColor: 'rgba(74, 222, 128, 0.1)',
-                tension: 0.4,
-                fill: true
-            }, {
-                label: 'Absent',
-                data: [8, 12, 10, 15, 13, 6],
-                borderColor: '#f87171',
-                backgroundColor: 'rgba(248, 113, 113, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        font: {
-                            family: "'Poppins', sans-serif"
-                        }
-                    }
-                }
+    // Initialize Chart only if it exists
+    if (attendanceChart) {
+        const chartColors = {
+            light: {
+                grid: 'rgba(0, 0, 0, 0.1)',
+                ticks: '#6b7280',
+                labels: '#1f2937'
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    ticks: {
-                        font: {
-                            family: "'Poppins', sans-serif"
+            dark: {
+                grid: 'rgba(255, 255, 255, 0.1)',
+                ticks: '#9ca3af',
+                labels: '#e5e7eb'
+            }
+        };
+
+        const ctx = attendanceChart.getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                datasets: [{
+                    label: 'Present',
+                    data: [92, 88, 90, 85, 87, 94],
+                    borderColor: '#4ade80',
+                    backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Absent',
+                    data: [8, 12, 10, 15, 13, 6],
+                    borderColor: '#f87171',
+                    backgroundColor: 'rgba(248, 113, 113, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: "'Poppins', sans-serif"
+                            }
                         }
                     }
                 },
-                x: {
-                    ticks: {
-                        font: {
-                            family: "'Poppins', sans-serif"
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            font: {
+                                family: "'Poppins', sans-serif"
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                family: "'Poppins', sans-serif"
+                            }
                         }
                     }
                 }
             }
-        },
-    });
+        });
 
-    const updateChartTheme = (isDark) => {
-        const colors = isDark ? chartColors.dark : chartColors.light;
-        attendanceChart.options.scales.y.grid.color = colors.grid;
-        attendanceChart.options.scales.x.grid.color = colors.grid;
-        attendanceChart.options.scales.y.ticks.color = colors.ticks;
-        attendanceChart.options.scales.x.ticks.color = colors.ticks;
-        attendanceChart.options.plugins.legend.labels.color = colors.labels;
-        attendanceChart.update();
-    };
+        const updateChartTheme = (isDark) => {
+            const colors = isDark ? chartColors.dark : chartColors.light;
+            chart.options.scales.y.grid.color = colors.grid;
+            chart.options.scales.x.grid.color = colors.grid;
+            chart.options.scales.y.ticks.color = colors.ticks;
+            chart.options.scales.x.ticks.color = colors.ticks;
+            chart.options.plugins.legend.labels.color = colors.labels;
+            chart.update();
+        };
+    }
 
     // --- INITIALIZATION ---
     const prefersDark = localStorage.getItem('dark-mode') === 'true' ||
         (!localStorage.getItem('dark-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     applyDarkMode(prefersDark);
     updateDesktopSidebar();
-
 });

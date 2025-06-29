@@ -1,9 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Departments')
 @section('content')
-    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div
+        class="px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+                viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
                     clip-rule="evenodd" />
             </svg>
@@ -22,7 +25,7 @@
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
                     <input type="text" id="searchInput" placeholder="Search departments..."
-                        class="w-full border border-gray-300 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
+                        class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
@@ -32,7 +35,7 @@
                 </button>
             </div>
         </div>
-        <div class="mt-6" id="departmentsTableContainer">
+        <div id="departmentsTableContainer" class="table-respone mt-6 overflow-x-auto">
             @include('departments.partials.table', ['departments' => $departments])
         </div>
 
@@ -82,7 +85,6 @@
                             <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">Rows per page:</span>
                             <select id="perPageSelect"
                                 class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
-                                <option value="5" {{ $departments->perPage() == 5 ? 'selected' : '' }}>5</option>
                                 <option value="10" {{ $departments->perPage() == 10 ? 'selected' : '' }}>10</option>
                                 <option value="15" {{ $departments->perPage() == 15 ? 'selected' : '' }}>15</option>
                                 <option value="20" {{ $departments->perPage() == 20 ? 'selected' : '' }}>20</option>
@@ -164,7 +166,21 @@
     @include('departments.partials.edit')
     @include('departments.partials.detail')
     @include('departments.partials.delete')
+    @include('departments.partials.bulkedit')
+    @include('departments.partials.bulkdelete')
     <style>
+        #bulkActionsBar {
+            z-index: 40;
+        }
+
+        #bulkActionsBar button {
+            transition: color 0.2s ease;
+        }
+
+        .row-checkbox {
+            cursor: pointer;
+        }
+
         .animate-fade-in-out {
             animation: fadeInOut 3s ease-in-out forwards;
         }
@@ -191,186 +207,280 @@
             }
         }
     </style>
-@endsection
 
+@endsection
 @push('scripts')
     <script>
-        $('#perPageSelect').on('change', function() {
-            const perPage = $(this).val();
-            const url = new URL(window.location.href);
-            url.searchParams.set('per_page', perPage);
-            window.location.href = url.toString();
-        });
-
-        let searchTimeout;
-        $('#searchInput').on('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const searchTerm = $(this).val();
-                searchDepartments(searchTerm);
-            }, 500);
-        });
-
-        $('#resetSearch').on('click', function() {
-            $('#searchInput').val('');
-            searchDepartments('');
-        });
-
-        function searchDepartments(searchTerm) {
-            $.ajax({
-                url: "{{ route('departments.index') }}",
-                method: 'GET',
-                data: {
-                    search: searchTerm
-                },
-                success: function(response) {
-                    $('#departmentsTableContainer').html(response.html);
-                    // Reinitialize event listeners after table update
-                    
-                },
-                error: function(xhr) {
-                    console.error('Search failed:', xhr.responseText);
-                }
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
-       
+
+            // ===== Functions (Available Globally Within This Scope) =====
+            function getSelectedIds() {
+                const selectedIds = [];
+                document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
+                    selectedIds.push(checkbox.value);
+                });
+                return selectedIds;
+            }
+
+            function showFlashMessage(type, message) {
+                const flashContainer = document.createElement('div');
+                flashContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
+
+                const innerHtml = `
+                <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
+                    border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
+                    <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
+                    </svg>
+                    <div class="flex-1 text-sm sm:text-base">${message}</div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
+                        <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+                flashContainer.innerHTML = innerHtml;
+                document.body.appendChild(flashContainer);
+
+                setTimeout(() => {
+                    flashContainer.remove();
+                }, 3000);
+            }
+
+            // ===== Core Initialization =====
             // CSRF token setup for AJAX
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            // Modal handling for create modal
-            const openBtn = document.getElementById('openCreateModal');
-            const closeBtn = document.getElementById('closeCreateModal');
-            const cancelBtn = document.getElementById('cancelCreateModal');
-            const createModal = document.getElementById('createDepartmentModal');
+
+            // Modal Backdrop element
             const backdrop = document.getElementById('modalBackdrop');
 
-            function openCreateModal() {
-                backdrop.classList.remove('hidden');
-                createModal.classList.remove('hidden');
+            // Initialize all functionality
+            initializeDepartmentFunctionality();
+            initializeBulkActions();
 
-                setTimeout(() => {
-                    createModal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    createModal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeCreateModal() {
-                createModal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                createModal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    createModal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
-            openBtn.addEventListener('click', openCreateModal);
-            closeBtn.addEventListener('click', closeCreateModal);
-            cancelBtn.addEventListener('click', closeCreateModal);
-
-            // Create Department Form Submission
-            $('#createDepartmentModal form').submit(function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        closeCreateModal();
-                        showFlashMessage('success', 'Department created successfully');
-                        // Reload the page to see the new department
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
-                    },
-                    error: function(xhr) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessages = '';
-
-                        for (const field in errors) {
-                            errorMessages += errors[field][0] + '\n';
-                        }
-
-                        showFlashMessage('error', errorMessages);
-                    }
+            // ===== Department Management Functions =====
+            function initializeDepartmentFunctionality() {
+                // Per page select change
+                $('#perPageSelect').on('change', function() {
+                    const perPage = $(this).val();
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('per_page', perPage);
+                    window.location.href = url.toString();
                 });
-            });
 
-            // Edit button handling
-            document.querySelectorAll('.edit-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                // Search functionality with debounce
+                let searchTimeout;
+                $('#searchInput').on('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        const searchTerm = $(this).val();
+                        searchDepartments(searchTerm);
+                    }, 500);
+                });
+
+                // Reset search
+                $('#resetSearch').on('click', function() {
+                    $('#searchInput').val('');
+                    searchDepartments('');
+                });
+
+                // Initialize all event listeners
+                initializeEventListeners();
+
+                // Modal handling for create modal
+                const openBtn = document.getElementById('openCreateModal');
+                const closeBtn = document.getElementById('closeCreateModal');
+                const cancelBtn = document.getElementById('cancelCreateModal');
+                const createModal = document.getElementById('createDepartmentModal');
+
+                function openCreateModal() {
+                    backdrop.classList.remove('hidden');
+                    createModal.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        createModal.querySelector('div').classList.remove('opacity-0', 'scale-95');
+                        createModal.querySelector('div').classList.add('opacity-100', 'scale-100');
+                    }, 10);
+
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function closeCreateModal() {
+                    createModal.querySelector('div').classList.remove('opacity-100', 'scale-100');
+                    createModal.querySelector('div').classList.add('opacity-0', 'scale-95');
+
+                    setTimeout(() => {
+                        createModal.classList.add('hidden');
+                        backdrop.classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                    }, 300);
+                }
+
+                if (openBtn) openBtn.addEventListener('click', openCreateModal);
+                if (closeBtn) closeBtn.addEventListener('click', closeCreateModal);
+                if (cancelBtn) cancelBtn.addEventListener('click', closeCreateModal);
+
+                // Create Department Form Submission
+                $('#createDepartmentModal form').submit(function(e) {
                     e.preventDefault();
-                    const departmentId = this.getAttribute('data-id');
 
-                    // Fetch department data
-                    $.get(`/departments/${departmentId}`, function(data) {
-                        $('#edit_name').val(data.department.name);
-                        $('#edit_description').val(data.department.description);
-                        $('#editDepartmentForm').attr('action',
-                            `/departments/${departmentId}`);
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        method: 'POST',
+                        data: $(this).serialize(),
+                        success: function(response) {
+                            closeCreateModal();
+                            showFlashMessage('success', 'Department created successfully');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 10);
+                        },
+                        error: function(xhr) {
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessages = '';
 
-                        // Show edit modal
-                        const modal = document.getElementById('editDepartmentModal');
-                        backdrop.classList.remove('hidden');
-                        modal.classList.remove('hidden');
+                            for (const field in errors) {
+                                errorMessages += errors[field][0] + '\n';
+                            }
 
-                        setTimeout(() => {
-                            modal.querySelector('div').classList.remove(
-                                'opacity-0',
-                                'scale-95');
-                            modal.querySelector('div').classList.add(
-                                'opacity-100',
-                                'scale-100');
-                        }, 10);
+                            showFlashMessage('error', errorMessages);
+                        }
                     });
                 });
-            });
 
-            // Edit Department Form Submission
-            $('#editDepartmentForm').submit(function(e) {
-                e.preventDefault();
+                // Delete Department Form Submission
+                $('#deleteDepartmentForm').submit(function(e) {
+                    e.preventDefault();
+                    const url = $(this).attr('action');
 
-                const url = $(this).attr('action');
-
-                $.ajax({
-                    url: url,
-                    method: 'PUT',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        closeEditModalFunc();
-                        showFlashMessage('success', 'Department updated successfully');
-                        // Reload the page to see the updated department
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
-                    },
-                    error: function(xhr) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessages = '';
-
-                        for (const field in errors) {
-                            errorMessages += errors[field][0] + '\n';
+                    $.ajax({
+                        url: url,
+                        method: 'DELETE',
+                        success: function(response) {
+                            closeDeleteModalFunc();
+                            showFlashMessage('success', 'Department deleted successfully');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 10);
+                        },
+                        error: function(xhr) {
+                            showFlashMessage('error', 'Error deleting department');
                         }
+                    });
+                });
 
-                        showFlashMessage('error', errorMessages);
+                // Close with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        if (!document.getElementById('createDepartmentModal').classList.contains(
+                                'hidden')) {
+                            closeCreateModal();
+                        } else if (!document.getElementById('Modaledit').classList.contains(
+                                'hidden')) {
+                            closeEditModalFunc();
+                        } else if (!document.getElementById('detailDepartmentModal').classList.contains(
+                                'hidden')) {
+                            closeDetailModalFunc();
+                        } else if (!document.getElementById('deleteConfirmationModal').classList.contains(
+                                'hidden')) {
+                            closeDeleteModalFunc();
+                        } else if (!document.getElementById('bulkEditModal').classList.contains('hidden')) {
+                            closeBulkEditModalFunc();
+                        }
                     }
                 });
-            });
 
-            // Detail button handling
-            document.querySelectorAll('.detail-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                // Auto-hide flash messages
+                const flashMessages = document.querySelectorAll('.animate-fade-in-out');
+                flashMessages.forEach(message => {
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 3000);
+                });
+            }
+
+            function initializeEventListeners() {
+                // Edit button handling using event delegation
+                $(document).on('click', '.edit-btn', function(e) {
                     e.preventDefault();
-                    const departmentId = this.getAttribute('data-id');
+                    const editBtn = $(this);
+                    const originalContent = editBtn.html();
+                    const Id = editBtn.data('id');
+                    // Set loading state
+                    editBtn.html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                    editBtn.prop('disabled', true);
+
+                    // Fetch department data
+                    $.get(`/departments/${Id}`)
+                        .done(function(data) {
+                            // Populate form fields
+                            $('#edit_name').val(data.department.name);
+                            $('#edit_description').val(data.department.description);
+                            $('#Formedit').attr('action', `/departments/${Id}`);
+
+                            // Show edit modal
+                            const modal = document.getElementById('Modaledit');
+                            const backdrop = document.getElementById('modalBackdrop');
+                            backdrop.classList.remove('hidden');
+                            modal.classList.remove('hidden');
+
+                            setTimeout(() => {
+                                modal.querySelector('div').classList.remove('opacity-0',
+                                    'scale-95');
+                                modal.querySelector('div').classList.add('opacity-100',
+                                    'scale-100');
+                            }, 10);
+                        })
+                        .fail(function(xhr) {
+                            console.error('Error loading department:', xhr.responseText);
+                            showFlashMessage('error', 'Failed to load department data');
+                        })
+                        .always(function() {
+                            // Restore button state
+                            editBtn.html(originalContent);
+                            editBtn.prop('disabled', false);
+                        });
+                });
+
+
+                // Edit save change Form Submission
+                $('#Formedit').submit(function(e) {
+                    e.preventDefault();
+                    const url = $(this).attr('action');
+                    $.ajax({
+                        url: url,
+                        method: 'PUT',
+                        data: $(this).serialize(),
+                        success: function(response) {
+                            closeEditModalFunc();
+                            showFlashMessage('success', 'Department updated successfully');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 10);
+                        },
+                        error: function(xhr) {
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessages = '';
+
+                            for (const field in errors) {
+                                errorMessages += errors[field][0] + '\n';
+                            }
+
+                            showFlashMessage('error', errorMessages);
+                        }
+                    });
+                });
+
+                // Detail button handling using event delegation
+                $(document).on('click', '.detail-btn', function(e) {
+                    e.preventDefault();
+                    const departmentId = $(this).data('id');
 
                     // Fetch department data
                     $.get(`/departments/${departmentId}`, function(data) {
@@ -385,70 +495,389 @@
                         modal.classList.remove('hidden');
 
                         setTimeout(() => {
-                            modal.querySelector('div').classList.remove(
-                                'opacity-0',
+                            modal.querySelector('div').classList.remove('opacity-0',
                                 'scale-95');
-                            modal.querySelector('div').classList.add(
-                                'opacity-100',
+                            modal.querySelector('div').classList.add('opacity-100',
                                 'scale-100');
                         }, 10);
                     });
                 });
-            });
 
-            // Delete button handling
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const form = this.closest('form');
-                    const departmentId = form.action.split('/').pop();
+                // Delete button handling using event delegation
+                // $(document).on('click', '.delete-btn', function(e) {
+                //     e.preventDefault();
+                //     const form = $(this).closest('form');
+                //     const departmentId = form.attr('action').split('/').pop();
 
-                    // Set up delete form
-                    $('#deleteDepartmentForm').attr('action', `/departments/${departmentId}`);
+                //     // Set up delete form
+                //     $('#deleteDepartmentForm').attr('action', `/departments/${departmentId}`);
 
-                    // Show delete confirmation modal
-                    const modal = document.getElementById('deleteConfirmationModal');
-                    backdrop.classList.remove('hidden');
-                    modal.classList.remove('hidden');
+                //     // Show delete confirmation modal
+                //     const modal = document.getElementById('deleteConfirmationModal');
+                //     backdrop.classList.remove('hidden');
+                //     modal.classList.remove('hidden');
+
+                //     setTimeout(() => {
+                //         modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
+                //         modal.querySelector('div').classList.add('opacity-100', 'scale-100');
+                //     }, 10);
+                // });
+            }
+
+            // ===== Bulk Actions Functionality =====
+            function initializeBulkActions() {
+                const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+                const bulkActionsBar = document.getElementById('bulkActionsBar');
+                const selectedCount = document.getElementById('selectedCount');
+                const deselectAllBtn = document.getElementById('deselectAll');
+                const bulkEditBtn = document.getElementById('bulkEditBtn');
+                const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+
+                // Toggle select all
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.addEventListener('change', function() {
+                        const isChecked = this.checked;
+                        document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+                            checkbox.checked = isChecked;
+                        });
+                        updateBulkActionsBar();
+                    });
+                }
+
+                // Update bulk actions bar when checkboxes change
+                $(document).on('change', '.row-checkbox', updateBulkActionsBar);
+
+                // Deselect all
+                if (deselectAllBtn) {
+                    deselectAllBtn.addEventListener('click', function() {
+                        document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+                            checkbox.checked = false;
+                        });
+                        if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                        updateBulkActionsBar();
+                    });
+                }
+
+                // Bulk delete
+                if (bulkDeleteBtn) {
+                    bulkDeleteBtn.addEventListener('click', function() {
+                        const selectedIds = getSelectedIds();
+                        if (selectedIds.length === 0) {
+                            showFlashMessage('error', 'Please select at least one department to delete');
+                            return;
+                        }
+
+                        // Show the toast modal
+                        const modal = document.getElementById('bulkDeleteToastModal');
+                        document.getElementById('selectedCountText').textContent = selectedIds.length;
+
+                        backdrop.classList.remove('hidden');
+                        modal.classList.remove('hidden');
+
+                        setTimeout(() => {
+                            modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
+                            modal.querySelector('div').classList.add('opacity-100', 'scale-100');
+                        }, 10);
+
+                        // Set up event listeners for the modal buttons
+                        document.getElementById('confirmBulkDeleteBtn').onclick = function() {
+                            // Show loading state on the delete button
+                            const deleteBtn = document.getElementById('confirmBulkDeleteBtn');
+                            const originalBtnHtml = deleteBtn.innerHTML;
+                            deleteBtn.disabled = true;
+                            deleteBtn.innerHTML =
+                                '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
+
+                            $.ajax({
+                                url: "{{ route('departments.bulkDelete') }}",
+                                method: 'POST',
+                                data: {
+                                    ids: selectedIds
+                                },
+                                success: function(response) {
+                                    closeBulkDeleteModalFunc();
+                                    showFlashMessage('success', response.message);
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 100);
+                                },
+                                error: function(xhr) {
+                                    closeBulkDeleteModalFunc();
+                                    showFlashMessage('error', 'Error deleting departments');
+                                },
+                                complete: function() {
+                                    deleteBtn.disabled = false;
+                                    deleteBtn.innerHTML = originalBtnHtml;
+                                }
+                            });
+                        };
+
+                        document.getElementById('cancelBulkDeleteBtn').onclick = closeBulkDeleteModalFunc;
+                    });
+                }
+
+                // Function to close the bulk delete modal
+                function closeBulkDeleteModalFunc() {
+                    const modal = document.getElementById('bulkDeleteToastModal');
+                    modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
+                    modal.querySelector('div').classList.add('opacity-0', 'scale-95');
 
                     setTimeout(() => {
-                        modal.querySelector('div').classList.remove('opacity-0',
-                            'scale-95');
-                        modal.querySelector('div').classList.add('opacity-100',
-                            'scale-100');
-                    }, 10);
+                        modal.classList.add('hidden');
+                        backdrop.classList.add('hidden');
+                    }, 300);
+                }
+
+                function updateBulkActionsBar() {
+                    const selectedCountValue = document.querySelectorAll('.row-checkbox:checked').length;
+                    if (selectedCount) selectedCount.textContent = selectedCountValue;
+                    if (selectedCountValue > 0) {
+                        if (bulkActionsBar) bulkActionsBar.classList.remove('hidden');
+                        if (selectAllCheckbox) {
+                            const totalCheckboxes = document.querySelectorAll('.row-checkbox').length;
+                            selectAllCheckbox.checked = selectedCountValue === totalCheckboxes;
+                        }
+                    } else {
+                        if (bulkActionsBar) bulkActionsBar.classList.add('hidden');
+                        if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                    }
+                }
+
+                // Initialize bulk edit
+                initializeBulkEdit();
+            }
+
+            function initializeBulkEdit() {
+                const bulkEditBtn = document.getElementById('bulkEditBtn');
+                const bulkEditModal = document.getElementById('bulkEditModal');
+                const closeBulkEditModal = document.getElementById('closeBulkEditModal');
+                const cancelBulkEditModal = document.getElementById('cancelBulkEditModal');
+                const bulkEditCount = document.getElementById('bulkEditCount');
+
+                // In the initializeBulkEdit() function, update the openBulkEditModal function:
+                function openBulkEditModal() {
+                    const selectedIds = getSelectedIds();
+                    const container = document.getElementById('bulkEditDepartmentsContainer');
+                    const bulkEditBtn = document.getElementById('bulkEditBtn');
+
+                    if (selectedIds.length === 0) {
+                        showFlashMessage('error', 'Please select at least one department to edit');
+                        return;
+                    }
+
+                    // Add loading state to button
+                    const originalBtnText = bulkEditBtn.innerHTML;
+                    bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
+                    bulkEditBtn.disabled = true;
+
+                    if (selectedIds.length > 1) {
+                        container.classList.add('h-[50vh]');
+                    } else {
+                        container.classList.remove('h-[50vh]');
+                    }
+
+                    if (selectedIds.length > 5) {
+                        showFlashMessage('error', 'You can only edit up to 5 departments at a time');
+                        bulkEditBtn.innerHTML = originalBtnText;
+                        bulkEditBtn.disabled = false;
+                        return;
+                    }
+
+                    // Update count display
+                    bulkEditCount.textContent = selectedIds.length;
+
+                    // Fetch data for selected departments
+                    $.ajax({
+                        url: "{{ route('departments.getBulkData') }}",
+                        method: 'POST',
+                        data: {
+                            ids: selectedIds
+                        },
+                        success: function(response) {
+                            // Restore button state
+                            bulkEditBtn.innerHTML = originalBtnText;
+                            bulkEditBtn.disabled = false;
+
+                            if (!response.success) {
+                                showFlashMessage('error', response.message);
+                                return;
+                            }
+
+                            // Clear existing fields
+                            container.innerHTML = '';
+
+                            // Add fields for each department
+                            response.data.forEach((department, index) => {
+                                const fieldHtml = `
+                <div class="department-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <input type="hidden" name="departments[${index}][id]" value="${department.id}">
+                    
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Department #${index + 1}</h4>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="departments[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Department Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="departments[${index}][name]" name="departments[${index}][name]"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                            border-gray-400"
+                            value="${department.name}"
+                            placeholder="Enter department name" required>
+                    </div>
+
+                    <div class="">
+                        <label for="departments[${index}][description]"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Description
+                        </label>
+                        <textarea id="departments[${index}][description]" name="departments[${index}][description]" rows="2"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                            border-gray-400"
+                            placeholder="Enter department description">${department.description || ''}</textarea>
+                    </div>
+                </div>
+            `;
+
+                                container.insertAdjacentHTML('beforeend', fieldHtml);
+                            });
+
+                            // Show modal
+                            backdrop.classList.remove('hidden');
+                            bulkEditModal.classList.remove('hidden');
+
+                            setTimeout(() => {
+                                bulkEditModal.querySelector('div').classList.remove('opacity-0',
+                                    'scale-95');
+                                bulkEditModal.querySelector('div').classList.add('opacity-100',
+                                    'scale-100');
+                            }, 10);
+                        },
+                        error: function(xhr) {
+                            // Restore button state on error
+                            bulkEditBtn.innerHTML = originalBtnText;
+                            bulkEditBtn.disabled = false;
+
+                            showFlashMessage('error', 'Error loading department data');
+                        }
+                    });
+                }
+
+                function closeBulkEditModalFunc() {
+                    const modal = document.getElementById('bulkEditModal');
+                    modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
+                    modal.querySelector('div').classList.add('opacity-0', 'scale-95');
+
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        backdrop.classList.add('hidden');
+                    }, 300);
+                }
+
+                // Event listeners
+                if (bulkEditBtn) bulkEditBtn.addEventListener('click', openBulkEditModal);
+                if (closeBulkEditModal) closeBulkEditModal.addEventListener('click', closeBulkEditModalFunc);
+                if (cancelBulkEditModal) cancelBulkEditModal.addEventListener('click', closeBulkEditModalFunc);
+
+                // Bulk Edit Form Submission
+                $('#bulkEditForm').submit(function(e) {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('bulkEditSubmitBtn');
+                    const originalBtnHtml = submitBtn.innerHTML;
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+                    // Collect all department data
+                    const departments = [];
+                    $('.department-field').each(function(index) {
+                        const deptId = $(this).find('input[type="hidden"]').val();
+                        const deptName = $(this).find('input[name$="[name]"]').val();
+                        const deptDesc = $(this).find('textarea[name$="[description]"]').val();
+
+                        departments.push({
+                            id: deptId,
+                            name: deptName,
+                            description: deptDesc
+                        });
+                    });
+
+                    $.ajax({
+                        url: "{{ route('departments.bulkUpdate') }}",
+                        method: 'POST',
+                        data: {
+                            departments: departments
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                closeBulkEditModalFunc();
+                                showFlashMessage('success', response.message);
+                                setTimeout(() => {
+                                    window.location.href = response.redirect;
+                                }, 10);
+                            } else {
+                                showFlashMessage('error', response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessages = '';
+
+                            if (errors) {
+                                // Handle validation errors
+                                if (errors.departments) {
+                                    errors.departments.forEach((error, index) => {
+                                        errorMessages +=
+                                            `Department #${index + 1}: ${error.join(', ')}\n`;
+                                    });
+                                } else {
+                                    for (const field in errors) {
+                                        errorMessages += errors[field][0] + '\n';
+                                    }
+                                }
+                            } else {
+                                errorMessages = 'An error occurred while updating departments';
+                            }
+
+                            showFlashMessage('error', errorMessages);
+                        },
+                        complete: function() {
+                            // Restore button state
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnHtml;
+                        }
+                    });
                 });
-            });
 
-            // Delete Department Form Submission
-            $('#deleteDepartmentForm').submit(function(e) {
-                e.preventDefault();
+            }
 
-                const url = $(this).attr('action');
-
+            // ===== Search Functionality =====
+            function searchDepartments(searchTerm) {
                 $.ajax({
-                    url: url,
-                    method: 'DELETE',
+                    url: "{{ route('departments.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm
+                    },
                     success: function(response) {
-                        closeDeleteModalFunc();
-                        showFlashMessage('success', 'Department deleted successfully');
-                        // Reload the page to see the changes
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1500);
+                        $('#departmentsTableContainer').html(response.html);
+                        initializeBulkActions(); // Reinitialize after table update
                     },
                     error: function(xhr) {
-                        showFlashMessage('error', 'Error deleting department');
+                        console.error('Search failed:', xhr.responseText);
                     }
                 });
-            });
+            }
 
+            // ===== Modal Close Handlers =====
             // Close edit modal
             const closeEditModal = document.getElementById('closeEditModal');
             const cancelEditModal = document.getElementById('cancelEditModal');
 
             function closeEditModalFunc() {
-                const modal = document.getElementById('editDepartmentModal');
+                const modal = document.getElementById('Modaledit');
                 modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
                 modal.querySelector('div').classList.add('opacity-0', 'scale-95');
 
@@ -496,62 +925,6 @@
 
             if (closeDeleteModal) closeDeleteModal.addEventListener('click', closeDeleteModalFunc);
             if (cancelDeleteModal) cancelDeleteModal.addEventListener('click', closeDeleteModalFunc);
-
-            // Close with Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (!document.getElementById('createDepartmentModal').classList.contains(
-                            'hidden')) {
-                        closeCreateModal();
-                    } else if (!document.getElementById('editDepartmentModal').classList.contains(
-                            'hidden')) {
-                        closeEditModalFunc();
-                    } else if (!document.getElementById('detailDepartmentModal').classList.contains(
-                            'hidden')) {
-                        closeDetailModalFunc();
-                    } else if (!document.getElementById('deleteConfirmationModal').classList.contains(
-                            'hidden')) {
-                        closeDeleteModalFunc();
-                    }
-                }
-            });
-
-            // Auto-hide flash messages
-            const flashMessages = document.querySelectorAll('.animate-fade-in-out');
-            flashMessages.forEach(
-                message => {
-                    setTimeout(() => {
-                        message.style.display = 'none';
-                    }, 3000);
-                });
-
-            // Function to show flash messages
-            function showFlashMessage(type, message) {
-                const flashContainer = document.createElement('div');
-                flashContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-
-                const innerHtml = `
-                <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-                    border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-                    <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-                    </svg>
-                    <div class="flex-1 text-sm sm:text-base">${message}</div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                        <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            `;
-
-                flashContainer.innerHTML = innerHtml;
-                document.body.appendChild(flashContainer);
-
-                setTimeout(() => {
-                    flashContainer.remove();
-                }, 3000);
-            }
         });
     </script>
 @endpush

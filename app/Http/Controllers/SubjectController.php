@@ -4,15 +4,39 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use Illuminate\Support\Facades\Log;
 use App\Models\Subject;
 use App\Models\Department;
+use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::with('department')->paginate(10);
-        return view('subjects.index', compact('subjects'));
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        $departments = Department::all();
+        $subjects = Subject::with('department')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('credit_hours', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'per_page' => $perPage
+            ]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('subjects.partials.table', compact('subjects'))->render()
+            ]);
+        }
+
+        return view('subjects.index', compact('subjects', 'departments'));
     }
 
     public function create()
@@ -30,7 +54,7 @@ class SubjectController extends Controller
     public function show(Subject $subject)
     {
         $subject->load('department');
-        return view('subjects.show', compact('subject'));
+        return response()->json($subject);
     }
 
     public function edit(Subject $subject)
@@ -43,124 +67,90 @@ class SubjectController extends Controller
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
         $subject->update($request->validated());
-        return redirect()->route('subjects.show', $subject)->with('success', 'Subject updated successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Subject updated successfully',
+            'subject' => $subject->fresh('department')
+        ]);
     }
 
     public function destroy(Subject $subject)
     {
         $subject->delete();
-        return redirect()->route('subjects.index')->with('success', 'Subject deleted successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Subject deleted successfully'
+        ]);
+        
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No subjects selected'
+            ]);
+        }
+
+        Subject::whereIn('id', $ids)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => count($ids) . ' subjects deleted successfully'
+        ]);
+    }
+
+    public function getBulkData(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (count($ids) > 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can only edit up to 5 subjects at a time'
+            ], 400);
+        }
+
+        $subjects = Subject::whereIn('id', $ids)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $subjects
+        ]);
+    }
+
+    public function bulkUpdate(Request $request)
+    {
+        $validated = $request->validate([
+            'subjects' => 'required|array',
+            'subjects.*.id' => 'required|exists:subjects,id',
+            'subjects.*.name' => 'required|string|max:255',
+            'subjects.*.code' => 'required|string|max:50',
+            'subjects.*.credit_hours' => 'required|numeric',
+            'subjects.*.description' => 'nullable|string',
+            'subjects.*.department_id' => 'required|exists:departments,id'
+        ]);
+
+        $updatedCount = 0;
+
+        foreach ($validated['subjects'] as $subjectData) {
+            try {
+                $subject = Subject::find($subjectData['id']);
+                $subject->update($subjectData);
+                $updatedCount++;
+            } catch (\Exception $e) {
+                Log::error("Error updating subject: " . $e->getMessage());
+                continue;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully updated $updatedCount subjects",
+            'redirect' => route('subjects.index')
+        ]);
     }
 }
-
-
-//===============
-
-// <?php
-
-// namespace App\Http\Controllers;
-
-// use App\Http\Requests\StoreSubjectRequest;
-// use App\Http\Requests\UpdateSubjectRequest;
-// use App\Models\Subject;
-// use App\Models\Department;
-// use Illuminate\Http\Request;
-// use Illuminate\Http\JsonResponse;
-
-// class SubjectController extends Controller
-// {
-//     public function index(Request $request)
-//     {
-//         $search = $request->input('search');
-//         $perPage = $request->input('per_page', 2);
-
-//         $subjects = Subject::with('department')
-//             ->when($search, function ($query) use ($search) {
-//                 return $query->where('name', 'like', "%{$search}%")
-//                     ->orWhere('code', 'like', "%{$search}%")
-//                     ->orWhereHas('department', function ($q) use ($search) {
-//                         $q->where('name', 'like', "%{$search}%");
-//                     });
-//             })
-//             ->orderBy('created_at', 'desc')
-//             ->paginate($perPage);
-
-//         $departments = Department::all(); // Add this line
-
-//         if ($request->ajax()) {
-//             return response()->json([
-//                 'html' => view('subjects.partials.table', compact('subjects', 'departments'))->render(),
-//                 'pagination' => $subjects->links()->toHtml()
-//             ]);
-//         }
-
-//         return view('subjects.index', compact('subjects', 'departments')); // Add departments here
-//     }
-
-//     public function create(): JsonResponse
-//     {
-//         $departments = Department::all();
-
-//         return response()->json([
-//             'html' => view('subjects.partials.create_form', compact('departments'))->render()
-//         ]);
-//     }
-
-//     public function store(StoreSubjectRequest $request): JsonResponse
-//     {
-//         $subject = Subject::create($request->validated());
-
-//         return response()->json([
-//             'success' => true,
-//             'message' => 'Subject created successfully!',
-//             'subject' => $subject->load('department'),
-//             'html' => view('subjects.partials.table_row', ['subject' => $subject])->render()
-//         ]);
-//     }
-
-//     public function show(Subject $subject): JsonResponse
-//     {
-//         $subject->load('department');
-
-//         return response()->json([
-//             'subject' => $subject,
-//             'created_at' => $subject->created_at->format('Y-m-d H:i:s'),
-//             'updated_at' => $subject->updated_at->format('Y-m-d H:i:s'),
-//             'html' => view('subjects.partials.show_details', compact('subject'))->render()
-//         ]);
-//     }
-
-//     public function edit(Subject $subject): JsonResponse
-//     {
-//         $subject->load('department');
-//         $departments = Department::all();
-
-//         return response()->json([
-//             'html' => view('subjects.partials.edit_form', compact('subject', 'departments'))->render()
-//         ]);
-//     }
-
-//     public function update(UpdateSubjectRequest $request, Subject $subject): JsonResponse
-//     {
-//         $subject->update($request->validated());
-
-//         return response()->json([
-//             'success' => true,
-//             'message' => 'Subject updated successfully!',
-//             'subject' => $subject->fresh('department'),
-//             'html' => view('subjects.partials.table_row', ['subject' => $subject])->render()
-//         ]);
-//     }
-
-//     public function destroy(Subject $subject): JsonResponse
-//     {
-//         $subject->delete();
-
-//         return response()->json([
-//             'success' => true,
-//             'message' => 'Subject deleted successfully!',
-//             'id' => $subject->id
-//         ]);
-//     }
-// }
-

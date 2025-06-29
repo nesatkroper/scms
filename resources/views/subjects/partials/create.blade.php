@@ -1,15 +1,18 @@
 <!-- Create Department Modal -->
-<div id="createDepartmentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+<div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div
+        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
-        <div class="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+                    viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         clip-rule="evenodd" />
                 </svg>
-                Create New Department
+                Create New Subject
             </h3>
             <button id="closeCreateModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -20,41 +23,97 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('departments.store') }}" method="POST" class="p-6">
+        <form action="{{ route('subjects.store') }}" method="POST" class="p-4">
             @csrf
-            
-            <!-- Name Field -->
-            <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Department Name <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}"
-                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                    @error('name') border-red-500 @else border-gray-400 @enderror"
-                    placeholder="Enter department name" required>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Name Field -->
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Name <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('name') border-red-500 @else border-gray-400 @enderror"
+                        placeholder="Enter subject name" required>
+
+                    @error('name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Code Field -->
+                <div class="mb-4">
+                    <label for="code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Code <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="code" name="code" value="{{ old('code') }}"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('code') border-red-500 @else border-gray-400 @enderror"
+                        placeholder="Enter code" required>
+
+                    @error('code')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <!-- Department Field -->
+                <div class="mb-4">
+                    <label for="department_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Department
+                    </label>
+                    <select id="department_id" name="department_id"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('department_id') border-red-500 @else border-gray-400 @enderror">
+                        <option value="">Select department</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}"
+                                {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('department_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
                 
-                @error('name')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
+                <!-- Credit Hours Field -->
+                <div class="mb-4">
+                    <label for="credit_hours" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Credit hours <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="credit_hours" name="credit_hours" value="{{ old('credit_hours') }}"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('credit_hours') border-red-500 @else border-gray-400 @enderror"
+                        placeholder="Enter credit hours" required>
+
+                    @error('credit_hours')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
-            <!-- Description Field -->
+            <!-- Description Field (full width) -->
             <div class="mb-4">
-                <label for="description"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Description
                 </label>
                 <textarea id="description" name="description" rows="3"
                     class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                     @error('description') border-red-500 @else border-gray-400 @enderror"
-                    placeholder="Enter department description">{{ old('description') }}</textarea>
-                
+                    placeholder="Enter subject description">{{ old('description') }}</textarea>
+
                 @error('description')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <!-- Form Actions -->
             <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -74,7 +133,7 @@
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                             clip-rule="evenodd" />
                     </svg>
-                    Create Department
+                    Create
                 </button>
             </div>
         </form>

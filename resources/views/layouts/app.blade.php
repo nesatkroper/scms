@@ -18,7 +18,7 @@
     <div id="sidebar-backdrop" class="sidebar-backdrop fixed inset-0 z-20 hidden opacity-0"></div>
 
     <!-- Main container -->
-    <div class="flex h-screen">
+    <div class="h-screen">
         <!-- Sidebar - Default width w-72 -->
         <aside id="sidebar"
             class="sidebar bg-indigo-800 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72 ">
@@ -161,10 +161,31 @@
                         <a href="{{ route('departments.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="flex items-center">
-                                <i class="fas fa-tachometer-alt w-6 text-center"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                                        clip-rule="evenodd" />
+                                </svg>
                                 <span class="ml-3 sidebar-text text-hidden">Departments</span>
                             </div>
                             <span class="menu-tooltip">Departments</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-item relative">
+                        <a href="{{ route('subjects.index') }}"
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="ml-3 sidebar-text text-hidden">Subjects</span>
+                            </div>
+                            <span class="menu-tooltip">Subjects</span>
                         </a>
                     </li>
 
@@ -212,12 +233,14 @@
                                     </div>
                                     <div class="submenu">
                                         <ul class="pl-4">
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Subject
-                                                    List</a></li>
+                                            <li><a href="{{ route('subjects.index') }}"
+                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">
+                                                    Subject List</a>
+                                            </li>
                                             <li><a href="#"
                                                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Assign
-                                                    Teachers</a></li>
+                                                    Teachers</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -332,7 +355,7 @@
             <div class="sidebar-footer relative">
                 <!-- Footer dropdown menu -->
                 <div id="sidebar-footer-dropdown"
-                    class="sidebar-footer-dropdown bg-indigo-900 dark:bg-gray-900 shadow-lg left-auto sm:left-[100%] py-2">
+                    class="sidebar-footer-dropdown bg-indigo-900 dark:bg-gray-900 border dark:border-gray-700 shadow-lg left-auto sm:left-[100%] py-2">
                     <ul>
                         <li>
                             <a href="#"
@@ -445,7 +468,7 @@
                     <!-- Search bar -->
                     <div class="ml-4 relative hidden md:block">
                         <input type="text" placeholder="Search..."
-                            class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-64">
+                            class="bg-gray-100 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-64">
                         <i class="fas fa-search absolute left-3 top-3 text-gray-500 dark:text-gray-400"></i>
                     </div>
                     <!-- Dark mode toggle -->
@@ -485,7 +508,7 @@
                         </button>
                         <!-- Dropdown menu with icons -->
                         <div id="user-dropdown"
-                            class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 hidden animate-fadeIn z-20">
+                            class="border border-gray-200 dark:border-gray-700 absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 hidden animate-fadeIn z-20">
                             <a href="#"
                                 class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-gray-700">
                                 <svg class="w-5 h-5 mr-3 text-indigo-500" fill="none" stroke="currentColor"
@@ -510,7 +533,7 @@
                             <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
 
                             <form method="POST" action="{{ route('logout') }}"
-                                class="block hover:bg-indigo-700 dark:hover:bg-gray-700">
+                                class="block hover:bg-indigo-100 dark:hover:bg-gray-700">
                                 @csrf
                                 <button type="submit" class="flex items-center w-full pl-5 px-4 py-2 text-red-500">
                                     <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor"
@@ -529,7 +552,7 @@
 
             <!-- Main content area -->
             <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
-                <div class="p-4">
+                <div class="sm:p-4">
                     @yield('content')
                 </div>
             </main>
