@@ -1,5 +1,5 @@
 <!-- Edit Modal -->
-<div id="Modaldetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+<div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div
         class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
@@ -22,13 +22,12 @@
         </div>
 
         <!-- Form Content -->
-        <form id="editForm" method="POST" class="p-4">
+        <form id="Formedit" method="POST" class="p-4">
             @csrf
             @method('PUT')
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2  gap-1 sm:gap-4 mb-2">
                 <!-- Name Field -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Name <span class="text-red-500">*</span>
                     </label>
@@ -44,7 +43,7 @@
                 </div>
 
                 <!-- Code Field -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="edit_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Code <span class="text-red-500">*</span>
                     </label>
@@ -60,7 +59,7 @@
                 </div>
 
                 <!-- Department Field -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="edit_depid" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Department
                     </label>
@@ -83,7 +82,7 @@
                 </div>
 
                 <!-- Credit Hours Field -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="edit_credit_hours"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Credit hours <span class="text-red-500">*</span>
@@ -102,7 +101,7 @@
             </div>
 
             <!-- Description Field (full width) -->
-            <div class="mb-4">
+            <div class="mb-2">
                 <label for="edit_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Description
                 </label>

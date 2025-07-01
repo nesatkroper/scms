@@ -6,7 +6,7 @@
         <div class="box grid sm:grid-cols-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <!-- Total Students -->
             <div class="bg-white dark:hover:bg-blue-950 dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
-                x-data="{ open: false }">
+                id="student-card">
                 <div class="flex justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Students</p>
@@ -27,23 +27,16 @@
                     <!-- Dropdown button -->
                     <div class="relative inline-block text-left">
                         <div>
-                            <button @click="open = !open" type="button"
-                                class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400
-                             hover:bg-blue-100 dark:hover:bg-gray-900 hover:text-blue-500 transition-colors"
-                                aria-expanded="true" aria-haspopup="true">
+                            <button type="button"
+                                class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-900 hover:text-blue-500 transition-colors"
+                                aria-expanded="false">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                         </div>
 
                         <!-- Dropdown menu -->
-                        <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
-                            role="menu" aria-orientation="vertical" tabindex="-1">
+                        <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                            role="menu">
                             <div class="py-1" role="none">
                                 <a href="#"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -70,10 +63,9 @@
                     </div>
                 </div>
             </div>
-
             <!-- Total Teachers -->
-            <div class="bg-white dark:bg-gray-800 dark:hover:bg-blue-950 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
-                x-data="{ open: false }">
+            <div class="bg-white dark:bg-gray-800 dark:hover:bg-blue-950 rounded-xl p-5 border border-gray-200
+             dark:border-gray-700 shadow-sm relative">
                 <div class="flex justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Teachers</p>
@@ -94,22 +86,16 @@
                     <!-- Dropdown button -->
                     <div class="relative inline-block text-left">
                         <div>
-                            <button @click="open = !open" type="button"
-                                class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-purple-100 dark:hover:bg-gray-900 hover:text-purple-500 transition-colors"
+                            <button type="button"
+                                class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-purple-100 dark:hover:bg-gray-900 hover:text-purple-500 transition-colors"
                                 aria-expanded="true" aria-haspopup="true">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                         </div>
 
                         <!-- Dropdown menu -->
-                        <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
-                            role="menu" aria-orientation="vertical" tabindex="-1">
+                        <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                            role="menu">
                             <div class="py-1" role="none">
                                 <a href="#"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -138,8 +124,8 @@
             </div>
 
             <!-- Active Classes -->
-            <div class="bg-white dark:bg-gray-800 dark:hover:bg-green-950 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
-                x-data="{ open: false }">
+            <div class="bg-white dark:bg-gray-800 dark:hover:bg-green-950 rounded-xl p-5 border border-gray-200
+             dark:border-gray-700 shadow-sm relative">
                 <div class="flex justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Classes</p>
@@ -160,22 +146,14 @@
                     <!-- Dropdown button -->
                     <div class="relative inline-block text-left">
                         <div>
-                            <button @click="open = !open" type="button"
-                                class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-green-500 transition-colors"
+                            <button class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-green-500 transition-colors"
                                 aria-expanded="true" aria-haspopup="true">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                         </div>
 
                         <!-- Dropdown menu -->
-                        <div x-show="open" @click.away="open = false"
-                            x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                        <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                             role="menu" aria-orientation="vertical" tabindex="-1">
                             <div class="py-1" role="none">
                                 <a href="#"
@@ -205,8 +183,8 @@
             </div>
 
             <!-- Fees Collected -->
-            <div class="bg-white dark:bg-gray-800 dark:hover:bg-amber-950 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
-                x-data="{ open: false }">
+            <div class="bg-white dark:bg-gray-800 dark:hover:bg-amber-950 rounded-xl p-5 border border-gray-200
+             dark:border-gray-700 shadow-sm relative">
                 <div class="flex justify-between">
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Fees Collected</p>
@@ -228,22 +206,14 @@
                     <!-- Dropdown button -->
                     <div class="relative inline-block text-left">
                         <div>
-                            <button @click="open = !open" type="button"
-                                class="inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-amber-500 transition-colors"
+                            <button class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-amber-500 transition-colors"
                                 aria-expanded="true" aria-haspopup="true">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                         </div>
 
                         <!-- Dropdown menu -->
-                        <div x-show="open" @click.away="open = false"
-                            x-transition:enter="transition ease-out duration-100"
-                            x-transition:enter-start="transform opacity-0 scale-95"
-                            x-transition:enter-end="transform opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="transform opacity-100 scale-100"
-                            x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                        <div class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                             role="menu" aria-orientation="vertical" tabindex="-1">
                             <div class="py-1" role="none">
                                 <a href="#"
@@ -399,3 +369,4 @@
         </div>
     </div>
 @endsection
+

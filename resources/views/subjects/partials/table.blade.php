@@ -4,8 +4,8 @@
             <th scope="col" class="px-4 py-4">Id</th>
             <th scope="col" class="px-4 py-4">Name</th>
             <th scope="col" class="px-4 py-4">Code</th>
-            <th scope="col" class="px-4 py-4">Department</th>
             <th scope="col" class="px-4 py-4">Credit hours</th>
+            <th scope="col" class="px-4 py-4">Department</th>
             <th scope="col" class="px-4 py-4">Description</th>
             <th scope="col" class="px-4 py-4">Date</th>
             <th scope="col" class="px-4 py-4">Actions</th>
@@ -33,17 +33,16 @@
                     <td class="px-4 py-2">{{ $subject->id }}</td>
                     <td class="px-4 py-2">{{ $subject->name }}</td>
                     <td class="px-4 py-2">{{ $subject->code }}</td>
-                    <td class="px-4 py-2">{{ $subject->department->name ?? 'N/A' }}</td>
                     <td class="px-4 py-2">{{ $subject->credit_hours }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($subject->description, 50) }}</td>
+                    <td class="px-4 py-2">{{ Str::limit($subject->department->name ?? 'N/A', 20) }}</td>
+                    <td class="px-4 py-2">{{ Str::limit($subject->description, 20) }}</td>
                     <td class="px-4 py-2">
                         {{ $subject->created_at->format('Y-m-d') }}
                     </td>
 
                     <td class="px-4 py-2 text-right">
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open"
-                                class="font-medium btn-action text-indigo-600 dark:text-indigo-700 p-1 size-8 flex items-center justify-center 
+                        <div class="relative">
+                            <button class="btn-toggle-dropdown btn-action font-medium text-indigo-600 dark:text-indigo-500 p-1 size-8 flex items-center justify-center 
                                 border border-indigo-100 dark:border-gray-600 dark:hover:bg-gray-700 hover:bg-indigo-200 rounded-full cursor-pointer transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-8" fill="currentColor"
                                     viewBox="0 0 20 20">
@@ -53,18 +52,11 @@
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div x-show="open" @click.away="open = false"
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                            <div class="dropdown-menu hidden absolute w-auto right-0 z-10 mt-2 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                                 role="menu">
                                 <div class="py-1" role="none">
-                                    <a href="#"
-                                        class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 edit-btn"
+                                    <a href="#" title="Edit Id({{ $subject->id }})"
+                                        class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                                         data-id="{{ $subject->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
@@ -75,7 +67,7 @@
                                             Edit
                                         </span>
                                     </a>
-                                    <a href="#"
+                                    <a href="#" title="Details Id({{ $subject->id }})"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
                                         data-id="{{ $subject->id }}">
                                         <span class="btn-content flex items-center gap-2">
@@ -89,7 +81,7 @@
                                         </span>
                                     </a>
                                     <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST"
-                                        class="delete-form">
+                                        class="delete-form" title="Delete Id({{ $subject->id }})">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button"

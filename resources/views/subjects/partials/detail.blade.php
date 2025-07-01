@@ -1,5 +1,5 @@
     <!-- Detail Department Modal -->
-    <div id="detailDepartmentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div id="Modaldetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
         <div
             class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
             <!-- Header -->
@@ -12,7 +12,7 @@
                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
                             clip-rule="evenodd" />
                     </svg>
-                    Department Details
+                    Subject Details
                 </h3>
                 <button id="closeDetailModal"
                     class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -26,8 +26,16 @@
             <!-- Content -->
             <div class="p-4 px-6">
                 <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Department Name</h4>
+                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Subjects Name</h4>
                     <p id="detail_name" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
+                </div>
+                <div class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Code</h4>
+                    <p id="detail_code" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
+                </div>
+                <div class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Departments</h4>
+                    <p id="detail_depid" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
                 </div>
 
                 <div class="mb-4">

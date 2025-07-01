@@ -33,9 +33,8 @@
                     </td>
 
                     <td class="px-4 py-2 text-right">
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open"
-                                class="font-medium btn-action text-indigo-600 dark:text-indigo-700 p-1 size-8 flex items-center justify-center 
+                        <div class="relative">
+                            <button class="btn-toggle-dropdown font-medium btn-action text-indigo-600 dark:text-indigo-500 p-1 size-8 flex items-center justify-center 
                                 border border-indigo-100 dark:border-gray-600 dark:hover:bg-gray-700 hover:bg-indigo-200 rounded-full cursor-pointer transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-8" fill="currentColor"
                                     viewBox="0 0 20 20">
@@ -45,17 +44,10 @@
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <div x-show="open" @click.away="open = false"
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+                            <div class="dropdown-menu hidden w-auto absolute right-0 z-10 mt-2 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                                 role="menu">
                                 <div class="py-1" role="none">
-                                    <a href="#"
+                                    <a href="#" title="Edit Id({{ $department->id }})"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 edit-btn"
                                         data-id="{{ $department->id }}">
                                         <span class="btn-content flex items-center gap-2">
@@ -67,7 +59,7 @@
                                             Edit
                                         </span>
                                     </a>
-                                    <a href="#"
+                                    <a href="#" title="Edit Id({{ $department->id }})"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
                                         data-id="{{ $department->id }}">
                                         <span class="btn-content flex items-center gap-2">
@@ -81,7 +73,7 @@
                                         </span>
                                     </a>
                                     <form action="{{ route('departments.destroy', $department->id) }}" method="POST"
-                                        class="delete-form">
+                                        class="delete-form" title="Edit Id({{ $department->id }})">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button"

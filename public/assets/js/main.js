@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTS ---
     const sidebar = document.getElementById('sidebar');
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Submenu Logic
     const toggleSubmenu = (element) => {
         if (!element) return;
-        
+
         const submenu = element.nextElementSibling;
         const icon = element.querySelector('.menu-icon');
 
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Footer Dropdown
     const toggleFooterDropdown = () => {
         if (!sidebarFooterDropdown) return;
-        
+
         footerDropdownActive = !footerDropdownActive;
         sidebarFooterDropdown.classList.toggle('show', footerDropdownActive);
         if (footerDropdownActive) closeAllCollapsedDropdowns();
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeFooterDropdown = () => {
         if (!sidebarFooterDropdown) return;
-        
+
         sidebarFooterDropdown.classList.remove('show');
         footerDropdownActive = false;
     };
@@ -116,10 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyDarkMode = (isDark) => {
         if (isDark) {
             document.documentElement.classList.add('dark');
-            if (darkModeToggle) darkModeToggle.checked = true; 
+            if (darkModeToggle) darkModeToggle.checked = true;
         } else {
             document.documentElement.classList.remove('dark');
-            if (darkModeToggle) darkModeToggle.checked = false; 
+            if (darkModeToggle) darkModeToggle.checked = false;
         }
     };
 

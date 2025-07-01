@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Subject;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class SubjectController extends Controller
 {
@@ -81,7 +83,6 @@ class SubjectController extends Controller
             'success' => true,
             'message' => 'Subject deleted successfully'
         ]);
-        
     }
 
     public function bulkDelete(Request $request)
@@ -122,28 +123,47 @@ class SubjectController extends Controller
         ]);
     }
 
+
     public function bulkUpdate(Request $request)
     {
         $validated = $request->validate([
             'subjects' => 'required|array',
             'subjects.*.id' => 'required|exists:subjects,id',
-            'subjects.*.name' => 'required|string|max:255',
-            'subjects.*.code' => 'required|string|max:50',
-            'subjects.*.credit_hours' => 'required|numeric',
-            'subjects.*.description' => 'nullable|string',
-            'subjects.*.department_id' => 'required|exists:departments,id'
+            // 'subjects.*.name' => 'sometimes|string|max:255',
+            // 'subjects.*.code' => 'sometimes|string|unique:subjects,code|max:50',
+            // 'subjects.*.credit_hours' => 'sometimes|integer|min:1',
+            // 'subjects.*.description' => 'nullable|string',
+            // 'subjects.*.department_id' => 'nullable|exists:departments,id'
         ]);
 
         $updatedCount = 0;
 
-        foreach ($validated['subjects'] as $subjectData) {
+        foreach ($request->input('subjects') as $subjectData) {
+            $validator = Validator::make($subjectData, [
+                'id' => 'required|exists:subjects,id',
+                'name' => 'sometimes|string|max:255',
+                'code' => [
+                    'sometimes',
+                    'string',
+                    'max:50',
+                    Rule::unique('subjects', 'code')->ignore($subjectData['id'], 'id'),
+                ],
+                'credit_hours' => 'sometimes|integer|min:1',
+                'description' => 'nullable|string',
+                'department_id' => 'nullable|exists:departments,id',
+            ]);
+
+            if ($validator->fails()) {
+                Log::error("Validation failed for subject ID {$subjectData['id']}: " . json_encode($validator->errors()));
+                continue; // Skip invalid
+            }
+
             try {
-                $subject = Subject::find($subjectData['id']);
-                $subject->update($subjectData);
+                $subject = Subject::findOrFail($subjectData['id']);
+                $subject->update($validator->validated());
                 $updatedCount++;
             } catch (\Exception $e) {
                 Log::error("Error updating subject: " . $e->getMessage());
-                continue;
             }
         }
 

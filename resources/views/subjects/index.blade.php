@@ -35,12 +35,10 @@
                 </button>
             </div>
         </div>
-        <div id="departmentsTableContainer" class="table-respone mt-6 overflow-x-auto">
+        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto">
             @include('subjects.partials.table', ['subjects' => $subjects])
         </div>
-
         {{-- pagination --}}
-        {{-- {{ $departments->links() }} --}}
         @include('subjects.partials.pagination')
 
     </div>
@@ -98,6 +96,13 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // ===== Core Initialization =====
+            // CSRF token setup for AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             // ===== Functions (Available Globally Within This Scope) =====
             function getSelectedIds() {
@@ -108,10 +113,9 @@
                 return selectedIds;
             }
 
-            function showFlashMessage(type, message) {
-                const flashContainer = document.createElement('div');
-                flashContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-
+            function ShowTaskMessage(type, message) {
+                const TasksmsContainer = document.createElement('div');
+                TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
                 const innerHtml = `
                 <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
                     border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
@@ -127,31 +131,21 @@
                 </div>
             `;
 
-                flashContainer.innerHTML = innerHtml;
-                document.body.appendChild(flashContainer);
-
+                TasksmsContainer.innerHTML = innerHtml;
+                document.body.appendChild(TasksmsContainer);
                 setTimeout(() => {
-                    flashContainer.remove();
+                    TasksmsContainer.remove();
                 }, 3000);
             }
-
-            // ===== Core Initialization =====
-            // CSRF token setup for AJAX
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
             // Modal Backdrop element
             const backdrop = document.getElementById('modalBackdrop');
 
             // Initialize all functionality
-            initializeDepartmentFunctionality();
+            initializeFunct();
             initializeBulkActions();
-
-            // ===== Department Management Functions =====
-            function initializeDepartmentFunctionality() {
+            // ===== Management Functions =====
+            function initializeFunct() {
                 // Per page select change
                 $('#perPageSelect').on('change', function() {
                     const perPage = $(this).val();
@@ -212,7 +206,7 @@
                 if (closeBtn) closeBtn.addEventListener('click', closeCreateModal);
                 if (cancelBtn) cancelBtn.addEventListener('click', closeCreateModal);
 
-                // Create Department Form Submission
+                // Create Form Submission
                 $('#Modalcreate form').submit(function(e) {
                     e.preventDefault();
 
@@ -222,7 +216,7 @@
                         data: $(this).serialize(),
                         success: function(response) {
                             closeCreateModal();
-                            showFlashMessage('success', 'Department created successfully');
+                            ShowTaskMessage('success', 'Subject created successfully');
                             setTimeout(() => {
                                 location.reload();
                             }, 10);
@@ -235,40 +229,43 @@
                                 errorMessages += errors[field][0] + '\n';
                             }
 
-                            showFlashMessage('error', errorMessages);
+                            ShowTaskMessage('error', errorMessages);
                         }
                     });
                 });
 
-                // Edit Form Submission
-                $('#editForm').submit(function(e) {
-                    e.preventDefault();
-                    const url = $(this).attr('action');
-                    $.ajax({
-                        url: url,
-                        method: 'PUT',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            closeEditModalFunc();
-                            showFlashMessage('success', 'Department updated successfully');
-                            setTimeout(() => {
-                                location.reload();
-                            }, 10);
-                        },
-                        error: function(xhr) {
-                            const errors = xhr.responseJSON.errors;
-                            let errorMessages = '';
+                // ============= Edit Form Submission ===============
 
-                            for (const field in errors) {
-                                errorMessages += errors[field][0] + '\n';
-                            }
+                // $('#Formedit').submit(function(e) {
+                //     e.preventDefault();
+                //     const url = $(this).attr('action');
+                //     $.ajax({
+                //         url: url,
+                //         method: 'PUT',
+                //         data: $(this).serialize(),
+                //         success: function(response) {
+                //             closeEditModalFunc();
+                //             ShowTaskMessage('success', 'Subject updated successfully');
+                //             setTimeout(() => {
+                //                 location.reload();
+                //             }, 10);
+                //         },
+                //         error: function(xhr) {
+                //             const errors = xhr.responseJSON.errors;
+                //             let errorMessages = '';
 
-                            showFlashMessage('error', errorMessages);
-                        }
-                    });
-                });
+                //             for (const field in errors) {
+                //                 errorMessages += errors[field][0] + '\n';
+                //             }
 
-                // Delete Department Form Submission
+                //             ShowTaskMessage('error', errorMessages);
+                //         }
+                //     });
+                // });
+
+                // ============= End Edit Form Submission ===============
+
+                // Delete Form Submission
                 $('#Formdelete').submit(function(e) {
                     e.preventDefault();
 
@@ -279,13 +276,13 @@
                         method: 'DELETE',
                         success: function(response) {
                             closeDeleteModalFunc();
-                            showFlashMessage('success', 'Department deleted successfully');
+                            ShowTaskMessage('success', 'Subject deleted successfully');
                             setTimeout(() => {
                                 location.reload();
                             }, 10);
                         },
                         error: function(xhr) {
-                            showFlashMessage('error', 'Error deleting department');
+                            ShowTaskMessage('error', 'Error deleting');
                         }
                     });
                 });
@@ -299,7 +296,7 @@
                         } else if (!document.getElementById('Modaldetail').classList.contains(
                                 'hidden')) {
                             closeEditModalFunc();
-                        } else if (!document.getElementById('detailDepartmentModal').classList.contains(
+                        } else if (!document.getElementById('Modaldetail').classList.contains(
                                 'hidden')) {
                             closeDetailModalFunc();
                         } else if (!document.getElementById('Modaldelete').classList.contains(
@@ -311,9 +308,9 @@
                     }
                 });
 
-                // Auto-hide flash messages
-                const flashMessages = document.querySelectorAll('.animate-fade-in-out');
-                flashMessages.forEach(message => {
+                // Auto-hide TaskMessage messages 
+                const TaskMessage = document.querySelectorAll('.animate-fade-in-out');
+                TaskMessage.forEach(message => {
                     setTimeout(() => {
                         message.style.display = 'none';
                     }, 3000);
@@ -321,10 +318,10 @@
             }
 
             function initializeEventListeners() {
+                //============ Edit form handling with animation ==============
                 // Edit button handling using event delegation
-                $(document).on('click', '.edit-btn', function(e) {
+                $('.edit-btn').on('click', '', function(e) {
                     e.preventDefault();
-
                     const editBtn = $(this);
                     const originalContent = editBtn.find('.btn-content').html();
 
@@ -338,25 +335,27 @@
                     // Fetch data
                     $.get(`/subjects/${Id}`)
                         .done(function(data) {
+                            console.log(data)
                             // Populate form fields
                             $('#edit_name').val(data.name);
                             $('#edit_code').val(data.code);
                             $('#edit_depid').val(data.department_id);
                             $('#edit_credit_hours').val(data.credit_hours);
                             $('#edit_description').val(data.description);
-
-                            $('#editForm').attr('action', `/subjects/${Id}`);
+                            $('#Formedit').attr('action', `/subjects/${Id}`);
 
                             // Show edit modal
-                            const modal = document.getElementById('Modaldetail');
+                            const modal = document.getElementById('Modaledit');
                             const backdrop = document.getElementById('modalBackdrop');
                             backdrop.classList.remove('hidden');
                             modal.classList.remove('hidden');
 
                             setTimeout(() => {
-                                modal.querySelector('div').classList.remove('opacity-0',
+                                modal.querySelector('div').classList.remove(
+                                    'opacity-0',
                                     'scale-95');
-                                modal.querySelector('div').classList.add('opacity-100',
+                                modal.querySelector('div').classList.add(
+                                    'opacity-100',
                                     'scale-100');
                             }, 10);
                         })
@@ -370,14 +369,12 @@
                             editBtn.prop('disabled', false);
                         });
                 });
-
                 // Save button click handler with loading state
-                $('#editForm').on('submit', function(e) {
+                $('#Formedit').on('submit', function(e) {
                     e.preventDefault();
 
                     const saveBtn = $('#saveEditBtn');
                     const originalContent = saveBtn.find('.btn-content').html();
-
                     // Set loading state
                     saveBtn.find('.btn-content').html(
                         '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
@@ -396,10 +393,9 @@
                         },
                         success: function(response) {
                             // Show success message
-                            showFlashMessage('success', 'Subjectssssssss updated successfully');
-
+                            ShowTaskMessage('success', 'Subjects updated successfully');
                             // Close modal
-                            const modal = document.getElementById('Modaldetail');
+                            const modal = document.getElementById('Modaledit');
                             const backdrop = document.getElementById('modalBackdrop');
 
                             modal.querySelector('div').classList.remove('opacity-100',
@@ -409,14 +405,13 @@
                             setTimeout(() => {
                                 modal.classList.add('hidden');
                                 backdrop.classList.add('hidden');
-
                                 // Refresh the page or update the table
                                 window.location.reload();
                             }, 10);
                         },
                         error: function(xhr) {
                             console.error('Error:', xhr.responseText);
-                            showFlashMessage('error', 'Failed to update subject');
+                            ShowTaskMessage('error', 'Failed to update subject');
                         },
                         complete: function() {
                             // Restore button state
@@ -425,9 +420,10 @@
                         }
                     });
                 });
+                //============End  Edit form handling with animation =================
 
                 // Detail button handling using event delegation
-                $(document).on('click', '.detail-btn', function(e) {
+                $('.detail-btn').on('click', function(e) {
                     e.preventDefault();
                     const id = $(this).data('id');
                     const detailBtn = $(this);
@@ -441,17 +437,18 @@
                     // Fetch data
                     $.get(`/subjects/${id}`)
                         .done(function(data) {
+
                             // Populate detail fields
                             $('#detail_name').text(data.name);
                             $('#detail_code').text(data.code);
-                            $('#detail_depid').text(data.department_id);
+                            $('#detail_depid').text(data.department.name);
                             $('#detail_credit_hours').text(data.credit_hours);
                             $('#detail_description').text(data.description);
                             $('#detail_created_at').text(data.created_at);
                             $('#detail_updated_at').text(data.updated_at);
 
                             // Show detail modal
-                            const modal = document.getElementById('detailDepartmentModal');
+                            const modal = document.getElementById('Modaldetail');
                             const backdrop = document.getElementById('modalBackdrop');
                             backdrop.classList.remove('hidden');
                             modal.classList.remove('hidden');
@@ -465,7 +462,7 @@
                         })
                         .fail(function(xhr) {
                             console.error('Error:', xhr.responseText);
-                            showFlashMessage('error', 'Failed to load subject details');
+                            ShowTaskMessage('error', 'Failed to load subject details');
                         })
                         .always(function() {
                             // Restore button state
@@ -475,11 +472,10 @@
                 });
 
                 // Delete button handling using event delegation
-                $(document).on('click', '.delete-btn', function(e) {
+                $('.delete-btn').on('click', function(e) {
                     e.preventDefault();
                     const form = $(this).closest('form');
                     const id = form.attr('action').split('/').pop();
-
                     // Set up delete form
                     $('#Formdelete').attr('action', `/subjects/${id}`);
 
@@ -516,7 +512,7 @@
                 }
 
                 // Update bulk actions bar when checkboxes change
-                $(document).on('change', '.row-checkbox', updateBulkActionsBar);
+                $('.row-checkbox').on('change', updateBulkActionsBar);
 
                 // Deselect all
                 if (deselectAllBtn) {
@@ -534,10 +530,9 @@
                     bulkDeleteBtn.addEventListener('click', function() {
                         const selectedIds = getSelectedIds();
                         if (selectedIds.length === 0) {
-                            showFlashMessage('error', 'Please select at least one department to delete');
+                            ShowTaskMessage('error', 'Please select at least one record to delete');
                             return;
                         }
-
                         // Show the toast modal
                         const modal = document.getElementById('bulkDeleteToastModal');
                         document.getElementById('selectedCountText').textContent = selectedIds.length;
@@ -567,14 +562,14 @@
                                 },
                                 success: function(response) {
                                     closeBulkDeleteModalFunc();
-                                    showFlashMessage('success', response.message);
+                                    ShowTaskMessage('success', response.message);
                                     setTimeout(() => {
                                         location.reload();
                                     }, 100);
                                 },
                                 error: function(xhr) {
                                     closeBulkDeleteModalFunc();
-                                    showFlashMessage('error', 'Error deleting');
+                                    ShowTaskMessage('error', 'Error deleting');
                                 },
                                 complete: function() {
                                     deleteBtn.disabled = false;
@@ -628,11 +623,11 @@
                 // In the initializeBulkEdit() function, update the openBulkEditModal function:
                 function openBulkEditModal() {
                     const selectedIds = getSelectedIds();
-                    const container = document.getElementById('bulkEditDepartmentsContainer');
+                    const container = document.getElementById('bulkEditContainer');
                     const bulkEditBtn = document.getElementById('bulkEditBtn');
 
                     if (selectedIds.length === 0) {
-                        showFlashMessage('error', 'Please select at least one department to edit');
+                        ShowTaskMessage('error', 'Please select at least one record to edit');
                         return;
                     }
 
@@ -648,12 +643,11 @@
                     }
 
                     if (selectedIds.length > 5) {
-                        showFlashMessage('error', 'You can only edit up to 5 record at a time');
+                        ShowTaskMessage('error', 'You can only edit up to 5 record at a time');
                         bulkEditBtn.innerHTML = originalBtnText;
                         bulkEditBtn.disabled = false;
                         return;
                     }
-
                     // Update count display
                     bulkEditCount.textContent = selectedIds.length;
 
@@ -670,7 +664,7 @@
                             bulkEditBtn.disabled = false;
 
                             if (!response.success) {
-                                showFlashMessage('error', response.message);
+                                ShowTaskMessage('error', response.message);
                                 return;
                             }
                             // Clear existing fields
@@ -680,7 +674,6 @@
                                 const fieldHtml = `
                     <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                         <input type="hidden" name="subjects[${index}][id]" value="${subject.id}">
-                        
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
                         </div>
@@ -771,8 +764,7 @@
                             // Restore button state on error
                             bulkEditBtn.innerHTML = originalBtnText;
                             bulkEditBtn.disabled = false;
-
-                            showFlashMessage('error', 'Error loading department data');
+                            ShowTaskMessage('error', 'Error loading data');
                         }
                     });
                 }
@@ -801,58 +793,52 @@
                     // Show loading state
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-                    // Collect all department data
+                    // Collect all fields data
                     const dataform = [];
-                    $('.sub-field').each(function(index) {
-                        const Id = $(this).find('input[type="hidden"]').val();
-                        const Name = $(this).find('input[name$="[name]"]').val();
-                        const Desc = $(this).find('textarea[name$="[description]"]').val();
 
-                        dataform.push({
-                            id: Id,
-                            name: Name,
-                            description: Desc
-                        });
+                    $('.sub-field').each(function(index) {
+                        const subject = {
+                            id: $(this).find('input[type="hidden"]').val(),
+                            name: $(this).find('input[name$="[name]"]').val(),
+                            code: $(this).find('input[name$="[code]"]').val(),
+                            credit_hours: $(this).find('input[name$="[credit_hours]"]').val(),
+                            department_id: $(this).find('select[name$="[department_id]"]')
+                                .val(),
+                            description: $(this).find('textarea[name$="[description]"]').val()
+                        };
+                        dataform.push(subject);
                     });
 
                     $.ajax({
                         url: "{{ route('subjects.bulkUpdate') }}",
                         method: 'POST',
                         data: {
-                            dataform: dataform
+                            _token: "{{ csrf_token() }}",
+                            subjects: dataform
                         },
                         success: function(response) {
                             if (response.success) {
                                 closeBulkEditModalFunc();
-                                showFlashMessage('success', response.message);
+                                ShowTaskMessage('success', response.message);
                                 setTimeout(() => {
-                                    window.location.href = response.redirect;
+                                    window.location.reload();
                                 }, 10);
                             } else {
-                                showFlashMessage('error', response.message);
+                                ShowTaskMessage('error', "err-response" + response.message);
                             }
                         },
                         error: function(xhr) {
-                            const errors = xhr.responseJSON.errors;
-                            let errorMessages = '';
+                            console.log("XHR Response:", xhr); // Inspect full response
 
-                            if (errors) {
-                                // Handle validation errors
-                                if (errors.dataform) {
-                                    errors.dataform.forEach((error, index) => {
-                                        errorMessages +=
-                                            `#${index + 1}: ${error.join(', ')}\n`;
-                                    });
-                                } else {
-                                    for (const field in errors) {
-                                        errorMessages += errors[field][0] + '\n';
-                                    }
-                                }
-                            } else {
-                                errorMessages = 'An error occurred while updating';
+                            let errorMessage = 'An error occurred while updating';
+
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON?.errors || {};
+                                const allErrors = Object.values(errors).flat();
+                                errorMessage = allErrors.join('<br>');
                             }
 
-                            showFlashMessage('error', errorMessages);
+                            ShowTaskMessage('error', errorMessage);
                         },
                         complete: function() {
                             // Restore button state
@@ -865,6 +851,7 @@
             }
 
             // ===== Search Functionality =====
+
             function searchData(searchTerm) {
                 $.ajax({
                     url: "{{ route('subjects.index') }}",
@@ -873,7 +860,7 @@
                         search: searchTerm
                     },
                     success: function(response) {
-                        $('#departmentsTableContainer').html(response.html);
+                        $('#TableContainer').html(response.html);
                         initializeBulkActions(); // Reinitialize after table update
                     },
                     error: function(xhr) {
@@ -888,7 +875,7 @@
             const cancelEditModal = document.getElementById('cancelEditModal');
 
             function closeEditModalFunc() {
-                const modal = document.getElementById('Modaldetail');
+                const modal = document.getElementById('Modaledit');
                 modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
                 modal.querySelector('div').classList.add('opacity-0', 'scale-95');
 
@@ -906,7 +893,7 @@
             const closeDetailModalBtn = document.getElementById('closeDetailModalBtn');
 
             function closeDetailModalFunc() {
-                const modal = document.getElementById('detailDepartmentModal');
+                const modal = document.getElementById('Modaldetail');
                 modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
                 modal.querySelector('div').classList.add('opacity-0', 'scale-95');
 
@@ -939,56 +926,3 @@
         });
     </script>
 @endpush
-
-
-
-
-{{-- @extends('layouts.app')
-
-@section('content')
-  <div class="container">
-    <h1>Subjects</h1>
-
-    @if (session('success'))
-      <div class="alert alert-success">
-        {{ session('success') }}
-      </div>
-    @endif
-
-    <a href="{{ route('subjects.create') }}" class="btn btn-primary mb-3">Add New Subject</a>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Department</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($subjects as $subject)
-          <tr>
-            <td>{{ $subject->id }}</td>
-            <td>{{ $subject->name }}</td>
-            <td>{{ $subject->code }}</td>
-            <td>{{ $subject->department->name ?? 'N/A' }}</td> 
-            <td>
-              <a href="{{ route('subjects.show', $subject) }}" class="btn btn-info btn-sm">View</a>
-              <a href="{{ route('subjects.edit', $subject) }}" class="btn btn-warning btn-sm">Edit</a>
-              <form action="{{ route('subjects.destroy', $subject) }}" method="POST" style="display:inline-block;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm"
-                  onclick="return confirm('Are you sure you want to delete this subject?')">Delete</button>
-              </form>
-            </td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
-
-    {{ $subjects->links() }}
-  </div>
-@endsection --}}

@@ -212,7 +212,6 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
             // ===== Functions (Available Globally Within This Scope) =====
             function getSelectedIds() {
                 const selectedIds = [];
@@ -222,9 +221,9 @@
                 return selectedIds;
             }
 
-            function showFlashMessage(type, message) {
-                const flashContainer = document.createElement('div');
-                flashContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
+            function ShowTaskMessage(type, message) {
+                const TasksmsContainer = document.createElement('div');
+                TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
 
                 const innerHtml = `
                 <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
@@ -241,11 +240,11 @@
                 </div>
             `;
 
-                flashContainer.innerHTML = innerHtml;
-                document.body.appendChild(flashContainer);
+                TasksmsContainer.innerHTML = innerHtml;
+                document.body.appendChild(TasksmsContainer);
 
                 setTimeout(() => {
-                    flashContainer.remove();
+                    TasksmsContainer.remove();
                 }, 3000);
             }
 
@@ -336,7 +335,7 @@
                         data: $(this).serialize(),
                         success: function(response) {
                             closeCreateModal();
-                            showFlashMessage('success', 'Department created successfully');
+                            ShowTaskMessage('success', 'Department created successfully');
                             setTimeout(() => {
                                 location.reload();
                             }, 10);
@@ -349,7 +348,7 @@
                                 errorMessages += errors[field][0] + '\n';
                             }
 
-                            showFlashMessage('error', errorMessages);
+                            ShowTaskMessage('error', errorMessages);
                         }
                     });
                 });
@@ -364,13 +363,13 @@
                         method: 'DELETE',
                         success: function(response) {
                             closeDeleteModalFunc();
-                            showFlashMessage('success', 'Department deleted successfully');
+                            ShowTaskMessage('success', 'Department deleted successfully');
                             setTimeout(() => {
                                 location.reload();
                             }, 10);
                         },
                         error: function(xhr) {
-                            showFlashMessage('error', 'Error deleting department');
+                            ShowTaskMessage('error', 'Error deleting department');
                         }
                     });
                 });
@@ -396,9 +395,9 @@
                     }
                 });
 
-                // Auto-hide flash messages
-                const flashMessages = document.querySelectorAll('.animate-fade-in-out');
-                flashMessages.forEach(message => {
+                // Auto-hide messages
+                const TaskMessage = document.querySelectorAll('.animate-fade-in-out');
+                TaskMessage.forEach(message => {
                     setTimeout(() => {
                         message.style.display = 'none';
                     }, 3000);
@@ -407,7 +406,7 @@
 
             function initializeEventListeners() {
                 // Edit button handling using event delegation
-                $(document).on('click', '.edit-btn', function(e) {
+                $('.edit-btn').on('click', function(e) {
                     e.preventDefault();
                     const editBtn = $(this);
                     const originalContent = editBtn.html();
@@ -439,7 +438,7 @@
                         })
                         .fail(function(xhr) {
                             console.error('Error loading department:', xhr.responseText);
-                            showFlashMessage('error', 'Failed to load department data');
+                            ShowTaskMessage('error', 'Failed to load department data');
                         })
                         .always(function() {
                             // Restore button state
@@ -459,7 +458,7 @@
                         data: $(this).serialize(),
                         success: function(response) {
                             closeEditModalFunc();
-                            showFlashMessage('success', 'Department updated successfully');
+                            ShowTaskMessage('success', 'Department updated successfully');
                             setTimeout(() => {
                                 location.reload();
                             }, 10);
@@ -472,13 +471,13 @@
                                 errorMessages += errors[field][0] + '\n';
                             }
 
-                            showFlashMessage('error', errorMessages);
+                            ShowTaskMessage('error', errorMessages);
                         }
                     });
                 });
 
                 // Detail button handling using event delegation
-                $(document).on('click', '.detail-btn', function(e) {
+                $('.detail-btn').on('click', function(e) {
                     e.preventDefault();
                     const departmentId = $(this).data('id');
 
@@ -504,7 +503,7 @@
                 });
 
                 // Delete button handling using event delegation
-                // $(document).on('click', '.delete-btn', function(e) {
+                // $('.delete-btn').on('click', function(e) {
                 //     e.preventDefault();
                 //     const form = $(this).closest('form');
                 //     const departmentId = form.attr('action').split('/').pop();
@@ -545,7 +544,7 @@
                 }
 
                 // Update bulk actions bar when checkboxes change
-                $(document).on('change', '.row-checkbox', updateBulkActionsBar);
+                $('.row-checkbox').on('change', updateBulkActionsBar);
 
                 // Deselect all
                 if (deselectAllBtn) {
@@ -563,7 +562,7 @@
                     bulkDeleteBtn.addEventListener('click', function() {
                         const selectedIds = getSelectedIds();
                         if (selectedIds.length === 0) {
-                            showFlashMessage('error', 'Please select at least one department to delete');
+                            ShowTaskMessage('error', 'Please select at least one department to delete');
                             return;
                         }
 
@@ -596,14 +595,14 @@
                                 },
                                 success: function(response) {
                                     closeBulkDeleteModalFunc();
-                                    showFlashMessage('success', response.message);
+                                    ShowTaskMessage('success', response.message);
                                     setTimeout(() => {
                                         location.reload();
                                     }, 100);
                                 },
                                 error: function(xhr) {
                                     closeBulkDeleteModalFunc();
-                                    showFlashMessage('error', 'Error deleting departments');
+                                    ShowTaskMessage('error', 'Error deleting departments');
                                 },
                                 complete: function() {
                                     deleteBtn.disabled = false;
@@ -661,7 +660,7 @@
                     const bulkEditBtn = document.getElementById('bulkEditBtn');
 
                     if (selectedIds.length === 0) {
-                        showFlashMessage('error', 'Please select at least one department to edit');
+                        ShowTaskMessage('error', 'Please select at least one department to edit');
                         return;
                     }
 
@@ -677,7 +676,7 @@
                     }
 
                     if (selectedIds.length > 5) {
-                        showFlashMessage('error', 'You can only edit up to 5 departments at a time');
+                        ShowTaskMessage('error', 'You can only edit up to 5 departments at a time');
                         bulkEditBtn.innerHTML = originalBtnText;
                         bulkEditBtn.disabled = false;
                         return;
@@ -699,7 +698,7 @@
                             bulkEditBtn.disabled = false;
 
                             if (!response.success) {
-                                showFlashMessage('error', response.message);
+                                ShowTaskMessage('error', response.message);
                                 return;
                             }
 
@@ -761,7 +760,7 @@
                             bulkEditBtn.innerHTML = originalBtnText;
                             bulkEditBtn.disabled = false;
 
-                            showFlashMessage('error', 'Error loading department data');
+                            ShowTaskMessage('error', 'Error loading department data');
                         }
                     });
                 }
@@ -813,12 +812,12 @@
                         success: function(response) {
                             if (response.success) {
                                 closeBulkEditModalFunc();
-                                showFlashMessage('success', response.message);
+                                ShowTaskMessage('success', response.message);
                                 setTimeout(() => {
                                     window.location.href = response.redirect;
                                 }, 10);
                             } else {
-                                showFlashMessage('error', response.message);
+                                ShowTaskMessage('error', response.message);
                             }
                         },
                         error: function(xhr) {
@@ -841,7 +840,7 @@
                                 errorMessages = 'An error occurred while updating departments';
                             }
 
-                            showFlashMessage('error', errorMessages);
+                            ShowTaskMessage('error', errorMessages);
                         },
                         complete: function() {
                             // Restore button state
