@@ -2,7 +2,7 @@
 @section('title', 'Subjects')
 @section('content')
     <div
-        class="px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg"
                 class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
@@ -12,9 +12,9 @@
             </svg>
             Subjects
         </h3>
-        <div class="p-2 md:flex justify-between items-center border rounded-md border-gray-200 dark:border-gray-700">
+        <div class="p-2 md:flex justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
             <button id="openCreateModal"
-                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2">
+                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
@@ -24,25 +24,39 @@
             </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="text" id="searchInput" placeholder="Search subjects..."
+                    <input type="search" id="searchInput" placeholder="Search subjects..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
                 <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="fas fa-redo text-indigo-600 dark:text-gray-300 text-sm"></i>
+                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
                 </button>
+                <div class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
+                    <button id="listViewBtn"
+                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                        <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
+                    </button>
+                    <button id="cardViewBtn"
+                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                        <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto">
+        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto overflow-y-hidden">
             @include('subjects.partials.table', ['subjects' => $subjects])
+        </div>
+        <div id="CardContainer" class="hidden mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            @include('subjects.partials.cardlist', ['subjects' => $subjects])
         </div>
         {{-- pagination --}}
         @include('subjects.partials.pagination')
 
     </div>
 
+    </style>
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
@@ -228,7 +242,6 @@
                             for (const field in errors) {
                                 errorMessages += errors[field][0] + '\n';
                             }
-
                             ShowTaskMessage('error', errorMessages);
                         }
                     });
@@ -315,6 +328,49 @@
                         message.style.display = 'none';
                     }, 3000);
                 });
+
+                // ===== Switch tab =====
+                const savedView = localStorage.getItem('viewitem') || 'list';
+                // Get DOM elements
+                const listBtn = document.getElementById('listViewBtn');
+                const cardBtn = document.getElementById('cardViewBtn');
+                const tableContainer = document.getElementById('TableContainer');
+                const cardContainer = document.getElementById('CardContainer');
+
+                // Set initial view based on saved preference
+                if (savedView === 'list') {
+                    showListView();
+                } else {
+                    showCardView();
+                }
+
+                // View switching functions
+                function showListView() {
+                    listBtn.classList.add('bg-indigo-100', 'dark:bg-indigo-700');
+                    listBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700');
+                    cardBtn.classList.remove('bg-indigo-100', 'dark:bg-indigo-700');
+                    cardBtn.classList.add('bg-gray-100', 'dark:bg-gray-700');
+                    tableContainer.classList.remove('hidden');
+                    cardContainer.classList.add('hidden');
+                    localStorage.setItem('viewitem', 'list');
+                }
+
+                function showCardView() {
+                    cardBtn.classList.add('bg-indigo-100', 'dark:bg-indigo-700');
+                    cardBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700');
+                    listBtn.classList.remove('bg-indigo-100', 'dark:bg-indigo-700');
+                    listBtn.classList.add('bg-gray-100', 'dark:bg-gray-700');
+                    tableContainer.classList.add('hidden');
+                    cardContainer.classList.remove('hidden');
+                    localStorage.setItem('viewitem', 'card');
+                }
+
+                // Event listeners for view buttons
+                if (listBtn && cardBtn) {
+                    listBtn.addEventListener('click', showListView);
+                    cardBtn.addEventListener('click', showCardView);
+                }
+
             }
 
             function initializeEventListeners() {
@@ -472,18 +528,19 @@
                 });
 
                 // Delete button handling using event delegation
+                
                 $('.delete-btn').on('click', function(e) {
                     e.preventDefault();
-                    const form = $(this).closest('form');
-                    const id = form.attr('action').split('/').pop();
-                    // Set up delete form
+                    const id = $(this).data('id');
+                    if (!id) {
+                        ShowTaskMessage('error', 'Subject ID not found.');
+                        return;
+                    }
                     $('#Formdelete').attr('action', `/subjects/${id}`);
-
-                    // Show delete confirmation modal
+                    // Show modal
                     const modal = document.getElementById('Modaldelete');
                     backdrop.classList.remove('hidden');
                     modal.classList.remove('hidden');
-
                     setTimeout(() => {
                         modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                         modal.querySelector('div').classList.add('opacity-100', 'scale-100');
@@ -829,15 +886,12 @@
                         },
                         error: function(xhr) {
                             console.log("XHR Response:", xhr); // Inspect full response
-
                             let errorMessage = 'An error occurred while updating';
-
                             if (xhr.status === 422) {
                                 const errors = xhr.responseJSON?.errors || {};
                                 const allErrors = Object.values(errors).flat();
                                 errorMessage = allErrors.join('<br>');
                             }
-
                             ShowTaskMessage('error', errorMessage);
                         },
                         complete: function() {
@@ -853,15 +907,28 @@
             // ===== Search Functionality =====
 
             function searchData(searchTerm) {
+                const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
                     url: "{{ route('subjects.index') }}",
                     method: 'GET',
                     data: {
-                        search: searchTerm
+                        search: searchTerm,
+                        view: currentView
                     },
                     success: function(response) {
-                        $('#TableContainer').html(response.html);
-                        initializeBulkActions(); // Reinitialize after table update
+                        $('#TableContainer').html(response.html.table);
+                        $('#CardContainer').html(response.html.cards);
+                        $('.pagination').html(response.html.pagination);
+
+                        // Set the correct view based on response or localStorage
+                        if (currentView === 'table') {
+                            showTableView();
+                        } else {
+                            showCardView();
+                        }
+                        // Reinitialize everything
+                        initializeBulkActions();
+                        initializeEventListeners();
                     },
                     error: function(xhr) {
                         console.error('Search failed:', xhr.responseText);

@@ -42,7 +42,8 @@
 
                     <td class="px-4 py-2 text-right">
                         <div class="relative">
-                            <button class="btn-toggle-dropdown btn-action font-medium text-indigo-600 dark:text-indigo-500 p-1 size-8 flex items-center justify-center 
+                            <button
+                                class="btn-toggle-dropdown btn-action font-medium text-indigo-600 dark:text-indigo-500 p-1 size-8 flex items-center justify-center 
                                 border border-indigo-100 dark:border-gray-600 dark:hover:bg-gray-700 hover:bg-indigo-200 rounded-full cursor-pointer transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-8" fill="currentColor"
                                     viewBox="0 0 20 20">
@@ -80,12 +81,10 @@
                                             Details
                                         </span>
                                     </a>
-                                    <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST"
-                                        class="delete-form" title="Delete Id({{ $subject->id }})">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                            class="text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 delete-btn">
+                                    <button href="#" title="Delete Id({{ $subject->id }})"
+                                        class="delete-btn text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                                        data-id="{{ $subject->id }}">
+                                        <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
                                                 <path fill-rule="evenodd"
@@ -93,8 +92,9 @@
                                                     clip-rule="evenodd" />
                                             </svg>
                                             Delete
-                                        </button>
-                                    </form>
+                                        </span>
+                                    </button>
+                                    
                                 </div>
                             </div>
                         </div>

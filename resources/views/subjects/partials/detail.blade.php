@@ -57,7 +57,7 @@
             <!-- Footer -->
             <div class="flex justify-end space-x-3 p-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" id="closeDetailModalBtn"
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
                     Close
                 </button>
             </div>

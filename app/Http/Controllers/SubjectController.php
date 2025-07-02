@@ -16,7 +16,8 @@ class SubjectController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 2);
+        $viewType = $request->input('view', 'table');
         $departments = Department::all();
         $subjects = Subject::with('department')
             ->when($search, function ($query) use ($search) {
@@ -29,12 +30,20 @@ class SubjectController extends Controller
             ->paginate($perPage)
             ->appends([
                 'search' => $search,
-                'per_page' => $perPage
+                'per_page' => $perPage,
+                'view' => $viewType
             ]);
 
         if ($request->ajax()) {
+            $html = [
+                'table' => view('subjects.partials.table', compact('subjects'))->render(),
+                'cards' => view('subjects.partials.cardlist', compact('subjects'))->render(),
+                'pagination' => $subjects->links()->toHtml()
+            ];
+
             return response()->json([
-                'html' => view('subjects.partials.table', compact('subjects'))->render()
+                'html' => $html,
+                'view' => $viewType
             ]);
         }
 
@@ -123,17 +132,44 @@ class SubjectController extends Controller
         ]);
     }
 
+    // public function bulkUpdate(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'subjects' => 'required|array',
+    //         'subjects.*.id' => 'required|exists:subjects,id',
+    //         'subjects.*.name' => 'sometimes|string|max:255',
+    //         'subjects.*.code' => 'sometimes|string|unique:subjects,code|max:50',
+    //         'subjects.*.credit_hours' => 'sometimes|integer|min:1',
+    //         'subjects.*.description' => 'nullable|string',
+    //         'subjects.*.department_id' => 'nullable|exists:departments,id'
+    //     ]);
+
+    //     $updatedCount = 0;
+
+    //     foreach ($validated['subjects'] as $subjectData) {
+    //         try {
+    //             $subject = Subject::find($subjectData['id']);
+    //             $subject->update($subjectData);
+    //             $updatedCount++;
+    //         } catch (\Exception $e) {
+    //             Log::error("Error updating subject: " . $e->getMessage());
+    //             continue;
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => "Successfully updated $updatedCount subjects",
+    //         'redirect' => route('subjects.index')
+    //     ]);
+    // }
+
 
     public function bulkUpdate(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'subjects' => 'required|array',
             'subjects.*.id' => 'required|exists:subjects,id',
-            // 'subjects.*.name' => 'sometimes|string|max:255',
-            // 'subjects.*.code' => 'sometimes|string|unique:subjects,code|max:50',
-            // 'subjects.*.credit_hours' => 'sometimes|integer|min:1',
-            // 'subjects.*.description' => 'nullable|string',
-            // 'subjects.*.department_id' => 'nullable|exists:departments,id'
         ]);
 
         $updatedCount = 0;

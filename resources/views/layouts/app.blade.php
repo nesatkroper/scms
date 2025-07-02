@@ -20,7 +20,7 @@
     <div class="h-screen">
         <!-- Sidebar - Default width w-72 -->
         <aside id="sidebar"
-            class="sidebar bg-indigo-800 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72 ">
+            class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72 ">
             <!-- Sidebar header -->
             <div class="flex items-center justify-between p-4 border-b border-indigo-700 dark:border-gray-700">
                 <div class="flex items-center space-x-2">
@@ -452,7 +452,7 @@
         <div class="flex-1 flex flex-col transition-all duration-300 md:ml-72" id="main-content">
             <!-- Header -->
             <header
-                class="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-800  fixed w-[100%] md:sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700">
+                class="flex items-center justify-between px-6 py-3 bg-white dark:bg-slate-800  fixed w-[100%] md:sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700">
                 <!-- Left side - Toggle button -->
                 <div class="flex items-center">
                     <button id="toggle-sidebar"
