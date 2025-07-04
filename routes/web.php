@@ -67,6 +67,8 @@ Route::middleware('auth')->group(function () {
         'timetable_entries' => TimetableEntryController::class,
     ]);
 
+    Route::post('/students/bulk-data', [StudentController::class, 'getBulkData'])->name('students.getBulkData');
+
     // departments bulk-delete
     Route::post('/departments/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('departments.bulkDelete');
     Route::post('/departments/bulk-data', [DepartmentController::class, 'getBulkData'])->name('departments.getBulkData');
