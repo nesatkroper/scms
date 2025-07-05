@@ -1,14 +1,10 @@
 @extends('layouts.app')
-
 @section('title', 'Students')
-
 @section('content')
-
     <div
         class="px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
 
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-
             <svg xmlns="http://www.w3.org/2000/svg"
                 class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 viewBox="0 0 20 20" fill="currentColor">
@@ -33,7 +29,7 @@
                 <div class="relative w-full">
                     <input type="text" id="searchInput" placeholder="Search students..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+                focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
                 <button id="resetSearch"
@@ -44,49 +40,9 @@
         </div>
 
         <div id="studentsTableContainer" class="table-respone mt-6 overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                    <tr class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                        <th class="px-4 py-2 text-left text-sm font-semibold">ID</th>
-                        <th class="px-4 py-2 text-left text-sm font-semibold">Name</th>
-                        <th class="px-4 py-2 text-left text-sm font-semibold">Section</th>
-                        <th class="px-4 py-2 text-left text-sm font-semibold">Admission Date</th>
-                        <th class="px-4 py-2 text-left text-sm font-semibold">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    @forelse($students as $student)
-                        <tr>
-                            <td class="px-4 py-2">{{ $student->id }}</td>
-                            <td class="px-4 py-2">{{ $student->user->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ $student->section->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($student->admission_date)->format('Y-m-d') }}</td>
-                            <td class="px-4 py-2 space-x-2">
-                                <a href="{{ route('students.show', $student) }}"
-                                    class="text-indigo-600 hover:underline">View</a>
-                                <a href="{{ route('students.edit', $student) }}"
-                                    class="text-yellow-600 hover:underline">Edit</a>
-                                <form action="{{ route('students.destroy', $student) }}" method="POST"
-                                    class="inline-block"
-                                    onsubmit="return confirm('Are you sure you want to delete this student?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">
-                                No students found.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            @include('students.partials.table', ['students' => $students])
         </div>
 
-        {{-- pagination --}}
         @if ($students->hasPages())
             <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6">
                 <div class="flex flex-1 justify-between sm:hidden">
@@ -141,28 +97,6 @@
                         </div>
 
                         <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                            @if ($students->onFirstPage())
-                                <span
-                                    class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 dark:text-gray-500 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0 cursor-not-allowed">
-                                    <span class="sr-only">Previous</span>
-                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            @else
-                                <a href="{{ $students->previousPageUrl() }}"
-                                    class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-700 dark:text-gray-200 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0">
-                                    <span class="sr-only">Previous</span>
-                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            @endif
-
                             @foreach ($students->getUrlRange(1, $students->lastPage()) as $page => $url)
                                 @if ($page == $students->currentPage())
                                     <span aria-current="page"
@@ -176,39 +110,64 @@
                                     </a>
                                 @endif
                             @endforeach
-
-                            @if ($students->hasMorePages())
-                                <a href="{{ $students->nextPageUrl() }}"
-                                    class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-700 dark:text-gray-200 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0">
-                                    <span class="sr-only">Next</span>
-                                    <svg class="h-5 w-5 rotate-180" viewBox="0 0 20 20" fill="currentColor"
-                                        aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            @else
-                                <span
-                                    class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 dark:text-gray-500 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0 cursor-not-allowed">
-                                    <span class="sr-only">Next</span>
-                                    <svg class="h-5 w-5 rotate-180" viewBox="0 0 20 20" fill="currentColor"
-                                        aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            @endif
                         </nav>
                     </div>
                 </div>
             </div>
         @endif
-
     </div>
 
+    <!-- Modal Backdrop -->
+    <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+
+    @include('students.partials.create')
+    @include('students.partials.edit')
+    @include('students.partials.detail')
+    @include('students.partials.delete')
+    @include('students.partials.bulkedit')
+    @include('students.partials.bulkdelete')
+
+    <style>
+        #bulkActionsBar {
+            z-index: 40;
+        }
+
+        #bulkActionsBar button {
+            transition: color 0.2s ease;
+        }
+
+        .row-checkbox {
+            cursor: pointer;
+        }
+
+        .animate-fade-in-out {
+            animation: fadeInOut 3s ease-in-out forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    </style>
 @endsection
+
 
 @push('scripts')
     <script>

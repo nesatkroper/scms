@@ -23,7 +23,7 @@ class StudentController extends Controller
         $users = User::all(); 
         $sections = Section::all();
         $guardians = Guardian::all(); 
-        return view('students.create', compact('users', 'sections', 'guardians'));
+        return view('students.partials.create', compact('users', 'sections', 'guardians'));
     }
 
     public function store(StoreStudentRequest $request)
