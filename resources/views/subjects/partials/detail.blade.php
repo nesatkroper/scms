@@ -1,7 +1,7 @@
     <!-- Detail Department Modal -->
     <div id="Modaldetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
         <div
-            class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+            class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -22,35 +22,81 @@
                     </svg>
                 </button>
             </div>
-
             <!-- Content -->
-            <div class="p-4 px-6">
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Subjects Name</h4>
-                    <p id="detail_name" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
-                </div>
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Code</h4>
-                    <p id="detail_code" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
-                </div>
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Departments</h4>
-                    <p id="detail_depid" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
-                </div>
+            <div class="h-[65vh] md:h-auto p-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
+                    <!-- Name Field -->
+                    <div class="mb-2">
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Name
+                        </label>
+                        <input type="text" id="detail_name" name="detail_name"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white border-gray-400"
+                            disabled required>
+                    </div>
 
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</h4>
-                    <p id="detail_description" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
-                </div>
+                    <!-- Code Field -->
+                    <div class="mb-2">
+                        <label for="detail_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Code
+                        </label>
+                        <input type="text" id="detail_code" name="detail_code"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white border-gray-400"
+                            disabled required>
+                    </div>
+                    <!-- Department Field -->
+                    <div class="mb-2">
+                        <label for="detail_depid"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Department
+                        </label>
+                        <input type="text" id="detail_depid" name="detail_depid"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white border-gray-400"
+                            disabled readonly>
+                    </div>
 
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Created At</h4>
-                    <p id="detail_created_at" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
-                </div>
+                    <!-- Credit Hours Field -->
+                    <div class="mb-2">
+                        <label for="credit_hours"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Credit hours
+                        </label>
+                        <input type="number" id="detail_credit_hours" name="credit_hours" disabled readonly
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white
+                        border-gray-400">
+                    </div>
 
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Last Updated</h4>
-                    <p id="detail_updated_at" class="mt-1 text-sm text-gray-900 dark:text-gray-200"></p>
+                </div>
+                <div class="mb-2">
+                    <label for="detail_updated_at"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Date
+                    </label>
+                    <input type="date" id="detail_updated_at" name="detail_updated_at" disabled readonly
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white
+                        border-gray-400">
+                </div>
+                <!-- Description Field (full width) -->
+                <div class="mb-2">
+                    <label for="detail_description"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Description
+                    </label>
+                    <textarea id="detail_description" name="detail_description" rows="3" disabled readonly
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white
+                    border-gray-400"></textarea>
                 </div>
             </div>
 

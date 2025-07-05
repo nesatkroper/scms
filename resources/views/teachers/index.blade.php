@@ -1,20 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Subjects')
+@section('title', 'Teachers')
 @section('content')
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838l-2.727 1.17 1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-                <path
-                    d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762z" />
-                <path
-                    d="M9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
-                <path d="M6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
             </svg>
-            Subjects
+            Teachers
         </h3>
         <div
             class="p-2 md:flex justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -29,7 +23,7 @@
             </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search subjects..."
+                    <input type="search" id="searchInput" placeholder="Search teacher..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -52,27 +46,26 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('subjects.partials.table', ['subjects' => $subjects])
+            @include('teachers.partials.table', ['teachers' => $teachers])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('subjects.partials.cardlist', ['subjects' => $subjects])
+            @include('teachers.partials.cardlist', ['teachers' => $teachers])
         </div>
         {{-- pagination --}}
-        @include('subjects.partials.pagination')
-
+        @include('teachers.partials.pagination')
     </div>
 
-    </style>
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('subjects.partials.create')
-    @include('subjects.partials.edit')
-    @include('subjects.partials.detail')
-    @include('subjects.partials.delete')
-    @include('subjects.partials.bulkedit')
-    @include('subjects.partials.bulkdelete')
+    @include('teachers.partials.create')
+    @include('teachers.partials.edit')
+    @include('teachers.partials.detail')
+    @include('teachers.partials.delete')
+    @include('teachers.partials.bulkedit')
+    @include('teachers.partials.bulkdelete')
 @endsection
+
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -109,7 +102,7 @@
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
             });
-            
+
             // View Management
             function setView(viewType) {
                 if (viewType === 'list') {
@@ -134,7 +127,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
+                    url: "{{ route('teachers.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -175,16 +168,16 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshTeacherContent();
                             form.trigger('reset');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error creating subject');
+                            ShowTaskMessage('error', response.message || 'Error creating teacher');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating subject');
+                        ShowTaskMessage('error', errorMessages || 'Error creating teacher');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -199,25 +192,26 @@
                 editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 editBtn.prop('disabled', true);
 
-                const subjectId = $(this).data('id');
+                const teacherId = $(this).data('id');
 
-                $.get(`/subjects/${subjectId}`)
+                $.get(`/teachers/${teacherId}`)
                     .done(function(response) {
                         if (response.success) {
-                            $('#edit_name').val(response.subject.name);
-                            $('#edit_code').val(response.subject.code);
-                            $('#edit_depid').val(response.subject.department_id);
-                            $('#edit_credit_hours').val(response.subject.credit_hours);
-                            $('#edit_description').val(response.subject.description);
-                            $('#Formedit').attr('action', `/subjects/${subjectId}`);
+                            $('#edit_teacher_id').val(response.teacher.teacher_id);
+                            $('#edit_depid').val(response.teacher.department_id);
+                            $('#edit_joining_date').val(response.teacher.joining_date);
+                            $('#edit_qualification').val(response.teacher.qualification);
+                            $('#edit_specialization').val(response.teacher.specialization);
+                            $('#edit_salary').val(response.teacher.salary);
+                            $('#Formedit').attr('action', `/teachers/${teacherId}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject data');
+                            ShowTaskMessage('error', response.message || 'Failed to load teacher data');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject data');
+                        ShowTaskMessage('error', 'Failed to load teacher data');
                     })
                     .always(function() {
                         editBtn.find('.btn-content').html(originalContent);
@@ -241,15 +235,15 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshTeacherContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error updating subject');
+                            ShowTaskMessage('error', response.message || 'Error updating teacher');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating subject');
+                        ShowTaskMessage('error', errorMessages || 'Error updating teacher');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -259,8 +253,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const subjectId = $(this).data('id');
-                $('#Formdelete').attr('action', `/subjects/${subjectId}`);
+                const teacherId = $(this).data('id');
+                $('#Formdelete').attr('action', `/teachers/${teacherId}`);
                 showModal('Modaldelete');
             }
 
@@ -282,13 +276,13 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshTeacherContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting subject');
+                            ShowTaskMessage('error', response.message || 'Error deleting teacher');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting subject');
+                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting teacher');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -303,31 +297,32 @@
                 detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 detailBtn.prop('disabled', true);
 
-                const subjectId = $(this).data('id');
+                const teacherId = $(this).data('id');
 
-                $.get(`/subjects/${subjectId}`)
+                $.get(`/teachers/${teacherId}`)
                     .done(function(response) {
                         if (response.success) {
-                            const subject = response.subject;
-                            const departmentName = subject.department?.name ?? "Unknown";
-                            const updatedAt = subject.updated_at ? subject.updated_at.substring(0, 10) : '';
+                            const teacher = response.teacher;
+                            const departmentName = teacher.department?.name ?? "Unknown";
+                            const updatedAt = teacher.updated_at ? teacher.updated_at.substring(0, 10) : '';
 
-                            $('#detail_name').val(subject.name ?? '');
-                            $('#detail_code').val(subject.code ?? '');
-                            $('#detail_depid').val(departmentName);
-                            $('#detail_credit_hours').val(subject.credit_hours ?? '');
-                            $('#detail_description').val(subject.description ?? '');
-                            $('#detail_created_at').val(subject.created_at ?? '');
+                            $('#detail_teacher_id').val(teacher.teacher_id ?? '');
+                            $('#detail_department').val(departmentName);
+                            $('#detail_joining_date').val(teacher.joining_date ?? '');
+                            $('#detail_qualification').val(teacher.qualification ?? '');
+                            $('#detail_specialization').val(teacher.specialization ?? '');
+                            $('#detail_salary').val(teacher.salary ?? '');
+                            $('#detail_created_at').val(teacher.created_at ?? '');
                             $('#detail_updated_at').val(updatedAt);
 
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject details');
+                            ShowTaskMessage('error', response.message || 'Failed to load teacher details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject details');
+                        ShowTaskMessage('error', 'Failed to load teacher details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -360,7 +355,7 @@
             function handleBulkDelete() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one subject to delete');
+                    ShowTaskMessage('error', 'Please select at least one teacher to delete');
                     return;
                 }
 
@@ -376,7 +371,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('subjects.bulkDelete') }}",
+                        url: "{{ route('teachers.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -385,15 +380,15 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshSubjectContent();
+                                refreshTeacherContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
-                                    'Error deleting subjects');
+                                    'Error deleting teachers');
                             }
                         },
                         error: function(xhr) {
                             ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting subjects');
+                                'Error deleting teachers');
                         },
                         complete: function() {
                             deleteBtn.disabled = false;
@@ -406,7 +401,7 @@
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one subject to edit');
+                    ShowTaskMessage('error', 'Please select at least one teacher to edit');
                     return;
                 }
 
@@ -416,7 +411,7 @@
                 bulkEditBtn.disabled = true;
 
                 if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 subjects at a time');
+                    ShowTaskMessage('error', 'You can only edit up to 5 teachers at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
                     bulkEditBtn.disabled = false;
                     return;
@@ -425,7 +420,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('subjects.getBulkData') }}",
+                    url: "{{ route('teachers.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -442,78 +437,90 @@
                         const container = document.getElementById('bulkEditContainer');
                         container.innerHTML = '';
 
-                        response.data.forEach((subject, index) => {
+                        response.data.forEach((teacher, index) => {
                             const fieldHtml = `
                         <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="subjects[${index}][id]" value="${subject.id}">
+                            <input type="hidden" name="teachers[${index}][id]" value="${teacher.id}">
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Teacher #${index + 1}</h4>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="mb-4">
-                                    <label for="subjects[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subject Name <span class="text-red-500">*</span>
+                                    <label for="teachers[${index}][teacher_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Teacher ID <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" id="subjects[${index}][name]" name="subjects[${index}][name]"
+                                    <input type="text" id="teachers[${index}][teacher_id]" name="teachers[${index}][teacher_id]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
-                                        value="${subject.name}"
-                                        placeholder="Enter subject name" required>
+                                        value="${teacher.teacher_id}"
+                                        placeholder="Enter teacher ID" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="subjects[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subject Code <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="subjects[${index}][code]" name="subjects[${index}][code]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${subject.code}"
-                                        placeholder="Enter subject code" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="subjects[${index}][credit_hours]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Credit Hours <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" id="subjects[${index}][credit_hours]" name="subjects[${index}][credit_hours]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${subject.credit_hours}"
-                                        placeholder="Enter credit hours" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="subjects[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label for="teachers[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Department <span class="text-red-500">*</span>
                                     </label>
-                                    <select id="subjects[${index}][department_id]" name="subjects[${index}][department_id]"
+                                    <select id="teachers[${index}][department_id]" name="teachers[${index}][department_id]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400" required>
                                         @foreach ($departments as $department)
-                                            <option value="{{ $department->id }}" ${subject.department_id == {{ $department->id }} ? 'selected' : ''}>
+                                            <option value="{{ $department->id }}" ${teacher.department_id == {{ $department->id }} ? 'selected' : ''}>
                                                 {{ $department->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="mt-4">
-                                <label for="subjects[${index}][description]"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Description
-                                </label>
-                                <textarea id="subjects[${index}][description]" name="subjects[${index}][description]" rows="2"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                    border-gray-400"
-                                    placeholder="Enter subject description">${subject.description || ''}</textarea>
+                                <div class="mb-4">
+                                    <label for="teachers[${index}][joining_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Joining Date <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="date" id="teachers[${index}][joining_date]" name="teachers[${index}][joining_date]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${teacher.joining_date}"
+                                        required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="teachers[${index}][qualification]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Qualification <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="teachers[${index}][qualification]" name="teachers[${index}][qualification]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${teacher.qualification}"
+                                        placeholder="Enter qualification" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="teachers[${index}][specialization]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Specialization
+                                    </label>
+                                    <input type="text" id="teachers[${index}][specialization]" name="teachers[${index}][specialization]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${teacher.specialization || ''}"
+                                        placeholder="Enter specialization">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="teachers[${index}][salary]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Salary
+                                    </label>
+                                    <input type="number" step="0.01" id="teachers[${index}][salary]" name="teachers[${index}][salary]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${teacher.salary || ''}"
+                                        placeholder="Enter salary">
+                                </div>
                             </div>
                         </div>
                     `;
@@ -540,30 +547,31 @@
 
                 const dataform = [];
                 $('.sub-field').each(function(index) {
-                    const subject = {
+                    const data = {
                         id: $(this).find('input[type="hidden"]').val(),
-                        name: $(this).find('input[name$="[name]"]').val(),
-                        code: $(this).find('input[name$="[code]"]').val(),
-                        credit_hours: $(this).find('input[name$="[credit_hours]"]').val(),
+                        teacher_id: $(this).find('input[name$="[teacher_id]"]').val(),
                         department_id: $(this).find('select[name$="[department_id]"]').val(),
-                        description: $(this).find('textarea[name$="[description]"]').val()
+                        joining_date: $(this).find('input[name$="[joining_date]"]').val(),
+                        qualification: $(this).find('input[name$="[qualification]"]').val(),
+                        specialization: $(this).find('input[name$="[specialization]"]').val(),
+                        salary: $(this).find('input[name$="[salary]"]').val()
                     };
-                    dataform.push(subject);
+                    dataform.push(data);
                 });
 
                 $.ajax({
-                    url: "{{ route('subjects.bulkUpdate') }}",
+                    url: "{{ route('teachers.bulkUpdate') }}",
                     method: 'POST',
                     data: {
-                        subjects: dataform
+                        teachers: dataform
                     },
                     success: function(response) {
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshTeacherContent();
                         } else {
-                            let errorMessage = response.message || 'Error updating subjects';
+                            let errorMessage = response.message || 'Error updating teachers';
                             if (response.errors) {
                                 errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
                             }
@@ -611,12 +619,12 @@
             }
 
             // Utility Functions
-            function refreshSubjectContent() {
+            function refreshTeacherContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
+                    url: "{{ route('teachers.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

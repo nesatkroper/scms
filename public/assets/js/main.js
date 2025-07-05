@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else { // Mobile
             sidebarCollapsed = false;
+            sidebar.classList.add('-translate-x-full');
             if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.add('-translate-x-full');
                 if (sidebarBackdrop) sidebarBackdrop.classList.add('hidden', 'opacity-0');

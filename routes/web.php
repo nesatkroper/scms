@@ -67,15 +67,19 @@ Route::middleware('auth')->group(function () {
         'timetable_entries' => TimetableEntryController::class,
     ]);
 
-    // departments bulk-delete
+    // departments bulk
     Route::post('/departments/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('departments.bulkDelete');
     Route::post('/departments/bulk-data', [DepartmentController::class, 'getBulkData'])->name('departments.getBulkData');
     Route::post('/departments/bulk-update', [DepartmentController::class, 'bulkUpdate'])->name('departments.bulkUpdate');
 
-    // subjects bulk-delete
+    // subjects bulk
     Route::post('/subjects/bulk-delete', [SubjectController::class, 'bulkDelete'])->name('subjects.bulkDelete');
     Route::post('/subjects/bulk-data', [SubjectController::class, 'getBulkData'])->name('subjects.getBulkData');
     Route::post('/subjects/bulk-update', [SubjectController::class, 'bulkUpdate'])->name('subjects.bulkUpdate');
+    // Teacher bulk
+    Route::post('/teachers/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('teachers.bulkDelete');
+    Route::post('/teachers/bulk-data', [TeacherController::class, 'getBulkData'])->name('teachers.getBulkData');
+    Route::post('/teachers/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('teachers.bulkUpdate');
 
     Route::get('students/{student}/guardians/attach', [StudentGuardianController::class, 'create'])->name('student_guardians.create');
     Route::post('students/{student}/guardians', [StudentGuardianController::class, 'store'])->name('student_guardians.store');

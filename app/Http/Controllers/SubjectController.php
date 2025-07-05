@@ -16,9 +16,10 @@ class SubjectController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 2);
+        $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
         $departments = Department::all();
+
         $subjects = Subject::with('department')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
@@ -42,6 +43,7 @@ class SubjectController extends Controller
             ];
 
             return response()->json([
+                'success' => true,
                 'html' => $html,
                 'view' => $viewType
             ]);
@@ -50,48 +52,63 @@ class SubjectController extends Controller
         return view('subjects.index', compact('subjects', 'departments'));
     }
 
-    public function create()
-    {
-        $departments = Department::all();
-        return view('subjects.create', compact('departments'));
-    }
-
     public function store(StoreSubjectRequest $request)
     {
-        $subject = Subject::create($request->validated());
-        return redirect()->route('subjects.index')->with('success', 'Subject created successfully!');
+        try {
+            $subject = Subject::create($request->validated());
+            return response()->json([
+                'success' => true,
+                'message' => 'Subject created successfully!',
+                'subject' => $subject
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating subject: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show(Subject $subject)
     {
         $subject->load('department');
-        return response()->json($subject);
-    }
-
-    public function edit(Subject $subject)
-    {
-        $subject->load('department');
-        $departments = Department::all();
-        return view('subjects.edit', compact('subject', 'departments'));
+        return response()->json([
+            'success' => true,
+            'subject' => $subject
+        ]);
     }
 
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
-        $subject->update($request->validated());
-        return response()->json([
-            'success' => true,
-            'message' => 'Subject updated successfully',
-            'subject' => $subject->fresh('department')
-        ]);
+        try {
+            $subject->update($request->validated());
+            return response()->json([
+                'success' => true,
+                'message' => 'Subject updated successfully',
+                'subject' => $subject->fresh('department')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating subject: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy(Subject $subject)
     {
-        $subject->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Subject deleted successfully'
-        ]);
+        try {
+            $subject->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Subject deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting subject: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function bulkDelete(Request $request)
@@ -102,20 +119,33 @@ class SubjectController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'No subjects selected'
-            ]);
+            ], 400);
         }
 
-        Subject::whereIn('id', $ids)->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => count($ids) . ' subjects deleted successfully'
-        ]);
+        try {
+            $count = Subject::whereIn('id', $ids)->delete();
+            return response()->json([
+                'success' => true,
+                'message' => $count . ' subjects deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting subjects: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function getBulkData(Request $request)
     {
         $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No subjects selected'
+            ], 400);
+        }
 
         if (count($ids) > 5) {
             return response()->json([
@@ -124,46 +154,19 @@ class SubjectController extends Controller
             ], 400);
         }
 
-        $subjects = Subject::whereIn('id', $ids)->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $subjects
-        ]);
+        try {
+            $subjects = Subject::whereIn('id', $ids)->get();
+            return response()->json([
+                'success' => true,
+                'data' => $subjects
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching subjects: ' . $e->getMessage()
+            ], 500);
+        }
     }
-
-    // public function bulkUpdate(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'subjects' => 'required|array',
-    //         'subjects.*.id' => 'required|exists:subjects,id',
-    //         'subjects.*.name' => 'sometimes|string|max:255',
-    //         'subjects.*.code' => 'sometimes|string|unique:subjects,code|max:50',
-    //         'subjects.*.credit_hours' => 'sometimes|integer|min:1',
-    //         'subjects.*.description' => 'nullable|string',
-    //         'subjects.*.department_id' => 'nullable|exists:departments,id'
-    //     ]);
-
-    //     $updatedCount = 0;
-
-    //     foreach ($validated['subjects'] as $subjectData) {
-    //         try {
-    //             $subject = Subject::find($subjectData['id']);
-    //             $subject->update($subjectData);
-    //             $updatedCount++;
-    //         } catch (\Exception $e) {
-    //             Log::error("Error updating subject: " . $e->getMessage());
-    //             continue;
-    //         }
-    //     }
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => "Successfully updated $updatedCount subjects",
-    //         'redirect' => route('subjects.index')
-    //     ]);
-    // }
-
 
     public function bulkUpdate(Request $request)
     {

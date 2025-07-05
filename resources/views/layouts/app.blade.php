@@ -20,7 +20,7 @@
     <div class="h-screen">
         <!-- Sidebar - Default width w-72 -->
         <aside id="sidebar"
-            class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72 ">
+            class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72  md:translate-x-0 -translate-x-full">
             <!-- Sidebar header -->
             <div class="flex items-center justify-between p-4 border-b border-indigo-700 dark:border-gray-700">
                 <div class="flex items-center space-x-2">
@@ -127,9 +127,10 @@
                         </div>
                         <div class="submenu">
                             <ul class="pl-4 pr-4">
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">All
-                                        Teachers</a></li>
+                                <li><a href="{{route('teachers.index')}}" class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">
+                                        All Teachers
+                                    </a>
+                                </li>
                                 <li><a href="#"
                                         class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Add
                                         Teacher</a></li>
@@ -566,7 +567,7 @@
     <script src="{{ asset('assets/js/mainjq.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    @stack('scripts');
+    @stack('scripts')
 </body>
 
 </html>
