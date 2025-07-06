@@ -26,6 +26,30 @@
 
             <div class="h-[65vh] md:h-auto overflow-y-auto px-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
+                    
+                    <div class="mb-2">
+                        <label for="user_id"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Users <span class="text-red-500">*</span>
+                        </label>
+                        <select id="user_id" name="user_id"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('user_id') border-red-500 @else border-gray-400 @enderror" required>
+                            <option value="">Select user</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}"
+                                    {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('user_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Teacher ID Field -->
                     <div class="mb-2">
                         <label for="teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

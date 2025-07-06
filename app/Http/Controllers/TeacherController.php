@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTeacherRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Teacher;
 use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -18,8 +19,8 @@ class TeacherController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
+        $users = User::all();
         $departments = Department::all();
-
         $teachers = Teacher::with('department')
             ->when($search, function ($query) use ($search) {
                 return $query->where('teacher_id', 'like', "%{$search}%")
@@ -27,7 +28,7 @@ class TeacherController extends Controller
                     ->orWhere('specialization', 'like', "%{$search}%")
                     ->orWhere('joining_date', 'like', "%{$search}%")
                     ->orWhere('salary', 'like', "%{$search}%")
-                    ->orWhereHas('department', function($q) use ($search) {
+                    ->orWhereHas('department', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
                     });
             })
@@ -53,7 +54,7 @@ class TeacherController extends Controller
             ]);
         }
 
-        return view('teachers.index', compact('teachers', 'departments'));
+        return view('teachers.index', compact('teachers', 'departments', 'users'));
     }
 
     public function store(StoreTeacherRequest $request)

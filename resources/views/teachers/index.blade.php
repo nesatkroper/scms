@@ -6,14 +6,15 @@
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                <path
+                    d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
             </svg>
             Teachers
         </h3>
         <div
-            class="p-2 md:flex justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
             <button id="openCreateModal"
-                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
@@ -410,6 +411,11 @@
                 bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
                 bulkEditBtn.disabled = true;
 
+                $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
+                if (selectedIds.length > 1) {
+                    $('#bulkEditContainer').removeClass('md:h-auto')
+                    $('#bulkEditContainer').addClass('h-[70vh]')
+                }
                 if (selectedIds.length > 5) {
                     ShowTaskMessage('error', 'You can only edit up to 5 teachers at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
@@ -598,7 +604,6 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
-
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');

@@ -17,9 +17,9 @@
             Subjects
         </h3>
         <div
-            class="p-2 md:flex justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
             <button id="openCreateModal"
-                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
@@ -109,7 +109,7 @@
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
             });
-            
+
             // View Management
             function setView(viewType) {
                 if (viewType === 'list') {
@@ -414,6 +414,11 @@
                 const originalBtnText = bulkEditBtn.innerHTML;
                 bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
                 bulkEditBtn.disabled = true;
+                $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
+                if (selectedIds.length > 1) {
+                    $('#bulkEditContainer').removeClass('md:h-auto')
+                    $('#bulkEditContainer').addClass('h-[70vh]')
+                }
 
                 if (selectedIds.length > 5) {
                     ShowTaskMessage('error', 'You can only edit up to 5 subjects at a time');
@@ -444,13 +449,13 @@
 
                         response.data.forEach((subject, index) => {
                             const fieldHtml = `
-                        <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                             <input type="hidden" name="subjects[${index}][id]" value="${subject.id}">
                             <div class="flex justify-between items-center mb-2">
                                 <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
                             </div>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                 <div class="mb-4">
                                     <label for="subjects[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Subject Name <span class="text-red-500">*</span>
