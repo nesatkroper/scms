@@ -1,6 +1,6 @@
 <!-- Create Modal -->
 <div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+    <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">

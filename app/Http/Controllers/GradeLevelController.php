@@ -137,4 +137,104 @@ class GradeLevelController extends Controller
             ], 500);
         }
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No grade levels selected'
+            ], 400);
+        }
+
+        try {
+            $count = GradeLevel::whereIn('id', $ids)->delete();
+            return response()->json([
+                'success' => true,
+                'message' => $count . ' grade levels deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting grade levels: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getBulkData(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No grade levels selected'
+            ], 400);
+        }
+
+        if (count($ids) > 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can only edit up to 5 grade levels at a time'
+            ], 400);
+        }
+
+        try {
+            $gradeLevels = GradeLevel::whereIn('id', $ids)->get();
+            return response()->json([
+                'success' => true,
+                'data' => $gradeLevels
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching grade levels: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'grade_levels' => 'required|array',
+            'grade_levels.*.id' => 'required|exists:grade_levels,id',
+        ]);
+
+        $updatedCount = 0;
+
+        foreach ($request->input('grade_levels') as $gradeLevelData) {
+            $validator = Validator::make($gradeLevelData, [
+                'id' => 'required|exists:grade_levels,id',
+                'name' => 'sometimes|string|max:255',
+                'code' => [
+                    'sometimes',
+                    'string',
+                    'max:50',
+                    Rule::unique('grade_levels', 'code')->ignore($gradeLevelData['id'], 'id'),
+                ],
+                'description' => 'nullable|string',
+            ]);
+
+            if ($validator->fails()) {
+                Log::error("Validation failed for grade level ID {$gradeLevelData['id']}: " . json_encode($validator->errors()));
+                continue; // Skip invalid
+            }
+
+            try {
+                $gradeLevel = GradeLevel::findOrFail($gradeLevelData['id']);
+                $gradeLevel->update($validator->validated());
+                $updatedCount++;
+            } catch (\Exception $e) {
+                Log::error("Error updating grade level: " . $e->getMessage());
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully updated $updatedCount grade levels",
+            'redirect' => route('grade_levels.index')
+        ]);
+    }
 }
