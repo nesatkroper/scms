@@ -92,10 +92,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('departments', function (Blueprint $table) {
-            $table->foreignId('head_id')->nullable()->after('description')->constrained('teachers');
-        });
-
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
