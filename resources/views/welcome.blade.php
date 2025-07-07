@@ -18,16 +18,16 @@
                 <nav>
                     <ul class="flex space-x-4">
                         @guest
-                        <li><a href="{{ route('login') }}" class="hover:underline">Login</a></li>
-                        <li><a href="{{ route('register') }}" class="hover:underline">Register</a></li>
+                            <li><a href="{{ route('login') }}" class="hover:underline">Login</a></li>
+                            <li><a href="{{ route('register') }}" class="hover:underline">Register</a></li>
                         @endguest
                         @auth
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="hover:underline">Logout</button>
-                            </form>
-                        </li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="hover:underline">Logout</button>
+                                </form>
+                            </li>
                         @endauth
                     </ul>
                 </nav>
@@ -44,20 +44,20 @@
                 </p>
                 <div class="space-x-4">
                     @guest
-                    <a href="{{ route('register') }}"
-                        class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-                        Get Started
-                    </a>
-                    <a href="{{ route('login') }}"
-                        class="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700">
-                        Sign In
-                    </a>
+                        <a href="{{ route('register') }}"
+                            class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                            Get Started
+                        </a>
+                        <a href="{{ route('login') }}"
+                            class="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700">
+                            Sign In
+                        </a>
                     @endguest
                     @auth
-                    <a href="{{ route('/') }}"
-                        class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-                        Go to Dashboard
-                    </a>
+                        <a href="{{ route('/') }}"
+                            class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                            Go to Dashboard
+                        </a>
                     @endauth
                 </div>
             </div>
@@ -73,3 +73,5 @@
 </body>
 
 </html>
+
+

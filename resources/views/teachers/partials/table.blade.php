@@ -2,12 +2,13 @@
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
         <tr class="text-nowrap">
             <th scope="col" class="px-4 py-4">Id</th>
-            <th scope="col" class="px-4 py-4">Name</th>
-            <th scope="col" class="px-4 py-4">Code</th>
-            <th scope="col" class="px-4 py-4">Credit hours</th>
-            <th scope="col" class="px-4 py-4">Department</th>
-            <th scope="col" class="px-4 py-4">Description</th>
-            <th scope="col" class="px-4 py-4">Date</th>
+            <th scope="col" class="px-4 py-4">user</th>
+            <th scope="col" class="px-4 py-4">teacher</th>
+            <th scope="col" class="px-4 py-4">department</th>
+            <th scope="col" class="px-4 py-4">salary</th>
+            <th scope="col" class="px-4 py-4">qualification</th>
+            <th scope="col" class="px-4 py-4">specialization</th>
+            <th scope="col" class="px-4 py-4">joining_date</th>
             <th scope="col" class="px-4 py-4">Actions</th>
             <th scope="col" class="px-2 py-4 w-20 flex gap-1.5 items-center">
 
@@ -26,18 +27,19 @@
         </tr>
     </thead>
     <tbody>
-        @if (count($subjects) > 0)
-            @foreach ($subjects as $subject)
+        @if (count($teachers) > 0)
+            @foreach ($teachers as $teacher)
                 <tr
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
-                    <td class="px-4 py-2">{{ $subject->id }}</td>
-                    <td class="px-4 py-2">{{ $subject->name }}</td>
-                    <td class="px-4 py-2">{{ $subject->code }}</td>
-                    <td class="px-4 py-2">{{ $subject->credit_hours }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($subject->department->name ?? 'N/A', 20) }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($subject->description, 20) }}</td>
+                    <td class="px-4 py-2">{{ $teacher->id }}</td>
+                    <td class="px-4 py-2">{{ $teacher->user->name}}</td>
+                    <td class="px-4 py-2">{{ $teacher->teacher_id}}</td>
+                    <td class="px-4 py-2">{{ Str::limit($teacher->department->name ?? 'N/A', 20) }}</td>
+                    <td class="px-4 py-2">{{$teacher->salary}}</td>
+                    <td class="px-4 py-2">{{ Str::limit($teacher->qualification, 20) }}</td>
+                    <td class="px-4 py-2">{{ Str::limit($teacher->specialization, 20) }}</td>
                     <td class="px-4 py-2">
-                        {{ $subject->created_at->format('Y-m-d') }}
+                       {{ \Carbon\Carbon::parse($teacher->joining_date)->format('Y-m-d') }}
                     </td>
 
                     <td class="px-4 py-2 text-right">
@@ -56,9 +58,9 @@
                             <div class="dropdown-menu hidden absolute w-auto right-0 z-10 mt-2 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                                 role="menu">
                                 <div class="py-1" role="none">
-                                    <a href="#" title="Edit Id({{ $subject->id }})"
+                                    <a href="#" title="Edit Id({{ $teacher->id }})"
                                         class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-                                        data-id="{{ $subject->id }}">
+                                        data-id="{{ $teacher->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -68,9 +70,9 @@
                                             Edit
                                         </span>
                                     </a>
-                                    <a href="#" title="Details Id({{ $subject->id }})"
+                                    <a href="#" title="Details Id({{ $teacher->id }})"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
-                                        data-id="{{ $subject->id }}">
+                                        data-id="{{ $teacher->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -81,9 +83,9 @@
                                             Details
                                         </span>
                                     </a>
-                                    <button href="#" title="Delete Id({{ $subject->id }})"
+                                    <button href="#" title="Delete Id({{ $teacher->id }})"
                                         class="delete-btn text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-                                        data-id="{{ $subject->id }}">
+                                        data-id="{{ $teacher->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -100,7 +102,7 @@
                         </div>
                     </td>
                     <td class="px-2 py-2">
-                        <input type="checkbox" name="selected_ids[]" value="{{ $subject->id }}"
+                        <input type="checkbox" name="selected_ids[]" value="{{ $teacher->id }}"
                             class="row-checkbox appearance-none size-4 
     border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
     checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
@@ -114,8 +116,8 @@
             @endforeach
         @else
             <tr>
-                <td colspan="12" class="p-4 text-center text-red-500 dark:text-red-600">
-                    No Subject found.
+                <td colspan="4" class="p-4 text-center text-red-500 dark:text-gray-400">
+                    No teacher found.
                 </td>
             </tr>
         @endif

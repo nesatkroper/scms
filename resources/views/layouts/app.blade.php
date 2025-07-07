@@ -20,7 +20,7 @@
     <div class="h-screen">
         <!-- Sidebar - Default width w-72 -->
         <aside id="sidebar"
-            class="sidebar bg-indigo-800 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72 ">
+            class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72  md:translate-x-0 -translate-x-full">
             <!-- Sidebar header -->
             <div class="flex items-center justify-between p-4 border-b border-indigo-700 dark:border-gray-700">
                 <div class="flex items-center space-x-2">
@@ -127,9 +127,10 @@
                         </div>
                         <div class="submenu">
                             <ul class="pl-4 pr-4">
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">All
-                                        Teachers</a></li>
+                                <li><a href="{{route('teachers.index')}}" class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">
+                                        All Teachers
+                                    </a>
+                                </li>
                                 <li><a href="#"
                                         class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Add
                                         Teacher</a></li>
@@ -205,6 +206,21 @@
                                 <span class="ml-3 sidebar-text text-hidden">Subjects</span>
                             </div>
                             <span class="menu-tooltip">Subjects</span>
+                        </a>
+                    </li>
+                    <li class="menu-item relative">
+                        <a href="{{ route('gradelevels.index') }}"
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="ml-3 sidebar-text text-hidden">Grade Levels</span>
+                            </div>
+                            <span class="menu-tooltip">Grade Levels</span>
                         </a>
                     </li>
 
@@ -472,7 +488,7 @@
         <div class="flex-1 flex flex-col transition-all duration-300 md:ml-72" id="main-content">
             <!-- Header -->
             <header
-                class="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-800  fixed w-[100%] md:sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700">
+                class="flex items-center justify-between px-6 py-3 bg-white dark:bg-slate-800  fixed w-[100%] md:sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700">
                 <!-- Left side - Toggle button -->
                 <div class="flex items-center">
                     <button id="toggle-sidebar"
@@ -586,7 +602,7 @@
     <script src="{{ asset('assets/js/mainjq.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    @stack('scripts');
+    @stack('scripts')
 </body>
 
 </html>

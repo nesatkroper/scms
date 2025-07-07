@@ -1,20 +1,16 @@
 @extends('layouts.app')
-@section('title', 'Subjects')
+@section('title', 'Grade Levels')
 @section('content')
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838l-2.727 1.17 1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-                <path
-                    d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762z" />
-                <path
-                    d="M9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
-                <path d="M6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                <path fill-rule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clip-rule="evenodd" />
             </svg>
-            Subjects
+            Grade Levels
         </h3>
         <div
             class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -29,9 +25,9 @@
             </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search subjects..."
+                    <input type="search" id="searchInput" placeholder="Search grade levels..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
                 <button id="resetSearch"
@@ -52,27 +48,26 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('subjects.partials.table', ['subjects' => $subjects])
+            @include('gradelevels.partials.table', ['gradelevels' => $gradelevels])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('subjects.partials.cardlist', ['subjects' => $subjects])
+            @include('gradelevels.partials.cardlist', ['gradelevels' => $gradelevels])
         </div>
         {{-- pagination --}}
-        @include('subjects.partials.pagination')
-
+        @include('gradelevels.partials.pagination')
     </div>
 
-    </style>
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('subjects.partials.create')
-    @include('subjects.partials.edit')
-    @include('subjects.partials.detail')
-    @include('subjects.partials.delete')
-    @include('subjects.partials.bulkedit')
-    @include('subjects.partials.bulkdelete')
+    @include('gradelevels.partials.create')
+    @include('gradelevels.partials.edit')
+    @include('gradelevels.partials.detail')
+    @include('gradelevels.partials.delete')
+    @include('gradelevels.partials.bulkedit')
+    @include('gradelevels.partials.bulkdelete')
 @endsection
+
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -127,14 +122,14 @@
                     tableContainer.addClass('hidden');
                     cardContainer.removeClass('hidden');
                 }
-                localStorage.setItem('viewitem', viewType);
+                localStorage.setItem('viewgrade', viewType);
             }
 
             // Search and Pagination
             function searchData(searchTerm) {
-                const currentView = localStorage.getItem('viewitem') || 'table';
+                const currentView = localStorage.getItem('viewgrade') || 'table';
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
+                    url: "{{ route('gradelevels.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -175,16 +170,16 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshGradeLevelContent();
                             form.trigger('reset');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error creating subject');
+                            ShowTaskMessage('error', response.message || 'Error creating grade level');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating subject');
+                        ShowTaskMessage('error', errorMessages || 'Error creating grade level');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -198,26 +193,22 @@
                 const originalContent = editBtn.find('.btn-content').html();
                 editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 editBtn.prop('disabled', true);
-
-                const subjectId = $(this).data('id');
-
-                $.get(`/subjects/${subjectId}`)
+                const Id = $(this).data('id');
+                $.get(`/gradelevels/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            $('#edit_name').val(response.subject.name);
-                            $('#edit_code').val(response.subject.code);
-                            $('#edit_depid').val(response.subject.department_id);
-                            $('#edit_credit_hours').val(response.subject.credit_hours);
-                            $('#edit_description').val(response.subject.description);
-                            $('#Formedit').attr('action', `/subjects/${subjectId}`);
+                            $('#edit_name').val(response.gradeLevel.name);
+                            $('#edit_code').val(response.gradeLevel.code);
+                            $('#edit_description').val(response.gradeLevel.description);
+                            $('#Formedit').attr('action', `/gradelevels/${Id}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject data');
+                            ShowTaskMessage('error', response.message || 'Failed to load grade level data');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject data');
+                        ShowTaskMessage('error', 'Failed to load grade level data');
                     })
                     .always(function() {
                         editBtn.find('.btn-content').html(originalContent);
@@ -241,15 +232,15 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshGradeLevelContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error updating subject');
+                            ShowTaskMessage('error', response.message || 'Error updating grade level');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating subject');
+                        ShowTaskMessage('error', errorMessages || 'Error updating grade level');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -259,8 +250,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const subjectId = $(this).data('id');
-                $('#Formdelete').attr('action', `/subjects/${subjectId}`);
+                const Id = $(this).data('id');
+                $('#Formdelete').attr('action', `/gradelevels/${Id}`);
                 showModal('Modaldelete');
             }
 
@@ -282,13 +273,14 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshGradeLevelContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting subject');
+                            ShowTaskMessage('error', response.message || 'Error deleting grade level');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting subject');
+                        ShowTaskMessage('error', xhr.responseJSON?.message ||
+                            'Error deleting grade level');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -303,31 +295,29 @@
                 detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 detailBtn.prop('disabled', true);
 
-                const subjectId = $(this).data('id');
+                const Id = $(this).data('id');
 
-                $.get(`/subjects/${subjectId}`)
+                $.get(`/gradelevels/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const subject = response.subject;
-                            const departmentName = subject.department?.name ?? "Unknown";
-                            const updatedAt = subject.updated_at ? subject.updated_at.substring(0, 10) : '';
+                            const gradelevel = response.gradeLevel;
+                            const updatedAt = gradelevel.updated_at ? gradelevel.updated_at.substring(0, 10) :
+                                '';
 
-                            $('#detail_name').val(subject.name ?? '');
-                            $('#detail_code').val(subject.code ?? '');
-                            $('#detail_depid').val(departmentName);
-                            $('#detail_credit_hours').val(subject.credit_hours ?? '');
-                            $('#detail_description').val(subject.description ?? '');
-                            $('#detail_created_at').val(subject.created_at ?? '');
+                            $('#detail_name').val(gradelevel.name ?? '');
+                            $('#detail_code').val(gradelevel.code ?? '');
+                            $('#detail_description').val(gradelevel.description ?? '');
+                            $('#detail_created_at').val(gradelevel.created_at ?? '');
                             $('#detail_updated_at').val(updatedAt);
 
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject details');
+                            ShowTaskMessage('error', response.message || 'Failed to load grade level details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject details');
+                        ShowTaskMessage('error', 'Failed to load grade level details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -360,7 +350,7 @@
             function handleBulkDelete() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one subject to delete');
+                    ShowTaskMessage('error', 'Please select at least one grade level to delete');
                     return;
                 }
 
@@ -376,7 +366,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('subjects.bulkDelete') }}",
+                        url: "{{ route('gradelevels.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -385,15 +375,15 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshSubjectContent();
+                                refreshGradeLevelContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
-                                    'Error deleting subjects');
+                                    'Error deleting grade levels');
                             }
                         },
                         error: function(xhr) {
                             ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting subjects');
+                                'Error deleting grade levels');
                         },
                         complete: function() {
                             deleteBtn.disabled = false;
@@ -406,7 +396,7 @@
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one subject to edit');
+                    ShowTaskMessage('error', 'Please select at least one grade level to edit');
                     return;
                 }
 
@@ -421,7 +411,7 @@
                 }
 
                 if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 subjects at a time');
+                    ShowTaskMessage('error', 'You can only edit up to 5 grade levels at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
                     bulkEditBtn.disabled = false;
                     return;
@@ -430,7 +420,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('subjects.getBulkData') }}",
+                    url: "{{ route('gradelevels.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -447,78 +437,50 @@
                         const container = document.getElementById('bulkEditContainer');
                         container.innerHTML = '';
 
-                        response.data.forEach((subject, index) => {
+                        response.data.forEach((gradeLevel, index) => {
                             const fieldHtml = `
                         <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="subjects[${index}][id]" value="${subject.id}">
+                            <input type="hidden" name="gradelevels[${index}][id]" value="${gradeLevel.id}">
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Grade Level #${index + 1}</h4>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                 <div class="mb-4">
-                                    <label for="subjects[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subject Name <span class="text-red-500">*</span>
+                                    <label for="gradelevels[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Name <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" id="subjects[${index}][name]" name="subjects[${index}][name]"
+                                    <input type="text" id="gradelevels[${index}][name]" name="gradelevels[${index}][name]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
-                                        value="${subject.name}"
-                                        placeholder="Enter subject name" required>
+                                        value="${gradeLevel.name}"
+                                        placeholder="Enter grade level name" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="subjects[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subject Code <span class="text-red-500">*</span>
+                                    <label for="gradelevels[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Code <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" id="subjects[${index}][code]" name="subjects[${index}][code]"
+                                    <input type="text" id="gradelevels[${index}][code]" name="gradelevels[${index}][code]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
-                                        value="${subject.code}"
-                                        placeholder="Enter subject code" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="subjects[${index}][credit_hours]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Credit Hours <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" id="subjects[${index}][credit_hours]" name="subjects[${index}][credit_hours]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${subject.credit_hours}"
-                                        placeholder="Enter credit hours" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="subjects[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Department <span class="text-red-500">*</span>
-                                    </label>
-                                    <select id="subjects[${index}][department_id]" name="subjects[${index}][department_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400" required>
-                                        @foreach ($departments as $department)
-                                            <option value="{{ $department->id }}" ${subject.department_id == {{ $department->id }} ? 'selected' : ''}>
-                                                {{ $department->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                        value="${gradeLevel.code}"
+                                        placeholder="Enter grade level code" required>
                                 </div>
                             </div>
 
                             <div class="mt-4">
-                                <label for="subjects[${index}][description]"
+                                <label for="gradelevels[${index}][description]"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Description
                                 </label>
-                                <textarea id="subjects[${index}][description]" name="subjects[${index}][description]" rows="2"
+                                <textarea id="gradelevels[${index}][description]" name="gradelevels[${index}][description]" rows="2"
                                     class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                     border-gray-400"
-                                    placeholder="Enter subject description">${subject.description || ''}</textarea>
+                                    placeholder="Enter grade level description">${gradeLevel.description || ''}</textarea>
                             </div>
                         </div>
                     `;
@@ -545,30 +507,28 @@
 
                 const dataform = [];
                 $('.sub-field').each(function(index) {
-                    const subject = {
+                    const gradeLevel = {
                         id: $(this).find('input[type="hidden"]').val(),
                         name: $(this).find('input[name$="[name]"]').val(),
                         code: $(this).find('input[name$="[code]"]').val(),
-                        credit_hours: $(this).find('input[name$="[credit_hours]"]').val(),
-                        department_id: $(this).find('select[name$="[department_id]"]').val(),
                         description: $(this).find('textarea[name$="[description]"]').val()
                     };
-                    dataform.push(subject);
+                    dataform.push(gradeLevel);
                 });
 
                 $.ajax({
-                    url: "{{ route('subjects.bulkUpdate') }}",
+                    url: "{{ route('gradelevels.bulkUpdate') }}",
                     method: 'POST',
                     data: {
-                        subjects: dataform
+                        gradelevels: dataform
                     },
                     success: function(response) {
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
+                            refreshGradeLevelContent();
                         } else {
-                            let errorMessage = response.message || 'Error updating subjects';
+                            let errorMessage = response.message || 'Error updating grade levels';
                             if (response.errors) {
                                 errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
                             }
@@ -595,7 +555,7 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
-                console.log(modal);
+                
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');
@@ -616,12 +576,12 @@
             }
 
             // Utility Functions
-            function refreshSubjectContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
+            function refreshGradeLevelContent() {
+                const currentView = localStorage.getItem('viewgrade') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
+                    url: "{{ route('gradelevels.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -665,7 +625,7 @@
             // Event Listeners
             function initialize() {
                 // Set initial view
-                const savedView = localStorage.getItem('viewitem') || 'list';
+                const savedView = localStorage.getItem('viewgrade') || 'list';
                 setView(savedView);
 
                 // View toggle

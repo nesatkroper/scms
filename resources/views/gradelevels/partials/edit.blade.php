@@ -1,7 +1,7 @@
 <!-- Edit Modal -->
 <div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div
-        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -11,7 +11,7 @@
                     <path
                         d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
-                Edit Subject
+                Edit Grade Level
             </h3>
             <button id="closeEditModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -54,46 +54,6 @@
                         placeholder="Enter code" required>
 
                     @error('code')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Department Field -->
-                <div class="mb-2">
-                    <label for="edit_depid" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Department
-                    </label>
-                    <select id="edit_depid" name="department_id"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('department_id') border-red-500 @else border-gray-400 @enderror">
-                        <option value="">Select department</option>
-                        @foreach ($departments as $department)
-                            <option value="{{ $department->id }}"
-                                {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                                {{ $department->name }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('department_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Credit Hours Field -->
-                <div class="mb-2">
-                    <label for="edit_credit_hours"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Credit hours <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="edit_credit_hours" name="credit_hours" value="{{ old('credit_hours') }}"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('credit_hours') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter credit hours" required>
-
-                    @error('credit_hours')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

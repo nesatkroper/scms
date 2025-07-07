@@ -1,6 +1,6 @@
 $(document).ready(function () {
-
-    $('.btn-toggle-dropdown').click(function (e) {
+    // Use event delegation for dropdowns
+    $(document).on('click', '.btn-toggle-dropdown', function (e) {
         e.stopPropagation();
         const $dropdown = $(this).closest('.relative').find('.dropdown-menu');
         const isExpanded = $(this).attr('aria-expanded') === 'true';
@@ -17,12 +17,12 @@ $(document).ready(function () {
         $(this).attr('aria-expanded', !isExpanded);
     });
 
-    $(document).click(function () {
+    $(document).on('click', function () {
         $('.dropdown-menu').removeClass('show');
         $('.btn-toggle-dropdown').attr('aria-expanded', 'false');
     });
 
-    $('.dropdown-menu').click(function (e) {
+    $(document).on('click', '.dropdown-menu', function (e) {
         e.stopPropagation();
     });
 });
