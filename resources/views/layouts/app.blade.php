@@ -116,10 +116,10 @@
                                         Cards</a></li>
                             </ul>
                         </div>
-                    </li> --}}
+                    </li>  --}}
 
                     <!-- Teachers -->
-                    {{-- <li class="menu-item relative">
+                     <li class="menu-item relative">
                         <div
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
                             <div class="flex items-center">
@@ -161,7 +161,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li> --}}
+                    </li>
 
                     {{-- Student --}}
                     <li class="menu-item relative">
