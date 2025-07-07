@@ -83,6 +83,65 @@
                 }
             });
 
+            selectfields();
+
+            function selectfields() {
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const header = select.querySelector('.select-header');
+                    const optionsBox = select.querySelector('.select-options');
+                    const searchInput = select.querySelector('.search-input');
+                    const optionsContainer = select.querySelector('.options-container');
+                    const selectedValue = select.querySelector('.selected-value');
+                    const noResults = select.querySelector('.no-results');
+                    const options = Array.from(select.querySelectorAll('.select-option'));
+                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
+
+                    // Toggle dropdown
+                    header.addEventListener('click', function() {
+                        select.classList.toggle('open');
+                        if (select.classList.contains('open')) {
+                            searchInput.focus();
+                        }
+                    });
+
+                    // Filter options
+                    searchInput.addEventListener('input', function() {
+                        const term = this.value.toLowerCase().trim();
+                        let hasMatch = false;
+
+                        options.forEach(option => {
+                            if (option.textContent.toLowerCase().includes(term)) {
+                                option.style.display = 'block';
+                                hasMatch = true;
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+
+                        noResults.style.display = hasMatch ? 'none' : 'block';
+                    });
+
+                    // Select option
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                            selectedValue.textContent = this.textContent;
+                            hiddenInput.value = this.dataset.value;
+                            select.classList.remove('open');
+                            console.log('Selected department_id:', this.dataset.value);
+                        });
+                    });
+
+                    // Close when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!select.contains(e.target)) {
+                            select.classList.remove('open');
+                        }
+                    });
+                });
+            }
+
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');

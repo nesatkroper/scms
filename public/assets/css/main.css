@@ -222,7 +222,7 @@
      background: var(--color-indigo-400);
  }
 
-  html.dark ::-webkit-scrollbar-thumb:hover {
+ html.dark ::-webkit-scrollbar-thumb:hover {
      background: var(--color-indigo-300);
  }
 
@@ -336,4 +336,18 @@
          opacity: 0;
          translate: 0 -5px;
      }
+ }
+
+ /* select fields */
+ .selected {
+     font-weight: bold;
+     color: var(--color-indigo-600)
+ }
+
+ .open .arrow {
+     transform: rotate(180deg);
+ }
+
+ .open .select-options {
+     display: block;
  }

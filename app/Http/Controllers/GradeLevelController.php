@@ -98,18 +98,38 @@ class GradeLevelController extends Controller
     //     ]);
     // }
 
-    public function update(UpdateGradeLevelRequest $request, GradeLevel $gradeLevel)
-    {
-        // $gradeLevel->update($request->validated());
-        // $gradeLevel->load('sections');
-        // return redirect()->route('gradelevels.show', $gradeLevel)->with('success', 'Grade level updated successfully!');
+    // public function update(UpdateGradeLevelRequest $request, GradeLevel $gradeLevel)
 
+    // {
+    //     // $gradeLevel->update($request->validated());
+    //     // $gradeLevel->load('sections');
+    //     // return redirect()->route('gradelevels.show', $gradeLevel)->with('success', 'Grade level updated successfully!');
+
+    //     try {
+    //         $gradeLevel->update($request->validated());
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Grade level updated successfully',
+    //             'gradeLevel' => $gradeLevel->fresh('sections')
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Error updating grade level: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+    public function update(UpdateGradeLevelRequest $request, $id)
+    {
         try {
+            $gradeLevel = GradeLevel::findOrFail($id);
             $gradeLevel->update($request->validated());
+
             return response()->json([
                 'success' => true,
                 'message' => 'Grade level updated successfully',
-                'gradeLevel' => $gradeLevel->fresh()
+                'gradeLevel' => $gradeLevel->fresh('sections')
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -118,6 +138,7 @@ class GradeLevelController extends Controller
             ], 500);
         }
     }
+
 
     public function destroy(GradeLevel $gradeLevel)
     {

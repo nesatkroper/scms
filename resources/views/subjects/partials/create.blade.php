@@ -65,23 +65,44 @@
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Department
                         </label>
-                        <select id="department_id" name="department_id"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+
+                        <div data-name="department_id" class="custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('department_id') border-red-500 @else border-gray-400 @enderror">
-                            <option value="">Select department</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}"
-                                    {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        @error('code') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter code" required>
+                            <div class="select-header cursor-pointer flex justify-between items-center">
+                                <span class="selected-value">
+                                    {{ old('department_name', 'Select department') }}
+                                </span>
+                                <span class="arrow transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
+                                    <input type="search" class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Search department...">
+                                </div>
+                                <div class="options-container">
+                                    @foreach ($departments as $department)
+                                        <div class=" {{ old('department_id') == $department->id ? 'selected' : '' }} 
+                                            select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
+                                            data-value="{{ $department->id }}">
+                                            {{ $department->name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found</div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden input for form submission -->
+                        <input type="hidden" name="department_id" id="department_id"
+                            value="{{ old('department_id') }}">
 
                         @error('department_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+
 
                     <!-- Credit Hours Field -->
                     <div class="mb-2">
@@ -89,7 +110,8 @@
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Credit hours <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" min="0" lang="3" max="100" id="credit_hours" name="credit_hours" value="{{ old('credit_hours') }}"
+                        <input type="number" min="0" lang="3" max="100" id="credit_hours"
+                            name="credit_hours" value="{{ old('credit_hours') }}"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                         @error('credit_hours') border-red-500 @else border-gray-400 @enderror"

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Grade Levels')
 @section('content')
+
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -77,7 +78,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');
@@ -555,7 +556,7 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
-                
+
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');
