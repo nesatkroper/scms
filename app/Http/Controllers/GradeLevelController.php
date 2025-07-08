@@ -20,7 +20,8 @@ class GradeLevelController extends Controller
         $viewType = $request->input('view', 'table');
         $gradelevels = GradeLevel::with('sections')
             ->when($search, function ($query) use ($search) {
-                return $query->where('name', 'like', "%{$search}%")
+                return $query->where('id', 'like', "%{$search}%")
+                    ->orWhere('name', 'like', "%{$search}%")
                     ->orWhere('code', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })
