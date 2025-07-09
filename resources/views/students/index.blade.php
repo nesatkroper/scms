@@ -2,119 +2,58 @@
 @section('title', 'Students')
 @section('content')
     <div
-        class="px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-
+        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clip-rule="evenodd" />
+            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
             </svg>
             Students
         </h3>
-
-        <div class="p-2 md:flex justify-between items-center border rounded-md border-gray-200 dark:border-gray-700">
-            <a href="{{ route('students.create') }}"
-                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2">
+        <div
+            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+            <button id="openCreateModal"
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         clip-rule="evenodd" />
                 </svg>
                 Create New
-            </a>
-
+            </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="text" id="searchInput" placeholder="Search students..."
+                    <input type="search" id="searchInput" placeholder="Search student..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
                 <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="fas fa-redo text-indigo-600 dark:text-gray-300 text-sm"></i>
+                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
                 </button>
+                <div
+                    class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
+                    <button id="listViewBtn"
+                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                        <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
+                    </button>
+                    <button id="cardViewBtn"
+                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                        <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
+                    </button>
+                </div>
             </div>
         </div>
-
-        <div id="studentsTableContainer" class="table-respone mt-6 overflow-x-auto">
+        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('students.partials.table', ['students' => $students])
         </div>
-
-        @if ($students->hasPages())
-            <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6">
-                <div class="flex flex-1 justify-between sm:hidden">
-                    @if ($students->onFirstPage())
-                        <span
-                            class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                            Previous
-                        </span>
-                    @else
-                        <a href="{{ $students->previousPageUrl() }}"
-                            class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
-                            Previous
-                        </a>
-                    @endif
-
-                    @if ($students->hasMorePages())
-                        <a href="{{ $students->nextPageUrl() }}"
-                            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
-                            Next
-                        </a>
-                    @else
-                        <span
-                            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                            Next
-                        </span>
-                    @endif
-                </div>
-
-                <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                    <div>
-                        <p class="text-sm text-gray-700 dark:text-gray-300">
-                            Showing
-                            <span class="font-medium">{{ $students->firstItem() }}</span>
-                            to
-                            <span class="font-medium">{{ $students->lastItem() }}</span>
-                            of
-                            <span class="font-medium">{{ $students->total() }}</span>
-                            results
-                        </p>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <div class="flex items-center">
-                            <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">Rows per page:</span>
-                            <select id="perPageSelect"
-                                class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
-                                <option value="10" {{ $students->perPage() == 10 ? 'selected' : '' }}>10</option>
-                                <option value="15" {{ $students->perPage() == 15 ? 'selected' : '' }}>15</option>
-                                <option value="20" {{ $students->perPage() == 20 ? 'selected' : '' }}>20</option>
-                                <option value="25" {{ $students->perPage() == 25 ? 'selected' : '' }}>25</option>
-                            </select>
-                        </div>
-
-                        <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                            @foreach ($students->getUrlRange(1, $students->lastPage()) as $page => $url)
-                                @if ($page == $students->currentPage())
-                                    <span aria-current="page"
-                                        class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                        {{ $page }}
-                                    </span>
-                                @else
-                                    <a href="{{ $url }}"
-                                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-20 focus:outline-offset-0">
-                                        {{ $page }}
-                                    </a>
-                                @endif
-                            @endforeach
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        @endif
+        <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            @include('students.partials.cardlist', ['students' => $students])
+        </div>
+        {{-- pagination --}}
+        @include('students.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
@@ -126,61 +65,267 @@
     @include('students.partials.delete')
     @include('students.partials.bulkedit')
     @include('students.partials.bulkdelete')
-
-    <style>
-        #bulkActionsBar {
-            z-index: 40;
-        }
-
-        #bulkActionsBar button {
-            transition: color 0.2s ease;
-        }
-
-        .row-checkbox {
-            cursor: pointer;
-        }
-
-        .animate-fade-in-out {
-            animation: fadeInOut 3s ease-in-out forwards;
-        }
-
-        @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            10% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            90% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-    </style>
 @endsection
-
 
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ===== Core Initialization =====
-            // CSRF token setup for AJAX
+            // Core Configuration
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
-            // ===== Functions (Available Globally Within This Scope) =====
+            // DOM Elements
+            const backdrop = document.getElementById('modalBackdrop');
+            const searchInput = $('#searchInput');
+            const resetSearch = $('#resetSearch');
+            const listViewBtn = $('#listViewBtn');
+            const cardViewBtn = $('#cardViewBtn');
+            const tableContainer = $('#TableContainer');
+            const cardContainer = $('#CardContainer');
+
+            const selectAllCheckbox = $('#selectAllCheckbox');
+            const bulkActionsBar = $('#bulkActionsBar');
+            const selectedCount = $('#selectedCount');
+            const deselectAllBtn = $('#deselectAll');
+            const bulkEditBtn = $('#bulkEditBtn');
+            const bulkDeleteBtn = $('#bulkDeleteBtn');
+
+            const openCreateBtn = document.getElementById('openCreateModal');
+            if (openCreateBtn) {
+                openCreateBtn.addEventListener('click', function() {
+                    showModal('Modalcreate');
+                });
+            }
+
+            $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
+                closeModal('bulkEditModal');
+            });
+
+            // View Management
+            function setView(viewType) {
+                if (viewType === 'list') {
+                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
+                        'bg-gray-100 dark:bg-gray-700');
+                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
+                        'bg-indigo-100 dark:bg-indigo-700');
+                    tableContainer.removeClass('hidden');
+                    cardContainer.addClass('hidden');
+                } else {
+                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
+                        'bg-gray-100 dark:bg-gray-700');
+                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
+                        'bg-indigo-100 dark:bg-indigo-700');
+                    tableContainer.addClass('hidden');
+                    cardContainer.removeClass('hidden');
+                }
+                localStorage.setItem('viewitem', viewType);
+            }
+
+            // Search and Pagination
+            function searchData(searchTerm) {
+                const currentView = localStorage.getItem('viewitem') || 'table';
+                $.ajax({
+                    url: "{{ route('students.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm,
+                        view: currentView
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            tableContainer.html(response.html.table);
+                            cardContainer.html(response.html.cards);
+                            $('.pagination').html(response.html.pagination);
+                            attachRowEventHandlers();
+                            updateBulkActionsBar();
+                        } else {
+                            ShowTaskMessage('error', 'Failed to load data');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Search failed:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to load data');
+                    }
+                });
+            }
+
+            // CRUD Operations
+            function handleCreateSubmit(e) {
+                e.preventDefault();
+                const form = $(this);
+                const submitBtn = $('#createSubmitBtn');
+                const originalBtnHtml = submitBtn.html();
+
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            closeModal('Modalcreate');
+                            ShowTaskMessage('success', response.message);
+                            refreshStudentContent();
+                            form.trigger('reset');
+                        } else {
+                            ShowTaskMessage('error', response.message || 'Error creating student');
+                        }
+                    },
+                    error: function(xhr) {
+                        const errors = xhr.responseJSON?.errors || {};
+                        let errorMessages = Object.values(errors).flat().join('\n');
+                        ShowTaskMessage('error', errorMessages || 'Error creating student');
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false).html(originalBtnHtml);
+                    }
+                });
+            }
+
+            function handleEditClick(e) {
+                e.preventDefault();
+                const editBtn = $(this);
+                const originalContent = editBtn.find('.btn-content').html();
+                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                editBtn.prop('disabled', true);
+
+                const studentId = $(this).data('id');
+
+                $.get(`/students/${studentId}`)
+                    .done(function(response) {
+                        if (response.success) {
+                            $('#edit_student_id').val(response.student.student_id);
+                            $('#edit_section_id').val(response.student.section_id);
+                            $('#edit_admission_date').val(response.student.admission_date);
+                            $('#Formedit').attr('action', `/students/${studentId}`);
+                            showModal('Modaledit');
+                        } else {
+                            ShowTaskMessage('error', response.message || 'Failed to load student data');
+                        }
+                    })
+                    .fail(function(xhr) {
+                        console.error('Error:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to load student data');
+                    })
+                    .always(function() {
+                        editBtn.find('.btn-content').html(originalContent);
+                        editBtn.prop('disabled', false);
+                    });
+            }
+
+            function handleEditSubmit(e) {
+                e.preventDefault();
+                const form = $(this);
+                const submitBtn = $('#saveEditBtn');
+                const originalBtnHtml = submitBtn.html();
+
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: form.serialize() + '&_method=PUT',
+                    success: function(response) {
+                        if (response.success) {
+                            closeModal('Modaledit');
+                            ShowTaskMessage('success', response.message);
+                            refreshStudentContent();
+                        } else {
+                            ShowTaskMessage('error', response.message || 'Error updating student');
+                        }
+                    },
+                    error: function(xhr) {
+                        const errors = xhr.responseJSON?.errors || {};
+                        let errorMessages = Object.values(errors).flat().join('\n');
+                        ShowTaskMessage('error', errorMessages || 'Error updating student');
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false).html(originalBtnHtml);
+                    }
+                });
+            }
+
+            function handleDeleteClick(e) {
+                e.preventDefault();
+                const studentId = $(this).data('id');
+                $('#Formdelete').attr('action', `/students/${studentId}`);
+                showModal('Modaldelete');
+            }
+
+            function handleDeleteSubmit(e) {
+                e.preventDefault();
+                const form = $(this);
+                const submitBtn = $('#confirmDeleteBtn');
+                const originalBtnHtml = submitBtn.html();
+
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: {
+                        _method: 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            closeModal('Modaldelete');
+                            ShowTaskMessage('success', response.message);
+                            refreshStudentContent();
+                        } else {
+                            ShowTaskMessage('error', response.message || 'Error deleting student');
+                        }
+                    },
+                    error: function(xhr) {
+                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting student');
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false).html(originalBtnHtml);
+                    }
+                });
+            }
+
+            function handleDetailClick(e) {
+                e.preventDefault();
+                const detailBtn = $(this);
+                const originalContent = detailBtn.find('.btn-content').html();
+                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                detailBtn.prop('disabled', true);
+
+                const studentId = $(this).data('id');
+
+                $.get(`/students/${studentId}`)
+                    .done(function(response) {
+                        if (response.success) {
+                            const student = response.student;
+                            const sectionName = student.section?.name ?? "Unknown";
+                            const updatedAt = student.updated_at ? student.updated_at.substring(0, 10) : '';
+
+                            $('#detail_student_id').val(student.student_id ?? '');
+                            $('#detail_section').val(sectionName);
+                            $('#detail_admission_date').val(student.admission_date ?? '');
+                            $('#detail_created_at').val(student.created_at ?? '');
+                            $('#detail_updated_at').val(updatedAt);
+
+                            showModal('Modaldetail');
+                        } else {
+                            ShowTaskMessage('error', response.message || 'Failed to load student details');
+                        }
+                    })
+                    .fail(function(xhr) {
+                        console.error('Error:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to load student details');
+                    })
+                    .always(function() {
+                        detailBtn.find('.btn-content').html(originalContent);
+                        detailBtn.prop('disabled', false);
+                    });
+            }
+
+            // Bulk Actions
             function getSelectedIds() {
                 const selectedIds = [];
                 document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
@@ -189,773 +334,383 @@
                 return selectedIds;
             }
 
-            function ShowTaskMessage(type, message) {
-                const TasksmsContainer = document.createElement('div');
-                TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-                const innerHtml = `
-                <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-                    border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-                    <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-                    </svg>
-                    <div class="flex-1 text-sm sm:text-base">${message}</div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                        <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            `;
+            function updateBulkActionsBar() {
+                const selectedCountValue = $('.row-checkbox:checked').length;
+                selectedCount.text(selectedCountValue);
 
-                TasksmsContainer.innerHTML = innerHtml;
-                document.body.appendChild(TasksmsContainer);
-                setTimeout(() => {
-                    TasksmsContainer.remove();
-                }, 3000);
+                if (selectedCountValue > 0) {
+                    bulkActionsBar.removeClass('hidden');
+                    selectAllCheckbox.prop('checked', selectedCountValue === $('.row-checkbox').length);
+                } else {
+                    bulkActionsBar.addClass('hidden');
+                    selectAllCheckbox.prop('checked', false);
+                }
             }
 
-            // Modal Backdrop element
-            const backdrop = document.getElementById('modalBackdrop');
-
-            // Initialize all functionality
-            initializeFunct();
-            initializeBulkActions();
-            // ===== Management Functions =====
-            function initializeFunct() {
-                // Per page select change
-                $('#perPageSelect').on('change', function() {
-                    const perPage = $(this).val();
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('per_page', perPage);
-                    window.location.href = url.toString();
-                });
-
-                // Search functionality with debounce
-                let searchTimeout;
-                $('#searchInput').on('input', function() {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        const searchTerm = $(this).val();
-                        searchData(searchTerm);
-                    }, 500);
-                });
-
-                // Reset search
-                $('#resetSearch').on('click', function() {
-                    $('#searchInput').val('');
-                    searchData('');
-                });
-
-                // Initialize all event listeners
-                initializeEventListeners();
-
-                // Modal handling for create modal
-                const openBtn = document.getElementById('openCreateModal');
-                const closeBtn = document.getElementById('closeCreateModal');
-                const cancelBtn = document.getElementById('cancelCreateModal');
-                const createModal = document.getElementById('Modalcreate');
-
-                function openCreateModal() {
-                    backdrop.classList.remove('hidden');
-                    createModal.classList.remove('hidden');
-
-                    setTimeout(() => {
-                        createModal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                        createModal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                    }, 10);
-
-                    document.body.style.overflow = 'hidden';
+            function handleBulkDelete() {
+                const selectedIds = getSelectedIds();
+                if (selectedIds.length === 0) {
+                    ShowTaskMessage('error', 'Please select at least one student to delete');
+                    return;
                 }
 
-                function closeCreateModal() {
-                    createModal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                    createModal.querySelector('div').classList.add('opacity-0', 'scale-95');
+                const modal = document.getElementById('bulkDeleteToastModal');
+                document.getElementById('selectedCountText').textContent = selectedIds.length;
 
-                    setTimeout(() => {
-                        createModal.classList.add('hidden');
-                        backdrop.classList.add('hidden');
-                        document.body.style.overflow = 'auto';
-                    }, 300);
-                }
+                showModal('bulkDeleteToastModal');
 
-                if (openBtn) openBtn.addEventListener('click', openCreateModal);
-                if (closeBtn) closeBtn.addEventListener('click', closeCreateModal);
-                if (cancelBtn) cancelBtn.addEventListener('click', closeCreateModal);
-
-                // Create Form Submission
-                $('#Modalcreate form').submit(function(e) {
-                    e.preventDefault();
+                document.getElementById('confirmBulkDeleteBtn').onclick = function() {
+                    const deleteBtn = document.getElementById('confirmBulkDeleteBtn');
+                    const originalBtnHtml = deleteBtn.innerHTML;
+                    deleteBtn.disabled = true;
+                    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: $(this).attr('action'),
-                        method: 'POST',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            closeCreateModal();
-                            ShowTaskMessage('success', 'Subject created successfully');
-                            setTimeout(() => {
-                                location.reload();
-                            }, 10);
-                        },
-                        error: function(xhr) {
-                            const errors = xhr.responseJSON.errors;
-                            let errorMessages = '';
-
-                            for (const field in errors) {
-                                errorMessages += errors[field][0] + '\n';
-                            }
-
-                            ShowTaskMessage('error', errorMessages);
-                        }
-                    });
-                });
-
-            
-
-                // Delete Form Submission
-                $('#Formdelete').submit(function(e) {
-                    e.preventDefault();
-
-                    const url = $(this).attr('action');
-
-                    $.ajax({
-                        url: url,
-                        method: 'DELETE',
-                        success: function(response) {
-                            closeDeleteModalFunc();
-                            ShowTaskMessage('success', 'Subject deleted successfully');
-                            setTimeout(() => {
-                                location.reload();
-                            }, 10);
-                        },
-                        error: function(xhr) {
-                            ShowTaskMessage('error', 'Error deleting');
-                        }
-                    });
-                });
-
-                // Close with Escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        if (!document.getElementById('Modalcreate').classList.contains(
-                                'hidden')) {
-                            closeCreateModal();
-                        } else if (!document.getElementById('Modaldetail').classList.contains(
-                                'hidden')) {
-                            closeEditModalFunc();
-                        } else if (!document.getElementById('Modaldetail').classList.contains(
-                                'hidden')) {
-                            closeDetailModalFunc();
-                        } else if (!document.getElementById('Modaldelete').classList.contains(
-                                'hidden')) {
-                            closeDeleteModalFunc();
-                        } else if (!document.getElementById('bulkEditModal').classList.contains('hidden')) {
-                            closeBulkEditModalFunc();
-                        }
-                    }
-                });
-
-                // Auto-hide TaskMessage messages 
-                const TaskMessage = document.querySelectorAll('.animate-fade-in-out');
-                TaskMessage.forEach(message => {
-                    setTimeout(() => {
-                        message.style.display = 'none';
-                    }, 3000);
-                });
-            }
-
-            function initializeEventListeners() {
-                //============ Edit form handling with animation ==============
-                // Edit button handling using event delegation
-                $('.edit-btn').on('click', '', function(e) {
-                    e.preventDefault();
-                    const editBtn = $(this);
-                    const originalContent = editBtn.find('.btn-content').html();
-
-                    // Set loading state
-                    editBtn.find('.btn-content').html(
-                        '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                    editBtn.prop('disabled', true);
-
-                    const Id = $(this).data('id');
-
-                    // Fetch data
-                    $.get(`/subjects/${Id}`)
-                        .done(function(data) {
-                            console.log(data)
-                            // Populate form fields
-                            $('#edit_name').val(data.name);
-                            $('#edit_code').val(data.code);
-                            $('#edit_depid').val(data.department_id);
-                            $('#edit_credit_hours').val(data.credit_hours);
-                            $('#edit_description').val(data.description);
-                            $('#Formedit').attr('action', `/subjects/${Id}`);
-
-                            // Show edit modal
-                            const modal = document.getElementById('Modaledit');
-                            const backdrop = document.getElementById('modalBackdrop');
-                            backdrop.classList.remove('hidden');
-                            modal.classList.remove('hidden');
-
-                            setTimeout(() => {
-                                modal.querySelector('div').classList.remove(
-                                    'opacity-0',
-                                    'scale-95');
-                                modal.querySelector('div').classList.add(
-                                    'opacity-100',
-                                    'scale-100');
-                            }, 10);
-                        })
-                        .fail(function(xhr) {
-                            console.error('Error:', xhr.responseText);
-                            alert('Failed to load subject data');
-                        })
-                        .always(function() {
-                            // Restore button state
-                            editBtn.find('.btn-content').html(originalContent);
-                            editBtn.prop('disabled', false);
-                        });
-                });
-                // Save button click handler with loading state
-                $('#Formedit').on('submit', function(e) {
-                    e.preventDefault();
-
-                    const saveBtn = $('#saveEditBtn');
-                    const originalContent = saveBtn.find('.btn-content').html();
-                    // Set loading state
-                    saveBtn.find('.btn-content').html(
-                        '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-                    saveBtn.prop('disabled', true);
-
-                    const form = $(this);
-                    const url = form.attr('action');
-                    const formData = form.serialize();
-
-                    $.ajax({
-                        url: url,
-                        type: 'POST', // Laravel needs POST for PUT method
-                        data: formData + '&_method=PUT',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            // Show success message
-                            ShowTaskMessage('success', 'Subjects updated successfully');
-                            // Close modal
-                            const modal = document.getElementById('Modaledit');
-                            const backdrop = document.getElementById('modalBackdrop');
-
-                            modal.querySelector('div').classList.remove('opacity-100',
-                                'scale-100');
-                            modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                            setTimeout(() => {
-                                modal.classList.add('hidden');
-                                backdrop.classList.add('hidden');
-                                // Refresh the page or update the table
-                                window.location.reload();
-                            }, 10);
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr.responseText);
-                            ShowTaskMessage('error', 'Failed to update subject');
-                        },
-                        complete: function() {
-                            // Restore button state
-                            saveBtn.find('.btn-content').html(originalContent);
-                            saveBtn.prop('disabled', false);
-                        }
-                    });
-                });
-                //============End  Edit form handling with animation =================
-
-                // Detail button handling using event delegation
-                $('.detail-btn').on('click', function(e) {
-                    e.preventDefault();
-                    const id = $(this).data('id');
-                    const detailBtn = $(this);
-                    const originalContent = detailBtn.find('.btn-content').html();
-
-                    // Set loading state
-                    detailBtn.find('.btn-content').html(
-                        '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                    detailBtn.prop('disabled', true);
-
-                    // Fetch data
-                    $.get(`/subjects/${id}`)
-                        .done(function(data) {
-
-                            // Populate detail fields
-                            $('#detail_name').text(data.name);
-                            $('#detail_code').text(data.code);
-                            $('#detail_depid').text(data.department.name);
-                            $('#detail_credit_hours').text(data.credit_hours);
-                            $('#detail_description').text(data.description);
-                            $('#detail_created_at').text(data.created_at);
-                            $('#detail_updated_at').text(data.updated_at);
-
-                            // Show detail modal
-                            const modal = document.getElementById('Modaldetail');
-                            const backdrop = document.getElementById('modalBackdrop');
-                            backdrop.classList.remove('hidden');
-                            modal.classList.remove('hidden');
-
-                            setTimeout(() => {
-                                modal.querySelector('div').classList.remove('opacity-0',
-                                    'scale-95');
-                                modal.querySelector('div').classList.add('opacity-100',
-                                    'scale-100');
-                            }, 10);
-                        })
-                        .fail(function(xhr) {
-                            console.error('Error:', xhr.responseText);
-                            ShowTaskMessage('error', 'Failed to load subject details');
-                        })
-                        .always(function() {
-                            // Restore button state
-                            detailBtn.find('.btn-content').html(originalContent);
-                            detailBtn.prop('disabled', false);
-                        });
-                });
-
-                // Delete button handling using event delegation
-                $('.delete-btn').on('click', function(e) {
-                    e.preventDefault();
-                    const form = $(this).closest('form');
-                    const id = form.attr('action').split('/').pop();
-                    // Set up delete form
-                    $('#Formdelete').attr('action', `/subjects/${id}`);
-
-                    // Show delete confirmation modal
-                    const modal = document.getElementById('Modaldelete');
-                    backdrop.classList.remove('hidden');
-                    modal.classList.remove('hidden');
-
-                    setTimeout(() => {
-                        modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                        modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                    }, 10);
-                });
-            }
-
-            // ===== Bulk Actions Functionality =====
-            function initializeBulkActions() {
-                const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-                const bulkActionsBar = document.getElementById('bulkActionsBar');
-                const selectedCount = document.getElementById('selectedCount');
-                const deselectAllBtn = document.getElementById('deselectAll');
-                const bulkEditBtn = document.getElementById('bulkEditBtn');
-                const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
-
-                // Toggle select all
-                if (selectAllCheckbox) {
-                    selectAllCheckbox.addEventListener('change', function() {
-                        const isChecked = this.checked;
-                        document.querySelectorAll('.row-checkbox').forEach(checkbox => {
-                            checkbox.checked = isChecked;
-                        });
-                        updateBulkActionsBar();
-                    });
-                }
-
-                // Update bulk actions bar when checkboxes change
-                $('.row-checkbox').on('change', updateBulkActionsBar);
-
-                // Deselect all
-                if (deselectAllBtn) {
-                    deselectAllBtn.addEventListener('click', function() {
-                        document.querySelectorAll('.row-checkbox').forEach(checkbox => {
-                            checkbox.checked = false;
-                        });
-                        if (selectAllCheckbox) selectAllCheckbox.checked = false;
-                        updateBulkActionsBar();
-                    });
-                }
-
-                // Bulk delete
-                if (bulkDeleteBtn) {
-                    bulkDeleteBtn.addEventListener('click', function() {
-                        const selectedIds = getSelectedIds();
-                        if (selectedIds.length === 0) {
-                            ShowTaskMessage('error', 'Please select at least one record to delete');
-                            return;
-                        }
-                        // Show the toast modal
-                        const modal = document.getElementById('bulkDeleteToastModal');
-                        document.getElementById('selectedCountText').textContent = selectedIds.length;
-
-                        backdrop.classList.remove('hidden');
-                        modal.classList.remove('hidden');
-
-                        setTimeout(() => {
-                            modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                            modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                        }, 10);
-
-                        // Set up event listeners for the modal buttons
-                        document.getElementById('confirmBulkDeleteBtn').onclick = function() {
-                            // Show loading state on the delete button
-                            const deleteBtn = document.getElementById('confirmBulkDeleteBtn');
-                            const originalBtnHtml = deleteBtn.innerHTML;
-                            deleteBtn.disabled = true;
-                            deleteBtn.innerHTML =
-                                '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
-
-                            $.ajax({
-                                url: "{{ route('subjects.bulkDelete') }}",
-                                method: 'POST',
-                                data: {
-                                    ids: selectedIds
-                                },
-                                success: function(response) {
-                                    closeBulkDeleteModalFunc();
-                                    ShowTaskMessage('success', response.message);
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 100);
-                                },
-                                error: function(xhr) {
-                                    closeBulkDeleteModalFunc();
-                                    ShowTaskMessage('error', 'Error deleting');
-                                },
-                                complete: function() {
-                                    deleteBtn.disabled = false;
-                                    deleteBtn.innerHTML = originalBtnHtml;
-                                }
-                            });
-                        };
-
-                        document.getElementById('cancelBulkDeleteBtn').onclick = closeBulkDeleteModalFunc;
-                    });
-                }
-
-                // Function to close the bulk delete modal
-                function closeBulkDeleteModalFunc() {
-                    const modal = document.getElementById('bulkDeleteToastModal');
-                    modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                    modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        backdrop.classList.add('hidden');
-                    }, 300);
-                }
-
-                function updateBulkActionsBar() {
-                    const selectedCountValue = document.querySelectorAll('.row-checkbox:checked').length;
-                    if (selectedCount) selectedCount.textContent = selectedCountValue;
-                    if (selectedCountValue > 0) {
-                        if (bulkActionsBar) bulkActionsBar.classList.remove('hidden');
-                        if (selectAllCheckbox) {
-                            const totalCheckboxes = document.querySelectorAll('.row-checkbox').length;
-                            selectAllCheckbox.checked = selectedCountValue === totalCheckboxes;
-                        }
-                    } else {
-                        if (bulkActionsBar) bulkActionsBar.classList.add('hidden');
-                        if (selectAllCheckbox) selectAllCheckbox.checked = false;
-                    }
-                }
-
-                // Initialize bulk edit
-                initializeBulkEdit();
-            }
-
-            function initializeBulkEdit() {
-                const bulkEditBtn = document.getElementById('bulkEditBtn');
-                const bulkEditModal = document.getElementById('bulkEditModal');
-                const closeBulkEditModal = document.getElementById('closeBulkEditModal');
-                const cancelBulkEditModal = document.getElementById('cancelBulkEditModal');
-                const bulkEditCount = document.getElementById('bulkEditCount');
-
-                // In the initializeBulkEdit() function, update the openBulkEditModal function:
-                function openBulkEditModal() {
-                    const selectedIds = getSelectedIds();
-                    const container = document.getElementById('bulkEditContainer');
-                    const bulkEditBtn = document.getElementById('bulkEditBtn');
-
-                    if (selectedIds.length === 0) {
-                        ShowTaskMessage('error', 'Please select at least one record to edit');
-                        return;
-                    }
-
-                    // Add loading state to button
-                    const originalBtnText = bulkEditBtn.innerHTML;
-                    bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-                    bulkEditBtn.disabled = true;
-
-                    if (selectedIds.length > 1) {
-                        container.classList.add('h-[50vh]');
-                    } else {
-                        container.classList.remove('h-[50vh]');
-                    }
-
-                    if (selectedIds.length > 5) {
-                        ShowTaskMessage('error', 'You can only edit up to 5 record at a time');
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-                        return;
-                    }
-                    // Update count display
-                    bulkEditCount.textContent = selectedIds.length;
-
-                    // Fetch data for selected items
-                    $.ajax({
-                        url: "{{ route('subjects.getBulkData') }}",
+                        url: "{{ route('students.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
                         },
                         success: function(response) {
-                            // Restore button state
-                            bulkEditBtn.innerHTML = originalBtnText;
-                            bulkEditBtn.disabled = false;
-
-                            if (!response.success) {
-                                ShowTaskMessage('error', response.message);
-                                return;
-                            }
-                            // Clear existing fields
-                            container.innerHTML = '';
-                            // Add fields for each items
-                            response.data.forEach((subject, index) => {
-                                const fieldHtml = `
-                    <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <input type="hidden" name="subjects[${index}][id]" value="${subject.id}">
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="mb-4">
-                                <label for="subjects[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Subject Name <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" id="subjects[${index}][name]" name="subjects[${index}][name]"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                    border-gray-400"
-                                    value="${subject.name}"
-                                    placeholder="Enter subject name" required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="subjects[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Subject Code <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" id="subjects[${index}][code]" name="subjects[${index}][code]"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                    border-gray-400"
-                                    value="${subject.code}"
-                                    placeholder="Enter subject code" required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="subjects[${index}][credit_hours]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Credit Hours <span class="text-red-500">*</span>
-                                </label>
-                                <input type="number" id="subjects[${index}][credit_hours]" name="subjects[${index}][credit_hours]"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                    border-gray-400"
-                                    value="${subject.credit_hours}"
-                                    placeholder="Enter credit hours" required>
-                            </div>
-
-                            // 
-                        </div>
-
-                        <div class="mt-4">
-                            <label for="subjects[${index}][description]"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Description
-                            </label>
-                            <textarea id="subjects[${index}][description]" name="subjects[${index}][description]" rows="2"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                placeholder="Enter subject description">${subject.description || ''}</textarea>
-                        </div>
-                    </div>
-                    `;
-
-                                container.insertAdjacentHTML('beforeend', fieldHtml);
-                            });
-
-                            // Show modal
-                            backdrop.classList.remove('hidden');
-                            bulkEditModal.classList.remove('hidden');
-
-                            setTimeout(() => {
-                                bulkEditModal.querySelector('div').classList.remove('opacity-0',
-                                    'scale-95');
-                                bulkEditModal.querySelector('div').classList.add('opacity-100',
-                                    'scale-100');
-                            }, 10);
-                        },
-                        error: function(xhr) {
-                            // Restore button state on error
-                            bulkEditBtn.innerHTML = originalBtnText;
-                            bulkEditBtn.disabled = false;
-                            ShowTaskMessage('error', 'Error loading data');
-                        }
-                    });
-                }
-
-                function closeBulkEditModalFunc() {
-                    const modal = document.getElementById('bulkEditModal');
-                    modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                    modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        backdrop.classList.add('hidden');
-                    }, 300);
-                }
-
-                // Event listeners
-                if (bulkEditBtn) bulkEditBtn.addEventListener('click', openBulkEditModal);
-                if (closeBulkEditModal) closeBulkEditModal.addEventListener('click', closeBulkEditModalFunc);
-                if (cancelBulkEditModal) cancelBulkEditModal.addEventListener('click', closeBulkEditModalFunc);
-
-                // Bulk Edit Form Submission
-                $('#bulkEditForm').submit(function(e) {
-                    e.preventDefault();
-                    const submitBtn = document.getElementById('bulkEditSubmitBtn');
-                    const originalBtnHtml = submitBtn.innerHTML;
-                    // Show loading state
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-                    // Collect all fields data
-                    const dataform = [];
-
-                    $('.sub-field').each(function(index) {
-                        const subject = {
-                            id: $(this).find('input[type="hidden"]').val(),
-                            name: $(this).find('input[name$="[name]"]').val(),
-                            code: $(this).find('input[name$="[code]"]').val(),
-                            credit_hours: $(this).find('input[name$="[credit_hours]"]').val(),
-                            department_id: $(this).find('select[name$="[department_id]"]')
-                                .val(),
-                            description: $(this).find('textarea[name$="[description]"]').val()
-                        };
-                        dataform.push(subject);
-                    });
-
-                    $.ajax({
-                        url: "{{ route('subjects.bulkUpdate') }}",
-                        method: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            subjects: dataform
-                        },
-                        success: function(response) {
                             if (response.success) {
-                                closeBulkEditModalFunc();
+                                closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 10);
+                                refreshStudentContent();
                             } else {
-                                ShowTaskMessage('error', "err-response" + response.message);
+                                ShowTaskMessage('error', response.message ||
+                                    'Error deleting students');
                             }
                         },
                         error: function(xhr) {
-                            console.log("XHR Response:", xhr); // Inspect full response
-
-                            let errorMessage = 'An error occurred while updating';
-
-                            if (xhr.status === 422) {
-                                const errors = xhr.responseJSON?.errors || {};
-                                const allErrors = Object.values(errors).flat();
-                                errorMessage = allErrors.join('<br>');
-                            }
-
-                            ShowTaskMessage('error', errorMessage);
+                            ShowTaskMessage('error', xhr.responseJSON?.message ||
+                                'Error deleting students');
                         },
                         complete: function() {
-                            // Restore button state
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = originalBtnHtml;
+                            deleteBtn.disabled = false;
+                            deleteBtn.innerHTML = originalBtnHtml;
                         }
                     });
-                });
-
+                };
             }
 
-            // ===== Search Functionality =====
+            function handleBulkEdit() {
+                const selectedIds = getSelectedIds();
+                if (selectedIds.length === 0) {
+                    ShowTaskMessage('error', 'Please select at least one student to edit');
+                    return;
+                }
 
-            function searchData(searchTerm) {
+                const bulkEditBtn = document.getElementById('bulkEditBtn');
+                const originalBtnText = bulkEditBtn.innerHTML;
+                bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
+                bulkEditBtn.disabled = true;
+
+                $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
+                if (selectedIds.length > 1) {
+                    $('#bulkEditContainer').removeClass('md:h-auto')
+                    $('#bulkEditContainer').addClass('h-[70vh]')
+                }
+                if (selectedIds.length > 5) {
+                    ShowTaskMessage('error', 'You can only edit up to 5 students at a time');
+                    bulkEditBtn.innerHTML = originalBtnText;
+                    bulkEditBtn.disabled = false;
+                    return;
+                }
+
+                document.getElementById('bulkEditCount').textContent = selectedIds.length;
+
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
-                    method: 'GET',
+                    url: "{{ route('students.getBulkData') }}",
+                    method: 'POST',
                     data: {
-                        search: searchTerm
+                        ids: selectedIds
                     },
                     success: function(response) {
-                        $('#TableContainer').html(response.html);
-                        initializeBulkActions(); // Reinitialize after table update
+                        bulkEditBtn.innerHTML = originalBtnText;
+                        bulkEditBtn.disabled = false;
+
+                        if (!response.success) {
+                            ShowTaskMessage('error', response.message || 'Error loading data');
+                            return;
+                        }
+
+                        const container = document.getElementById('bulkEditContainer');
+                        container.innerHTML = '';
+
+                        response.data.forEach((student, index) => {
+                            const fieldHtml = `
+                        <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <input type="hidden" name="students[${index}][id]" value="${student.id}">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Student #${index + 1}</h4>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="mb-4">
+                                    <label for="students[${index}][student_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Student ID <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="students[${index}][student_id]" name="students[${index}][student_id]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${student.student_id}"
+                                        placeholder="Enter student ID" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="students[${index}][section_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Section <span class="text-red-500">*</span>
+                                    </label>
+                                    <select id="students[${index}][section_id]" name="students[${index}][section_id]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400" required>
+                                        @foreach ($sections as $section)
+                                            <option value="{{ $section->id }}" ${student.section_id == {{ $section->id }} ? 'selected' : ''}>
+                                                {{ $section->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="students[${index}][admission_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Admission Date <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="date" id="students[${index}][admission_date]" name="students[${index}][admission_date]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${student.admission_date}"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                            container.insertAdjacentHTML('beforeend', fieldHtml);
+                        });
+
+                        showModal('bulkEditModal');
                     },
                     error: function(xhr) {
-                        console.error('Search failed:', xhr.responseText);
+                        bulkEditBtn.innerHTML = originalBtnText;
+                        bulkEditBtn.disabled = false;
+                        ShowTaskMessage('error', 'Error loading data');
                     }
                 });
             }
 
-            // ===== Modal Close Handlers =====
-            // Close edit modal
-            const closeEditModal = document.getElementById('closeEditModal');
-            const cancelEditModal = document.getElementById('cancelEditModal');
+            function handleBulkEditSubmit(e) {
+                e.preventDefault();
+                const submitBtn = document.getElementById('bulkEditSubmitBtn');
+                const originalBtnHtml = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
 
-            function closeEditModalFunc() {
-                const modal = document.getElementById('Modaledit');
+                const dataform = [];
+                $('.sub-field').each(function(index) {
+                    const data = {
+                        id: $(this).find('input[type="hidden"]').val(),
+                        student_id: $(this).find('input[name$="[student_id]"]').val(),
+                        section_id: $(this).find('select[name$="[section_id]"]').val(),
+                        admission_date: $(this).find('input[name$="[admission_date]"]').val()
+                    };
+                    dataform.push(data);
+                });
+
+                $.ajax({
+                    url: "{{ route('students.bulkUpdate') }}",
+                    method: 'POST',
+                    data: {
+                        students: dataform
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            closeModal('bulkEditModal');
+                            ShowTaskMessage('success', response.message);
+                            refreshStudentContent();
+                        } else {
+                            let errorMessage = response.message || 'Error updating students';
+                            if (response.errors) {
+                                errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
+                            }
+                            ShowTaskMessage('error', errorMessage);
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'An error occurred while updating';
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON?.errors || {};
+                            errorMessage = Object.values(errors).flat().join('\n');
+                        }
+                        ShowTaskMessage('error', errorMessage);
+                    },
+                    complete: function() {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnHtml;
+                    }
+                });
+            }
+
+            // Modal Management
+            function showModal(modalId) {
+                backdrop.classList.remove('hidden');
+                const modal = document.getElementById(modalId);
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
+                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
                 modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
                 modal.querySelector('div').classList.add('opacity-0', 'scale-95');
 
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     backdrop.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
                 }, 300);
             }
 
-            if (closeEditModal) closeEditModal.addEventListener('click', closeEditModalFunc);
-            if (cancelEditModal) cancelEditModal.addEventListener('click', closeEditModalFunc);
+            // Utility Functions
+            function refreshStudentContent() {
+                const currentView = localStorage.getItem('viewitem') || 'table';
+                const searchTerm = searchInput.val() || '';
 
-            // Close detail modal
-            const closeDetailModal = document.getElementById('closeDetailModal');
-            const closeDetailModalBtn = document.getElementById('closeDetailModalBtn');
-
-            function closeDetailModalFunc() {
-                const modal = document.getElementById('Modaldetail');
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                }, 300);
+                $.ajax({
+                    url: "{{ route('students.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm,
+                        view: currentView
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            tableContainer.html(response.html.table);
+                            cardContainer.html(response.html.cards);
+                            $('.pagination').html(response.html.pagination);
+                            attachRowEventHandlers();
+                            updateBulkActionsBar();
+                        } else {
+                            ShowTaskMessage('error', 'Failed to refresh data');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Refresh failed:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to refresh data');
+                    }
+                });
             }
 
-            if (closeDetailModal) closeDetailModal.addEventListener('click', closeDetailModalFunc);
-            if (closeDetailModalBtn) closeDetailModalBtn.addEventListener('click', closeDetailModalFunc);
-
-            // Close delete modal
-            const closeDeleteModal = document.getElementById('closeDeleteModal');
-            const cancelDeleteModal = document.getElementById('cancelDeleteModal');
-
-            function closeDeleteModalFunc() {
-                const modal = document.getElementById('Modaldelete');
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                }, 300);
+            function attachRowEventHandlers() {
+                $('.edit-btn').off('click').on('click', handleEditClick);
+                $('.delete-btn').off('click').on('click', handleDeleteClick);
+                $('.detail-btn').off('click').on('click', handleDetailClick);
+                $('.row-checkbox').off('change').on('change', updateBulkActionsBar);
             }
 
-            if (closeDeleteModal) closeDeleteModal.addEventListener('click', closeDeleteModalFunc);
-            if (cancelDeleteModal) cancelDeleteModal.addEventListener('click', closeDeleteModalFunc);
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this,
+                        args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), wait);
+                };
+            }
+
+            // Event Listeners
+            function initialize() {
+                // Set initial view
+                const savedView = localStorage.getItem('viewitem') || 'list';
+                setView(savedView);
+
+                // View toggle
+                listViewBtn.on('click', () => setView('list'));
+                cardViewBtn.on('click', () => setView('card'));
+
+                // Search
+                searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
+                resetSearch.on('click', () => {
+                    searchInput.val('');
+                    searchData('');
+                });
+
+
+                // Bulk actions
+                selectAllCheckbox.on('change', function() {
+                    $('.row-checkbox').prop('checked', this.checked);
+                    updateBulkActionsBar();
+                });
+
+                deselectAllBtn.on('click', function() {
+                    $('.row-checkbox').prop('checked', false);
+                    selectAllCheckbox.prop('checked', false);
+                    updateBulkActionsBar();
+                });
+
+                bulkEditBtn.on('click', handleBulkEdit);
+                bulkDeleteBtn.on('click', handleBulkDelete);
+
+                // Form submissions
+                $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
+                $('#Formedit').off('submit').on('submit', handleEditSubmit);
+                $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
+                $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
+
+                // Modal close buttons
+                $('[id^="close"], [id^="cancel"]').on('click', function() {
+                    const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
+                        $(this).closest('[id$="Modal"]').attr('id');
+                    if (modalId) closeModal(modalId);
+                });
+
+                // Close modals with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        $('[id^="Modal"]').each(function() {
+                            if (!$(this).hasClass('hidden')) {
+                                closeModal(this.id);
+                            }
+                        });
+                    }
+                });
+
+                // Attach initial event handlers
+                attachRowEventHandlers();
+                updateBulkActionsBar();
+            }
+
+            // Start the application
+            initialize();
         });
+
+        // Global notification function
+        function ShowTaskMessage(type, message) {
+            const TasksmsContainer = document.createElement('div');
+            TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
+            TasksmsContainer.innerHTML = `
+        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
+            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
+            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
+            </svg>
+            <div class="flex-1 text-sm sm:text-base">${message}</div>
+            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
+                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    `;
+            document.body.appendChild(TasksmsContainer);
+            setTimeout(() => TasksmsContainer.remove(), 3000);
+        }
     </script>
 @endpush

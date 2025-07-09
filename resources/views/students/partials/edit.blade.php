@@ -1,7 +1,6 @@
 <!-- Edit Student Modal -->
-<div id="ModaleditStudent" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div
-        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+<div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -13,86 +12,79 @@
                 </svg>
                 Edit Student
             </h3>
-            <button id="closeEditStudentModal"
+            <button id="closeEditModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
 
         <!-- Form Content -->
-        <form id="FormeditStudent" method="POST" class="p-4">
+        <form id="Formedit" method="POST" class="p-4">
             @csrf
             @method('PUT')
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
+                <!-- Student ID Field -->
+                <div class="mb-2">
+                    <label for="edit_student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Student ID <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="edit_student_id" name="student_id" value="{{ old('student_id') }}"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('student_id') border-red-500 @else border-gray-400 @enderror"
+                        placeholder="Enter student ID" required>
 
-            <!-- First Name -->
-            <div class="mb-4">
-                <label for="edit_first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    First Name <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="edit_first_name" name="first_name" required
-                    class="w-full px-3 py-2 border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500"
-                    placeholder="Enter first name">
-            </div>
+                    @error('student_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <!-- Last Name -->
-            <div class="mb-4">
-                <label for="edit_last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Last Name <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="edit_last_name" name="last_name" required
-                    class="w-full px-3 py-2 border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500"
-                    placeholder="Enter last name">
-            </div>
+                <!-- Section Field -->
+                <div class="mb-2">
+                    <label for="edit_section_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Section <span class="text-red-500">*</span>
+                    </label>
+                    <select id="edit_section_id" name="section_id"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('section_id') border-red-500 @else border-gray-400 @enderror" required>
+                        <option value="">Select section</option>
+                        @foreach ($sections as $section)
+                            <option value="{{ $section->id }}"
+                                {{ old('section_id') == $section->id ? 'selected' : '' }}>
+                                {{ $section->name }}
+                            </option>
+                        @endforeach
+                    </select>
 
-            <!-- Email -->
-            <div class="mb-4">
-                <label for="edit_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Email <span class="text-red-500">*</span>
-                </label>
-                <input type="email" id="edit_email" name="email" required
-                    class="w-full px-3 py-2 border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500"
-                    placeholder="Enter email">
-            </div>
+                    @error('section_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <!-- Gender -->
-            <div class="mb-4">
-                <label for="edit_gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Gender
-                </label>
-                <select id="edit_gender" name="gender"
-                    class="w-full px-3 py-2 border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500">
-                    <option value="">-- Select Gender --</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
+                <!-- Admission Date Field -->
+                <div class="mb-2">
+                    <label for="edit_admission_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Admission Date <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="edit_admission_date" name="admission_date" value="{{ old('admission_date') }}"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('admission_date') border-red-500 @else border-gray-400 @enderror"
+                        required>
 
-            <!-- Date of Birth -->
-            <div class="mb-4">
-                <label for="edit_dob" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Date of Birth
-                </label>
-                <input type="date" id="edit_dob" name="dob"
-                    class="w-full px-3 py-2 border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500">
-            </div>
-
-            <!-- Admission Date -->
-            <div class="mb-4">
-                <label for="edit_admission_date"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Admission Date
-                </label>
-                <input type="date" id="edit_admission_date" name="admission_date"
-                    class="w-full px-3 py-2 border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-indigo-500">
+                    @error('admission_date')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <!-- Form Actions -->
             <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <button type="button" id="cancelEditStudentModal"
-                    class="px-4 py-2 border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
+                <button type="button" id="cancelEditModal"
+                    class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -100,14 +92,16 @@
                     </svg>
                     Cancel
                 </button>
-                <button type="submit" id="saveEditStudentBtn"
-                    class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Save Changes
+                <button type="submit" id="saveEditBtn"
+                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+                    <span class="btn-content flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Save Changes
+                    </span>
                 </button>
             </div>
         </form>

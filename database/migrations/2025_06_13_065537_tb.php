@@ -132,7 +132,6 @@ return new class extends Migration
             $table->foreignId('section_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-
         Schema::create('student_guardian', function (Blueprint $table) {
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->foreignId('guardian_id')->constrained()->onDelete('cascade');

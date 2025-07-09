@@ -4,101 +4,218 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Illuminate\Support\Facades\Log;
 use App\Models\Student;
-use App\Models\User;     
-use App\Models\Section;  
-use App\Models\Guardian; 
+use App\Models\Section;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::with(['user', 'section', 'guardians'])->paginate(10);
-        return view('students.index', compact('students'));
-    }
-
-    public function create()
-    {
-        $users = User::all(); 
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        $viewType = $request->input('view', 'table');
+        $users = User::all();
         $sections = Section::all();
-        $guardians = Guardian::all(); 
-        return view('students.partials.create', compact('users', 'sections', 'guardians'));
+        
+        $students = Student::with(['user', 'section'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('student_id', 'like', "%{$search}%")
+                    ->orWhere('admission_date', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                          ->orWhere('email', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('section', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'per_page' => $perPage,
+                'view' => $viewType
+            ]);
+
+        if ($request->ajax()) {
+            $html = [
+                'table' => view('students.partials.table', compact('students'))->render(),
+                'cards' => view('students.partials.cardlist', compact('students'))->render(),
+                'pagination' => $students->links()->toHtml()
+            ];
+
+            return response()->json([
+                'success' => true,
+                'html' => $html,
+                'view' => $viewType
+            ]);
+        }
+
+        return view('students.index', compact('students', 'sections', 'users'));
     }
 
     public function store(StoreStudentRequest $request)
     {
-        $student = Student::create($request->validated());
-
-        
-        if ($request->has('guardian_ids') && is_array($request->guardian_ids)) {
-            $student->guardians()->attach($request->guardian_ids);
+        try {
+            $student = Student::create($request->validated());
+            return response()->json([
+                'success' => true,
+                'message' => 'Student created successfully!',
+                'student' => $student->load(['user', 'section'])
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating student: ' . $e->getMessage()
+            ], 500);
         }
-
-        return redirect()->route('students.index')->with('success', 'Student created successfully!');
     }
 
     public function show(Student $student)
     {
-        $student->load(['user', 'section', 'guardians']);
-        return view('students.show', compact('student'));
-    }
-
-    public function edit(Student $student)
-    {
-        $student->load(['user', 'section', 'guardians']);
-        $users = User::all();
-        $sections = Section::all();
-        $guardians = Guardian::all();
-        $attachedGuardians = $student->guardians->pluck('id')->toArray();
-
-        return view('students.edit', compact('student', 'users', 'sections', 'guardians', 'attachedGuardians'));
+        $student->load(['user', 'section']);
+        return response()->json([
+            'success' => true,
+            'student' => $student
+        ]);
     }
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
-        $student->update($request->validated());
-
-        
-        if ($request->has('guardian_ids') && is_array($request->guardian_ids)) {
-            $student->guardians()->sync($request->guardian_ids);
-        } else {
-            $student->guardians()->detach(); 
+        try {
+            $student->update($request->validated());
+            return response()->json([
+                'success' => true,
+                'message' => 'Student updated successfully',
+                'student' => $student->fresh(['user', 'section'])
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating student: ' . $e->getMessage()
+            ], 500);
         }
-
-        return redirect()->route('students.show', $student)->with('success', 'Student updated successfully!');
     }
 
     public function destroy(Student $student)
     {
-        $student->delete();
-        return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
+        try {
+            $student->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Student deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting student: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    
-    public function attachGuardianForm(Student $student)
+    public function bulkDelete(Request $request)
     {
-        $guardians = Guardian::all();
-        $attachedGuardians = $student->guardians->pluck('id')->toArray();
-        return view('students.attach_guardian', compact('student', 'guardians', 'attachedGuardians'));
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No students selected'
+            ], 400);
+        }
+
+        try {
+            $count = Student::whereIn('id', $ids)->delete();
+            return response()->json([
+                'success' => true,
+                'message' => $count . ' students deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting students: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function attachGuardian(Request $request, Student $student)
+    public function getBulkData(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No students selected'
+            ], 400);
+        }
+
+        if (count($ids) > 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can only edit up to 5 students at a time'
+            ], 400);
+        }
+
+        try {
+            $students = Student::whereIn('id', $ids)->get();
+            return response()->json([
+                'success' => true,
+                'data' => $students
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching students: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function bulkUpdate(Request $request)
     {
         $request->validate([
-            'guardian_id' => 'required|exists:guardians,id',
+            'students' => 'required|array',
+            'students.*.id' => 'required|exists:students,id',
         ]);
 
-        if (!$student->guardians->contains($request->guardian_id)) {
-            $student->guardians()->attach($request->guardian_id);
-            return redirect()->route('students.show', $student)->with('success', 'Guardian attached successfully!');
-        }
-        return redirect()->route('students.show', $student)->with('info', 'Guardian already attached.');
-    }
+        $updatedCount = 0;
 
-    public function detachGuardian(Student $student, Guardian $guardian)
-    {
-        $student->guardians()->detach($guardian->id);
-        return redirect()->route('students.show', $student)->with('success', 'Guardian detached successfully!');
+        foreach ($request->input('students') as $studentData) {
+            $validator = Validator::make($studentData, [
+                'id' => 'required|exists:students,id',
+                'student_id' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    Rule::unique('students', 'student_id')->ignore($studentData['id'], 'id'),
+                ],
+                'user_id' => 'required|exists:users,id|unique:students,user_id,'.$studentData['id'],
+                'section_id' => 'required|exists:sections,id',
+                'admission_date' => 'required|date',
+            ]);
+
+            if ($validator->fails()) {
+                Log::error("Validation failed for student ID {$studentData['id']}: " . json_encode($validator->errors()));
+                continue; // Skip invalid
+            }
+
+            try {
+                $student = Student::findOrFail($studentData['id']);
+                $student->update($validator->validated());
+                $updatedCount++;
+            } catch (\Exception $e) {
+                Log::error("Error updating student: " . $e->getMessage());
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully updated $updatedCount students",
+            'redirect' => route('students.index')
+        ]);
     }
 }
