@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class UpdateGradeLevelRequest extends FormRequest
 {
     public function authorize()
@@ -12,10 +12,17 @@ class UpdateGradeLevelRequest extends FormRequest
     }
     public function rules()
     {
-        return [
-            'name' => 'sometimes|string|max:255',
-            'code' => 'sometimes|string|unique:grade_levels,code,' . $this->grade_level->id . '|max:50',
+       return [
+            'name' => 'required|string|max:255',
+            'code' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('grade_levels', 'code')->ignore($this->gradelevel),
+            ],
             'description' => 'nullable|string',
         ];
+
+        
     }
 }

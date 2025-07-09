@@ -123,12 +123,12 @@
                     tableContainer.addClass('hidden');
                     cardContainer.removeClass('hidden');
                 }
-                localStorage.setItem('viewgrade', viewType);
+                localStorage.setItem('viewitem', viewType);
             }
 
             // Search and Pagination
             function searchData(searchTerm) {
-                const currentView = localStorage.getItem('viewgrade') || 'table';
+                const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
                     url: "{{ route('gradelevels.index') }}",
                     method: 'GET',
@@ -521,7 +521,7 @@
                     url: "{{ route('gradelevels.bulkUpdate') }}",
                     method: 'POST',
                     data: {
-                        gradelevels: dataform
+                        grade_levels: dataform
                     },
                     success: function(response) {
                         if (response.success) {
@@ -578,7 +578,7 @@
 
             // Utility Functions
             function refreshGradeLevelContent() {
-                const currentView = localStorage.getItem('viewgrade') || 'table';
+                const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
@@ -626,7 +626,7 @@
             // Event Listeners
             function initialize() {
                 // Set initial view
-                const savedView = localStorage.getItem('viewgrade') || 'list';
+                const savedView = localStorage.getItem('viewitem') || 'list';
                 setView(savedView);
 
                 // View toggle
