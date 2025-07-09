@@ -119,7 +119,7 @@
                     </li>  --}}
 
                     <!-- Teachers -->
-                     <li class="menu-item relative">
+                    <li class="menu-item relative">
                         <div
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
                             <div class="flex items-center">
@@ -185,8 +185,8 @@
                         <a href="{{ route('departments.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente"
-                                    viewBox="0 0 20 20" fill="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
+                                    fill="currentColor">
                                     <path fill-rule="evenodd"
                                         d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
                                         clip-rule="evenodd" />
@@ -202,12 +202,7 @@
                         <a href="{{ route('subjects.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente"
-                                    viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                                <i class="ri-graduation-cap-fill text-xl"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Subjects</span>
                             </div>
                             <span class="menu-tooltip">Subjects</span>
@@ -226,6 +221,16 @@
                                 <span class="ml-3 sidebar-text text-hidden">Grade Levels</span>
                             </div>
                             <span class="menu-tooltip">Grade Levels</span>
+                        </a>
+                    </li>
+                    <li class="menu-item relative">
+                        <a href="{{ route('gradescales.index') }}"
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
+                            <div class="flex items-center">
+                                <i class="ri-graduation-cap-fill text-xl"></i>
+                                <span class="ml-3 sidebar-text text-hidden">Grade scales</span>
+                            </div>
+                            <span class="menu-tooltip">Grade scales</span>
                         </a>
                     </li>
 
@@ -511,7 +516,7 @@
     <script src="{{ asset('assets/js/mainjq.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    
+
     @stack('scripts')
 </body>
 
