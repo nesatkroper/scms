@@ -1,4 +1,4 @@
-<table class="w-full text-sm text-left">
+{{-- <table class="w-full text-sm text-left">
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
         <tr class="text-nowrap">
             <th scope="col" class="px-4 py-4">Id</th>
@@ -105,6 +105,82 @@
         @else
             <tr>
                 <td colspan="8" class="p-4 text-center text-red-500 dark:text-gray-400">
+                    No students found.
+                </td>
+            </tr>
+        @endif
+    </tbody>
+</table> --}}
+
+
+
+
+
+
+
+<table class="w-full text-sm text-left">
+    <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
+        <tr class="text-nowrap">
+            <th scope="col" class="px-4 py-4">Id</th>
+            <th scope="col" class="px-4 py-4">Student</th>
+            <th scope="col" class="px-4 py-4">Section</th>
+            <th scope="col" class="px-4 py-4">Admission Date</th>
+            <th scope="col" class="px-4 py-4">Email</th>
+            <th scope="col" class="px-4 py-4">Actions</th>
+            <th scope="col" class="px-2 py-4 w-20 flex gap-1.5 items-center">
+                <input type="checkbox" id="selectAllCheckbox"
+                    class="appearance-none size-4 
+                    border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 
+                    ease-in-out relative checked:bg-indigo-500 dark:checked:bg-indigo-600
+                    checked:border-indigo-500 dark:checked:border-indigo-600 hover:border-indigo-400 dark:hover:border-indigo-500
+                    focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700 focus:ring-offset-2 focus:outline-none before:content-['']
+                    before:absolute before:inset-0 before:bg-no-repeat before:bg-center
+                    before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
+                    before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
+                <span>All</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (count($students) > 0)
+            @foreach ($students as $student)
+                <tr class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
+                    <td class="px-4 py-2">{{ $student->id }}</td>
+                    <td class="px-4 py-2">
+                        <div class="flex items-center">
+                            @if($student->image)
+                                <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/'.$student->image) }}" alt="{{ $student->name }}">
+                            @else
+                                <div class="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                                    <span class="text-indigo-600 dark:text-indigo-300 font-medium">{{ substr($student->user->name, 0, 1) }}</span>
+                                </div>
+                            @endif
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $student->user->name }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-2">{{ $student->section->name ?? 'N/A' }}</td>
+                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($student->admission_date)->format('Y-m-d') }}</td>
+                    <td class="px-4 py-2">{{ $student->user->email }}</td>
+                    <td class="px-4 py-2 text-right">
+                        <!-- Action buttons remain the same -->
+                    </td>
+                    <td class="px-2 py-2">
+                        <input type="checkbox" name="selected_ids[]" value="{{ $student->id }}"
+                            class="row-checkbox appearance-none size-4 
+                            border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
+                            checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
+                            hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
+                            focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
+                            before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
+                            before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
+                    </td>
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="7" class="p-4 text-center text-red-500 dark:text-gray-400">
                     No students found.
                 </td>
             </tr>
