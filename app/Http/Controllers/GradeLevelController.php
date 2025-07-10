@@ -81,18 +81,6 @@ class GradeLevelController extends Controller
         ]);
     }
 
-    public function edit(GradeLevel $gradelevel)
-    {
-        // $gradeLevel->load('sections');
-        // return view('gradelevels.edit', compact('gradeLevel'));
-
-        $gradelevel->load('sections');
-        return response()->json([
-            'success' => true,
-            'gradeLevel' => $gradelevel
-        ]);
-    }
-
     public function update(UpdateGradeLevelRequest $request, $id)
     {
         try {
