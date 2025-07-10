@@ -1,28 +1,44 @@
 <?php
 
-// app/Models/Subject.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subject extends Model
+class Student extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'code', 'department_id', 'description', 'credit_hours'];
+    
+    // Remove 'student_id' from fillable fields
+    protected $fillable = ['user_id', 'admission_date', 'section_id'];
 
-    public function department()
+    public function user()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function classSubjects()
+    public function section()
     {
-        return $this->hasMany(ClassSubject::class);
+        return $this->belongsTo(Section::class);
     }
 
-    public function exams()
+    public function guardians()
     {
-        return $this->hasMany(Exam::class);
+        return $this->belongsToMany(Guardian::class, 'student_guardian');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
+    }
+
+    public function studentFees()
+    {
+        return $this->hasMany(StudentFee::class);
     }
 }

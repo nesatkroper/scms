@@ -204,7 +204,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(false);
             $table->date('start_date');
-            $table->date('end_date');grade_scales
+            $table->date('end_date');
             $table->timestamps();
         });
 

@@ -24,8 +24,7 @@ class StudentController extends Controller
         
         $students = Student::with(['user', 'section'])
             ->when($search, function ($query) use ($search) {
-                return $query->where('student_id', 'like', "%{$search}%")
-                    ->orWhere('admission_date', 'like', "%{$search}%")
+                return $query->where('admission_date', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%")
                           ->orWhere('email', 'like', "%{$search}%");
@@ -187,12 +186,6 @@ class StudentController extends Controller
         foreach ($request->input('students') as $studentData) {
             $validator = Validator::make($studentData, [
                 'id' => 'required|exists:students,id',
-                'student_id' => [
-                    'required',
-                    'string',
-                    'max:50',
-                    Rule::unique('students', 'student_id')->ignore($studentData['id'], 'id'),
-                ],
                 'user_id' => 'required|exists:users,id|unique:students,user_id,'.$studentData['id'],
                 'section_id' => 'required|exists:sections,id',
                 'admission_date' => 'required|date',
