@@ -11,9 +11,7 @@ return new class extends Migration
   {
     Schema::table('teachers', function (Blueprint $table) {
       $table->dropUnique('teachers_teacher_id_unique');
-
       $table->dropColumn('teacher_id');
-
       $table->string('name')->nullable();
       $table->string('image')->nullables();
     });
