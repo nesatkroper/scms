@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Grade Levels')
+@section('title', 'Book Issues')
 @section('content')
 
     <div
@@ -7,11 +7,10 @@
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clip-rule="evenodd" />
+                <path
+                    d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
-            Grade Scales
+            Book Issues
         </h3>
         <div
             class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -22,11 +21,11 @@
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         clip-rule="evenodd" />
                 </svg>
-                Create New
+                Issue New Book
             </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search grade scales..."
+                    <input type="search" id="searchInput" placeholder="Search book issues..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
                         focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -49,24 +48,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('gradescales.partials.table', ['gradescales' => $gradeScales])
+            @include('bookissues.partials.table', ['bookIssues' => $bookIssues])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('gradescales.partials.cardlist', ['gradescales' => $gradeScales])
+            @include('bookissues.partials.cardlist', ['bookIssues' => $bookIssues])
         </div>
         {{-- pagination --}}
-        @include('gradescales.partials.pagination')
+        @include('bookissues.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('gradescales.partials.create')
-    @include('gradescales.partials.edit')
-    @include('gradescales.partials.detail')
-    @include('gradescales.partials.delete')
-    @include('gradescales.partials.bulkedit')
-    @include('gradescales.partials.bulkdelete')
+    @include('bookissues.partials.create')
+    @include('bookissues.partials.edit')
+    @include('bookissues.partials.detail')
+    @include('bookissues.partials.delete')
+    @include('bookissues.partials.bulkedit')
+    @include('bookissues.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -130,7 +129,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('bookissues.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -195,16 +194,21 @@
                 editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 editBtn.prop('disabled', true);
                 const Id = $(this).data('id');
-                $.get(`/gradelevels/${Id}`)
+                $.get(`/bookissues/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            $('#edit_name').val(response.gradeLevel.name);
-                            $('#edit_code').val(response.gradeLevel.code);
-                            $('#edit_description').val(response.gradeLevel.description);
-                            $('#Formedit').attr('action', `/gradelevels/${Id}`);
+                            const bookIssue = response.bookIssue;
+                            $('#edit_book_id').val(bookIssue.book_id);
+                            $('#edit_user_id').val(bookIssue.user_id);
+                            $('#edit_issue_date').val(bookIssue.issue_date);
+                            $('#edit_due_date').val(bookIssue.due_date);
+                            $('#edit_return_date').val(bookIssue.return_date);
+                            $('#edit_fine').val(bookIssue.fine);
+                            $('#edit_status').val(bookIssue.status);
+                            $('#Formedit').attr('action', `/bookissues/${Id}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load grade level data');
+                            ShowTaskMessage('error', response.message || 'Failed to load book issue data');
                         }
                     })
                     .fail(function(xhr) {
@@ -252,7 +256,7 @@
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/gradelevels/${Id}`);
+                $('#Formdelete').attr('action', `/bookissues/${Id}`);
                 showModal('Modaldelete');
             }
 
@@ -298,19 +302,21 @@
 
                 const Id = $(this).data('id');
 
-                $.get(`/gradelevels/${Id}`)
+                $.get(`/bookissues/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const gradelevel = response.gradeLevel;
-                            const updatedAt = gradelevel.updated_at ? gradelevel.updated_at.substring(0, 10) :
-                                '';
+                            const bookIssue = response.bookIssue;
+                            const updatedAt = bookIssue.updated_at ? bookIssue.updated_at.substring(0, 10) : '';
 
-                            $('#detail_name').val(gradelevel.name ?? '');
-                            $('#detail_code').val(gradelevel.code ?? '');
-                            $('#detail_description').val(gradelevel.description ?? '');
-                            $('#detail_created_at').val(gradelevel.created_at ?? '');
+                            $('#detail_book_title').val(bookIssue.book.title ?? '');
+                            $('#detail_user_name').val(bookIssue.user.name ?? '');
+                            $('#detail_issue_date').val(bookIssue.issue_date ?? '');
+                            $('#detail_due_date').val(bookIssue.due_date ?? '');
+                            $('#detail_return_date').val(bookIssue.return_date ?? '');
+                            $('#detail_fine').val(bookIssue.fine ?? '0.00');
+                            $('#detail_status').val(bookIssue.status ?? '');
+                            $('#detail_created_at').val(bookIssue.created_at ?? '');
                             $('#detail_updated_at').val(updatedAt);
-
                             showModal('Modaldetail');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load grade level details');
