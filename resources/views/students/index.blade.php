@@ -1,58 +1,54 @@
 @extends('layouts.app')
 @section('title', 'Students')
 @section('content')
-    <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
+            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
             </svg>
             Students
         </h3>
-        <div
-            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+        
+        <div class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+            <button id="openCreateModal" class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                 </svg>
                 Create New
             </button>
+            
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search student..."
-                        class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+                    <input type="search" id="searchInput" placeholder="Search student..." 
+                           class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
-                <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                <button id="resetSearch" class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
                     <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
                 </button>
-                <div
-                    class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
-                    <button id="listViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                <div class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
+                    <button id="listViewBtn" class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
                         <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
                     </button>
-                    <button id="cardViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                    <button id="cardViewBtn" class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
                         <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
                     </button>
                 </div>
             </div>
         </div>
+        
+        <!-- Table View -->
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('students.partials.table', ['students' => $students])
         </div>
+        
+        <!-- Card View -->
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('students.partials.cardlist', ['students' => $students])
         </div>
-        {{-- pagination --}}
+        
+        <!-- Pagination -->
         @include('students.partials.pagination')
     </div>
 
@@ -76,6 +72,65 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            selectfields();
+
+            function selectfields() {
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const header = select.querySelector('.select-header');
+                    const optionsBox = select.querySelector('.select-options');
+                    const searchInput = select.querySelector('.search-input');
+                    const optionsContainer = select.querySelector('.options-container');
+                    const selectedValue = select.querySelector('.selected-value');
+                    const noResults = select.querySelector('.no-results');
+                    const options = Array.from(select.querySelectorAll('.select-option'));
+                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
+
+                    // Toggle dropdown
+                    header.addEventListener('click', function() {
+                        select.classList.toggle('open');
+                        if (select.classList.contains('open')) {
+                            searchInput.focus();
+                        }
+                    });
+
+                    // Filter options
+                    searchInput.addEventListener('input', function() {
+                        const term = this.value.toLowerCase().trim();
+                        let hasMatch = false;
+
+                        options.forEach(option => {
+                            if (option.textContent.toLowerCase().includes(term)) {
+                                option.style.display = 'block';
+                                hasMatch = true;
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+
+                        noResults.style.display = hasMatch ? 'none' : 'block';
+                    });
+
+                    // Select option
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                            selectedValue.textContent = this.textContent;
+                            hiddenInput.value = this.dataset.value;
+                            select.classList.remove('open');
+                            console.log('Selected department_id:', this.dataset.value);
+                        });
+                    });
+
+                    // Close when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!select.contains(e.target)) {
+                            select.classList.remove('open');
+                        }
+                    });
+                });
+            }
 
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
@@ -128,7 +183,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('students.index') }}",
+                    url: "{{ route('subjects.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -169,16 +224,16 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
+                            refreshSubjectContent();
                             form.trigger('reset');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error creating student');
+                            ShowTaskMessage('error', response.message || 'Error creating subject');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating student');
+                        ShowTaskMessage('error', errorMessages || 'Error creating subject');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -193,23 +248,25 @@
                 editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 editBtn.prop('disabled', true);
 
-                const studentId = $(this).data('id');
+                const subjectId = $(this).data('id');
 
-                $.get(`/students/${studentId}`)
+                $.get(`/subjects/${subjectId}`)
                     .done(function(response) {
                         if (response.success) {
-                            $('#edit_student_id').val(response.student.student_id);
-                            $('#edit_section_id').val(response.student.section_id);
-                            $('#edit_admission_date').val(response.student.admission_date);
-                            $('#Formedit').attr('action', `/students/${studentId}`);
+                            $('#edit_name').val(response.subject.name);
+                            $('#edit_code').val(response.subject.code);
+                            $('#edit_depid').val(response.subject.department_id);
+                            $('#edit_credit_hours').val(response.subject.credit_hours);
+                            $('#edit_description').val(response.subject.description);
+                            $('#Formedit').attr('action', `/subjects/${subjectId}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load student data');
+                            ShowTaskMessage('error', response.message || 'Failed to load subject data');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load student data');
+                        ShowTaskMessage('error', 'Failed to load subject data');
                     })
                     .always(function() {
                         editBtn.find('.btn-content').html(originalContent);
@@ -233,15 +290,15 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
+                            refreshSubjectContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error updating student');
+                            ShowTaskMessage('error', response.message || 'Error updating subject');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating student');
+                        ShowTaskMessage('error', errorMessages || 'Error updating subject');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -251,8 +308,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const studentId = $(this).data('id');
-                $('#Formdelete').attr('action', `/students/${studentId}`);
+                const subjectId = $(this).data('id');
+                $('#Formdelete').attr('action', `/subjects/${subjectId}`);
                 showModal('Modaldelete');
             }
 
@@ -274,13 +331,13 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
+                            refreshSubjectContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting student');
+                            ShowTaskMessage('error', response.message || 'Error deleting subject');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting student');
+                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting subject');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -295,29 +352,31 @@
                 detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 detailBtn.prop('disabled', true);
 
-                const studentId = $(this).data('id');
+                const subjectId = $(this).data('id');
 
-                $.get(`/students/${studentId}`)
+                $.get(`/subjects/${subjectId}`)
                     .done(function(response) {
                         if (response.success) {
-                            const student = response.student;
-                            const sectionName = student.section?.name ?? "Unknown";
-                            const updatedAt = student.updated_at ? student.updated_at.substring(0, 10) : '';
+                            const subject = response.subject;
+                            const departmentName = subject.department?.name ?? "Unknown";
+                            const updatedAt = subject.updated_at ? subject.updated_at.substring(0, 10) : '';
 
-                            $('#detail_student_id').val(student.student_id ?? '');
-                            $('#detail_section').val(sectionName);
-                            $('#detail_admission_date').val(student.admission_date ?? '');
-                            $('#detail_created_at').val(student.created_at ?? '');
+                            $('#detail_name').val(subject.name ?? '');
+                            $('#detail_code').val(subject.code ?? '');
+                            $('#detail_depid').val(departmentName);
+                            $('#detail_credit_hours').val(subject.credit_hours ?? '');
+                            $('#detail_description').val(subject.description ?? '');
+                            $('#detail_created_at').val(subject.created_at ?? '');
                             $('#detail_updated_at').val(updatedAt);
 
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load student details');
+                            ShowTaskMessage('error', response.message || 'Failed to load subject details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load student details');
+                        ShowTaskMessage('error', 'Failed to load subject details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -350,7 +409,7 @@
             function handleBulkDelete() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one student to delete');
+                    ShowTaskMessage('error', 'Please select at least one subject to delete');
                     return;
                 }
 
@@ -366,7 +425,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('students.bulkDelete') }}",
+                        url: "{{ route('subjects.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -375,15 +434,15 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshStudentContent();
+                                refreshSubjectContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
-                                    'Error deleting students');
+                                    'Error deleting subjects');
                             }
                         },
                         error: function(xhr) {
                             ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting students');
+                                'Error deleting subjects');
                         },
                         complete: function() {
                             deleteBtn.disabled = false;
@@ -396,7 +455,7 @@
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one student to edit');
+                    ShowTaskMessage('error', 'Please select at least one subject to edit');
                     return;
                 }
 
@@ -404,14 +463,14 @@
                 const originalBtnText = bulkEditBtn.innerHTML;
                 bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
                 bulkEditBtn.disabled = true;
-
                 $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
                 if (selectedIds.length > 1) {
                     $('#bulkEditContainer').removeClass('md:h-auto')
                     $('#bulkEditContainer').addClass('h-[70vh]')
                 }
+
                 if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 students at a time');
+                    ShowTaskMessage('error', 'You can only edit up to 5 subjects at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
                     bulkEditBtn.disabled = false;
                     return;
@@ -420,7 +479,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('students.getBulkData') }}",
+                    url: "{{ route('subjects.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -437,54 +496,75 @@
                         const container = document.getElementById('bulkEditContainer');
                         container.innerHTML = '';
 
-                        response.data.forEach((student, index) => {
+                        response.data.forEach((subject, index) => {
                             const fieldHtml = `
-                        <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="students[${index}][id]" value="${student.id}">
+                        <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <input type="hidden" name="subjects[${index}][id]" value="${subject.id}">
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Student #${index + 1}</h4>
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
                             </div>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                 <div class="mb-4">
-                                    <label for="students[${index}][student_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Student ID <span class="text-red-500">*</span>
+                                    <label for="subjects[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Subject Name <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" id="students[${index}][student_id]" name="students[${index}][student_id]"
+                                    <input type="text" id="subjects[${index}][name]" name="subjects[${index}][name]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
-                                        value="${student.student_id}"
-                                        placeholder="Enter student ID" required>
+                                        value="${subject.name}"
+                                        placeholder="Enter subject name" required>
                                 </div>
 
                                 <div class="mb-4">
+                                    <label for="subjects[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Subject Code <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="subjects[${index}][code]" name="subjects[${index}][code]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${subject.code}"
+                                        placeholder="Enter subject code" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="subjects[${index}][credit_hours]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Credit Hours <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" id="subjects[${index}][credit_hours]" name="subjects[${index}][credit_hours]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${subject.credit_hours}"
+                                        placeholder="Enter credit hours" required>
+                                </div>
+
+                               <div class="mb-4">
                                     <label for="students[${index}][section_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Section <span class="text-red-500">*</span>
                                     </label>
-                                    <select id="students[${index}][section_id]" name="students[${index}][section_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400" required>
-                                        @foreach ($sections as $section)
-                                            <option value="{{ $section->id }}" ${student.section_id == {{ $section->id }} ? 'selected' : ''}>
-                                                {{ $section->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    <select id="students[${index}][section_id]" name="students[${index}][section_id]" class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-gray-400" required>
+                                @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}" ${student.section_id == {{ $section->id }} ? 'selected' : ''}>
+                                        {{ $section->name }}
+                                    </option>
+                                @endforeach
+                                </select>
+                            </div>
+                            </div>
 
-                                <div class="mb-4">
-                                    <label for="students[${index}][admission_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Admission Date <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="date" id="students[${index}][admission_date]" name="students[${index}][admission_date]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${student.admission_date}"
-                                        required>
-                                </div>
+                            <div class="mt-4">
+                                <label for="subjects[${index}][description]"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Description
+                                </label>
+                                <textarea id="subjects[${index}][description]" name="subjects[${index}][description]" rows="2"
+                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                    border-gray-400"
+                                    placeholder="Enter subject description">${subject.description || ''}</textarea>
                             </div>
                         </div>
                     `;
@@ -511,28 +591,30 @@
 
                 const dataform = [];
                 $('.sub-field').each(function(index) {
-                    const data = {
+                    const subject = {
                         id: $(this).find('input[type="hidden"]').val(),
-                        student_id: $(this).find('input[name$="[student_id]"]').val(),
-                        section_id: $(this).find('select[name$="[section_id]"]').val(),
-                        admission_date: $(this).find('input[name$="[admission_date]"]').val()
+                        name: $(this).find('input[name$="[name]"]').val(),
+                        code: $(this).find('input[name$="[code]"]').val(),
+                        credit_hours: $(this).find('input[name$="[credit_hours]"]').val(),
+                        department_id: $(this).find('select[name$="[department_id]"]').val(),
+                        description: $(this).find('textarea[name$="[description]"]').val()
                     };
-                    dataform.push(data);
+                    dataform.push(subject);
                 });
 
                 $.ajax({
-                    url: "{{ route('students.bulkUpdate') }}",
+                    url: "{{ route('subjects.bulkUpdate') }}",
                     method: 'POST',
                     data: {
-                        students: dataform
+                        subjects: dataform
                     },
                     success: function(response) {
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
+                            refreshSubjectContent();
                         } else {
-                            let errorMessage = response.message || 'Error updating students';
+                            let errorMessage = response.message || 'Error updating subjects';
                             if (response.errors) {
                                 errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
                             }
@@ -559,6 +641,7 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
+                console.log(modal);
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');
@@ -579,12 +662,12 @@
             }
 
             // Utility Functions
-            function refreshStudentContent() {
+            function refreshSubjectContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('students.index') }}",
+                    url: "{{ route('subjects.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -641,7 +724,6 @@
                     searchInput.val('');
                     searchData('');
                 });
-
 
                 // Bulk actions
                 selectAllCheckbox.on('change', function() {
