@@ -12,7 +12,7 @@ class Subject extends Model
     protected $fillable = [
         'name',
         'code',
-        'department_id',
+        'department_id',kjhi
         'description',
         'credit_hours'
     ];
