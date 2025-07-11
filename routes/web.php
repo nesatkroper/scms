@@ -71,7 +71,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/sections/bulk-delete', [SectionController::class, 'bulkDelete'])->name('sections.bulkDelete');
     Route::post('/sections/bulk-data', [SectionController::class, 'getBulkData'])->name('sections.getBulkData');
     Route::post('/sections/bulk-update', [SectionController::class, 'bulkUpdate'])->name('sections.bulkUpdate');
-    
+
+    Route::post('bookissues/bulk-delete', [BookIssueController::class, 'bulkDelete'])->name('bookissues.bulkDelete');
+    Route::post('bookissues/get-bulk-data', [BookIssueController::class, 'getBulkData'])->name('bookissues.getBulkData');
+    Route::post('bookissues/bulk-update', [BookIssueController::class, 'bulkUpdate'])->name('bookissues.bulkUpdate');
+    // books bulk
+    Route::post('books/bulkDelete', [BookController::class, 'bulkDelete'])->name('books.bulkDelete');
+    Route::post('books/getBulkData', [BookController::class, 'getBulkData'])->name('books.getBulkData');
+    Route::post('books/bulkUpdate', [BookController::class, 'bulkUpdate'])->name('books.bulkUpdate');
+
     Route::post('/students/bulk-delete', [StudentController::class, 'bulkDelete'])->name('students.bulkDelete');
     Route::post('/students/bulk-data', [StudentController::class, 'getBulkData'])->name('students.getBulkData');
     Route::post('/students/bulk-update', [StudentController::class, 'bulkUpdate'])->name('students.bulkUpdate');

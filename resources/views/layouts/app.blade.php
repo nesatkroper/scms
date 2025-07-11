@@ -130,19 +130,20 @@
                             <span class="menu-tooltip">Teachers</span>
                         </div>
                         <div class="submenu">
-                            <ul class="pl-4 pr-4">
+                            <ul class="pl-2 pr-2">
                                 <li><a href="{{ route('teachers.index') }}"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
                                         All Teachers
                                     </a>
                                 </li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Add
-                                        Teacher</a></li>
                                 <li class="relative">
                                     <div
-                                        class="px-4 flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-gray-300 transition-all duration-200 js-submenu-toggle">
-                                        <span>Teacher Attendance</span>
+                                        class="cursor-pointer px-4 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
+                                         rounded-md transition-all duration-200 js-submenu-toggle">
+                                        <div class="flex items-center">
+                                            <i class="ri-presentation-fill text-lg"></i>
+                                            <span class="ml-2">Attendance</span>
+                                        </div>
                                         <i class="fas fa-chevron-right menu-icon text-xs"></i>
                                     </div>
                                     <div class="submenu">
@@ -156,8 +157,11 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Payroll</a>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Payroll
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -246,6 +250,62 @@
 
                     <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
                         <span class="ml-5">Separator</span>
+                    </li>
+                    <!-- Library -->
+                    <li class="menu-item relative">
+                        <div
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+                            <div class="flex items-center">
+                                <i class="fas fa-book-open w-6 text-center"></i>
+                                <span class="ml-3 sidebar-text text-hidden">Library</span>
+                            </div>
+                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
+                            <span class="menu-tooltip">Library</span>
+                        </div>
+                        <div class="submenu">
+                            <ul class="pl-2 pr-2">
+                                <li>
+                                    <a href="{{ route('books.index') }}"
+                                        class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-book-fill text-lg"></i>
+                                            <span class="ml-2 sidebar-text">Books</span>
+                                        </div>
+                                        <span class="menu-tooltip">Books</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('bookissues.index') }}"
+                                        class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-md transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-book-2-fill text-lg"></i>
+                                            <span class="ml-2 sidebar-text">Issue Books</span>
+                                        </div>
+                                        <span class="menu-tooltip">Issue Books</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Books Inventory
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Books Return
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Overdue Books
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <!-- Academics -->
                     <li class="menu-item relative">
@@ -375,34 +435,6 @@
                         </div>
                     </li>
 
-                    <!-- Library -->
-                    <li class="menu-item relative">
-                        <div
-                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                            <div class="flex items-center">
-                                <i class="fas fa-book-open w-6 text-center"></i>
-                                <span class="ml-3 sidebar-text text-hidden">Library</span>
-                            </div>
-                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-                            <span class="menu-tooltip">Library</span>
-                        </div>
-                        <div class="submenu">
-                            <ul class="pl-4 pr-4">
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Books
-                                        Inventory</a></li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Issue
-                                        Books</a></li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Return
-                                        Books</a></li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Overdue
-                                        Books</a></li>
-                            </ul>
-                        </div>
-                    </li>
                 </ul>
             </nav>
 

@@ -1,17 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Grade Levels')
+@section('title', 'Books')
 @section('content')
-
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clip-rule="evenodd" />
+                <path
+                    d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
-            Grade Scales
+            Books
         </h3>
         <div
             class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -22,11 +20,11 @@
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         clip-rule="evenodd" />
                 </svg>
-                Create New
+                Add New Book
             </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search grade scales..."
+                    <input type="search" id="searchInput" placeholder="Search books..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
                         focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -49,24 +47,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('gradescales.partials.table', ['gradescales' => $gradeScales])
+            @include('books.partials.table', ['books' => $books])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('gradescales.partials.cardlist', ['gradescales' => $gradeScales])
+            @include('books.partials.cardlist', ['books' => $books])
         </div>
         {{-- pagination --}}
-        @include('gradescales.partials.pagination')
+        @include('books.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('gradescales.partials.create')
-    @include('gradescales.partials.edit')
-    @include('gradescales.partials.detail')
-    @include('gradescales.partials.delete')
-    @include('gradescales.partials.bulkedit')
-    @include('gradescales.partials.bulkdelete')
+    @include('books.partials.create')
+    @include('books.partials.edit')
+    @include('books.partials.detail')
+    @include('books.partials.delete')
+    @include('books.partials.bulkedit')
+    @include('books.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -78,6 +76,64 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            selectfields();
+
+            function selectfields() {
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const header = select.querySelector('.select-header');
+                    const optionsBox = select.querySelector('.select-options');
+                    const searchInput = select.querySelector('.search-input');
+                    const optionsContainer = select.querySelector('.options-container');
+                    const selectedValue = select.querySelector('.selected-value');
+                    const noResults = select.querySelector('.no-results');
+                    const options = Array.from(select.querySelectorAll('.select-option'));
+                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
+
+                    // Toggle dropdown
+                    header.addEventListener('click', function() {
+                        select.classList.toggle('open');
+                        if (select.classList.contains('open')) {
+                            searchInput.focus();
+                        }
+                    });
+
+                    // Filter options
+                    searchInput.addEventListener('input', function() {
+                        const term = this.value.toLowerCase().trim();
+                        let hasMatch = false;
+
+                        options.forEach(option => {
+                            if (option.textContent.toLowerCase().includes(term)) {
+                                option.style.display = 'block';
+                                hasMatch = true;
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+
+                        noResults.style.display = hasMatch ? 'none' : 'block';
+                    });
+
+                    // Select option
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                            selectedValue.textContent = this.textContent;
+                            hiddenInput.value = this.dataset.value;
+                            select.classList.remove('open');
+                        });
+                    });
+
+                    // Close when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!select.contains(e.target)) {
+                            select.classList.remove('open');
+                        }
+                    });
+                });
+            }
 
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
@@ -130,7 +186,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('books.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -158,6 +214,7 @@
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
+                const formData = new FormData(form[0]); // Use FormData for file uploads
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
 
@@ -166,21 +223,23 @@
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
-                    data: form.serialize(),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshGradeLevelContent();
+                            refreshBookContent();
                             form.trigger('reset');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error creating grade level');
+                            ShowTaskMessage('error', response.message || 'Error creating book');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating grade level');
+                        ShowTaskMessage('error', errorMessages || 'Error creating book');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -192,24 +251,55 @@
                 e.preventDefault();
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 editBtn.prop('disabled', true);
-                const Id = $(this).data('id');
-                $.get(`/gradelevels/${Id}`)
+
+                const bookId = $(this).data('id');
+
+                $.get(`/books/${bookId}`)
                     .done(function(response) {
                         if (response.success) {
-                            $('#edit_name').val(response.gradeLevel.name);
-                            $('#edit_code').val(response.gradeLevel.code);
-                            $('#edit_description').val(response.gradeLevel.description);
-                            $('#Formedit').attr('action', `/gradelevels/${Id}`);
+                            $('#edit_title').val(response.book.title);
+                            $('#edit_author').val(response.book.author);
+                            $('#edit_isbn').val(response.book.isbn);
+                            $('#edit_publication_year').val(response.book.publication_year);
+                            $('#edit_publisher').val(response.book.publisher);
+                            $('#edit_quantity').val(response.book.quantity);
+                            $('#edit_description').val(response.book.description);
+                            $('#edit_category').val(response.book.category);
+                            $('#current_cover_image').val(response.book.cover_image);
+
+                            // Display current cover image if exists
+                            if (response.book.cover_image) {
+                                $('#currentCoverImage').html(`
+                                    <img src="/storage/${response.book.cover_image}" 
+                                         class="h-32 w-32 object-cover rounded-md mb-2">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" name="cover_image_removed" id="cover_image_removed" 
+                                               class="mr-2 appearance-none size-4 
+                    border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 
+                    ease-in-out relative checked:bg-indigo-500 dark:checked:bg-indigo-600
+                    checked:border-indigo-500 dark:checked:border-indigo-600 hover:border-indigo-400 dark:hover:border-indigo-500
+                    focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700 focus:ring-offset-2 focus:outline-none before:content-['']
+                    before:absolute before:inset-0 before:bg-no-repeat before:bg-center
+                    before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
+                    before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
+                                        <label for="cover_image_removed" class="text-sm text-gray-600 dark:text-gray-300">
+                                            Remove cover image
+                                        </label>
+                                    </div>
+                                `);
+                            }
+
+                            $('#Formedit').attr('action', `/books/${bookId}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load grade level data');
+                            ShowTaskMessage('error', response.message || 'Failed to load book data');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load grade level data');
+                        ShowTaskMessage('error', 'Failed to load book data');
                     })
                     .always(function() {
                         editBtn.find('.btn-content').html(originalContent);
@@ -220,28 +310,31 @@
             function handleEditSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
+                const formData = new FormData(form[0]); // Use FormData for file uploads
+                formData.append('_method', 'PUT');
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
-                    data: form.serialize() + '&_method=PUT',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshGradeLevelContent();
+                            refreshBookContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error updating grade level');
+                            ShowTaskMessage('error', response.message || 'Error updating book');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating grade level');
+                        ShowTaskMessage('error', errorMessages || 'Error updating book');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -251,8 +344,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/gradelevels/${Id}`);
+                const bookId = $(this).data('id');
+                $('#Formdelete').attr('action', `/books/${bookId}`);
                 showModal('Modaldelete');
             }
 
@@ -274,14 +367,13 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshGradeLevelContent();
+                            refreshBookContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting grade level');
+                            ShowTaskMessage('error', response.message || 'Error deleting book');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message ||
-                            'Error deleting grade level');
+                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting book');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -293,32 +385,47 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 detailBtn.prop('disabled', true);
 
-                const Id = $(this).data('id');
+                const bookId = $(this).data('id');
 
-                $.get(`/gradelevels/${Id}`)
+                $.get(`/books/${bookId}`)
                     .done(function(response) {
                         if (response.success) {
-                            const gradelevel = response.gradeLevel;
-                            const updatedAt = gradelevel.updated_at ? gradelevel.updated_at.substring(0, 10) :
-                                '';
+                            const book = response.book;
+                            const createdAt = book.created_at ? book.created_at.substring(0, 10) : '';
+                            const updatedAt = book.updated_at ? book.updated_at.substring(0, 10) : '';
 
-                            $('#detail_name').val(gradelevel.name ?? '');
-                            $('#detail_code').val(gradelevel.code ?? '');
-                            $('#detail_description').val(gradelevel.description ?? '');
-                            $('#detail_created_at').val(gradelevel.created_at ?? '');
+                            $('#detail_title').val(book.title ?? '');
+                            $('#detail_author').val(book.author ?? '');
+                            $('#detail_isbn').val(book.isbn ?? '');
+                            $('#detail_publication_year').val(book.publication_year ?? '');
+                            $('#detail_publisher').val(book.publisher ?? '');
+                            $('#detail_quantity').val(book.quantity ?? '');
+                            $('#detail_description').val(book.description ?? '');
+                            $('#detail_category').val(book.category ?? '');
+                            $('#detail_created_at').val(createdAt);
                             $('#detail_updated_at').val(updatedAt);
+
+                            // Display cover image if exists
+                            if (book.cover_image) {
+                                $('#detailCoverImage').html(`
+                                    <img src="/storage/${book.cover_image}" 
+                                         class="h-32 w-32 object-cover rounded-md">
+                                `);
+                            } else {
+                                $('#detailCoverImage').html('<p class="text-gray-500">No cover image</p>');
+                            }
 
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load grade level details');
+                            ShowTaskMessage('error', response.message || 'Failed to load book details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load grade level details');
+                        ShowTaskMessage('error', 'Failed to load book details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -351,7 +458,7 @@
             function handleBulkDelete() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one grade level to delete');
+                    ShowTaskMessage('error', 'Please select at least one book to delete');
                     return;
                 }
 
@@ -367,7 +474,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('gradelevels.bulkDelete') }}",
+                        url: "{{ route('books.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -376,15 +483,15 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshGradeLevelContent();
+                                refreshBookContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
-                                    'Error deleting grade levels');
+                                    'Error deleting books');
                             }
                         },
                         error: function(xhr) {
                             ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting grade levels');
+                                'Error deleting books');
                         },
                         complete: function() {
                             deleteBtn.disabled = false;
@@ -397,7 +504,7 @@
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one grade level to edit');
+                    ShowTaskMessage('error', 'Please select at least one book to edit');
                     return;
                 }
 
@@ -412,7 +519,7 @@
                 }
 
                 if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 grade levels at a time');
+                    ShowTaskMessage('error', 'You can only edit up to 5 books at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
                     bulkEditBtn.disabled = false;
                     return;
@@ -421,7 +528,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('gradelevels.getBulkData') }}",
+                    url: "{{ route('books.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -438,50 +545,109 @@
                         const container = document.getElementById('bulkEditContainer');
                         container.innerHTML = '';
 
-                        response.data.forEach((gradeLevel, index) => {
+                        response.data.forEach((book, index) => {
                             const fieldHtml = `
                         <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="gradelevels[${index}][id]" value="${gradeLevel.id}">
+                            <input type="hidden" name="books[${index}][id]" value="${book.id}">
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Grade Level #${index + 1}</h4>
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Book #${index + 1}</h4>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                 <div class="mb-4">
-                                    <label for="gradelevels[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Name <span class="text-red-500">*</span>
+                                    <label for="books[${index}][title]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Title <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" id="gradelevels[${index}][name]" name="gradelevels[${index}][name]"
+                                    <input type="text" id="books[${index}][title]" name="books[${index}][title]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
-                                        value="${gradeLevel.name}"
-                                        placeholder="Enter grade level name" required>
+                                        value="${book.title}"
+                                        placeholder="Enter book title" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="gradelevels[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Code <span class="text-red-500">*</span>
+                                    <label for="books[${index}][author]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Author <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" id="gradelevels[${index}][code]" name="gradelevels[${index}][code]"
+                                    <input type="text" id="books[${index}][author]" name="books[${index}][author]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
-                                        value="${gradeLevel.code}"
-                                        placeholder="Enter grade level code" required>
+                                        value="${book.author}"
+                                        placeholder="Enter author name" required>
                                 </div>
-                            </div>
 
-                            <div class="mt-4">
-                                <label for="gradelevels[${index}][description]"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Description
-                                </label>
-                                <textarea id="gradelevels[${index}][description]" name="gradelevels[${index}][description]" rows="2"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                    border-gray-400"
-                                    placeholder="Enter grade level description">${gradeLevel.description || ''}</textarea>
+                                <div class="mb-4">
+                                    <label for="books[${index}][isbn]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        ISBN <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="books[${index}][isbn]" name="books[${index}][isbn]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${book.isbn}"
+                                        placeholder="Enter ISBN" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="books[${index}][publication_year]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Publication Year <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" id="books[${index}][publication_year]" name="books[${index}][publication_year]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${book.publication_year}"
+                                        placeholder="Enter publication year" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="books[${index}][publisher]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Publisher <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="books[${index}][publisher]" name="books[${index}][publisher]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${book.publisher}"
+                                        placeholder="Enter publisher" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="books[${index}][quantity]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Quantity <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" id="books[${index}][quantity]" name="books[${index}][quantity]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${book.quantity}"
+                                        placeholder="Enter quantity" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="books[${index}][description]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Description
+                                    </label>
+                                    <textarea id="books[${index}][description]" name="books[${index}][description]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        placeholder="Enter description">${book.description || ''}</textarea>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="books[${index}][category]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Category <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text" id="books[${index}][category]" name="books[${index}][category]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${book.category}"
+                                        placeholder="Enter category" required>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -508,28 +674,33 @@
 
                 const dataform = [];
                 $('.sub-field').each(function(index) {
-                    const gradeLevel = {
+                    const book = {
                         id: $(this).find('input[type="hidden"]').val(),
-                        name: $(this).find('input[name$="[name]"]').val(),
-                        code: $(this).find('input[name$="[code]"]').val(),
-                        description: $(this).find('textarea[name$="[description]"]').val()
+                        title: $(this).find('input[name$="[title]"]').val(),
+                        author: $(this).find('input[name$="[author]"]').val(),
+                        isbn: $(this).find('input[name$="[isbn]"]').val(),
+                        publication_year: $(this).find('input[name$="[publication_year]"]').val(),
+                        publisher: $(this).find('input[name$="[publisher]"]').val(),
+                        quantity: $(this).find('input[name$="[quantity]"]').val(),
+                        description: $(this).find('textarea[name$="[description]"]').val(),
+                        category: $(this).find('input[name$="[category]"]').val()
                     };
-                    dataform.push(gradeLevel);
+                    dataform.push(book);
                 });
 
                 $.ajax({
-                    url: "{{ route('gradelevels.bulkUpdate') }}",
+                    url: "{{ route('books.bulkUpdate') }}",
                     method: 'POST',
                     data: {
-                        grade_levels: dataform
+                        books: dataform
                     },
                     success: function(response) {
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshGradeLevelContent();
+                            refreshBookContent();
                         } else {
-                            let errorMessage = response.message || 'Error updating grade levels';
+                            let errorMessage = response.message || 'Error updating books';
                             if (response.errors) {
                                 errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
                             }
@@ -556,7 +727,6 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
-
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');
@@ -577,12 +747,12 @@
             }
 
             // Utility Functions
-            function refreshGradeLevelContent() {
+            function refreshBookContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('books.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
