@@ -13,19 +13,21 @@ return new class extends Migration
     {
         Schema::table('students', function (Blueprint $table) {
             $table->dropUnique('teachers_student_id_unique');
+
             $table->dropColumn('student_id');
+
             $table->string('name')->nullable();
             $table->string('image')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::table('students', function (Blueprint $table) {
-            //
-        });
-    }
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::table('students', function (Blueprint $table) {
+      //
+    });
+  }
 };
