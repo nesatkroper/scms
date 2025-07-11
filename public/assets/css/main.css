@@ -351,3 +351,7 @@
  .open .select-options {
      display: block;
  }
+
+ .btn .textnone {
+     display: none;
+ }

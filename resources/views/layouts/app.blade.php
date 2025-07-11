@@ -388,6 +388,22 @@
                         </div>
                         <div class="submenu">
                             <ul class="pl-4 pr-4">
+                                <li>
+                                    <a href="{{ route('books.index') }}"
+                                        class="flex items-center justify-between px-2 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <svg class="size-5 text-indigo-50 dark:text-indigo-50 dark:bg-indigo-900"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                                            </svg>
+                                            <span class="ml-3 sidebar-text">Books</span>
+                                        </div>
+                                        <span class="menu-tooltip">Books</span>
+                                    </a>
+                                </li>
                                 <li><a href="#"
                                         class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Books
                                         Inventory</a></li>
