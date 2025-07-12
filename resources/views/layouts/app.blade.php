@@ -515,8 +515,8 @@
                 <!-- User profile section -->
                 <div id="sidebar-footer-profile" class="p-4 bg-indigo-900/50 dark:bg-gray-900/50 cursor-pointer ">
                     <div class="flex items-center">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"
-                            alt="User" class="w-10 h-10 rounded-full border-2 border-indigo-500 ">
+                        <img src="{{ asset('images/user.png') }}"
+                            alt="User" class="w-10 h-10 rounded-full border-2 border-indigo-500 dark:border-white">
                         <div class="ml-3 sidebar-text text-hidden">
                             <p class="font-medium text-white">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-indigo-300 dark:text-gray-400">{{ auth()->user()->email }}</p>

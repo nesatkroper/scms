@@ -33,7 +33,7 @@
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
                     <td class="px-4 py-2">{{ $teacher->id }}</td>
                     <td class="px-4 py-2">{{ $teacher->user->name }}</td>
-                    <td class="px-4 py-2">{{ $teacher->teacher_id }}</td>
+                    <td class="px-4 py-2">{{ $teacher->name }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->department->name ?? 'N/A', 20) }}</td>
                     <td class="px-4 py-2">{{ $teacher->salary }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->qualification, 20) }}</td>
