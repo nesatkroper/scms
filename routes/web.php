@@ -84,6 +84,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/students/bulk-data', [StudentController::class, 'getBulkData'])->name('students.getBulkData');
     Route::post('/students/bulk-update', [StudentController::class, 'bulkUpdate'])->name('students.bulkUpdate');
 
+    //guardians
+    Route::post('/guardians/bulk-delete', [GuardianController::class, 'bulkDelete'])->name('guardians.bulkDelete');
+    Route::post('/guardians/bulk-data', [GuardianController::class, 'getBulkData'])->name('guardians.getBulkData');
+    Route::post('/guardians/bulk-update', [GuardianController::class, 'bulkUpdate'])->name('guardians.bulkUpdate');
+
     // departments bulk
     Route::post('/departments/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('departments.bulkDelete');
     Route::post('/departments/bulk-data', [DepartmentController::class, 'getBulkData'])->name('departments.getBulkData');
