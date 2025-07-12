@@ -120,6 +120,7 @@
 <!-- Create Student Modal -->
 <div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -143,15 +144,13 @@
 
             <div class="h-[65vh] md:h-auto overflow-y-auto px-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                    
-                    <!-- User Selection -->
+
+                    <!-- user_id -->
                     <div class="mb-2">
                         <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             User Account <span class="text-red-500">*</span>
                         </label>
-                        <select id="user_id" name="user_id" class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                            @error('user_id') border-red-500 @else border-gray-400 @enderror" required>
+                        <select id="user_id" name="user_id" required class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <option value="">Select user</option>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
@@ -159,19 +158,15 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('user_id')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        @error('user_id')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
                     </div>
 
-                    <!-- Section Selection -->
+                    <!-- section_id -->
                     <div class="mb-2">
                         <label for="section_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Section <span class="text-red-500">*</span>
                         </label>
-                        <select id="section_id" name="section_id" class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                            @error('section_id') border-red-500 @else border-gray-400 @enderror" required>
+                        <select id="section_id" name="section_id" required class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <option value="">Select section</option>
                             @foreach ($sections as $section)
                                 <option value="{{ $section->id }}" {{ old('section_id') == $section->id ? 'selected' : '' }}>
@@ -179,58 +174,90 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('section_id')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        @error('section_id')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
                     </div>
 
-                    <!-- Admission Date -->
+                    <!-- admission_date -->
                     <div class="mb-2">
                         <label for="admission_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Admission Date <span class="text-red-500">*</span>
                         </label>
-                        <input type="date" id="admission_date" name="admission_date" value="{{ old('admission_date') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                            @error('admission_date') border-red-500 @else border-gray-400 @enderror" required>
-                        @error('admission_date')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <input type="date" id="admission_date" name="admission_date" required value="{{ old('admission_date') }}"
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        @error('admission_date')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
                     </div>
 
-                    <!-- Student Image -->
+                    <!-- ✅ student_code -->
+                    <div class="mb-2">
+                        <label for="student_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Student Code <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="student_code" name="student_code" required value="{{ old('student_code') }}"
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        @error('student_code')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                    </div>
+
+                    <!-- ✅ gender -->
+                    <div class="mb-2">
+                        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Gender <span class="text-red-500">*</span>
+                        </label>
+                        <select id="gender" name="gender" required class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="">Select gender</option>
+                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        @error('gender')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                    </div>
+
+                    <!-- ✅ date_of_birth -->
+                    <div class="mb-2">
+                        <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Date of Birth <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" required value="{{ old('date_of_birth') }}"
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        @error('date_of_birth')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                    </div>
+
+                    <!-- ✅ status -->
+                    <div class="mb-2">
+                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Status <span class="text-red-500">*</span>
+                        </label>
+                        <select id="status" name="status" required class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            <option value="graduated" {{ old('status') == 'graduated' ? 'selected' : '' }}>Graduated</option>
+                            <option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>Suspended</option>
+                        </select>
+                        @error('status')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                    </div>
+
+                    <!-- ✅ image (profile photo) -->
                     <div class="mb-2">
                         <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Profile Image
                         </label>
                         <input type="file" id="image" name="image" 
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                            @error('image') border-red-500 @else border-gray-400 @enderror">
-                        @error('image')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                            class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        @error('image')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
                     </div>
+
                 </div>
             </div>
 
-            <!-- Form Actions -->
+            <!-- Form Buttons -->
             <div class="flex justify-end space-x-3 pt-4 px-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" id="cancelCreateModal"
-                    class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    class="px-4 py-2 border border-red-500 text-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-600 dark:hover:text-white">
                     Cancel
                 </button>
                 <button type="submit" id="createSubmitBtn"
-                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
                     Create Student
                 </button>

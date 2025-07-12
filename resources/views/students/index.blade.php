@@ -1,67 +1,77 @@
 @extends('layouts.app')
 @section('title', 'Students')
 @section('content')
-    <div class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-        <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
+<div class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
+        </svg>
+        Students
+    </h3>
+
+    <!-- Filters & Actions -->
+    <div class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+        <button id="openCreateModal" class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
             </svg>
-            Students
-        </h3>
-        
-        <div class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal" class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                Create New
+            Create New
+        </button>
+
+        <div class="flex items-center mt-3 md:mt-0 gap-2">
+            <!-- Search -->
+            <div class="relative w-full">
+                <input type="search" id="searchInput" placeholder="Search by name or student code..."
+                    class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
+                           focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+                <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+            </div>
+
+            <!-- Reset -->
+            <button id="resetSearch" class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
             </button>
-            
-            <div class="flex items-center mt-3 md:mt-0 gap-2">
-                <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search student..." 
-                           class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                    <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-                </div>
-                <button id="resetSearch" class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+
+            <!-- View Toggle -->
+            <div class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
+                <button id="listViewBtn" class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                    <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
                 </button>
-                <div class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
-                    <button id="listViewBtn" class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                        <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                    <button id="cardViewBtn" class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
-                        <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                </div>
+                <button id="cardViewBtn" class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                    <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
+                </button>
             </div>
         </div>
-        
-        <!-- Table View -->
-        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('students.partials.table', ['students' => $students])
-        </div>
-        
-        <!-- Card View -->
-        <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('students.partials.cardlist', ['students' => $students])
-        </div>
-        
-        <!-- Pagination -->
-        @include('students.partials.pagination')
     </div>
 
-    <!-- Modal Backdrop -->
-    <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+    <!-- ✅ Table View -->
+    <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
+        @include('students.partials.table', ['students' => $students])
+        {{-- ✅ Ensure table partial displays: student_code, gender, dob, status, photo --}}
+    </div>
 
-    @include('students.partials.create')
-    @include('students.partials.edit')
-    @include('students.partials.detail')
-    @include('students.partials.delete')
-    @include('students.partials.bulkedit')
-    @include('students.partials.bulkdelete')
+    <!-- ✅ Card View -->
+    <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        @include('students.partials.cardlist', ['students' => $students])
+        {{-- ✅ Ensure card view displays name, image (photo), section, gender, and status --}}
+    </div>
+
+    <!-- ✅ Pagination -->
+    @include('students.partials.pagination')
+</div>
+
+<!-- ✅ Modal Backdrop -->
+<div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+
+<!-- ✅ Modal Partials (make sure forms include new fields) -->
+@include('students.partials.create') {{-- Ensure this form has fields like student_code, gender, etc. --}}
+@include('students.partials.edit')
+@include('students.partials.detail')
+@include('students.partials.delete')
+@include('students.partials.bulkedit')
+@include('students.partials.bulkdelete')
 @endsection
+
 
 @push('scripts')
     <script>
