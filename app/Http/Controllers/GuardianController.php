@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGuardianRequest;
 use App\Http\Requests\UpdateGuardianRequest;
 use App\Models\Guardian;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Department;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class GuardianController extends Controller
 {
@@ -13,6 +18,7 @@ class GuardianController extends Controller
         $guardians = Guardian::with('students')->paginate(10);
         return view('guardians.index', compact('guardians'));
     }
+
 
     public function create()
     {
