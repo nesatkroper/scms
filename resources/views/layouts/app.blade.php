@@ -55,69 +55,6 @@
 
                     </li>
 
-                    <!-- Students -->
-                    {{-- <li class="menu-item relative">
-                        <div
-                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                            <div class="flex items-center">
-                                <i class="fas fa-user-graduate w-6 text-center"></i>
-                                <span class="ml-3 sidebar-text text-hidden">Students</span>
-                            </div>
-                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-                            <span class="menu-tooltip">Students</span>
-                        </div>
-                        <div class="submenu">
-                            <ul class="pl-4 pr-4">
-                                <li class="relative">
-                                    <div
-                                        class="px-4 flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-gray-300 transition-all duration-200 js-submenu-toggle">
-                                        <span>Student Records</span>
-                                        <i class="fas fa-chevron-right menu-icon text-xs"></i>
-                                    </div>
-                                    <div class="submenu">
-                                        <ul class="pl-4">
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">All
-                                                    Students</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">New
-                                                    Admissions</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Promotions</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="relative">
-                                    <div
-                                        class="px-4 flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-gray-300 transition-all duration-200 js-submenu-toggle">
-                                        <span>Attendance</span>
-                                        <i class="fas fa-chevron-right menu-icon text-xs"></i>
-                                    </div>
-                                    <div class="submenu">
-                                        <ul class="pl-4">
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Daily
-                                                    Attendance</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Monthly
-                                                    Reports</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Attendance
-                                                    Settings</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Student
-                                        Fees</a></li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">ID
-                                        Cards</a></li>
-                            </ul>
-                        </div>
-                    </li>  --}}
-
                     <!-- Teachers -->
                     <li class="menu-item relative">
                         <div
@@ -181,6 +118,23 @@
                                 <span class="ml-3 sidebar-text text-hidden">Students</span>
                             </div>
                             <span class="menu-tooltip">Students</span>
+                        </a>
+                    </li>
+
+                    {{-- Guardians --}}
+                    <li class="menu-item relative">
+                        <a href="{{ route('guardians.index') }}"
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="ml-3 sidebar-text text-hidden">Guardians</span>
+                            </div>
+                            <span class="menu-tooltip">Guardians</span>
                         </a>
                     </li>
 
