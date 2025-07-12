@@ -7,19 +7,19 @@
             class="max-w-[800px] w-full mx-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform scale-100 opacity-100">
             <div class="grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-gray-900">
                 <!-- Left Column - Login Form -->
-                <div class="p-8">
+                <div class="px-8 py-6">
                     <div class="flex justify-center pt-2">
-                        <img src="{{ asset('https://bbu.edu.kh/images/logo_footer1.png') }}" alt="School Logo" class="h-16">
+                        <img src="{{ asset('/images/scms.png') }}" alt="School Logo" class="h-40">
                     </div>
 
-                    <div class="text-center mt-6">
+                    <div class="text-center mt-2">
                         <h1
                             class="text-2xl font-bold mb-2 text-indigo-800 dark:text-gray-200 filter drop-shadow-[0_0_75px_rgba(44,54,145,1)]">
-                            Welcome back</h1>
+                            Welcome</h1>
                         <p class="text-gray-600 dark:text-gray-300 text-sm">Login to your <br>School Management System</p>
                     </div>
 
-                    <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-6 mt-8">
+                    <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4 mt-6">
                         @csrf
 
                         <div class="flex flex-col gap-5">

@@ -65,8 +65,8 @@
         <!-- User profile -->
         <div class="relative">
             <button class="cursor-pointer flex items-center focus:outline-none" id="user-menu-button">
-                <img src="https://placehold.co/32x32/6366f1/ffffff?text=SJ" alt="User"
-                    class="size-9 rounded-full border-2 border-indigo-500">
+                <img src="{{ asset('images/user.png') }}" alt="User"
+                    class="size-9 rounded-full border-2 border-indigo-500 dark:border-white">
             </button>
             <!-- Dropdown menu with icons -->
             <div id="user-dropdown"

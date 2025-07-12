@@ -8,7 +8,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                     viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                    <path
+                        d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                 </svg>
                 Create New Teacher
             </h3>
@@ -26,42 +27,40 @@
 
             <div class="h-[65vh] md:h-auto overflow-y-auto px-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                    
+                    <!-- Teacher ID Field -->
                     <div class="mb-2">
-                        <label for="user_id"
+                        <label for="name"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}"
+                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        @error('name') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter name" required>
+
+                        @error('name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-2">
+                        <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Users <span class="text-red-500">*</span>
                         </label>
                         <select id="user_id" name="user_id"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('user_id') border-red-500 @else border-gray-400 @enderror" required>
+                        @error('user_id') border-red-500 @else border-gray-400 @enderror"
+                            required>
                             <option value="">Select user</option>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}"
-                                    {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
                         </select>
 
                         @error('user_id')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Teacher ID Field -->
-                    <div class="mb-2">
-                        <label for="teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Teacher ID <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="teacher_id" name="teacher_id" value="{{ old('teacher_id') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('teacher_id') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter teacher ID" required>
-
-                        @error('teacher_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -75,7 +74,8 @@
                         <select id="department_id" name="department_id"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('department_id') border-red-500 @else border-gray-400 @enderror" required>
+                        @error('department_id') border-red-500 @else border-gray-400 @enderror"
+                            required>
                             <option value="">Select department</option>
                             @foreach ($departments as $department)
                                 <option value="{{ $department->id }}"
@@ -113,7 +113,8 @@
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Qualification <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="qualification" name="qualification" value="{{ old('qualification') }}"
+                        <input type="text" id="qualification" name="qualification"
+                            value="{{ old('qualification') }}"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                         @error('qualification') border-red-500 @else border-gray-400 @enderror"
@@ -130,7 +131,8 @@
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Specialization
                         </label>
-                        <input type="text" id="specialization" name="specialization" value="{{ old('specialization') }}"
+                        <input type="text" id="specialization" name="specialization"
+                            value="{{ old('specialization') }}"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                         @error('specialization') border-red-500 @else border-gray-400 @enderror"
@@ -176,7 +178,7 @@
                         <path fill-rule="evenodd"
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                             clip-rule="evenodd" />
-                        </svg>
+                    </svg>
                     Create
                 </button>
             </div>
