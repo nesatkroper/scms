@@ -67,6 +67,11 @@ Route::middleware('auth')->group(function () {
         'timetable_entries' => TimetableEntryController::class,
     ]);
 
+        // sections bulk
+    Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');
+    Route::post('/expenses/bulk-data', [ExpenseController::class, 'getBulkData'])->name('expenses.getBulkData');
+    Route::post('/expenses/bulk-update', [ExpenseController::class, 'bulkUpdate'])->name('expenses.bulkUpdate');
+
     // sections bulk
     Route::post('/sections/bulk-delete', [SectionController::class, 'bulkDelete'])->name('sections.bulkDelete');
     Route::post('/sections/bulk-data', [SectionController::class, 'getBulkData'])->name('sections.getBulkData');
@@ -95,8 +100,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/departments/bulk-update', [DepartmentController::class, 'bulkUpdate'])->name('departments.bulkUpdate');
 
     // gradelevels
-    // Route::get('/gradelevels/{gradelevel}', [GradeLevelController::class, 'show']);
-    // Route::put('/gradelevels/{id}', [GradeLevelController::class, 'update'])->name('gradelevels.update');
     Route::post('/gradelevels/bulk-delete', [GradeLevelController::class, 'bulkDelete'])->name('gradelevels.bulkDelete');
     Route::post('/gradelevels/bulk-data', [GradeLevelController::class, 'getBulkData'])->name('gradelevels.getBulkData');
     Route::post('/gradelevels/bulk-update', [GradeLevelController::class, 'bulkUpdate'])->name('gradelevels.bulkUpdate');

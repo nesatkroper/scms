@@ -5,31 +5,78 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ExpenseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $expenses = Expense::with('approver')->paginate(10);
-        return view('expenses.index', compact('expenses'));
-    }
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        $viewType = $request->input('view', 'table');
+        $expenses = Expense::with('approver')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('id', 'like', "%{$search}%")
+                    ->orWhere('title', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('date', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('approved_by', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'per_page' => $perPage,
+                'view' => $viewType
+            ]);
 
-    public function create()
-    {
-        return view('expenses.create');
+        if ($request->ajax()) {
+            $html = [
+                'table' => view('expenses.partials.table', compact('expenses'))->render(),
+                'cards' => view('expenses.partials.cardlist', compact('expenses'))->render(),
+                'pagination' => $expenses->links()->toHtml()
+            ];
+
+            return response()->json([
+                'success' => true,
+                'html' => $html,
+                'view' => $viewType
+            ]);
+        }
+
+        return view('expenses.index', compact('expenses'));
     }
 
     public function store(StoreExpenseRequest $request)
     {
-        $expense = Expense::create($request->validated());
-        $expense->load('approver');
-        return redirect()->route('expenses.index')->with('success', 'Expense added successfully!');
+        try {
+            $expense = Expense::create($request->validated());
+            $expense->load('approver');
+            return response()->json([
+                'success' => true,
+                'message' => 'Expense added successfully!',
+                'expense' => $expense
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating expense: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show(Expense $expense)
     {
         $expense->load('approver');
-        return view('expenses.show', compact('expense'));
+        return response()->json([
+            'success' => true,
+            'expenses' => $expense
+        ]);
     }
 
     public function edit(Expense $expense)
@@ -38,16 +85,39 @@ class ExpenseController extends Controller
         return view('expenses.edit', compact('expense'));
     }
 
-    public function update(UpdateExpenseRequest $request, Expense $expense)
+    public function update(UpdateExpenseRequest $request, $id)
     {
-        $expense->update($request->validated());
-        $expense->load('approver');
-        return redirect()->route('expenses.show', $expense)->with('success', 'Expense updated successfully!');
+        try {
+            $expense = Expense::findOrFail($id);
+            $expense->update($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Expense updated successfully!',
+                'expense' => $expense->fresh('approver')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating expense: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function destroy(Expense $expense)
+    public function destroy($id)
     {
-        $expense->delete();
-        return redirect()->route('expenses.index')->with('success', 'Expense deleted successfully!');
+        try {
+            $expense = Expense::findOrFail($id);
+            $expense->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Expense deleted successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting expense: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
