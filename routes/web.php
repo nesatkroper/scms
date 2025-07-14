@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
         'timetable_entries' => TimetableEntryController::class,
     ]);
 
-        // sections bulk
+        // expenses bulk
     Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');
     Route::post('/expenses/bulk-data', [ExpenseController::class, 'getBulkData'])->name('expenses.getBulkData');
     Route::post('/expenses/bulk-update', [ExpenseController::class, 'bulkUpdate'])->name('expenses.bulkUpdate');
