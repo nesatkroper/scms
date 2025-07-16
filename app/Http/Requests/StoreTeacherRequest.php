@@ -3,23 +3,31 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTeacherRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-    public function rules()
-    {
-        return [
-            'user_id' => 'required|exists:users,id|unique:teachers,user_id',
-            'teacher_id' => 'required|string|unique:teachers,teacher_id|max:50',
-            'department_id' => 'nullable|exists:departments,id',
-            'joining_date' => 'required|date',
-            'qualification' => 'required|string|max:255',
-            'specialization' => 'nullable|string',
-            'salary' => 'nullable|numeric|min:0',
-        ];
-    }
+  public function authorize(): bool
+  {
+    return true;
+  }
+
+  public function rules(): array
+  {
+    return [
+      'user_id' => ['nullable', 'exists:users,id'],  // If connecting to an existing user
+      'teacher_id' => ['required', 'string', 'max:255', 'unique:teachers,teacher_id'],
+      'department_id' => ['nullable', 'exists:departments,id'],
+      'joining_date' => ['required', 'date'],
+      'qualification' => ['required', 'string', 'max:255'],
+      'experience' => ['required', 'string', 'max:255'],  // Consider 'integer' if just years
+      'phone' => ['required', 'string', 'max:20'],
+      'email' => ['required', 'string', 'email', 'max:255', 'unique:teachers,email'],
+      'address' => ['required', 'string'],
+      'specialization' => ['nullable', 'string'],
+      'salary' => ['nullable', 'numeric', 'min:0'],
+      'photo' => ['nullable', 'string'],  // Assuming URL or path to image
+      'cv' => ['nullable', 'string'],  // Assuming URL or path to CV document
+    ];
+  }
 }

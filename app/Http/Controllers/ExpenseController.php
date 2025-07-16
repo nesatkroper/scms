@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,7 @@ class ExpenseController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
+        $users = User::all();
         $expenses = Expense::with('approver')
             ->when($search, function ($query) use ($search) {
                 return $query->where('id', 'like', "%{$search}%")
@@ -49,7 +51,7 @@ class ExpenseController extends Controller
             ]);
         }
 
-        return view('expenses.index', compact('expenses'));
+        return view('expenses.index', compact('expenses', 'users'));
     }
 
     public function store(StoreExpenseRequest $request)
@@ -75,7 +77,7 @@ class ExpenseController extends Controller
         $expense->load('approver');
         return response()->json([
             'success' => true,
-            'expenses' => $expense
+            'expenses' => $expense,
         ]);
     }
 

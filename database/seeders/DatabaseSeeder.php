@@ -2,574 +2,412 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\User; // Assuming you have a User model for created_by and received_by fields
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        // Important: Truncate tables to avoid duplicate entries on re-seeding
-        // Truncate in reverse order of creation (child tables first, then parent tables)
-        // This implicitly handles foreign key constraints for SQLite.
+  public function run(): void
+  {
+    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        DB::table('payments')->truncate();
-        DB::table('student_fees')->truncate();
-        DB::table('grades')->truncate();
-        DB::table('exams')->truncate();
-        DB::table('attendances')->truncate();
-        DB::table('timetable_entries')->truncate();
-        DB::table('timetables')->truncate();
-        DB::table('class_subjects')->truncate(); // Added
-        DB::table('book_issues')->truncate();
-        DB::table('student_guardian')->truncate();
-        DB::table('students')->truncate();
-        DB::table('guardians')->truncate();
-        DB::table('sections')->truncate();
-        DB::table('teachers')->truncate();
-        DB::table('subjects')->truncate();
-        // Handle 'departments' last as 'teachers' has a foreign key to it,
-        // and 'departments' itself might have 'head_id' pointing to 'teachers'.
-        // For 'departments', if head_id is nullable, it's fine.
-        // If not nullable, you need to set head_id to null before truncating teachers.
-        // Or, simpler, ensure migrate:fresh --seed is used.
+    DB::table('payments')->truncate();
+    DB::table('student_fees')->truncate();
+    DB::table('grades')->truncate();
+    DB::table('exams')->truncate();
+    DB::table('attendances')->truncate();
+    DB::table('timetable_slots')->truncate();
+    DB::table('timetables')->truncate();
+    DB::table('student_course')->truncate();
+    DB::table('course_offerings')->truncate();
+    DB::table('book_issues')->truncate();
+    DB::table('notices')->truncate();
+    DB::table('expenses')->truncate();
+    DB::table('expense_categories')->truncate();
+    DB::table('fee_structures')->truncate();
+    DB::table('student_guardian')->truncate();
+    DB::table('students')->truncate();
+    DB::table('guardians')->truncate();
+    DB::table('sections')->truncate();
+    DB::table('subjects')->truncate();
+    DB::table('teachers')->truncate();
+    DB::table('departments')->truncate();
+    DB::table('grade_levels')->truncate();
+    DB::table('events')->truncate();
+    DB::table('books')->truncate();
+    DB::table('book_categories')->truncate();
+    DB::table('classrooms')->truncate();
+    DB::table('users')->truncate();
 
-        // Nullify head_id in departments before truncating teachers if it's not done via migrate:fresh
-        DB::table('departments')->update(['head_id' => null]);
+    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        DB::table('departments')->truncate();
-
-        DB::table('grade_levels')->truncate();
-        DB::table('grade_scales')->truncate();
-        DB::table('events')->truncate();
-        DB::table('books')->truncate();
-        DB::table('classrooms')->truncate();
-        DB::table('settings')->truncate();
-
-        // Truncate users table last if you are seeding users within this seeder
-        DB::table('users')->truncate();
-
-        // Seed Users (if not already seeded by Laravel's default UserSeeder)
-        // You'll need at least one user to assign as 'created_by' or 'received_by'
-        $user1 = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'password' => bcrypt('password'), // Change this in production
-            ]
-        );
-        $user2 = User::firstOrCreate(
-            ['email' => 'staff@example.com'],
-            [
-                'name' => 'Staff User',
-                'password' => bcrypt('password'),
-            ]
-        );
-
-        // Seed Settings
-        DB::table('settings')->insert([
-            ['key' => 'school_name', 'value' => 'Awesome Academy', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'school_address', 'value' => '123 Main St, Anytown', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'contact_email', 'value' => 'info@awesomeacademy.com', 'created_at' => now(), 'updated_at' => now()],
-        ]);
-
-        // Seed Classrooms
-        DB::table('classrooms')->insert([
-            ['name' => 'Science Lab A', 'room_number' => 'L-101', 'capacity' => 30, 'facilities' => 'Equipped with microscopes, Bunsen burners.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Art Studio', 'room_number' => 'A-205', 'capacity' => 20, 'facilities' => 'Easel, pottery wheel, painting supplies.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Main Auditorium', 'room_number' => 'AUD-001', 'capacity' => 200, 'facilities' => 'Stage, sound system, projector.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Math Classroom', 'room_number' => 'C-301', 'capacity' => 35, 'facilities' => null, 'created_at' => now(), 'updated_at' => now()],
-        ]);
-
-        // Seed Books
-        DB::table('books')->insert([
-            [
-                'title' => 'The Great Gatsby',
-                'author' => 'F. Scott Fitzgerald',
-                'isbn' => '9780743273565',
-                'publication_year' => 1925,
-                'publisher' => 'Scribner',
-                'quantity' => 10,
-                'description' => 'A novel illustrating the Jazz Age in America.',
-                'category' => 'Fiction',
-                'cover_image' => null,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'title' => 'Sapiens: A Brief History of Humankind',
-                'author' => 'Yuval Noah Harari',
-                'isbn' => '9780062316097',
-                'publication_year' => 2014,
-                'publisher' => 'Harper Perennial',
-                'quantity' => 7,
-                'description' => 'A brief history of humankind from the Stone Age to the twenty-first century.',
-                'category' => 'Non-Fiction',
-                'cover_image' => null,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'title' => 'Calculus: Early Transcendentals',
-                'author' => 'James Stewart',
-                'isbn' => '9781305266728',
-                'publication_year' => 2015,
-                'publisher' => 'Cengage Learning',
-                'quantity' => 15,
-                'description' => 'Standard textbook for calculus courses.',
-                'category' => 'Mathematics',
-                'cover_image' => null,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed Events
-        DB::table('events')->insert([
-            [
-                'title' => 'Annual Sports Day',
-                'description' => 'Our annual sports day featuring various athletic competitions.',
-                'date' => '2025-09-15',
-                'start_time' => '09:00:00',
-                'end_time' => '16:00:00',
-                'location' => 'School Ground',
-                'type' => 'sports',
-                'is_holiday' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'title' => 'Parent-Teacher Conference',
-                'description' => 'An opportunity for parents to discuss student progress with teachers.',
-                'date' => '2025-10-20',
-                'start_time' => '17:00:00',
-                'end_time' => '20:00:00',
-                'location' => 'School Hall',
-                'type' => 'academic',
-                'is_holiday' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'title' => 'Winter Holiday',
-                'description' => 'School closed for winter break.',
-                'date' => '2025-12-24',
-                'start_time' => '00:00:00',
-                'end_time' => '23:59:59',
-                'location' => null,
-                'type' => 'holiday',
-                'is_holiday' => true,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed GradeLevels
-        DB::table('grade_levels')->insert([
-            ['name' => 'Kindergarten', 'code' => 'KG', 'description' => 'Early childhood education.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Grade 1', 'code' => 'G1', 'description' => 'First year of primary school.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Grade 12', 'code' => 'G12', 'description' => 'Final year of high school.', 'created_at' => now(), 'updated_at' => now()],
-        ]);
-
-        // Seed GradeScales
-        DB::table('grade_scales')->insert([
-            ['name' => 'A+', 'min_percentage' => 90.00, 'max_percentage' => 100.00, 'gpa' => 4.00, 'description' => 'Excellent performance.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'A', 'min_percentage' => 85.00, 'max_percentage' => 89.99, 'gpa' => 3.70, 'description' => 'Very good performance.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'B+', 'min_percentage' => 80.00, 'max_percentage' => 84.99, 'gpa' => 3.30, 'description' => 'Good performance.', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'F', 'min_percentage' => 0.00, 'max_percentage' => 49.99, 'gpa' => 0.00, 'description' => 'Fail.', 'created_at' => now(), 'updated_at' => now()],
-        ]);
-
-        // Seed Departments
-        // Insert departments without a head_id first, then update later
-        $mathDepartmentId = DB::table('departments')->insertGetId([
-            'name' => 'Mathematics Department',
-            'description' => 'Department focused on mathematics studies.',
-            'head_id' => null,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        $scienceDepartmentId = DB::table('departments')->insertGetId([
-            'name' => 'Science Department',
-            'description' => 'Department focused on science studies (Physics, Chemistry, Biology).',
-            'head_id' => null,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        $artsDepartmentId = DB::table('departments')->insertGetId([
-            'name' => 'Arts Department',
-            'description' => 'Department focused on visual and performing arts.',
-            'head_id' => null,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed Teachers (requires users and departments)
-        $teacher1 = DB::table('teachers')->insertGetId([
-            'user_id' => $user1->id,
-            'teacher_id' => 'TCH001',
-            'department_id' => $mathDepartmentId,
-            'joining_date' => '2020-08-15',
-            'qualification' => 'Ph.D. in Mathematics',
-            'specialization' => 'Algebra, Geometry',
-            'salary' => 60000.00,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $teacher2 = DB::table('teachers')->insertGetId([
-            'user_id' => $user2->id,
-            'teacher_id' => 'TCH002',
-            'department_id' => $scienceDepartmentId,
-            'joining_date' => '2021-09-01',
-            'qualification' => 'M.Sc. in Physics',
-            'specialization' => 'Quantum Physics',
-            'salary' => 55000.00,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Update Department Heads
-        DB::table('departments')
-            ->where('id', $mathDepartmentId)
-            ->update(['head_id' => $teacher1]);
-
-        DB::table('departments')
-            ->where('id', $scienceDepartmentId)
-            ->update(['head_id' => $teacher2]);
-
-        // Seed Subjects (requires departments)
-        $algebraSubjectId = DB::table('subjects')->insertGetId([
-            'name' => 'Algebra I',
-            'code' => 'MATH101',
-            'department_id' => $mathDepartmentId,
-            'description' => 'Introduction to basic algebra concepts.',
-            'credit_hours' => 3,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        $physicsSubjectId = DB::table('subjects')->insertGetId([
-            'name' => 'Physics I',
-            'code' => 'SCI101',
-            'department_id' => $scienceDepartmentId,
-            'description' => 'Introduction to classical mechanics.',
-            'credit_hours' => 4,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        DB::table('subjects')->insert([
-            ['name' => 'Art History', 'code' => 'ART201', 'department_id' => $artsDepartmentId, 'description' => 'Survey of major art movements.', 'credit_hours' => 3, 'created_at' => now(), 'updated_at' => now()],
-        ]);
-
-        // Seed Sections (requires grade_levels and teachers)
-        $grade1 = DB::table('grade_levels')->where('code', 'G1')->first();
-        $grade12 = DB::table('grade_levels')->where('code', 'G12')->first();
-
-        $section1 = DB::table('sections')->insertGetId([
-            'name' => '1A',
-            'grade_level_id' => $grade1->id,
-            'teacher_id' => $teacher1,
-            'capacity' => 25,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $section2 = DB::table('sections')->insertGetId([
-            'name' => '12B',
-            'grade_level_id' => $grade12->id,
-            'teacher_id' => $teacher2,
-            'capacity' => 30,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed Guardians (requires users)
-        $guardian1_user = User::firstOrCreate(
-            ['email' => 'parent1@example.com'],
-            [
-                'name' => 'Parent One',
-                'password' => bcrypt('password'),
-            ]
-        );
-        $guardian2_user = User::firstOrCreate(
-            ['email' => 'parent2@example.com'],
-            [
-                'name' => 'Parent Two',
-                'password' => bcrypt('password'),
-            ]
-        );
-
-        $guardian1_id = DB::table('guardians')->insertGetId([
-            'user_id' => $guardian1_user->id,
-            'occupation' => 'Software Engineer',
-            'company' => 'Tech Solutions Inc.',
-            'relation' => 'Father',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $guardian2_id = DB::table('guardians')->insertGetId([
-            'user_id' => $guardian2_user->id,
-            'occupation' => 'Doctor',
-            'company' => 'City Hospital',
-            'relation' => 'Mother',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed Students (requires users and sections)
-        $student1_user = User::firstOrCreate(
-            ['email' => 'student1@example.com'],
-            [
-                'name' => 'Alice Smith',
-                'password' => bcrypt('password'),
-            ]
-        );
-        $student2_user = User::firstOrCreate(
-            ['email' => 'student2@example.com'],
-            [
-                'name' => 'Bob Johnson',
-                'password' => bcrypt('password'),
-            ]
-        );
-
-        $student1_id = DB::table('students')->insertGetId([
-            'user_id' => $student1_user->id,
-            'student_id' => 'STD001',
-            'admission_date' => '2024-09-01',
-            'section_id' => $section1,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $student2_id = DB::table('students')->insertGetId([
-            'user_id' => $student2_user->id,
-            'student_id' => 'STD002',
-            'admission_date' => '2023-09-01',
-            'section_id' => $section2,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed StudentGuardian pivot table
-        DB::table('student_guardian')->insert([
-            ['student_id' => $student1_id, 'guardian_id' => $guardian1_id],
-            ['student_id' => $student2_id, 'guardian_id' => $guardian2_id],
-        ]);
-
-        // Seed ClassSubjects (requires sections, subjects, teachers)
-        $classSubject1 = DB::table('class_subjects')->insertGetId([
-            'section_id' => $section1,
-            'subject_id' => $algebraSubjectId, // Algebra I for 1A
-            'teacher_id' => $teacher1,
-            'room' => 'C-301',
-            'start_time' => '09:00:00',
-            'end_time' => '10:00:00',
-            'day' => 'monday',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $classSubject2 = DB::table('class_subjects')->insertGetId([
-            'section_id' => $section2,
-            'subject_id' => $physicsSubjectId,
-            'teacher_id' => $teacher2,
-            'room' => 'L-101',
-            'start_time' => '11:00:00',
-            'end_time' => '12:00:00',
-            'day' => 'tuesday',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed BookIssues (requires books, users)
-        $book1 = DB::table('books')->where('isbn', '9780743273565')->first();
-        $book2 = DB::table('books')->where('isbn', '9780062316097')->first();
-
-        DB::table('book_issues')->insert([
-            [
-                'book_id' => $book1->id,
-                'user_id' => $student1_user->id,
-                'issue_date' => '2025-06-01',
-                'due_date' => '2025-06-15',
-                'return_date' => null,
-                'fine' => 0.00,
-                'status' => 'issued',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'book_id' => $book2->id,
-                'user_id' => $teacher1, // Corrected: this should be the user_id of the teacher, not the teacher's ID from the teachers table.
-                'issue_date' => '2025-05-20',
-                'due_date' => '2025-06-20',
-                'return_date' => '2025-06-18',
-                'fine' => 0.00,
-                'status' => 'returned',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed Notices (requires users)
-        DB::table('notices')->insert([
-            [
-                'title' => 'School Reopening',
-                'content' => 'All students are kindly informed that the school will reopen on September 1st, 2025.',
-                'audience' => 'all',
-                'start_date' => '2025-08-20',
-                'end_date' => '2025-09-05',
-                'is_published' => true,
-                'created_by' => $user1->id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'title' => 'Faculty Meeting',
-                'content' => 'Mandatory faculty meeting on Friday at 3 PM in the staff room.',
-                'audience' => 'teachers',
-                'start_date' => '2025-06-25',
-                'end_date' => '2025-06-28',
-                'is_published' => true,
-                'created_by' => $user1->id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed Expenses (requires users)
-        DB::table('expenses')->insert([
-            [
-                'title' => 'Office Supplies',
-                'description' => 'Purchase of pens, paper, and other office necessities.',
-                'amount' => 250.75,
-                'date' => '2025-06-10',
-                'category' => 'Administration',
-                'approved_by' => $user1->id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'title' => 'Electricity Bill',
-                'description' => 'Monthly electricity bill for the school building.',
-                'amount' => 1200.00,
-                'date' => '2025-06-20',
-                'category' => 'Utilities',
-                'approved_by' => $user1->id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed FeeStructures (requires grade_levels)
-        DB::table('fee_structures')->insert([
-            [
-                'name' => 'Tuition Fee - Grade 1',
-                'grade_level_id' => $grade1->id,
-                'amount' => 500.00,
-                'frequency' => 'monthly',
-                'effective_from' => '2024-09-01',
-                'effective_to' => null,
-                'description' => 'Monthly tuition fee for Grade 1 students.',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'Annual Exam Fee - Grade 12',
-                'grade_level_id' => $grade12->id,
-                'amount' => 150.00,
-                'frequency' => 'annual',
-                'effective_from' => '2024-09-01',
-                'effective_to' => null,
-                'description' => 'Annual examination fee for Grade 12 students.',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed Timetables (requires sections)
-        $timetable1 = DB::table('timetables')->insertGetId([
-            'section_id' => $section1,
-            'title' => 'Grade 1A - Semester 1 Timetable',
-            'description' => 'Regular timetable for Grade 1A students for the first semester.',
-            'is_active' => true,
-            'start_date' => '2024-09-01',
-            'end_date' => '2025-01-31',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed TimetableEntries (requires timetables, class_subjects)
-        DB::table('timetable_entries')->insert([
-            [
-                'timetable_id' => $timetable1,
-                'class_subject_id' => $classSubject1, // Algebra I for 1A
-                'start_time' => '09:00:00',
-                'end_time' => '10:00:00',
-                'day' => 'monday',
-                'room' => 'C-301',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed Exams (requires subjects)
-        $exam1 = DB::table('exams')->insertGetId([
-            'name' => 'Midterm - Algebra I',
-            'description' => 'Midterm examination for Algebra I.',
-            'subject_id' => $algebraSubjectId,
-            'date' => '2025-11-10',
-            'total_marks' => 100,
-            'passing_marks' => 50,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed Grades (requires students, exams)
-        DB::table('grades')->insert([
-            [
-                'student_id' => $student1_id,
-                'exam_id' => $exam1,
-                'marks_obtained' => 85.50,
-                'comments' => 'Good performance.',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
-        // Seed StudentFees (requires students, fee_structures)
-        $tuitionFeeGrade1 = DB::table('fee_structures')->where('name', 'Tuition Fee - Grade 1')->first();
-
-        $studentFee1 = DB::table('student_fees')->insertGetId([
-            'student_id' => $student1_id,
-            'fee_structure_id' => $tuitionFeeGrade1->id,
-            'amount' => 500.00,
-            'discount' => 0.00,
-            'paid_amount' => 250.00,
-            'status' => 'partial',
-            'due_date' => '2025-07-01',
-            'remarks' => 'Partial payment received.',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Seed Payments (requires student_fees, users)
-        DB::table('payments')->insert([
-            [
-                'student_fee_id' => $studentFee1,
-                'amount' => 250.00,
-                'payment_date' => '2025-06-20',
-                'payment_method' => 'Bank Transfer',
-                'transaction_id' => 'TXN12345',
-                'remarks' => 'First installment.',
-                'received_by' => $user2->id, // Staff user
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-
+    $users = [];
+    for ($i = 1; $i <= 10; $i++) {
+      $users[] = User::firstOrCreate(
+        ['email' => "user{$i}@example.com"],
+        [
+          'name' => "User {$i}",
+          'password' => bcrypt('password'),
+        ]
+      );
     }
+    $adminUser = $users[0];
+    $staffUser = $users[1];
+
+    DB::table('classrooms')->insert([
+      ['name' => 'Room 101', 'room_number' => 'R-101', 'capacity' => 30, 'facilities' => 'Projector, Whiteboard', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Room 102', 'room_number' => 'R-102', 'capacity' => 25, 'facilities' => 'Smartboard', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Lab A', 'room_number' => 'L-A', 'capacity' => 20, 'facilities' => 'Science equipment', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Lab B', 'room_number' => 'L-B', 'capacity' => 22, 'facilities' => 'Computer workstations', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Auditorium', 'room_number' => 'AUD-01', 'capacity' => 150, 'facilities' => 'Stage, Sound system', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Art Room', 'room_number' => 'AR-01', 'capacity' => 18, 'facilities' => 'Easels, Sinks', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Music Room', 'room_number' => 'MR-01', 'capacity' => 15, 'facilities' => 'Pianos, Instruments', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Library Room', 'room_number' => 'LIB-01', 'capacity' => 50, 'facilities' => 'Books, Computers', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Gymnasium', 'room_number' => 'GYM-01', 'capacity' => 100, 'facilities' => 'Sports equipment', 'created_at' => now(), 'updated_at' => now()],
+      ['name' => 'Counseling Office', 'room_number' => 'CO-01', 'capacity' => 5, 'facilities' => 'Private office', 'created_at' => now(), 'updated_at' => now()],
+    ]);
+
+    $bookCategories = [];
+    for ($i = 1; $i <= 10; $i++) {
+      $bookCategories[] = DB::table('book_categories')->insertGetId([
+        'name' => "Category {$i}",
+        'description' => "Description for category {$i}",
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $books = [];
+    for ($i = 1; $i <= 10; $i++) {
+      $books[] = DB::table('books')->insertGetId([
+        'title' => "Book Title {$i}",
+        'category_id' => $bookCategories[($i - 1) % count($bookCategories)],
+        'author' => "Author {$i}",
+        'isbn' => "ISBN-{$i}-" . str_pad($i, 4, '0', STR_PAD_LEFT),
+        'publication_year' => 2000 + $i,
+        'publisher' => "Publisher {$i}",
+        'quantity' => 10 + $i,
+        'description' => "Description of Book Title {$i}.",
+        'cover_image' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    DB::table('events')->insert([
+      ['title' => 'First Day of School', 'description' => 'Orientation for new students.', 'date' => '2025-09-01', 'start_time' => '08:00:00', 'end_time' => '12:00:00', 'location' => 'Auditorium', 'type' => 'academic', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'School Holiday', 'description' => 'Public holiday, school closed.', 'date' => '2025-09-02', 'start_time' => '00:00:00', 'end_time' => '23:59:59', 'location' => null, 'type' => 'holiday', 'is_holiday' => true, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Science Fair', 'description' => 'Student science projects exhibition.', 'date' => '2025-10-15', 'start_time' => '09:00:00', 'end_time' => '16:00:00', 'location' => 'Gymnasium', 'type' => 'academic', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Cultural Day', 'description' => 'Celebration of various cultures.', 'date' => '2025-11-05', 'start_time' => '10:00:00', 'end_time' => '17:00:00', 'location' => 'School Ground', 'type' => 'cultural', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Sports Tournament', 'description' => 'Inter-school sports competition.', 'date' => '2025-11-20', 'start_time' => '08:30:00', 'end_time' => '17:30:00', 'location' => 'Gymnasium', 'type' => 'sports', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Winter Concert', 'description' => 'Annual holiday music performance.', 'date' => '2025-12-10', 'start_time' => '18:00:00', 'end_time' => '20:00:00', 'location' => 'Auditorium', 'type' => 'cultural', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Christmas Break', 'description' => 'School closed for holidays.', 'date' => '2025-12-24', 'start_time' => '00:00:00', 'end_time' => '23:59:59', 'location' => null, 'type' => 'holiday', 'is_holiday' => true, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'New Year Holiday', 'description' => 'School closed for New Year.', 'date' => '2026-01-01', 'start_time' => '00:00:00', 'end_time' => '23:59:59', 'location' => null, 'type' => 'holiday', 'is_holiday' => true, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Exams Week', 'description' => 'Midterm examinations for all grades.', 'date' => '2026-02-10', 'start_time' => '08:00:00', 'end_time' => '17:00:00', 'location' => 'Various Classrooms', 'type' => 'academic', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+      ['title' => 'Spring Festival', 'description' => 'School festival with games and food.', 'date' => '2026-03-20', 'start_time' => '09:00:00', 'end_time' => '18:00:00', 'location' => 'School Ground', 'type' => 'other', 'is_holiday' => false, 'created_at' => now(), 'updated_at' => now()],
+    ]);
+
+    $gradeLevels = [];
+    for ($i = 1; $i <= 10; $i++) {
+      $gradeLevels[] = DB::table('grade_levels')->insertGetId([
+        'name' => "Grade {$i}",
+        'code' => "G{$i}",
+        'description' => "Year {$i} of education",
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $departments = [];
+    for ($i = 1; $i <= 5; $i++) {
+      $departments[] = DB::table('departments')->insertGetId([
+        'name' => "Department {$i}",
+        'description' => "Focuses on area {$i}",
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $teachers = [];
+    for ($i = 0; $i < 10; $i++) {
+      $teachers[] = DB::table('teachers')->insertGetId([
+        'user_id' => $users[rand(0, count($users) - 1)]->id,
+        'teacher_id' => 'TCH' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
+        'department_id' => $departments[$i % count($departments)],
+        'joining_date' => now()->subYears(rand(1, 5)),
+        'qualification' => 'M.A. in Education',
+        'experience' => (rand(1, 10)) . ' Years',
+        'phone' => '0123456' . str_pad($i, 2, '0', STR_PAD_LEFT),
+        'email' => "teacher{$i}@example.com",
+        'address' => "Teacher Address {$i}",
+        'specialization' => "Specialization {$i}",
+        'salary' => 45000.0 + ($i * 1000),
+        'photo' => null,
+        'cv' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $sections = [];
+    for ($i = 0; $i < 10; $i++) {
+      $sections[] = DB::table('sections')->insertGetId([
+        'name' => 'Section ' . chr(65 + $i),
+        'grade_level_id' => $gradeLevels[$i % count($gradeLevels)],
+        'teacher_id' => $teachers[$i % count($teachers)],
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $subjects = [];
+    for ($i = 1; $i <= 10; $i++) {
+      $subjects[] = DB::table('subjects')->insertGetId([
+        'name' => "Subject {$i}",
+        'code' => 'SUB' . str_pad($i, 3, '0', STR_PAD_LEFT),
+        'department_id' => $departments[($i - 1) % count($departments)],
+        'description' => "Description for Subject {$i}",
+        'credit_hours' => rand(2, 4),
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $courseOfferings = [];
+    $classrooms = DB::table('classrooms')->pluck('id');
+    for ($i = 0; $i < 10; $i++) {
+      $courseOfferings[] = DB::table('course_offerings')->insertGetId([
+        'subject_id' => $subjects[$i % count($subjects)],
+        'teacher_id' => $teachers[$i % count($teachers)],
+        'classroom_id' => $classrooms[$i % count($classrooms)],
+        'section_id' => $sections[$i % count($sections)],
+        'semester' => ($i % 2 == 0) ? 'Fall' : 'Spring',
+        'academic_year' => 2025,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $timetableSlots = [];
+    for ($i = 0; $i < 10; $i++) {
+      $timetableSlots[] = DB::table('timetable_slots')->insertGetId([
+        'course_offering_id' => $courseOfferings[$i % count($courseOfferings)],
+        'start_time' => sprintf('%02d:00:00', 8 + ($i % 8)),
+        'end_time' => sprintf('%02d:00:00', 9 + ($i % 8)),
+        'day' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'][rand(0, 4)],
+        'room_override' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $guardians = [];
+    for ($i = 0; $i < 10; $i++) {
+      $guardians[] = DB::table('guardians')->insertGetId([
+        'name' => "Guardian {$i}",
+        'phone' => '0987654' . str_pad($i, 2, '0', STR_PAD_LEFT),
+        'email' => "guardian{$i}@example.com",
+        'address' => "Guardian Address {$i}",
+        'occupation' => "Occupation {$i}",
+        'company' => "Company {$i}",
+        'relation' => ($i % 2 == 0) ? 'Father' : 'Mother',
+        'photo' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $students = [];
+    for ($i = 0; $i < 10; $i++) {
+      $students[] = DB::table('students')->insertGetId([
+        'name' => "Student Name {$i}",
+        'phone' => '0112233' . str_pad($i, 2, '0', STR_PAD_LEFT),
+        'email' => "student{$i}@example.com",
+        'address' => "Student Address {$i}",
+        'photo' => null,
+        'dob' => now()->subYears(10 + $i),
+        'gender' => ($i % 2 == 0) ? 'Male' : 'Female',
+        'grade_level_id' => $gradeLevels[$i % count($gradeLevels)],
+        'user_id' => $users[rand(0, count($users) - 1)]->id,
+        'blood_group' => ['A+', 'B+', 'O+', 'AB+'][rand(0, 3)],
+        'nationality' => 'Cambodian',
+        'religion' => 'Buddhism',
+        'admission_date' => now()->subYears(rand(1, 5)),
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('student_guardian')->insert([
+        'student_id' => $students[$i % count($students)],
+        'guardian_id' => $guardians[$i % count($guardians)],
+        'relation_to_student' => ($i % 2 == 0) ? 'Primary Contact' : 'Emergency Contact',
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('student_course')->insert([
+        'student_id' => $students[$i % count($students)],
+        'course_offering_id' => $courseOfferings[$i % count($courseOfferings)],
+        'grade_final' => rand(5000, 9900) / 100,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      $borrowerStudentId = ($i % 2 == 0) ? $students[$i % count($students)] : null;
+      $borrowerTeacherId = ($i % 2 != 0) ? $teachers[$i % count($teachers)] : null;
+
+      DB::table('book_issues')->insert([
+        'book_id' => $books[$i % count($books)],
+        'student_id' => $borrowerStudentId,
+        'teacher_id' => $borrowerTeacherId,
+        'issue_date' => now()->subDays(rand(1, 30)),
+        'due_date' => now()->addDays(rand(1, 15)),
+        'return_date' => (rand(0, 1) == 1) ? now()->subDays(rand(1, 10)) : null,
+        'fine' => (rand(0, 1) == 1) ? rand(0, 10) * 0.5 : 0.0,
+        'status' => (rand(0, 1) == 1) ? 'returned' : 'issued',
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('notices')->insert([
+        'title' => "Notice Title {$i}",
+        'content' => "This is the content for notice number {$i}, informing everyone about something important.",
+        'audience' => ['all', 'teachers', 'students', 'parents', 'staff'][rand(0, 4)],
+        'start_date' => now()->subDays(rand(1, 10)),
+        'end_date' => now()->addDays(rand(5, 15)),
+        'is_published' => (rand(0, 1) == 1),
+        'created_by' => $adminUser->id,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $expenseCategories = [];
+    for ($i = 1; $i <= 5; $i++) {
+      $expenseCategories[] = DB::table('expense_categories')->insertGetId([
+        'name' => "Expense Category {$i}",
+        'description' => "Description for expense category {$i}",
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('expenses')->insert([
+        'title' => "Expense Item {$i}",
+        'description' => "Details for expense item {$i}",
+        'amount' => rand(100, 1000) + rand(0, 99) / 100,
+        'date' => now()->subDays(rand(1, 30)),
+        'expense_category_id' => $expenseCategories[$i % count($expenseCategories)],
+        'approved_by' => $adminUser->id,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $feeStructures = [];
+    for ($i = 0; $i < 10; $i++) {
+      $feeStructures[] = DB::table('fee_structures')->insertGetId([
+        'name' => "Fee Structure {$i}",
+        'grade_level_id' => $gradeLevels[$i % count($gradeLevels)],
+        'amount' => rand(200, 1000) * 1.0,
+        'frequency' => ['monthly', 'quarterly', 'semester', 'annual'][rand(0, 2)],
+        'effective_from' => now()->subYears(1),
+        'effective_to' => null,
+        'description' => 'Standard fee for grade ' . ($i + 1),
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $timetables = [];
+    for ($i = 0; $i < 10; $i++) {
+      $timetables[] = DB::table('timetables')->insertGetId([
+        'section_id' => $sections[$i % count($sections)],
+        'title' => 'Timetable for Section ' . chr(65 + $i),
+        'description' => 'Academic year 2025-2026 timetable.',
+        'is_active' => true,
+        'start_date' => '2025-09-01',
+        'end_date' => '2026-06-30',
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('attendances')->insert([
+        'student_id' => $students[$i % count($students)],
+        'course_offering_id' => $courseOfferings[$i % count($courseOfferings)],
+        'date' => now()->subDays(rand(0, 60)),
+        'status' => ['present', 'absent', 'late', 'excused'][rand(0, 3)],
+        'remarks' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $exams = [];
+    for ($i = 0; $i < 10; $i++) {
+      $exams[] = DB::table('exams')->insertGetId([
+        'name' => "Exam {$i}",
+        'description' => "Exam for Subject {$i}",
+        'subject_id' => $subjects[$i % count($subjects)],
+        'date' => now()->addDays(rand(1, 60)),
+        'total_marks' => 100,
+        'passing_marks' => 50,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('grades')->insert([
+        'student_id' => $students[$i % count($students)],
+        'exam_id' => $exams[$i % count($exams)],
+        'marks_obtained' => rand(4000, 9500) / 100,
+        'comments' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    $studentFees = [];
+    for ($i = 0; $i < 10; $i++) {
+      $studentFees[] = DB::table('student_fees')->insertGetId([
+        'student_id' => $students[$i % count($students)],
+        'fee_structure_id' => $feeStructures[$i % count($feeStructures)],
+        'amount' => rand(100, 500) * 1.0,
+        'discount' => (rand(0, 1) == 1) ? rand(0, 20) * 1.0 : 0.0,
+        'paid_amount' => (rand(0, 1) == 1) ? rand(0, 400) * 1.0 : 0.0,
+        'status' => ['pending', 'partial', 'paid'][rand(0, 2)],
+        'due_date' => now()->addDays(rand(1, 30)),
+        'remarks' => null,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+
+    for ($i = 0; $i < 10; $i++) {
+      DB::table('payments')->insert([
+        'student_fee_id' => $studentFees[$i % count($studentFees)],
+        'amount' => rand(50, 300) * 1.0,
+        'payment_date' => now()->subDays(rand(0, 10)),
+        'payment_method' => ['Cash', 'Bank Transfer', 'Credit Card'][rand(0, 2)],
+        'transaction_id' => 'TXN' . strtoupper(uniqid()),
+        'remarks' => null,
+        'received_by' => $staffUser->id,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+    }
+  }
 }

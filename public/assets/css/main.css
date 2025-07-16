@@ -59,11 +59,24 @@
  }
 
  nav ul li .submenu .submenu {
-     margin-left: 0.5rem;
+     margin-left: 1rem;
  }
 
  nav ul>li>div.submenu {
      margin-left: 2rem;
+ }
+
+ .sidebar-collapsed nav ul>li>div.submenu {
+     margin-left: 1rem;
+ }
+
+ nav .wr-icon {
+     transition: all 0.4s;
+ }
+
+ .sidebar-collapsed nav .wr-icon {
+     height: 3vh;
+
  }
 
  div.submenu {

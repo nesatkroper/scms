@@ -1,29 +1,34 @@
 <?php
 
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBookRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
+  public function authorize(): bool
+  {
+    return true;
+  }
 
-    public function rules()
-    {
-        return [
-            'title' => 'sometimes|string|max:255',
-            'author' => 'sometimes|string|max:255',
-            'isbn' => 'sometimes|string|unique:books,isbn,' . $this->book->id . '|max:13',
-            'publication_year' => 'sometimes|integer|min:1800|max:' . date('Y'),
-            'publisher' => 'sometimes|string|max:255',
-            'quantity' => 'sometimes|integer|min:0',
-            'description' => 'nullable|string',
-            'category' => 'sometimes|string|max:100',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ];
-    }
+  public function rules(): array
+  {
+    return [
+      'title' => ['sometimes', 'string', 'max:255'],
+      'category_id' => ['sometimes', 'exists:book_categories,id'],
+      'author' => ['sometimes', 'string', 'max:255'],
+      'isbn' => [
+        'sometimes',
+        'string',
+        'max:255',
+        Rule::unique('books')->ignore($this->route('book')),
+      ],
+      'publication_year' => ['sometimes', 'integer', 'min:1000', 'max:' . (date('Y') + 5)],
+      'publisher' => ['sometimes', 'string', 'max:255'],
+      'quantity' => ['sometimes', 'integer', 'min:0'],
+      'description' => ['sometimes', 'nullable', 'string'],
+      'cover_image' => ['sometimes', 'nullable', 'string'],
+    ];
+  }
 }

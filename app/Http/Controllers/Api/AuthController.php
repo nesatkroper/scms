@@ -10,60 +10,60 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+  public function register(Request $request)
+  {
+    $request->validate([
+      'name' => 'required|string|max:255',
+      'email' => 'required|string|email|max:255|unique:users',
+      'password' => 'required|string|min:6|confirmed',
+    ]);
 
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+      'name' => $request->name,
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+    ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+    $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ], 201);
+    return response()->json([
+      'user' => $user,
+      'token' => $token,
+    ], 201);
+  }
+
+  public function login(Request $request)
+  {
+    $request->validate([
+      'email' => 'required|email',
+      'password' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user || !Hash::check($request->password, $user->password)) {
+      throw ValidationException::withMessages([
+        'email' => ['The provided credentials are incorrect.'],
+      ]);
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
+    $token = $user->createToken('api-token')->plainTextToken;
 
-        $user = User::where('email', $request->email)->first();
+    return response()->json([
+      'user' => $user,
+      'token' => $token,
+    ]);
+  }
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
+  public function logout(Request $request)
+  {
+    $request->user()->tokens()->delete();
 
-        $token = $user->createToken('api-token')->plainTextToken;
+    return response()->json(['message' => 'Logged out']);
+  }
 
-        return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ]);
-    }
-
-    public function logout(Request $request)
-    {
-        $request->user()->tokens()->delete(); 
-
-        return response()->json(['message' => 'Logged out']);
-    }
-
-    public function user(Request $request)
-    {
-        return response()->json($request->user());
-    }
+  public function user(Request $request)
+  {
+    return response()->json($request->user());
+  }
 }

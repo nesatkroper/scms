@@ -6,16 +6,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDepartmentRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-    public function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'head_id' => 'nullable|exists:teachers,id',
-        ];
-    }
+  public function authorize(): bool
+  {
+    return true;
+  }
+
+  public function rules(): array
+  {
+    return [
+      'name' => ['required', 'string', 'max:255', 'unique:departments,name'],
+      'description' => ['nullable', 'string'],
+    ];
+  }
 }

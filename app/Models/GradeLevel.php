@@ -1,23 +1,33 @@
 <?php
 
-// app/Models/GradeLevel.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GradeLevel extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'code', 'description'];
+  use HasFactory, SoftDeletes;
 
-    public function sections()
-    {
-        return $this->hasMany(Section::class);
-    }
+  protected $fillable = [
+    'name',
+    'code',
+    'description',
+  ];
 
-    public function feeStructures()
-    {
-        return $this->hasMany(FeeStructure::class);
-    }
+  public function sections()
+  {
+    return $this->hasMany(Section::class);
+  }
+
+  public function students()
+  {
+    return $this->hasMany(Student::class);
+  }
+
+  public function feeStructures()
+  {
+    return $this->hasMany(FeeStructure::class);
+  }
 }
