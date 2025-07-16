@@ -44,22 +44,19 @@
                     <li class="menu-item relative">
                         <a href="{{ route('home') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <i class="fas fa-tachometer-alt w-6 text-center"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
                             </div>
                             <span class="menu-tooltip">Dashboard</span>
                         </a>
                     </li>
-                    <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
-
-                    </li>
-
+                    <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
                     <!-- Teachers -->
                     <li class="menu-item relative">
                         <div
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <i class="fas fa-chalkboard-teacher w-6 text-center"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Teachers</span>
                             </div>
@@ -68,14 +65,15 @@
                         </div>
                         <div class="submenu">
                             <ul class="pl-2 pr-2">
-                                <li><a href="{{ route('teachers.index') }}"
+                                <li>
+                                    <a href="{{ route('teachers.index') }}"
                                         class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
-                                        All Teachers
+                                        <span>All Teachers</span>
                                     </a>
                                 </li>
                                 <li class="relative">
                                     <div
-                                        class="cursor-pointer px-4 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
+                                        class="cursor-pointer px-3 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
                                          rounded-md transition-all duration-200 js-submenu-toggle">
                                         <div class="flex items-center">
                                             <i class="ri-presentation-fill text-lg"></i>
@@ -84,20 +82,35 @@
                                         <i class="fas fa-chevron-right menu-icon text-xs"></i>
                                     </div>
                                     <div class="submenu">
-                                        <ul class="pl-4">
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Daily
-                                                    Records</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Monthly
-                                                    Reports</a></li>
+                                        <ul class="pl-2">
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <span class="ml-2">Daily Records</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                                        <span class="ml-2">Monthly Reports</span>
+                                                    </div>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
-                                        Payroll
+                                <li class="relative">
+                                    <a href="{{ route('payments.index') }}"
+                                        class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                            <span class="ml-2">Payroll</span>
+                                        </div>
                                     </a>
                                 </li>
                             </ul>
@@ -108,12 +121,11 @@
                     <li class="menu-item relative">
                         <a href="{{ route('students.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
-                                        clip-rule="evenodd" />
+                            <div class="wr-icon flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                                 <span class="ml-3 sidebar-text text-hidden">Students</span>
                             </div>
@@ -125,13 +137,8 @@
                     <li class="menu-item relative">
                         <a href="{{ route('guardians.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                            <div class="wr-icon flex items-center">
+                                <i class="ri-group-3-line text-lg"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Guardians</span>
                             </div>
                             <span class="menu-tooltip">Guardians</span>
@@ -142,7 +149,7 @@
                     <li class="menu-item relative">
                         <a href="{{ route('departments.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente" viewBox="0 0 20 20"
                                     fill="currentColor">
                                     <path fill-rule="evenodd"
@@ -159,7 +166,7 @@
                     <li class="menu-item relative">
                         <a href="{{ route('subjects.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <i class="ri-graduation-cap-fill text-xl"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Subjects</span>
                             </div>
@@ -169,7 +176,7 @@
                     <li class="menu-item relative">
                         <a href="{{ route('sections.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <i class="ri-graduation-cap-fill text-xl"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Sections</span>
                             </div>
@@ -179,13 +186,8 @@
                     <li class="menu-item relative">
                         <a href="{{ route('gradelevels.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cente"
-                                    viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                            <div class="wr-icon flex items-center">
+                                <i class="ri-stairs-fill text-lg"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Grade Levels</span>
                             </div>
                             <span class="menu-tooltip">Grade Levels</span>
@@ -194,7 +196,7 @@
                     <li class="menu-item relative">
                         <a href="{{ route('gradescales.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <i class="ri-graduation-cap-fill text-xl"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Grade scales</span>
                             </div>
@@ -202,70 +204,11 @@
                         </a>
                     </li>
 
-                    <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
-                        <span class="ml-5">Separator</span>
-                    </li>
-                    <!-- Library -->
-                    <li class="menu-item relative">
-                        <div
-                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                            <div class="flex items-center">
-                                <i class="fas fa-book-open w-6 text-center"></i>
-                                <span class="ml-3 sidebar-text text-hidden">Library</span>
-                            </div>
-                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-                            <span class="menu-tooltip">Library</span>
-                        </div>
-                        <div class="submenu">
-                            <ul class="pl-2 pr-2">
-                                <li>
-                                    <a href="{{ route('books.index') }}"
-                                        class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                                        <div class="flex items-center">
-                                            <i class="ri-book-fill text-lg"></i>
-                                            <span class="ml-2 sidebar-text">Books</span>
-                                        </div>
-                                        <span class="menu-tooltip">Books</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('bookissues.index') }}"
-                                        class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-md transition-all duration-200">
-                                        <div class="flex items-center">
-                                            <i class="ri-book-2-fill text-lg"></i>
-                                            <span class="ml-2 sidebar-text">Issue Books</span>
-                                        </div>
-                                        <span class="menu-tooltip">Issue Books</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
-                                        Books Inventory
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
-                                        Books Return
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
-                                        Overdue Books
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
                     <!-- Academics -->
                     <li class="menu-item relative">
                         <div
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                            <div class="flex items-center">
+                            <div class="wr-icon flex items-center">
                                 <i class="fas fa-book w-6 text-center"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Academics</span>
                             </div>
@@ -343,11 +286,73 @@
                         </div>
                     </li>
 
-                    <!-- Finance -->
+                    <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
+                        <span class="ml-5">Separator</span>
+                    </li>
+                    <!-- Library -->
                     <li class="menu-item relative">
                         <div
-                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                            <div class="flex items-center">
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer
+                             transition-all duration-200 js-submenu-toggle">
+                            <div class="wr-icon flex items-center">
+                                <i class="fas fa-book-open w-6 text-center"></i>
+                                <span class="ml-3 sidebar-text text-hidden">Library</span>
+                            </div>
+                            <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
+                            <span class="menu-tooltip">Library</span>
+                        </div>
+                        <div class="submenu">
+                            <ul class="pl-2 pr-2">
+                                <li>
+                                    <a href="{{ route('books.index') }}"
+                                        class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-book-fill text-lg"></i>
+                                            <span class="ml-2">Books</span>
+                                        </div>
+                                        <span class="menu-tooltip">Books</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('bookissues.index') }}"
+                                        class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-md transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-book-2-fill text-lg"></i>
+                                            <span class="ml-2">Issue Books</span>
+                                        </div>
+                                        <span class="menu-tooltip">Issue Books</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Books Inventory
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Books Return
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        Overdue Books
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Finance -->
+
+                    <li class="menu-item relative">
+                        <div
+                            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg 
+                            mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+                            <div class="wr-icon flex items-center">
                                 <i class="fas fa-money-bill-wave w-6 text-center"></i>
                                 <span class="ml-3 sidebar-text text-hidden">Finance</span>
                             </div>
@@ -355,40 +360,118 @@
                             <span class="menu-tooltip">Finance</span>
                         </div>
                         <div class="submenu">
-                            <ul class="pl-4 pr-4">
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Fee
-                                        Structure</a></li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Fee
-                                        Collection</a></li>
-                                <li><a href="#"
-                                        class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Expenses</a>
+                            <ul class="pl-2 pr-2">
+
+                                <li class="relative">
+                                    <a href="{{ route('expenses.index') }}"
+                                        class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                            <span class="ml-2">Expenses</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="relative">
+                                    <a href="{{ route('fee-structures.index') }}"
+                                        class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                        <div class="flex items-center">
+                                            <i class="ri-book-2-fill text-lg"></i>
+                                            <span class="ml-2">Structure</span>
+                                        </div>
+                                    </a>
                                 </li>
                                 <li class="relative">
                                     <div
-                                        class="px-4 flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-gray-300 transition-all duration-200 js-submenu-toggle">
-                                        <span>Reports</span>
+                                        class="cursor-pointer px-3 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
+                                         rounded-md transition-all duration-200 js-submenu-toggle">
+                                        <div class="flex items-center">
+                                            <i class="ri-presentation-fill text-lg"></i>
+                                            <span class="ml-2">Reports</span>
+                                        </div>
                                         <i class="fas fa-chevron-right menu-icon text-xs"></i>
                                     </div>
                                     <div class="submenu">
-                                        <ul class="pl-4">
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Daily
-                                                    Collection</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Monthly
-                                                    Reports</a></li>
-                                            <li><a href="#"
-                                                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Annual
-                                                    Reports</a></li>
+                                        <ul class="pl-2">
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <span class="ml-2">Daily Collection</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                                        <span class="ml-2">Monthly Reports</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                                        <span class="ml-2">Annual Reports</span>
+                                                    </div>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
+                                </li>
+                                <li class="relative">
+                                    <div
+                                        class="cursor-pointer px-3 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
+                                         rounded-md transition-all duration-200 js-submenu-toggle">
+                                        <div class="flex items-center">
+                                            <span>Reports</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right menu-icon text-xs"></i>
+                                    </div>
+                                    <div class="submenu">
+                                        <ul class="pl-2">
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <span class="ml-2">Daily Collection</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                                        <span class="ml-2">Monthly Reports</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#"class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <i class="ri-money-dollar-circle-fill text-lg"></i>
+                                                        <span class="ml-2">Annual Reports</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="{{ route('teachers.index') }}"
+                                        class="block px-3 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
+                                        <span>Collection</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-
                 </ul>
             </nav>
 
@@ -469,8 +552,8 @@
                 <!-- User profile section -->
                 <div id="sidebar-footer-profile" class="p-4 bg-indigo-900/50 dark:bg-gray-900/50 cursor-pointer ">
                     <div class="flex items-center">
-                        <img src="{{ asset('images/user.png') }}"
-                            alt="User" class="w-10 h-10 rounded-full border-2 border-indigo-500 dark:border-white">
+                        <img src="{{ asset('images/user.png') }}" alt="User"
+                            class="w-10 h-10 rounded-full border-2 border-indigo-500 dark:border-white">
                         <div class="ml-3 sidebar-text text-hidden">
                             <p class="font-medium text-white">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-indigo-300 dark:text-gray-400">{{ auth()->user()->email }}</p>

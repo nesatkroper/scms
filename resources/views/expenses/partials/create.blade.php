@@ -86,18 +86,54 @@
                             placeholder="enter date" required>
                         <p class="error mt-1 text-sm text-red-600"></p>
                     </div>
-                    <!-- approved by Field -->
+                    <!-- Approved by Field - Custom Select Version -->
                     <div class="mb-2">
                         <label for="approved_by"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Approved by <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="approved_by" name="approved_by" value="{{ old('approved_by') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('approved_by') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="enter approved by" required>
+
+                        <div data-name="approved_by"
+                            class="custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+        @error('approved_by') border-red-500 @else border-gray-400 @enderror">
+                            <div class="select-header cursor-pointer flex justify-between items-center">
+                                <span class="selected-value">
+                                    @if (old('approved_by'))
+                                        {{ $users->where('id', old('approved_by'))->first()->name ?? 'Select approver' }}
+                                    @else
+                                        Select approver
+                                    @endif
+                                </span>
+                                <span class="arrow transition-transform duration-300">▼</span>
+                            </div>
+                            <div
+                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
+                                    <input type="search"
+                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                        placeholder="Search approver...">
+                                </div>
+                                <div class="options-container">
+                                    @foreach ($users as $user)
+                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600
+                        {{ old('approved_by') == $user->id ? 'selected' : '' }}"
+                                            data-value="{{ $user->id }}">
+                                            {{ $user->name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="no-results p-2 text-center text-red-500" style="display: none;">
+                                    No results found
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden input for form submission -->
+                        <input type="hidden" name="approved_by" id="approved_by" value="{{ old('approved_by') }}">
 
                         @error('approved_by')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
