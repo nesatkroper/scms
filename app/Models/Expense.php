@@ -1,20 +1,36 @@
 <?php
 
-// app/Models/Expense.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Expense extends Model
 {
-    use HasFactory;
-    protected $fillable = ['title', 'description', 'amount', 'date', 'category', 'approved_by'];
-    protected $casts = [
-        'date' => 'date',
-    ];
-    public function approver()
-    {
-        return $this->belongsTo(User::class, 'approved_by');
-    }
+  use HasFactory, SoftDeletes;
+
+  protected $fillable = [
+    'title',
+    'description',
+    'amount',
+    'date',
+    'expense_category_id',
+    'approved_by',
+  ];
+
+  protected $casts = [
+    'amount' => 'decimal:2',
+    'date' => 'date',
+  ];
+
+  public function category()
+  {
+    return $this->belongsTo(ExpenseCategory::class, 'expense_category_id');
+  }
+
+  public function approvedBy()
+  {
+    return $this->belongsTo(User::class, 'approved_by');
+  }
 }

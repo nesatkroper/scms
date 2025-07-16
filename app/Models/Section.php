@@ -1,38 +1,38 @@
 <?php
 
-// app/Models/Section.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Section extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'grade_level_id', 'teacher_id', 'capacity'];
+  use HasFactory, SoftDeletes;
 
-    public function gradeLevel()
-    {
-        return $this->belongsTo(GradeLevel::class);
-    }
+  protected $fillable = [
+    'name',
+    'grade_level_id',
+    'teacher_id',
+  ];
 
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
-    }
+  public function gradeLevel()
+  {
+    return $this->belongsTo(GradeLevel::class);
+  }
 
-    public function students()
-    {
-        return $this->hasMany(Student::class);
-    }
+  public function teacher()
+  {
+    return $this->belongsTo(Teacher::class);
+  }
 
-    public function classSubjects()
-    {
-        return $this->hasMany(ClassSubject::class);
-    }
+  public function courseOfferings()
+  {
+    return $this->hasMany(CourseOffering::class);
+  }
 
-    public function timetables()
-    {
-        return $this->hasMany(Timetable::class);
-    }
+  public function timetables()
+  {
+    return $this->hasMany(Timetable::class);
+  }
 }

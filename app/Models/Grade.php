@@ -1,23 +1,33 @@
 <?php
 
-// app/Models/Grade.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Grade extends Model
 {
-    use HasFactory;
-    protected $fillable = ['student_id', 'exam_id', 'marks_obtained', 'comments'];
+  use HasFactory, SoftDeletes;
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
+  protected $fillable = [
+    'student_id',
+    'exam_id',
+    'marks_obtained',
+    'comments',
+  ];
 
-    public function exam()
-    {
-        return $this->belongsTo(Exam::class);
-    }
+  protected $casts = [
+    'marks_obtained' => 'decimal:2',
+  ];
+
+  public function student()
+  {
+    return $this->belongsTo(Student::class);
+  }
+
+  public function exam()
+  {
+    return $this->belongsTo(Exam::class);
+  }
 }

@@ -3,33 +3,36 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreSectionRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-    public function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'grade_level_id' => 'required|exists:grade_levels,id',
-            'teacher_id' => 'nullable|exists:teachers,id',
-            'capacity' => 'required|integer|min:1',
-        ];
-    }
+  public function authorize(): bool
+  {
+    return true;
+  }
 
+  public function rules(): array
+  {
+    return [
+      'name' => [
+        'required',
+        'string',
+        'max:255',
+        // Ensure name is unique per grade_level
+        Rule::unique('sections')->where(function ($query) {
+          return $query->where('grade_level_id', $this->grade_level_id);
+        }),
+      ],
+      'grade_level_id' => ['required', 'exists:grade_levels,id'],
+      'teacher_id' => ['nullable', 'exists:teachers,id'],
+    ];
+  }
 
-    public function messages()
-    {
-        return [
-            'name.required' => 'The section name is required.',
-            'grade_level_id.required' => 'The grade level is required.',
-            'teacher_id.exists' => 'The selected teacher does not exist.',
-            'capacity.required' => 'The capacity is required.',
-            'capacity.integer' => 'The capacity must be an integer.',
-            'capacity.min' => 'The capacity must be at least 1.',
-        ];
-    }
+  public function messages(): array
+  {
+    return [
+      'name.unique' => 'A section with this name already exists for the selected grade level.',
+    ];
+  }
 }
