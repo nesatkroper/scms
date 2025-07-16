@@ -27,7 +27,8 @@ use App\Http\Controllers\{
   TeacherController,
   TimetableController,
   TimetableEntryController,
-  HomeController
+  HomeController,
+  ScoreController
 };
 use Illuminate\Support\Facades\Auth;
 
@@ -69,7 +70,10 @@ R::prefix('/admin')
       'teachers' => TeacherController::class,
       'timetables' => TimetableController::class,
       'timetable_entries' => TimetableEntryController::class,
+      'scores' => ScoreController::class
+
     ]);
+
 
     R::prefix('/expenses')
       ->as('expenses.')
