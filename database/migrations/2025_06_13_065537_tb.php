@@ -73,7 +73,6 @@ return new class extends Migration {
 
     Schema::create('teachers', function (Blueprint $table) {
       $table->id();
-      $table->string('teacher_id')->unique();
       $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
       $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
       $table->date('joining_date');
