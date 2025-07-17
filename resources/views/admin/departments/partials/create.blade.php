@@ -20,7 +20,7 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('departments.store') }}" method="POST" class="p-4">
+        <form action="{{ route('admin.departments.store') }}" method="POST" class="p-4">
             @csrf
             
             <!-- Name Field -->

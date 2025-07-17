@@ -38,7 +38,6 @@ R::get('/', function () {
   return view('welcome');
 });
 
-
 R::prefix('/admin')
   ->as('admin.')
   ->middleware('auth')

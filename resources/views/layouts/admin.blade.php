@@ -19,11 +19,11 @@
     <!-- Main container -->
     <div class="h-screen">
       <!-- Sidebar - Default width w-72 -->
-      @include('admin.partials.sidebar')
+      @include('layouts.partials.sidebar')
       <!-- Main content -->
       <div class="flex-1 flex flex-col transition-all duration-300 md:ml-72" id="main-content">
         <!-- Header -->
-        @include('admin.partials.header')
+        @include('layouts.partials.header')
 
         <!-- Main content area -->
         <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
@@ -31,7 +31,7 @@
             @yield('content')
           </div>
         </main>
-        {{-- @include('admin.partials.footer') --}}
+        @include('layouts.partials.footer')
       </div>
     </div>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>

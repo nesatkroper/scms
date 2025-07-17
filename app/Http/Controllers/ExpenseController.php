@@ -39,8 +39,8 @@ class ExpenseController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('expenses.partials.table', compact('expenses'))->render(),
-                'cards' => view('expenses.partials.cardlist', compact('expenses'))->render(),
+                'table' => view('admin.expenses.partials.table', compact('expenses'))->render(),
+                'cards' => view('admin.expenses.partials.cardlist', compact('expenses'))->render(),
                 'pagination' => $expenses->links()->toHtml()
             ];
 
@@ -51,7 +51,7 @@ class ExpenseController extends Controller
             ]);
         }
 
-        return view('expenses.index', compact('expenses', 'users'));
+        return view('admin.expenses.index', compact('expenses', 'users'));
     }
 
     public function store(StoreExpenseRequest $request)
@@ -84,7 +84,7 @@ class ExpenseController extends Controller
     public function edit(Expense $expense)
     {
         $expense->load('approver');
-        return view('expenses.edit', compact('expense'));
+        return view('admin.expenses.edit', compact('expense'));
     }
 
     public function update(UpdateExpenseRequest $request, $id)

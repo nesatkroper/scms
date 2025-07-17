@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Books')
 @section('content')
     <div
@@ -47,24 +47,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('books.partials.table', ['books' => $books])
+            @include('admin.books.partials.table', ['books' => $books])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('books.partials.cardlist', ['books' => $books])
+            @include('admin.books.partials.cardlist', ['books' => $books])
         </div>
         {{-- pagination --}}
-        @include('books.partials.pagination')
+        @include('admin.books.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('books.partials.create')
-    @include('books.partials.edit')
-    @include('books.partials.detail')
-    @include('books.partials.delete')
-    @include('books.partials.bulkedit')
-    @include('books.partials.bulkdelete')
+    @include('admin.books.partials.create')
+    @include('admin.books.partials.edit')
+    @include('admin.books.partials.detail')
+    @include('admin.books.partials.delete')
+    @include('admin.books.partials.bulkedit')
+    @include('admin.books.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -186,7 +186,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('books.index') }}",
+                    url: "{{ route('admin.books.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -474,7 +474,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('books.bulkDelete') }}",
+                        url: "{{ route('admin.books.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -528,7 +528,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('books.getBulkData') }}",
+                    url: "{{ route('admin.books.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -689,7 +689,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('books.bulkUpdate') }}",
+                    url: "{{ route('admin.books.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         books: dataform
@@ -752,7 +752,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('books.index') }}",
+                    url: "{{ route('admin.books.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

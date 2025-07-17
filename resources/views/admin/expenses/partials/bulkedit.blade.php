@@ -21,7 +21,7 @@
         </div>
 
         <!-- Form Content -->
-        <form id="bulkEditForm" action="{{ route('subjects.bulkUpdate') }}" method="POST" class="p-4 pt-0">
+        <form id="bulkEditForm" action="{{ route('admin.expenses.bulkUpdate') }}" method="POST" class="p-4 pt-0">
             @csrf
             @method('PUT')
 

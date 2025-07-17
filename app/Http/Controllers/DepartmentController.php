@@ -30,11 +30,11 @@ class DepartmentController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('departments.partials.table', compact('departments'))->render()
+                'html' => view('admin.departments.partials.table', compact('departments'))->render()
             ]);
         }
 
-        return view('departments.index', compact('departments'));
+        return view('admin.departments.index', compact('departments'));
     }
 
     public function store(StoreDepartmentRequest $request)
@@ -70,7 +70,7 @@ class DepartmentController extends Controller
 
         return response()->json([
             'message' => "Successfully created $createdCount departments",
-            'redirect' => route('departments.index')
+            'redirect' => route('admin.departments.index')
         ]);
     }
 
@@ -173,7 +173,7 @@ class DepartmentController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount departments",
-            'redirect' => route('departments.index')
+            'redirect' => route('admin.departments.index')
         ]);
     }
 }

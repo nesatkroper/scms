@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
+use App\Models\BookCategory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,13 +19,13 @@ class BookController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-
+        $categories = BookCategory::where('name', 'like', "%{$search}%")->get();
         $books = Book::when($search, function ($query) use ($search) {
             return $query->where('title', 'like', "%{$search}%")
                 ->orWhere('author', 'like', "%{$search}%")
                 ->orWhere('isbn', 'like', "%{$search}%")
                 ->orWhere('publisher', 'like', "%{$search}%")
-                ->orWhere('category', 'like', "%{$search}%");
+                ->orWhere('category_id', 'like', "%{$search}%");
         })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
@@ -36,8 +37,8 @@ class BookController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('books.partials.table', compact('books'))->render(),
-                'cards' => view('books.partials.cardlist', compact('books'))->render(),
+                'table' => view('admin.books.partials.table', compact('books'))->render(),
+                'cards' => view('admin.books.partials.cardlist', compact('books'))->render(),
                 'pagination' => $books->links()->toHtml()
             ];
 
@@ -48,12 +49,12 @@ class BookController extends Controller
             ]);
         }
 
-        return view('books.index', compact('books'));
+        return view('admin.books.index', compact('books', 'categories'));
     }
 
     public function create()
     {
-        return view('books.create');
+        return view('admin.books.create');
     }
 
     public function store(StoreBookRequest $request)
@@ -75,7 +76,7 @@ class BookController extends Controller
                 ]);
             }
 
-            return redirect()->route('books.index')->with('success', 'Book added successfully!');
+            return redirect()->route('admin.books.index')->with('success', 'Book added successfully!');
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([
@@ -97,12 +98,12 @@ class BookController extends Controller
             ]);
         }
 
-        return view('books.show', compact('book'));
+        return view('admin.books.show', compact('book'));
     }
 
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        return view('admin.books.edit', compact('book'));
     }
 
     public function update(UpdateBookRequest $request, Book $book)
@@ -283,7 +284,7 @@ class BookController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount books",
-            'redirect' => route('books.index')
+            'redirect' => route('admin.books.index')
         ]);
     }
 }

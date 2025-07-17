@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Departments')
 @section('content')
     <div
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div id="departmentsTableContainer" class="table-respone mt-6 overflow-x-auto">
-            @include('departments.partials.table', ['departments' => $departments])
+            @include('admin.departments.partials.table', ['departments' => $departments])
         </div>
 
         {{-- pagination --}}
@@ -162,12 +162,12 @@
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('departments.partials.create')
-    @include('departments.partials.edit')
-    @include('departments.partials.detail')
-    @include('departments.partials.delete')
-    @include('departments.partials.bulkedit')
-    @include('departments.partials.bulkdelete')
+    @include('admin.departments.partials.create')
+    @include('admin.departments.partials.edit')
+    @include('admin.departments.partials.detail')
+    @include('admin.departments.partials.delete')
+    @include('admin.departments.partials.bulkedit')
+    @include('admin.departments.partials.bulkdelete')
     <style>
         #bulkActionsBar {
             z-index: 40;
@@ -588,7 +588,7 @@
                                 '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                             $.ajax({
-                                url: "{{ route('departments.bulkDelete') }}",
+                                url: "{{ route('admin.departments.bulkDelete') }}",
                                 method: 'POST',
                                 data: {
                                     ids: selectedIds
@@ -687,7 +687,7 @@
 
                     // Fetch data for selected departments
                     $.ajax({
-                        url: "{{ route('departments.getBulkData') }}",
+                        url: "{{ route('admin.departments.getBulkData') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -804,7 +804,7 @@
                     });
 
                     $.ajax({
-                        url: "{{ route('departments.bulkUpdate') }}",
+                        url: "{{ route('admin.departments.bulkUpdate') }}",
                         method: 'POST',
                         data: {
                             departments: departments
@@ -855,7 +855,7 @@
             // ===== Search Functionality =====
             function searchDepartments(searchTerm) {
                 $.ajax({
-                    url: "{{ route('departments.index') }}",
+                    url: "{{ route('admin.departments.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm

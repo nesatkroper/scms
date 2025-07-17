@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('content')
     <div class="p-4 sm:p-0">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Dashboard Overview</h1>

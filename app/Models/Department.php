@@ -24,4 +24,9 @@ class Department extends Model
   {
     return $this->hasMany(Subject::class);
   }
+  public function head()
+  {
+    return $this->belongsTo(User::class, 'head_id'); // Assuming 'head_id' is the foreign key
+  }
+  
 }
