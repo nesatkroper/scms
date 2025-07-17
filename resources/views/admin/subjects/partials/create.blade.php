@@ -23,7 +23,7 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('subjects.store') }}" method="POST" class="p-4">
+        <form action="{{ route('admin.subjects.store') }}" method="POST" class="p-4">
             @csrf
 
             <div class="h-[65vh] md:h-auto">

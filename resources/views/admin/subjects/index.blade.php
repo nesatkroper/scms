@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Subjects')
 @section('content')
     <div
@@ -52,13 +52,13 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('subjects.partials.table', ['subjects' => $subjects])
+            @include('admin.subjects.partials.table', ['subjects' => $subjects])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('subjects.partials.cardlist', ['subjects' => $subjects])
+            @include('admin.subjects.partials.cardlist', ['subjects' => $subjects])
         </div>
         {{-- pagination --}}
-        @include('subjects.partials.pagination')
+        @include('admin.subjects.partials.pagination')
 
     </div>
 
@@ -66,12 +66,12 @@
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('subjects.partials.create')
-    @include('subjects.partials.edit')
-    @include('subjects.partials.detail')
-    @include('subjects.partials.delete')
-    @include('subjects.partials.bulkedit')
-    @include('subjects.partials.bulkdelete')
+    @include('admin.subjects.partials.create')
+    @include('admin.subjects.partials.edit')
+    @include('admin.subjects.partials.detail')
+    @include('admin.subjects.partials.delete')
+    @include('admin.subjects.partials.bulkedit')
+    @include('admin.subjects.partials.bulkdelete')
 @endsection
 @push('scripts')
     <script>
@@ -193,7 +193,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
+                    url: "{{ route('admin.subjects.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -435,7 +435,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('subjects.bulkDelete') }}",
+                        url: "{{ route('admin.subjects.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -489,7 +489,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('subjects.getBulkData') }}",
+                    url: "{{ route('admin.subjects.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -616,7 +616,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('subjects.bulkUpdate') }}",
+                    url: "{{ route('admin.subjects.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         subjects: dataform
@@ -680,7 +680,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('subjects.index') }}",
+                    url: "{{ route('admin.subjects.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
