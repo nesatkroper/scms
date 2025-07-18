@@ -7,7 +7,7 @@
             </svg>
             <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-100">Delete Confirmation</h3>
             <div class="mt-2 text-sm text-gray-500 dark:text-gray-300">
-                <p>Are you sure you want to delete <span id="selectedCountText" class="font-semibold">0</span> selected departments?</p>
+                <p>Are you sure you want to delete <span id="selectedCountText" class="font-semibold">0</span> selected guardians?</p>
             </div>
             <div class="mt-4 flex justify-center space-x-4">
                 <button type="button" id="cancelBulkDeleteBtn"

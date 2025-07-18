@@ -1,7 +1,6 @@
 <!-- Edit Modal -->
 <div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div
-        class="relative h-full bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+    <div class="relative h-full bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -11,7 +10,7 @@
                     <path
                         d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
-                Edit Book
+                Edit Guardian
             </h3>
             <button id="closeEditModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -22,186 +21,165 @@
         </div>
 
         <!-- Form Content -->
-        <form id="Formedit" method="POST" enctype="multipart/form-data"
-            class="h-[65vh] md:h-[75vh] p-4 overflow-y-auto">
+        <form id="Formedit" method="POST" enctype="multipart/form-data" class="h-[65vh] md:h-[75vh] p-4 overflow-y-auto">
             @csrf
             @method('PUT')
+
             <div class="px-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                    <!-- Title Field -->
+                    <!-- Name Field -->
                     <div class="mb-2">
-                        <label for="edit_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Title <span class="text-red-500">*</span>
+                        <label for="edit_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Name <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="edit_title" name="title" value="{{ old('title') }}"
+                        <input type="text" id="edit_name" name="name"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600
-                         dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 
-                        @error('title') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter book title" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600
+                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 
+                            @error('name') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter name" required>
 
-                        @error('title')
+                        @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Author Field -->
+                    <!-- Phone Field -->
                     <div class="mb-2">
-                        <label for="edit_author"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Author <span class="text-red-500">*</span>
+                        <label for="edit_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Phone <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="edit_author" name="author" value="{{ old('author') }}"
+                        <input type="text" id="edit_phone" name="phone"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('author') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter author name" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('phone') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter phone" required>
 
-                        @error('author')
+                        @error('phone')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- ISBN Field -->
+                    <!-- Email Field -->
                     <div class="mb-2">
-                        <label for="edit_isbn" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            ISBN <span class="text-red-500">*</span>
+                        <label for="edit_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Email <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="edit_isbn" name="isbn" value="{{ old('isbn') }}"
+                        <input type="email" id="edit_email" name="email"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('isbn') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter ISBN" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('email') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter email" required>
 
-                        @error('isbn')
+                        @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Publication Year Field -->
+                    <!-- Address Field -->
                     <div class="mb-2">
-                        <label for="edit_publication_year"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Publication Year <span class="text-red-500">*</span>
+                        <label for="edit_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Address <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" id="edit_publication_year" name="publication_year" min="1900"
-                            max="{{ date('Y') + 1 }}" value="{{ old('publication_year') }}"
+                        <input type="text" id="edit_address" name="address"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('publication_year') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter publication year" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('address') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter address" required>
 
-                        @error('publication_year')
+                        @error('address')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Publisher Field -->
+                    <!-- Occupation Field -->
                     <div class="mb-2">
-                        <label for="edit_publisher"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Publisher <span class="text-red-500">*</span>
+                        <label for="edit_occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Occupation <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="edit_publisher" name="publisher" value="{{ old('publisher') }}"
+                        <input type="text" id="edit_occupation" name="occupation"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('publisher') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter publisher" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('occupation') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter occupation" required>
 
-                        @error('publisher')
+                        @error('occupation')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Quantity Field -->
+                    <!-- Company Field -->
                     <div class="mb-2">
-                        <label for="edit_quantity"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Quantity <span class="text-red-500">*</span>
+                        <label for="edit_company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Company <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" id="edit_quantity" name="quantity" min="0"
-                            value="{{ old('quantity') }}"
+                        <input type="text" id="edit_company" name="company"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('quantity') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter quantity" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('company') border-red-500 @else border-gray-400 @enderror"
+                            placeholder="Enter company name" required>
 
-                        @error('quantity')
+                        @error('company')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Category Field -->
+                    <!-- Relation Field -->
                     <div class="mb-2">
-                        <label for="edit_category"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Category <span class="text-red-500">*</span>
+                        <label for="edit_relation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Relation <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="edit_category" name="category" value="{{ old('category') }}"
+                        <select id="edit_relation" name="relation" required
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('category') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter category" required>
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('relation') border-red-500 @else border-gray-400 @enderror">
+                            <option value="">Select Relation</option>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Other">Other</option>
+                        </select>
 
-                        @error('category')
+                        @error('relation')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Cover Image Field -->
+                    <!-- Photo Field -->
                     <div class="mb-2">
-                        <label for="edit_cover_image"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Cover Image
+                        <label for="edit_photo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Photo
                         </label>
-                        <input type="file" id="edit_cover_image" name="cover_image" accept="image/*"
+                        <input type="file" id="edit_photo" name="photo" accept="image/*"
                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 
-                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('cover_image') border-red-500 @else border-gray-400 @enderror">
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                            @error('photo') border-red-500 @else border-gray-400 @enderror">
 
-                        <!-- Current cover image display -->
-                        <div id="currentCoverImage" class="mt-2">
-                            <input type="hidden" id="current_cover_image" name="current_cover_image">
+                        <!-- Current photo display -->
+                        <div id="currentPhoto" class="mt-2">
+                            <input type="hidden" id="current_photo" name="current_photo">
                             <div class="flex items-center mt-2">
-                                <input type="checkbox" name="cover_image_removed" id="cover_image_removed"
-                                    class="mr-2">
-                                <label for="cover_image_removed" class="text-sm text-gray-600 dark:text-gray-300">
-                                    Remove current cover image
+                                <input type="checkbox" name="photo_removed" id="photo_removed" class="mr-2">
+                                <label for="photo_removed" class="text-sm text-gray-600 dark:text-gray-300">
+                                    Remove current photo
                                 </label>
                             </div>
                         </div>
 
-                        @error('cover_image')
+                        @error('photo')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
-
-                <!-- Description Field (full width) -->
-                <div class="mb-2">
-                    <label for="edit_description"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Description
-                    </label>
-                    <textarea id="edit_description" name="description" rows="3"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                    @error('description') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter book description">{{ old('description') }}</textarea>
-
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
             </div>
+
             <!-- Form Actions -->
             <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" id="cancelEditModal"
@@ -216,8 +194,7 @@
                 <button type="submit" id="saveEditBtn"
                     class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
                     <span class="btn-content flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                            fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                 clip-rule="evenodd" />
@@ -227,6 +204,5 @@
                 </button>
             </div>
         </form>
-
     </div>
 </div>

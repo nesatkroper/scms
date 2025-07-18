@@ -45,7 +45,9 @@
             @include('guardians.partials.cardlist', ['guardians' => $guardians])
         </div>
         {{-- pagination --}}
-        @include('guardians.partials.pagination')
+        <div class="mt-4">
+            {{ $guardians->links() }}
+        </div>
     </div>
 
     <!-- Modal Backdrop -->
@@ -69,64 +71,6 @@
                 }
             });
 
-            selectfields();
-
-            function selectfields() {
-                document.querySelectorAll('.custom-select').forEach(select => {
-                    const header = select.querySelector('.select-header');
-                    const optionsBox = select.querySelector('.select-options');
-                    const searchInput = select.querySelector('.search-input');
-                    const optionsContainer = select.querySelector('.options-container');
-                    const selectedValue = select.querySelector('.selected-value');
-                    const noResults = select.querySelector('.no-results');
-                    const options = Array.from(select.querySelectorAll('.select-option'));
-                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-                    // Toggle dropdown
-                    header.addEventListener('click', function() {
-                        select.classList.toggle('open');
-                        if (select.classList.contains('open')) {
-                            searchInput.focus();
-                        }
-                    });
-
-                    // Filter options
-                    searchInput.addEventListener('input', function() {
-                        const term = this.value.toLowerCase().trim();
-                        let hasMatch = false;
-
-                        options.forEach(option => {
-                            if (option.textContent.toLowerCase().includes(term)) {
-                                option.style.display = 'block';
-                                hasMatch = true;
-                            } else {
-                                option.style.display = 'none';
-                            }
-                        });
-
-                        noResults.style.display = hasMatch ? 'none' : 'block';
-                    });
-
-                    // Select option
-                    options.forEach(option => {
-                        option.addEventListener('click', function() {
-                            options.forEach(opt => opt.classList.remove('selected'));
-                            this.classList.add('selected');
-                            selectedValue.textContent = this.textContent;
-                            hiddenInput.value = this.dataset.value;
-                            select.classList.remove('open');
-                        });
-                    });
-
-                    // Close when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!select.contains(e.target)) {
-                            select.classList.remove('open');
-                        }
-                    });
-                });
-            }
-
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');
@@ -142,17 +86,6 @@
             const deselectAllBtn = $('#deselectAll');
             const bulkEditBtn = $('#bulkEditBtn');
             const bulkDeleteBtn = $('#bulkDeleteBtn');
-
-            const openCreateBtn = document.getElementById('openCreateModal');
-            if (openCreateBtn) {
-                openCreateBtn.addEventListener('click', function() {
-                    showModal('Modalcreate');
-                });
-            }
-
-            $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
-                closeModal('bulkEditModal');
-            });
 
             // View Management
             function setView(viewType) {
@@ -244,28 +177,21 @@
 
                 const guardianId = $(this).data('id');
 
-                $.get(`/guardians/${guardianId}`)
+                $.get(`/guardians/${guardianId}/edit`)
                     .done(function(response) {
-                        if (response.success) {
-                            $('#edit_user_id').val(response.guardian.user_id);
-                            $('#edit_occupation').val(response.guardian.occupation);
-                            $('#edit_company').val(response.guardian.company);
-                            $('#edit_relation').val(response.guardian.relation);
-
-                            // Load associated students
-                            if (response.guardian.students && response.guardian.students.length > 0) {
-                                const studentSelect = $('#edit_student_ids');
-                                studentSelect.empty();
-                                response.guardian.students.forEach(student => {
-                                    studentSelect.append(new Option(`${student.first_name} ${student.last_name}`, student.id, true, true));
-                                });
-                                studentSelect.trigger('change');
-                            }
+                        if (response) {
+                            $('#edit_name').val(response.name);
+                            $('#edit_phone').val(response.phone);
+                            $('#edit_email').val(response.email);
+                            $('#edit_address').val(response.address);
+                            $('#edit_occupation').val(response.occupation);
+                            $('#edit_company').val(response.company);
+                            $('#edit_relation').val(response.relation);
 
                             $('#Formedit').attr('action', `/guardians/${guardianId}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load guardian data');
+                            ShowTaskMessage('error', 'Failed to load guardian data');
                         }
                     })
                     .fail(function(xhr) {
@@ -363,23 +289,25 @@
 
                 $.get(`/guardians/${guardianId}`)
                     .done(function(response) {
-                        if (response.success) {
-                            const guardian = response.guardian;
-                            const createdAt = guardian.created_at ? guardian.created_at.substring(0, 10) : '';
-                            const updatedAt = guardian.updated_at ? guardian.updated_at.substring(0, 10) : '';
+                        if (response) {
+                            const createdAt = response.created_at ? response.created_at.substring(0, 10) : '';
+                            const updatedAt = response.updated_at ? response.updated_at.substring(0, 10) : '';
 
-                            $('#detail_user_id').val(guardian.user ? `${guardian.user.first_name} ${guardian.user.last_name}` : '');
-                            $('#detail_occupation').val(guardian.occupation ?? '');
-                            $('#detail_company').val(guardian.company ?? '');
-                            $('#detail_relation').val(guardian.relation ?? '');
+                            $('#detail_name').val(response.name ?? '');
+                            $('#detail_phone').val(response.phone ?? '');
+                            $('#detail_email').val(response.email ?? '');
+                            $('#detail_address').val(response.address ?? '');
+                            $('#detail_occupation').val(response.occupation ?? '');
+                            $('#detail_company').val(response.company ?? '');
+                            $('#detail_relation').val(response.relation ?? '');
                             $('#detail_created_at').val(createdAt);
                             $('#detail_updated_at').val(updatedAt);
 
                             // Display associated students
-                            if (guardian.students && guardian.students.length > 0) {
+                            if (response.students && response.students.length > 0) {
                                 let studentsHtml = '<ul class="list-disc pl-5">';
-                                guardian.students.forEach(student => {
-                                    studentsHtml += `<li>${student.first_name} ${student.last_name}</li>`;
+                                response.students.forEach(student => {
+                                    studentsHtml += `<li>${student.name} (${student.pivot.relation_to_student})</li>`;
                                 });
                                 studentsHtml += '</ul>';
                                 $('#detail_students').html(studentsHtml);
@@ -389,7 +317,7 @@
 
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load guardian details');
+                            ShowTaskMessage('error', 'Failed to load guardian details');
                         }
                     })
                     .fail(function(xhr) {
@@ -522,6 +450,54 @@
                                     
                                     <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                         <div class="mb-4">
+                                            <label for="guardians[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                Name
+                                            </label>
+                                            <input type="text" id="guardians[${index}][name]" name="guardians[${index}][name]"
+                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                                border-gray-400"
+                                                value="${guardian.name}"
+                                                placeholder="Enter name">
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="guardians[${index}][phone]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                Phone
+                                            </label>
+                                            <input type="text" id="guardians[${index}][phone]" name="guardians[${index}][phone]"
+                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                                border-gray-400"
+                                                value="${guardian.phone}"
+                                                placeholder="Enter phone number">
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="guardians[${index}][email]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                Email
+                                            </label>
+                                            <input type="email" id="guardians[${index}][email]" name="guardians[${index}][email]"
+                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                                border-gray-400"
+                                                value="${guardian.email}"
+                                                placeholder="Enter email">
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="guardians[${index}][address]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                Address
+                                            </label>
+                                            <input type="text" id="guardians[${index}][address]" name="guardians[${index}][address]"
+                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                                border-gray-400"
+                                                value="${guardian.address}"
+                                                placeholder="Enter address">
+                                        </div>
+
+                                        <div class="mb-4">
                                             <label for="guardians[${index}][occupation]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                                 Occupation
                                             </label>
@@ -584,6 +560,10 @@
                 $('.sub-field').each(function(index) {
                     const guardian = {
                         id: $(this).find('input[type="hidden"]').val(),
+                        name: $(this).find('input[name$="[name]"]').val(),
+                        phone: $(this).find('input[name$="[phone]"]').val(),
+                        email: $(this).find('input[name$="[email]"]').val(),
+                        address: $(this).find('input[name$="[address]"]').val(),
                         occupation: $(this).find('input[name$="[occupation]"]').val(),
                         company: $(this).find('input[name$="[company]"]').val(),
                         relation: $(this).find('input[name$="[relation]"]').val()
@@ -750,6 +730,11 @@
                             }
                         });
                     }
+                });
+
+                // Create modal open
+                $('#openCreateModal').on('click', function() {
+                    showModal('Modalcreate');
                 });
 
                 // Attach initial event handlers

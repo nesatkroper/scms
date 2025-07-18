@@ -1,4 +1,4 @@
-<!-- Detail Book Modal -->
+<!-- Detail Modal -->
 <div id="Modaldetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div class="relative h-full bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
@@ -11,7 +11,7 @@
                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
                         clip-rule="evenodd" />
                 </svg>
-                Book Details
+                Guardian Details
             </h3>
             <button id="closeDetailModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -23,98 +23,91 @@
         
         <!-- Content -->
         <div class="h-[65vh] md:h-[75vh] p-4 overflow-y-auto">
-            <!-- Cover Image -->
+            <!-- Photo -->
             <div class="mb-4 flex justify-center">
-                <div id="detailCoverImage" class="h-48 w-32 bg-gray-100 dark:bg-gray-700 flex items-center justify-center rounded-md overflow-hidden">
+                <div id="detailPhoto" class="h-48 w-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center rounded-full overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                <!-- Title Field -->
+                <!-- Name Field -->
                 <div class="mb-2">
-                    <label for="detail_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Title
+                    <label for="detail_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Name
                     </label>
-                    <input type="text" id="detail_title" name="detail_title"
+                    <input type="text" id="detail_name" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
-                <!-- Author Field -->
+                <!-- Phone Field -->
                 <div class="mb-2">
-                    <label for="detail_author" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Author
+                    <label for="detail_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Phone
                     </label>
-                    <input type="text" id="detail_author" name="detail_author"
+                    <input type="text" id="detail_phone" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
-                <!-- ISBN Field -->
+                <!-- Email Field -->
                 <div class="mb-2">
-                    <label for="detail_isbn" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        ISBN
+                    <label for="detail_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Email
                     </label>
-                    <input type="text" id="detail_isbn" name="detail_isbn"
+                    <input type="text" id="detail_email" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
-                <!-- Publication Year Field -->
+                <!-- Address Field -->
                 <div class="mb-2">
-                    <label for="detail_publication_year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Publication Year
+                    <label for="detail_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Address
                     </label>
-                    <input type="text" id="detail_publication_year" name="detail_publication_year"
+                    <input type="text" id="detail_address" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
-                <!-- Publisher Field -->
+                <!-- Occupation Field -->
                 <div class="mb-2">
-                    <label for="detail_publisher" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Publisher
+                    <label for="detail_occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Occupation
                     </label>
-                    <input type="text" id="detail_publisher" name="detail_publisher"
+                    <input type="text" id="detail_occupation" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
-                <!-- Quantity Field -->
+                <!-- Company Field -->
                 <div class="mb-2">
-                    <label for="detail_quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Quantity Available
+                    <label for="detail_company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Company
                     </label>
-                    <input type="text" id="detail_quantity" name="detail_quantity"
+                    <input type="text" id="detail_company" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
-                <!-- Category Field -->
+                <!-- Relation Field -->
                 <div class="mb-2">
-                    <label for="detail_category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Category
+                    <label for="detail_relation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Relation
                     </label>
-                    <input type="text" id="detail_category" name="detail_category"
+                    <input type="text" id="detail_relation" readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"
-                        disabled readonly>
+                        dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
 
                 <!-- Created At Field -->
@@ -122,22 +115,22 @@
                     <label for="detail_created_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Date Added
                     </label>
-                    <input type="date" id="detail_created_at" name="detail_created_at" disabled readonly
+                    <input type="date" id="detail_created_at" disabled readonly
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                         dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
                 </div>
             </div>
 
-            <!-- Description Field (full width) -->
+            <!-- Associated Students -->
             <div class="mb-2">
-                <label for="detail_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Description
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Associated Students
                 </label>
-                <textarea id="detail_description" name="detail_description" rows="3" disabled readonly
-                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                    dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100"></textarea>
+                <div id="detail_students" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700
+                    dark:border-gray-500 dark:text-white border-slate-300 bg-slate-100">
+                    <p class="text-gray-500 dark:text-gray-400">No associated students</p>
+                </div>
             </div>
         </div>
 

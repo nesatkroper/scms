@@ -59,13 +59,30 @@ class GuardianController extends Controller
         return view('guardians.create');
     }
 
-    public function store(StoreGuardianRequest $request)
+    // public function store(StoreGuardianRequest $request)
+    // {
+    //     $guardian = Guardian::create($request->validated());
+    //     $guardian->load('students');
+    //     return redirect()->route('guardians.index')->with('success', 'Guardian added successfully!');
+    // }
+     public function store(StoreGuardianRequest $request)
     {
-        $guardian = Guardian::create($request->validated());
-        $guardian->load('students');
-        return redirect()->route('guardians.index')->with('success', 'Guardian added successfully!');
+        $data = $request->validated();
+        
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('guardian_photos', 'public');
+            $data['photo'] = $path;
+        }
+    
+        $guardian = Guardian::create($data);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Guardian created successfully',
+            'data' => $guardian
+        ]);
     }
-
     public function show(Guardian $guardian)
     {
         $guardian->load('students');
