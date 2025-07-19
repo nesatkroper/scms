@@ -42,8 +42,8 @@ class SectionController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('sections.partials.table', compact('sections'))->render(),
-                'cards' => view('sections.partials.cardlist', compact('sections'))->render(),
+                'table' => view('admin.sections.partials.table', compact('sections'))->render(),
+                'cards' => view('admin.sections.partials.cardlist', compact('sections'))->render(),
                 'pagination' => $sections->links()->toHtml()
             ];
 
@@ -54,7 +54,7 @@ class SectionController extends Controller
             ]);
         }
 
-        return view('sections.index', compact('sections', 'gradeLevels', 'teachers'));
+        return view('admin.sections.index', compact('sections', 'gradeLevels', 'teachers'));
     }
 
     public function store(StoreSectionRequest $request)
@@ -212,7 +212,7 @@ class SectionController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount sections",
-            'redirect' => route('sections.index')
+            'redirect' => route('admin.sections.index')
         ]);
     }
 }

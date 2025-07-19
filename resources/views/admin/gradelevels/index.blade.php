@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Grade Levels')
 @section('content')
 
@@ -49,24 +49,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('gradelevels.partials.table', ['gradelevels' => $gradelevels])
+            @include('admin.gradelevels.partials.table', ['gradelevels' => $gradelevels])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('gradelevels.partials.cardlist', ['gradelevels' => $gradelevels])
+            @include('admin.gradelevels.partials.cardlist', ['gradelevels' => $gradelevels])
         </div>
         {{-- pagination --}}
-        @include('gradelevels.partials.pagination')
+        @include('admin.gradelevels.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('gradelevels.partials.create')
-    @include('gradelevels.partials.edit')
-    @include('gradelevels.partials.detail')
-    @include('gradelevels.partials.delete')
-    @include('gradelevels.partials.bulkedit')
-    @include('gradelevels.partials.bulkdelete')
+    @include('admin.gradelevels.partials.create')
+    @include('admin.gradelevels.partials.edit')
+    @include('admin.gradelevels.partials.detail')
+    @include('admin.gradelevels.partials.delete')
+    @include('admin.gradelevels.partials.bulkedit')
+    @include('admin.gradelevels.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -130,7 +130,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('admin.gradelevels.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -192,16 +192,16 @@
                 e.preventDefault();
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">loading...</span>');
                 editBtn.prop('disabled', true);
                 const Id = $(this).data('id');
-                $.get(`/gradelevels/${Id}`)
+                $.get(`/admin/gradelevels/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             $('#edit_name').val(response.gradeLevel.name);
                             $('#edit_code').val(response.gradeLevel.code);
                             $('#edit_description').val(response.gradeLevel.description);
-                            $('#Formedit').attr('action', `/gradelevels/${Id}`);
+                            $('#Formedit').attr('action', `gradelevels/${Id}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load grade level data');
@@ -229,6 +229,7 @@
                     url: form.attr('action'),
                     method: 'POST',
                     data: form.serialize() + '&_method=PUT',
+                    
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modaledit');
@@ -252,7 +253,7 @@
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/gradelevels/${Id}`);
+                $('#Formdelete').attr('action', `/admin/gradelevels/${Id}`);
                 showModal('Modaldelete');
             }
 
@@ -293,12 +294,12 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
                 detailBtn.prop('disabled', true);
 
                 const Id = $(this).data('id');
 
-                $.get(`/gradelevels/${Id}`)
+                $.get(`/admin/gradelevels/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const gradelevel = response.gradeLevel;
@@ -367,7 +368,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('gradelevels.bulkDelete') }}",
+                        url: "{{ route('admin.gradelevels.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -421,7 +422,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('gradelevels.getBulkData') }}",
+                    url: "{{ route('admin.gradelevels.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -518,7 +519,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('gradelevels.bulkUpdate') }}",
+                    url: "{{ route('admin.gradelevels.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         grade_levels: dataform
@@ -582,7 +583,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('admin.gradelevels.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

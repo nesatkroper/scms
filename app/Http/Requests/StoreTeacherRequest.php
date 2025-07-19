@@ -16,7 +16,7 @@ class StoreTeacherRequest extends FormRequest
   {
     return [
       'user_id' => ['nullable', 'exists:users,id'],  // If connecting to an existing user
-      'teacher_id' => ['required', 'string', 'max:255', 'unique:teachers,teacher_id'],
+      'name' => ['required', 'string', 'max:255'],
       'department_id' => ['nullable', 'exists:departments,id'],
       'joining_date' => ['required', 'date'],
       'qualification' => ['required', 'string', 'max:255'],

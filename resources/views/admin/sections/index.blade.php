@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Sections')
 @section('content')
     <div
@@ -48,24 +48,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('sections.partials.table', ['sections' => $sections])
+            @include('admin.sections.partials.table', ['sections' => $sections])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('sections.partials.cardlist', ['sections' => $sections])
+            @include('admin.sections.partials.cardlist', ['sections' => $sections])
         </div>
         {{-- pagination --}}
-        @include('sections.partials.pagination')
+        @include('admin.sections.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('sections.partials.create')
-    @include('sections.partials.edit')
-    @include('sections.partials.detail')
-    @include('sections.partials.delete')
-    @include('sections.partials.bulkedit')
-    @include('sections.partials.bulkdelete')
+    @include('admin.sections.partials.create')
+    @include('admin.sections.partials.edit')
+    @include('admin.sections.partials.detail')
+    @include('admin.sections.partials.delete')
+    @include('admin.sections.partials.bulkedit')
+    @include('admin.sections.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -187,7 +187,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('sections.index') }}",
+                    url: "{{ route('admin.sections.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -254,7 +254,7 @@
 
                 const Id = $(this).data('id');
 
-                $.get(`/sections/${Id}`)
+                $.get(`/admin/sections/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             $('#edit_name').val(response.section.name);
@@ -357,7 +357,7 @@
 
                 const sectionId = $(this).data('id');
 
-                $.get(`/sections/${sectionId}`)
+                $.get(`admin/sections/${sectionId}`)
                     .done(function(response) {
                         if (response.success) {
                             const section = response.section;
@@ -428,7 +428,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('sections.bulkDelete') }}",
+                        url: "{{ route('admin.sections.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -482,7 +482,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('sections.getBulkData') }}",
+                    url: "{{ route('admin.sections.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -601,7 +601,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('sections.bulkUpdate') }}",
+                    url: "{{ route('admin.sections.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         sections: dataform
@@ -664,7 +664,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('sections.index') }}",
+                    url: "{{ route('admin.sections.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

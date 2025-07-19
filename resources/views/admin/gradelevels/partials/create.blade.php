@@ -22,7 +22,7 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('gradelevels.store') }}" method="POST" class="p-4">
+        <form action="{{ route('admin.gradelevels.store') }}" method="POST" class="p-4">
             @csrf
 
             <div class="h-[65vh] md:h-auto">

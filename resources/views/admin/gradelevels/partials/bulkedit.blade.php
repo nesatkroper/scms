@@ -10,7 +10,7 @@
                     <path
                         d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
-                Bulk Edit Subject (<span id="bulkEditCount">0</span>/5)
+                Bulk Edit grade level (<span id="bulkEditCount">0</span>/5)
             </h3>
             <button id="closeBulkEditModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Form Content -->
-        <form id="bulkEditForm" action="{{ route('subjects.bulkUpdate') }}" method="POST" class="p-4 pt-0">
+        <form id="bulkEditForm" action="{{ route('admin.subjects.bulkUpdate') }}" method="POST" class="p-4 pt-0">
             @csrf
             @method('PUT')
 
