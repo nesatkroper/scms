@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     AuthController,
     AttendanceController,
     BookController,
+    BookCategoryController,
     BookIssueController,
     ClassroomController,
     DepartmentController,
@@ -14,7 +15,6 @@ use App\Http\Controllers\{
     FeeStructureController,
     GradeController,
     GradeLevelController,
-    GradeScaleController,
     GuardianController,
     NoticeController,
     PaymentController,
@@ -47,6 +47,7 @@ R::prefix('/admin')
 
         R::resources([
             'attendances' => AttendanceController::class,
+            'bookcategory' => BookCategoryController::class,
             'books' => BookController::class,
             'bookissues' => BookIssueController::class,
             'classrooms' => ClassroomController::class,
@@ -57,7 +58,6 @@ R::prefix('/admin')
             'feestructures' => FeeStructureController::class,
             'grades' => GradeController::class,
             'gradelevels' => GradeLevelController::class,
-            'gradescales' => GradeScaleController::class,
             'guardians' => GuardianController::class,
             'notices' => NoticeController::class,
             'payments' => PaymentController::class,
@@ -77,6 +77,7 @@ R::prefix('/admin')
             'expenses' => ExpenseController::class,
             'sections' => SectionController::class,
             'bookissues' => BookIssueController::class,
+            'bookcategory' => BookCategoryController::class,
             'books' => BookController::class,
             'students' => StudentController::class,
             'guardians' => GuardianController::class,
@@ -84,6 +85,7 @@ R::prefix('/admin')
             'gradelevels' => GradeLevelController::class,
             'subjects' => SubjectController::class,
             'teachers' => TeacherController::class,
+            
         ];
 
         foreach ($bulkRoutes as $prefix => $controller) {

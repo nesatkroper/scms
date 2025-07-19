@@ -2,13 +2,8 @@
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
         <tr class="text-nowrap">
             <th scope="col" class="px-4 py-4">Id</th>
-            <th scope="col" class="px-4 py-4">Title</th>
-            <th scope="col" class="px-4 py-4">Author</th>
-            <th scope="col" class="px-4 py-4">ISBN</th>
-            <th scope="col" class="px-4 py-4">Year</th>
-            <th scope="col" class="px-4 py-4">Publisher</th>
-            <th scope="col" class="px-4 py-4">Quantity</th>
-            <th scope="col" class="px-4 py-4">Category</th>
+            <th scope="col" class="px-4 py-4">Name</th>
+            <th scope="col" class="px-4 py-4">Description</th>
             <th scope="col" class="px-4 py-4">Date</th>
             <th scope="col" class="px-4 py-4">Actions</th>
             <th scope="col" class="px-2 py-4 w-20 flex gap-1.5 items-center">
@@ -26,22 +21,15 @@
         </tr>
     </thead>
     <tbody>
-        @if (count($books) > 0)
-            @foreach ($books as $book)
+        @if (count($categories) > 0)
+            @foreach ($categories as $categorie)
                 <tr
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
-                    <td class="px-4 py-2">{{ $book->id }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($book->title, 30) }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($book->author, 20) }}</td>
-                    <td class="px-4 py-2">{{ $book->isbn }}</td>
-                    <td class="px-4 py-2">{{ $book->publication_year }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($book->publisher, 20) }}</td>
-                    <td class="px-4 py-2">{{ $book->quantity }}</td>
+                    <td class="px-4 py-2">{{ $categorie->id }}</td>
+                    <td class="px-4 py-2">{{ $categorie->name }} ({{ $categorie->books?->count() ?? 0 }})</td>
+                    <td class="px-4 py-2">{{ Str::limit($categorie->description, 30) }}</td>
                     <td class="px-4 py-2">
-                        {!! Str::limit($book->category?->name, 20) ?? '<span class="text-red-500">No category</span>' !!}
-                    </td>
-                    <td class="px-4 py-2">
-                        {{ $book->created_at->format('Y-m-d') }}
+                        {{ $categorie->created_at->format('Y-m-d') }}
                     </td>
 
                     <td class="px-4 py-2 text-right">
@@ -60,9 +48,9 @@
                             <div class="dropdown-menu hidden absolute w-auto right-0 z-10 mt-2 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                                 role="menu">
                                 <div class="py-1" role="none">
-                                    <a href="#" title="Edit Id({{ $book->id }})"
+                                    <a href="#" title="Edit Id({{ $categorie->id }})"
                                         class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-                                        data-id="{{ $book->id }}">
+                                        data-id="{{ $categorie->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -72,9 +60,9 @@
                                             Edit
                                         </span>
                                     </a>
-                                    <a href="#" title="Details Id({{ $book->id }})"
+                                    <a href="#" title="Details Id({{ $categorie->id }})"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
-                                        data-id="{{ $book->id }}">
+                                        data-id="{{ $categorie->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -85,9 +73,9 @@
                                             Details
                                         </span>
                                     </a>
-                                    <button href="#" title="Delete Id({{ $book->id }})"
+                                    <button href="#" title="Delete Id({{ $categorie->id }})"
                                         class="delete-btn text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-                                        data-id="{{ $book->id }}">
+                                        data-id="{{ $categorie->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -103,7 +91,7 @@
                         </div>
                     </td>
                     <td class="px-2 py-2">
-                        <input type="checkbox" name="selected_ids[]" value="{{ $book->id }}"
+                        <input type="checkbox" name="selected_ids[]" value="{{ $categorie->id }}"
                             class="row-checkbox appearance-none size-4 
                             border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
                             checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
@@ -126,12 +114,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Books Found</h3>
-                            <p class="mt-2 text-sm text-red-500 dark:text-red-500">Add your first book to get started
+                            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No data Found</h3>
+                            <p class="mt-2 text-sm text-red-500 dark:text-red-500">Create your first data to get started
                             </p>
                         </div>
                     </div>
                 </td>
+
             </tr>
         @endif
     </tbody>
@@ -143,7 +132,7 @@
     <div class="flex flex-col items-start gap-1">
         <!-- Count Display -->
         <div class="text-sm text-gray-700 dark:text-gray-300">
-            <span id="selectedCount">0</span> books selected
+            <span id="selectedCount">0</span> records selected
         </div>
 
         <!-- Deselect All -->

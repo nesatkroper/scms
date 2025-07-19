@@ -19,7 +19,7 @@ class UpdateBookCategoryRequest extends FormRequest
         'sometimes',
         'string',
         'max:255',
-        Rule::unique('book_categories')->ignore($this->route('book_category')),
+        Rule::unique('book_categories')->ignore($this->bookcategory),
       ],
       'description' => ['sometimes', 'nullable', 'string'],
     ];

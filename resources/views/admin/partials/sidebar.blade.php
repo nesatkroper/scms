@@ -172,17 +172,6 @@
           <span class="menu-tooltip">Grade Levels</span>
         </a>
       </li>
-      <li class="menu-item relative">
-        <a href="{{ route('admin.gradescales.index') }}"
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-          <div class="wr-icon flex items-center">
-            <i class="ri-graduation-cap-fill text-xl"></i>
-            <span class="ml-3 sidebar-text text-hidden">Grade scales</span>
-          </div>
-          <span class="menu-tooltip">Grade scales</span>
-        </a>
-      </li>
-
       <!-- Academics -->
       <li class="menu-item relative">
         <div

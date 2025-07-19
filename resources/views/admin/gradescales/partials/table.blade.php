@@ -24,20 +24,16 @@
         </tr>
     </thead>
     <tbody>
-        @if (count($gradeScales) > 0)
-            @foreach ($gradeScales as $gradeScale)
+        @if (count($departments) > 0)
+            @foreach ($departments as $department)
                 <tr
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
-                    <td class="px-4 py-2">{{ $gradeScale->id }}</td>
-                    <td class="px-4 py-2">{{ $gradeScale->name }}</td>
-                    <td class="px-4 py-2">{{ $gradeScale->min_percentage }}%</td>
-                    <td class="px-4 py-2">{{ $gradeScale->max_percentage }}%</td>
-                    <td class="px-4 py-2">{{ $gradeScale->gpa }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($gradeScale->description, 30) }}</td>
+                    <td class="px-4 py-2">{{ $department->id }}</td>
+                    <td class="px-4 py-2">{{ $department->name }}</td>
+                    <td class="px-4 py-2">{{ Str::limit($department->description, 50) }}</td>
                     <td class="px-4 py-2">
-                        {{ $gradeScale->created_at->format('Y-m-d') }}
+                        {{ $department->created_at->format('Y-m-d') }}
                     </td>
-
                     <td class="px-4 py-2 text-right">
                         <div class="relative">
                             <button
@@ -54,9 +50,9 @@
                             <div class="dropdown-menu hidden absolute w-auto right-0 z-10 mt-2 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
                                 role="menu">
                                 <div class="py-1" role="none">
-                                    <a href="#" title="Edit Id({{ $gradeScale->id }})"
+                                    <a href="#" title="Edit Id({{ $department->id }})"
                                         class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-                                        data-id="{{ $gradeScale->id }}">
+                                        data-id="{{ $department->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -66,9 +62,9 @@
                                             Edit
                                         </span>
                                     </a>
-                                    <a href="#" title="Details Id({{ $gradeScale->id }})"
+                                    <a href="#" title="Details Id({{ $department->id }})"
                                         class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
-                                        data-id="{{ $gradeScale->id }}">
+                                        data-id="{{ $department->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -79,9 +75,9 @@
                                             Details
                                         </span>
                                     </a>
-                                    <button href="#" title="Delete Id({{ $gradeScale->id }})"
+                                    <button href="#" title="Delete Id({{ $department->id }})"
                                         class="delete-btn text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-                                        data-id="{{ $gradeScale->id }}">
+                                        data-id="{{ $department->id }}">
                                         <span class="btn-content flex items-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                                 fill="currentColor">
@@ -97,7 +93,7 @@
                         </div>
                     </td>
                     <td class="px-2 py-2">
-                        <input type="checkbox" name="selected_ids[]" value="{{ $gradeScale->id }}"
+                        <input type="checkbox" name="selected_ids[]" value="{{ $department->id }}"
                             class="row-checkbox appearance-none size-4 
                             border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
                             checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
