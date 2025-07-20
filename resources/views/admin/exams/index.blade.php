@@ -210,8 +210,13 @@
                         }
                     },
                     error: function(xhr) {
+                        let errorMessage = 'Search failed';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage += ': ' + xhr.responseJSON.message;
+                        }
                         console.error('Search failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load data');
+                        ShowTaskMessage('error', errorMessage);
+
                     }
                 });
             }
@@ -363,7 +368,7 @@
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
                 detailBtn.find('.btn-content').html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 detailBtn.prop('disabled', true);
 
                 const Id = $(this).data('id');
@@ -371,26 +376,23 @@
                 $.get(`/admin/exams/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const subject = response.subject;
-                            const departmentName = subject.department?.name ?? "Unknown";
-                            const updatedAt = subject.updated_at ? subject.updated_at.substring(0, 10) : '';
-
-                            $('#detail_name').val(subject.name ?? '');
-                            $('#detail_code').val(subject.code ?? '');
-                            $('#detail_depid').val(departmentName);
-                            // $('#detail_credit_hours').val(subject.credit_hours ?? '');
-                            $('#detail_description').val(subject.description ?? '');
-                            $('#detail_created_at').val(subject.created_at ?? '');
-                            $('#detail_updated_at').val(updatedAt);
+                            const exam = response.exam;
+                            const date = exam.date ? new Date(exam.date).toLocaleDateString() : 'Not set';
+                            $('#detail_name').val(exam.name ?? '');
+                            $('#detail_subject').val(exam.subject?.name ?? 'No Subject');
+                            $('#detail_total_marks').val(exam.total_marks ?? '');
+                            $('#detail_passing_marks').val(exam.passing_marks ?? '');
+                            $('#detail_date').val(date);
+                            $('#detail_description').val(exam.description ?? '');
 
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject details');
+                            ShowTaskMessage('error', response.message || 'Failed to load exam details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject details');
+                        ShowTaskMessage('error', 'Failed to load exam details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -515,49 +517,26 @@
                         <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                             <input type="hidden" name="exams[${index}][id]" value="${exam.id}">
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Exam #${index + 1}</h4>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                 <div class="mb-4">
                                     <label for="exams[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subject Name <span class="text-red-500">*</span>
+                                        Exam Name <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text" id="exams[${index}][name]" name="exams[${index}][name]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                         border-gray-400"
                                         value="${exam.name}"
-                                        placeholder="Enter subject name" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="exams[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subject Code <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="exams[${index}][code]" name="exams[${index}][code]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${exam.code}"
-                                        placeholder="Enter subject code" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="exams[${index}][credit_hours]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Credit Hours <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" id="exams[${index}][credit_hours]" name="exams[${index}][credit_hours]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${exam.credit_hours}"
-                                        placeholder="Enter credit hours" required>
+                                        placeholder="Enter exam name" required>
+                                        <p class="error-name mt-1 text-sm text-red-600"></p>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="exams[${index}][subject_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Subjects <span class="text-red-500">*</span>
+                                        Subject <span class="text-red-500">*</span>
                                     </label>
                                     <select id="exams[${index}][subject_id]" name="exams[${index}][subject_id]"
                                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -569,6 +548,46 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <p class="error-subject mt-1 text-sm text-red-600"></p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="exams[${index}][total_marks]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Total Marks <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" id="exams[${index}][total_marks]" name="exams[${index}][total_marks]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${exam.total_marks}"
+                                        placeholder="Enter total marks" required>
+                                        <p class="error-total_marks mt-1 text-sm text-red-600"></p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="exams[${index}][passing_marks]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Passing Marks <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" id="exams[${index}][passing_marks]" name="exams[${index}][passing_marks]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${exam.passing_marks}"
+                                        placeholder="Enter passing marks" required>
+                                        <p class="error-passing_marks mt-1 text-sm text-red-600"></p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="exams[${index}][date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Date <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="date" id="exams[${index}][date]" name="exams[${index}][date]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${exam.date ? exam.date.substring(0, 10) : ''}"
+                                        required>
+                                        <p class="error-date mt-1 text-sm text-red-600"></p>
                                 </div>
                             </div>
 
@@ -581,10 +600,11 @@
                                     class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
                                     border-gray-400"
-                                    placeholder="Enter subject description">${exam.description || ''}</textarea>
+                                    placeholder="Enter exam description">${exam.description || ''}</textarea>
+                                    <p class="error-description mt-1 text-sm text-red-600"></p>
                             </div>
                         </div>
-                    `;
+                        `;
 
                             container.insertAdjacentHTML('beforeend', fieldHtml);
                         });

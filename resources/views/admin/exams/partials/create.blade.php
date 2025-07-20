@@ -23,10 +23,11 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('admin.exams.store') }}" method="POST" class="p-4">
+        {{-- <form action="{{ route('admin.exams.store') }}" method="POST" class="py-4 needs-validation" novalidate> --}}
+        <form action="{{ route('admin.exams.store') }}" method="POST" class="py-4">
             @csrf
 
-            <div class="h-[65vh] md:h-auto">
+            <div class="h-[65vh] md:h-auto px-4 overflow-y-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
                     <!-- Name Field -->
                     <div class="mb-2">
@@ -34,24 +35,21 @@
                             Name <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="name" name="name" value="{{ old('name') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('name') border-red-500 @else border-gray-400 @enderror"
+                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                              border-slate-300"
                             placeholder="Enter name" required>
-
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <p class="invalid-feedback error-name mt-1 text-sm text-red-600"></p>
                     </div>
                     <!-- sub Field -->
                     <div class="mb-2">
                         <label for="subject_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Subjects
+                            Subjects <span class="text-red-500">*</span>
                         </label>
 
                         <div data-name="subject_id"
-                            class="custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                              dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                         @error('code') border-red-500 @else border-gray-400 @enderror"
@@ -87,10 +85,7 @@
 
                         <!-- Hidden input for form submission -->
                         <input type="hidden" name="subject_id" id="subject_id" value="{{ old('subject_id') }}">
-
-                        @error('subject_id')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <p class="error-subject mt-1 text-sm text-red-600"></p>
                     </div>
 
                     <!-- total_marks Field -->
@@ -101,15 +96,12 @@
                         </label>
                         <input type="number" min="1" id="total_marks" name="total_marks"
                             value="{{ old('total_marks') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('total_marks') border-red-500 @else border-gray-400 @enderror"
+                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                              border-slate-300"
                             placeholder="Enter total marks" required>
-
-                        @error('total_marks')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <p class="invalid-feedback error-total_marks mt-1 text-sm text-red-600"></p>
                     </div>
                     <div class="mb-2">
                         <label for="passing_marks"
@@ -118,15 +110,11 @@
                         </label>
                         <input type="number" min="0" id="passing_marks" name="passing_marks"
                             value="{{ old('passing_marks') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('passing_marks') border-red-500 @else border-gray-400 @enderror"
+                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
                             placeholder="Enter total marks" required>
-
-                        @error('passing_marks')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <p class="invalid-feedback error-passing_marks mt-1 text-sm text-red-600"></p>
                     </div>
 
                     <!-- Date Field -->
@@ -135,15 +123,13 @@
                             Date <span class="text-red-500">*</span>
                         </label>
                         <input type="date" id="date" name="date" value="{{ old('date') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                              dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                         @error('date') border-red-500 @else border-gray-400 @enderror"
                             placeholder="Enter date" required>
+                        <p class="invalid-feedback error-date mt-1 text-sm text-red-600"></p>
 
-                        @error('date')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
                     </div>
                     <!-- Description Field (full width) -->
                     <div class="mb-2">
@@ -152,20 +138,15 @@
                             Description
                         </label>
                         <textarea id="description" name="description" rows="1"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                    @error('description') border-red-500 @else border-gray-400 @enderror"
+                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
                             placeholder="Enter subject description">{{ old('description') }}</textarea>
-
-                        @error('description')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
                     </div>
                 </div>
             </div>
             <!-- Form Actions -->
-            <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-end space-x-3 pt-4 px-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" id="cancelCreateModal"
                     class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

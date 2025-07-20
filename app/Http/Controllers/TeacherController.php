@@ -61,22 +61,30 @@ class TeacherController extends Controller
     public function store(StoreTeacherRequest $request)
     {
         try {
-            $data = $request->validated();
-
-            // Handle photo upload
+            $validated = $request->validated();
+            $teacherPhotoPath = public_path('photos/teacher');
+            if (!file_exists($teacherPhotoPath)) {
+                mkdir($teacherPhotoPath, 0755, true);
+            }
             if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('teachers/photos', 'public');
-                $data['photo'] = $photoPath;
+                $photo = $request->file('photo');
+                $photoName = time() . '_' . $photo->getClientOriginalName();
+                $photo->move($teacherPhotoPath, $photoName);
+                $validated['photo'] = 'photos/teacher/' . $photoName;
+            }
+            $cvPath = public_path('photos/cv');
+            if (!file_exists($cvPath)) {
+                mkdir($cvPath, 0755, true);
             }
 
-            // Handle CV upload
             if ($request->hasFile('cv')) {
-                $cvPath = $request->file('cv')->store('teachers/cvs', 'public');
-                $data['cv'] = $cvPath;
+                $cv = $request->file('cv');
+                $cvName = time() . '_' . $cv->getClientOriginalName();
+                $cv->move($cvPath, $cvName);
+                $validated['cv'] = 'photos/cv/' . $cvName;
             }
 
-            $teacher = Teacher::create($data);
-
+            $teacher = Teacher::create($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Teacher created successfully!',

@@ -1,16 +1,18 @@
-@if (count($subjects) > 0)
-    @foreach ($subjects as $subject)
+@if (isset($exams) && count($exams) > 0)
+    @foreach ($exams as $exam)
         <div
             class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg">
             <!-- Header -->
             <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
                 <div class="flex justify-between items-start gap-2">
                     <div>
-                        <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $subject->name }}</h4>
+                        <h4 class="font-bold capitalize text-lg text-gray-800 dark:text-gray-200">{{ $exam->name }}</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $exam->subject->name ?? 'No Subject' }}
+                        </p>
                     </div>
                     <button
                         class="btn detail-btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-900 transition-colors"
-                        data-id="{{ $subject->id }}">
+                        data-id="{{ $exam->id }}">
                         <span class="btn-content">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -26,54 +28,54 @@
 
             <!-- Details -->
             <div class="p-4 space-y-3">
-                <!-- G -->
+                <!-- Marks -->
                 <div class="flex items-center gap-3 text-sm">
                     <div class="p-2 rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M17 20h5v-2a3 3 0 00-3-3h-2a3 3 0 00-3 3v2h5zM7 20H2v-2a3 3 0 013-3h2a3 3 0 013 3v2H7zM10 10a3 3 0 100-6 3 3 0 000 6z" />
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">code</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Total Marks</p>
                         <p class="font-medium text-gray-700 dark:text-gray-200">
-
-                            <span class="text-sm text-indigo-600 dark:text-indigo-400">{{ $subject->code }}</span>
+                            <span class="text-sm text-indigo-600 dark:text-indigo-400">{{ $exam->total_marks }}</span>
                         </p>
                     </div>
                 </div>
+
                 <div class="flex items-center gap-3 text-sm">
                     <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linecap="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Department</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Passing Marks</p>
                         <p class="text-sm text-indigo-600 dark:text-indigo-400">
-                            <span>{{ $subject->department?->name ?? 'No Department' }}</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3 text-sm">
-                    <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linecap="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Credit Hours</p>
-                        <p class="font-medium text-gray-700 dark:text-gray-200">
-                            <span>{{ $subject->credit_hours }}</span>
+                            <span>{{ $exam->passing_marks }}</span>
                         </p>
                     </div>
                 </div>
 
+                <div class="flex items-center gap-3 text-sm">
+                    <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Date</p>
+                        <p class="font-medium text-gray-700 dark:text-gray-200">
+                            <span>{{ $exam->date->format('M d, Y') }}</span>
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <!-- Footer with actions -->
@@ -81,7 +83,7 @@
                 class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
                 <button
                     class="btn edit-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                    data-id="{{ $subject->id }}" title="Edit">
+                    data-id="{{ $exam->id }}" title="Edit">
                     <span class="btn-content flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -92,7 +94,7 @@
                 </button>
                 <button
                     class="delete-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                    data-id="{{ $subject->id }}" title="Delete">
+                    data-id="{{ $exam->id }}" title="Delete">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -113,9 +115,8 @@
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Sections Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first section to get started</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Exams Found</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first exam to get started</p>
         </div>
-
     </div>
 @endif

@@ -24,7 +24,7 @@
 
         <!-- Content -->
         <div class="p-6">
-            <p class="text-gray-700 dark:text-gray-300">Are you sure you want to delete this Subjects? This action
+            <p class="text-gray-700 dark:text-gray-300">Are you sure you want to delete this exam? This action
                 cannot be undone.</p>
         </div>
 

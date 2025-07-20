@@ -44,7 +44,7 @@
                         @enderror
                     </div>
                     <!-- sub Field -->
-                    <div class="mb-2">
+                    {{-- <div class="mb-2">
                         <label for="subject_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Subjects
                         </label>
@@ -90,7 +90,7 @@
                         @error('subject_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="mb-2">
                         <label for="edit_subject"
