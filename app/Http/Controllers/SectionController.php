@@ -64,7 +64,7 @@ class SectionController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Section created successfully!',
-                 'section' => $section->fresh(['gradeLevel', 'teacher'])
+                'section' => $section->fresh(['gradeLevel', 'teacher'])
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -83,12 +83,10 @@ class SectionController extends Controller
         ]);
     }
 
-    public function update(UpdateSectionRequest $request, $id)
+    public function update(UpdateSectionRequest $request, Section $section)
     {
         try {
-            $section = Section::findOrFail($id);
             $section->update($request->validated());
-
             return response()->json([
                 'success' => true,
                 'message' => 'Section updated successfully',
@@ -102,15 +100,15 @@ class SectionController extends Controller
         }
     }
 
-
-    public function destroy(Section $section)
+    public function destroy($id)
     {
         try {
+            $section = Section::findOrFail($id);
             $section->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'Section deleted successfully',
-               'section' => $section->fresh(['gradeLevel', 'teacher'])
+                'section' => $section->fresh(['gradeLevel', 'teacher'])
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -189,10 +187,9 @@ class SectionController extends Controller
         foreach ($request->input('sections') as $sectionData) {
             $validator = Validator::make($sectionData, [
                 'id' => 'required|exists:sections,id',
-                'name' => 'sometimes|string|max:255',
+                'name' => 'unique:sections,name,except,id|string|max:255',
                 'grade_level_id' => 'required|exists:grade_levels,id',
                 'teacher_id' => 'nullable|exists:teachers,id',
-                'capacity' => 'sometimes|integer|min:1',
             ]);
 
             if ($validator->fails()) {

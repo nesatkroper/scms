@@ -84,8 +84,8 @@ R::prefix('/admin')
             'departments' => DepartmentController::class,
             'gradelevels' => GradeLevelController::class,
             'subjects' => SubjectController::class,
+            'exams' => ExamController::class,
             'teachers' => TeacherController::class,
-            
         ];
 
         foreach ($bulkRoutes as $prefix => $controller) {

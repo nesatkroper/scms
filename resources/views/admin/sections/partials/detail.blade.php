@@ -1,6 +1,7 @@
 <!-- Detail Section Modal -->
 <div id="Modaldetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+    <div
+        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -16,37 +17,32 @@
             <button id="closeDetailModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-        
+
         <!-- Content -->
         <div class="h-[65vh] md:h-auto p-4">
+            <!-- Name Field -->
+            <div class="mb-2">
+                <label for="detail_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Name
+                </label>
+                <input type="text" id="detail_name" name="detail_name"
+                    class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                    disabled readonly>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                <!-- Name Field -->
-                <div class="mb-2">
-                    <label for="detail_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Name
-                    </label>
-                    <input type="text" id="detail_name" name="detail_name"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white border-gray-400"
-                        disabled>
-                </div>
-
                 <!-- Grade Level Field -->
                 <div class="mb-2">
-                    <label for="detail_grade_level" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label for="detail_grade_level"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Grade Level
                     </label>
                     <input type="text" id="detail_grade_level" name="detail_grade_level"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white border-gray-400"
-                        disabled>
+                        class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                        disabled readonly>
                 </div>
 
                 <!-- Teacher Field -->
@@ -55,48 +51,28 @@
                         Teacher
                     </label>
                     <input type="text" id="detail_teacher" name="detail_teacher"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white border-gray-400"
-                        disabled>
+                        class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                        disabled readonly>
                 </div>
-
-                <!-- Capacity Field -->
-                <div class="mb-2">
-                    <label for="detail_capacity" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Capacity
-                    </label>
-                    <input type="number" id="detail_capacity" name="detail_capacity"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white border-gray-400"
-                        disabled>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
                 <!-- Created At Field -->
                 <div class="mb-2">
-                    <label for="detail_created_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label for="detail_created_at"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Created At
                     </label>
                     <input type="text" id="detail_created_at" name="detail_created_at"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white border-gray-400"
-                        disabled>
+                        class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                        disabled readonly>
                 </div>
-
                 <!-- Updated At Field -->
                 <div class="mb-2">
-                    <label for="detail_updated_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label for="detail_updated_at"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Last Updated
                     </label>
                     <input type="text" id="detail_updated_at" name="detail_updated_at"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white border-gray-400"
-                        disabled>
+                        class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                        disabled readonly>
                 </div>
             </div>
         </div>

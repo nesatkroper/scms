@@ -1,15 +1,16 @@
-<!-- Bulk Edit Modal for Students -->
-<div id="bulkEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+<!-- Bulk Edit Modal -->
+<div id="bulkEditModal" class="w-full h-full fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div
-        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+        class="relative overflow-y-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                     viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    <path
+                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
-                Bulk Edit Students (<span id="bulkEditCount">0</span>/5)
+                Bulk Edit Subject (<span id="bulkEditCount">0</span>/5)
             </h3>
             <button id="closeBulkEditModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -20,42 +21,12 @@
         </div>
 
         <!-- Form Content -->
-        <form id="bulkEditForm" action="{{ route('admin.students.bulkUpdate') }}" method="POST" class="p-4 pt-0">
+        <form id="bulkEditForm" action="{{ route('admin.subjects.bulkUpdate') }}" method="POST" class="p-4 pt-0">
             @csrf
             @method('PUT')
 
             <div id="bulkEditContainer" class="pt-4 overflow-y-auto">
-                <!-- Common fields for bulk editing -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <!-- Section Selection -->
-                    <div class="mb-4">
-                        <label for="bulk_section_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Section
-                        </label>
-                        <select id="bulk_section_id" name="section_id"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white border-gray-400">
-                            <option value="">-- Keep current section --</option>
-                            @foreach($sections as $section)
-                                <option value="{{ $section->id }}">{{ $section->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Admission Date -->
-                    <div class="mb-4">
-                        <label for="bulk_admission_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Admission Date
-                        </label>
-                        <input type="date" id="bulk_admission_date" name="admission_date"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white border-gray-400">
-                    </div>
-                </div>
-
-                <!-- Individual student fields will be added here -->
+                <!--fields will be added here -->
             </div>
 
             <!-- Form Actions -->

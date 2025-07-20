@@ -263,6 +263,17 @@
         <div class="submenu">
           <ul class="pl-2 pr-2">
             <li>
+              <a href="{{ route('admin.bookcategory.index') }}"
+                class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
+                   dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                <div class="flex items-center">
+                  <i class="ri-book-fill text-lg"></i>
+                  <span class="ml-2">Books category</span>
+                </div>
+                <span class="menu-tooltip">Books category</span>
+              </a>
+            </li>
+            <li>
               <a href="{{ route('admin.books.index') }}"
                 class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
                                          dark:hover:bg-gray-700 rounded-lg transition-all duration-200">

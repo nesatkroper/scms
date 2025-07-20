@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Students')
 @section('content')
     <div
@@ -47,24 +47,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('students.partials.table', ['students' => $students])
+            @include('admin.students.partials.table', ['students' => $students])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('students.partials.cardlist', ['students' => $students])
+            @include('admin.students.partials.cardlist', ['students' => $students])
         </div>
         {{-- pagination --}}
-        @include('students.partials.pagination')
+        @include('admin.students.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('students.partials.create')
-    @include('students.partials.edit')
-    @include('students.partials.detail')
-    @include('students.partials.delete')
-    @include('students.partials.bulkedit')
-    @include('students.partials.bulkdelete')
+    @include('admin.students.partials.create')
+    @include('admin.students.partials.edit')
+    @include('admin.students.partials.detail')
+    @include('admin.students.partials.delete')
+    @include('admin.students.partials.bulkedit')
+    @include('admin.students.partials.bulkdelete')
 @endsection
 
 
@@ -187,7 +187,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('students.index') }}",
+                    url: "{{ route('admin.students.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -259,7 +259,7 @@
 
                 const studentId = $(this).data('id');
 
-                $.get(`/students/${studentId}`)
+                $.get(`/admin/students/${studentId}`)
                     .done(function(response) {
                         if (response.success) {
                             $('#edit_name').val(response.student.name);
@@ -333,7 +333,7 @@
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const studentId = $(this).data('id');
-                $('#Formdelete').attr('action', `/students/${studentId}`);
+                $('#Formdelete').attr('action', `/admin/students/${studentId}`);
                 showModal('Modaldelete');
             }
 
@@ -378,7 +378,7 @@
 
                 const studentId = $(this).data('id');
 
-                $.get(`/students/${studentId}`)
+                $.get(`/admin/students/${studentId}`)
                     .done(function(response) {
                         if (response.success) {
                             const student = response.student;
@@ -456,7 +456,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('students.bulkDelete') }}",
+                        url: "{{ route('admin.students.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -510,7 +510,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('students.getBulkData') }}",
+                    url: "{{ route('admin.students.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -624,7 +624,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('students.bulkUpdate') }}",
+                    url: "{{ route('admin.students.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         students: dataform
@@ -687,7 +687,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('students.index') }}",
+                    url: "{{ route('admin.students.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

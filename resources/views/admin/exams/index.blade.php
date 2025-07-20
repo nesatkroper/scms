@@ -1,16 +1,20 @@
 @extends('layouts.admin')
-@section('title', 'Sections')
+@section('title', 'Exams')
 @section('content')
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
             <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                    d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
-                    clip-rule="evenodd" />
+                <path
+                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838l-2.727 1.17 1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+                <path
+                    d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762z" />
+                <path
+                    d="M9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
+                <path d="M6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
             </svg>
-            Sections
+            Exams
         </h3>
         <div
             class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -25,9 +29,9 @@
             </button>
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search sections..."
+                    <input type="search" id="searchInput" placeholder="Search exams..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
                 <button id="resetSearch"
@@ -48,26 +52,25 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('admin.sections.partials.table', ['sections' => $sections])
+            @include('admin.exams.partials.table', ['exams' => $exams])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('admin.sections.partials.cardlist', ['sections' => $sections])
+            @include('admin.exams.partials.cardlist', ['exams' => $exams])
         </div>
         {{-- pagination --}}
-        @include('admin.sections.partials.pagination')
-    </div>
+        @include('admin.exams.partials.pagination')
 
+    </div>
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('admin.sections.partials.create')
-    @include('admin.sections.partials.edit')
-    @include('admin.sections.partials.detail')
-    @include('admin.sections.partials.delete')
-    @include('admin.sections.partials.bulkedit')
-    @include('admin.sections.partials.bulkdelete')
+    @include('admin.exams.partials.create')
+    @include('admin.exams.partials.edit')
+    @include('admin.exams.partials.detail')
+    @include('admin.exams.partials.delete')
+    @include('admin.exams.partials.bulkedit')
+    @include('admin.exams.partials.bulkdelete')
 @endsection
-
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -124,6 +127,8 @@
                             selectedValue.textContent = this.textContent;
                             hiddenInput.value = this.dataset.value;
                             select.classList.remove('open');
+                            // if( this.dataset.value === )
+                            console.log('Selected department_id:', this.dataset.value);
                         });
                     });
 
@@ -187,7 +192,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('admin.sections.index') }}",
+                    url: "{{ route('admin.exams.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -228,16 +233,16 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshSectionContent();
+                            refreshSubjectContent();
                             form.trigger('reset');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error creating section');
+                            ShowTaskMessage('error', response.message || 'Error creating subject');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating section');
+                        ShowTaskMessage('error', errorMessages || 'Error creating subject');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -250,26 +255,30 @@
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
                 editBtn.find('.btn-content').html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">loading...</span>');
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 editBtn.prop('disabled', true);
+
                 const Id = $(this).data('id');
-                $.get(`/admin/sections/${Id}`)
+
+                $.get(`/admin/exams/${Id}`)
                     .done(function(response) {
-                        console.log(response.section.name)
                         if (response.success) {
-                            $('#edit_name').val(response.section.name);
-                            $('#edit_grade_level_id').val(response.section.grade_level_id);
-                            $('#edit_teacher_id').val(response.section.teacher_id);
-                            $('#Formedit').attr('action', `sections/${Id}`);
+                            const date = response.exam.date ? response.exam.date.substring(0, 10) : '';
+                            $('#edit_name').val(response.exam.name);
+                            $('#edit_subject').val(response.exam.subject_id);
+                            $('#edit_total_marks').val(response.exam.total_marks);
+                            $('#edit_passing_marks').val(response.exam.passing_marks);
+                            $('#edit_description').val(response.exam.description);
+                            $('#edit_date').val(date);
+                            $('#Formedit').attr('action', `exams/${Id}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load section data');
+                            ShowTaskMessage('error', response.message || 'Failed to load subject datas');
                         }
                     })
                     .fail(function(xhr) {
-
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load section data');
+                        ShowTaskMessage('error', 'Failed to load subject data');
                     })
                     .always(function() {
                         editBtn.find('.btn-content').html(originalContent);
@@ -282,26 +291,26 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
+
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
                     data: form.serialize() + '&_method=PUT',
                     success: function(response) {
-                        console.log(response.section.name)
-                        console.log(response.message)
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshSectionContent();
+                            refreshSubjectContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error updating section');
+                            ShowTaskMessage('error', response.message || 'Error updating subject');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating sectionS');
+                        ShowTaskMessage('error', errorMessages || 'Error updating subject');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -311,8 +320,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const sectionId = $(this).data('id');
-                $('#Formdelete').attr('action', `/admin/sections/${sectionId}`);
+                const Id = $(this).data('id');
+                $('#Formdelete').attr('action', `/admin/exams/${Id}`);
                 showModal('Modaldelete');
             }
 
@@ -322,7 +331,8 @@
                 const submitBtn = $('#confirmDeleteBtn');
                 const originalBtnHtml = submitBtn.html();
 
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
+                submitBtn.prop('disabled', true).html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
 
                 $.ajax({
                     url: form.attr('action'),
@@ -334,13 +344,13 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshSectionContent();
+                            refreshSubjectContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting section');
+                            ShowTaskMessage('error', response.message || 'Error deleting subject');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting section');
+                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting subject');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -353,31 +363,34 @@
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
                 detailBtn.find('.btn-content').html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">loading...</span>');
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
                 detailBtn.prop('disabled', true);
+
                 const Id = $(this).data('id');
-                $.get(`/admin/sections/${Id}`)
+
+                $.get(`/admin/exams/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const section = response.section;
-                            const gradeLevelName = section.grade_level?.name ?? "Unknown";
-                            const teacherName = section.teacher?.user?.name ?? "Not assigned";
-                            const createdAt = section.created_at ? section.created_at.substring(0, 10) : '';
-                            const updatedAt = section.updated_at ? section.updated_at.substring(0, 10) : '';
-                            $('#detail_name').val(section.name ?? '');
-                            $('#detail_grade_level').val(gradeLevelName);
-                            $('#detail_teacher').val(teacherName);
-                            $('#detail_capacity').val(section.capacity ?? '');
-                            $('#detail_created_at').val(createdAt);
+                            const subject = response.subject;
+                            const departmentName = subject.department?.name ?? "Unknown";
+                            const updatedAt = subject.updated_at ? subject.updated_at.substring(0, 10) : '';
+
+                            $('#detail_name').val(subject.name ?? '');
+                            $('#detail_code').val(subject.code ?? '');
+                            $('#detail_depid').val(departmentName);
+                            // $('#detail_credit_hours').val(subject.credit_hours ?? '');
+                            $('#detail_description').val(subject.description ?? '');
+                            $('#detail_created_at').val(subject.created_at ?? '');
                             $('#detail_updated_at').val(updatedAt);
+
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load section details');
+                            ShowTaskMessage('error', response.message || 'Failed to load subject details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load section details');
+                        ShowTaskMessage('error', 'Failed to load subject details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -410,7 +423,7 @@
             function handleBulkDelete() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one section to delete');
+                    ShowTaskMessage('error', 'Please select at least one subject to delete');
                     return;
                 }
 
@@ -426,7 +439,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('admin.sections.bulkDelete') }}",
+                        url: "{{ route('admin.exams.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -435,15 +448,15 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshSectionContent();
+                                refreshSubjectContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
-                                    'Error deleting sections');
+                                    'Error deleting exams');
                             }
                         },
                         error: function(xhr) {
                             ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting sections');
+                                'Error deleting exams');
                         },
                         complete: function() {
                             deleteBtn.disabled = false;
@@ -456,7 +469,7 @@
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one section to edit');
+                    ShowTaskMessage('error', 'Please select at least one subject to edit');
                     return;
                 }
 
@@ -471,7 +484,7 @@
                 }
 
                 if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 sections at a time');
+                    ShowTaskMessage('error', 'You can only edit up to 5 exams at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
                     bulkEditBtn.disabled = false;
                     return;
@@ -480,7 +493,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('admin.sections.getBulkData') }}",
+                    url: "{{ route('admin.exams.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -497,55 +510,78 @@
                         const container = document.getElementById('bulkEditContainer');
                         container.innerHTML = '';
 
-                        response.data.forEach((section, index) => {
+                        response.data.forEach((exam, index) => {
                             const fieldHtml = `
                         <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="sections[${index}][id]" value="${section.id}">
+                            <input type="hidden" name="exams[${index}][id]" value="${exam.id}">
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Section #${index + 1}</h4>
+                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Subject #${index + 1}</h4>
                             </div>
-                            <div class="mb-4">
-                                <label for="sections[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Section Name <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" id="sections[${index}][name]" name="sections[${index}][name]"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline
-                 focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                    value="${section.name}"
-                                    placeholder="Enter section name" required>
-                            </div>
+                            
                             <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
                                 <div class="mb-4">
-                                    <label for="sections[${index}][grade_level_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Grade Level <span class="text-red-500">*</span>
+                                    <label for="exams[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Subject Name <span class="text-red-500">*</span>
                                     </label>
-                                    <select id="sections[${index}][grade_level_id]" name="sections[${index}][grade_level_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 
-                                        focus:border-indigo-500 dark:bg-gray-700 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300" required>
-                                        @foreach ($gradeLevels as $gradeLevel)
-                                            <option value="{{ $gradeLevel->id }}" ${section.grade_level_id == {{ $gradeLevel->id }} ? 'selected' : ''}>
-                                                {{ $gradeLevel->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" id="exams[${index}][name]" name="exams[${index}][name]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${exam.name}"
+                                        placeholder="Enter subject name" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="sections[${index}][teacher_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Teacher
+                                    <label for="exams[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Subject Code <span class="text-red-500">*</span>
                                     </label>
-                                    <select id="sections[${index}][teacher_id]" name="sections[${index}][teacher_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 
-                                        focus:border-indigo-500 dark:bg-gray-700 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                                        <option value="">Select Teacher</option>
-                                        @foreach ($teachers as $teacher)
-                                            <option value="{{ $teacher->id }}" ${section.teacher_id == {{ $teacher->id }} ? 'selected' : ''}>
-                                                {{ $teacher->user->name }}
+                                    <input type="text" id="exams[${index}][code]" name="exams[${index}][code]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${exam.code}"
+                                        placeholder="Enter subject code" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="exams[${index}][credit_hours]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Credit Hours <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" id="exams[${index}][credit_hours]" name="exams[${index}][credit_hours]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400"
+                                        value="${exam.credit_hours}"
+                                        placeholder="Enter credit hours" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="exams[${index}][subject_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Subjects <span class="text-red-500">*</span>
+                                    </label>
+                                    <select id="exams[${index}][subject_id]" name="exams[${index}][subject_id]"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                        border-gray-400" required>
+                                        @foreach ($subjects as $subject)
+                                            <option value="{{ $subject->id }}" ${exam.subject_id == {{ $subject->id }} ? 'selected' : ''}>
+                                                {{ $subject->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label for="exams[${index}][description]"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Description
+                                </label>
+                                <textarea id="exams[${index}][description]" name="exams[${index}][description]" rows="2"
+                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                    border-gray-400"
+                                    placeholder="Enter subject description">${exam.description || ''}</textarea>
                             </div>
                         </div>
                     `;
@@ -572,29 +608,30 @@
 
                 const dataform = [];
                 $('.sub-field').each(function(index) {
-                    const section = {
+                    const subject = {
                         id: $(this).find('input[type="hidden"]').val(),
                         name: $(this).find('input[name$="[name]"]').val(),
-                        grade_level_id: $(this).find('select[name$="[grade_level_id]"]').val(),
-                        teacher_id: $(this).find('select[name$="[teacher_id]"]').val(),
-                        capacity: $(this).find('input[name$="[capacity]"]').val()
+                        code: $(this).find('input[name$="[code]"]').val(),
+                        // credit_hours: $(this).find('input[name$="[credit_hours]"]').val(),
+                        department_id: $(this).find('select[name$="[department_id]"]').val(),
+                        description: $(this).find('textarea[name$="[description]"]').val()
                     };
-                    dataform.push(section);
+                    dataform.push(subject);
                 });
 
                 $.ajax({
-                    url: "{{ route('admin.sections.bulkUpdate') }}",
+                    url: "{{ route('admin.exams.bulkUpdate') }}",
                     method: 'POST',
                     data: {
-                        sections: dataform
+                        exams: dataform
                     },
                     success: function(response) {
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshSectionContent();
+                            refreshSubjectContent();
                         } else {
-                            let errorMessage = response.message || 'Error updating sections';
+                            let errorMessage = response.message || 'Error updating exams';
                             if (response.errors) {
                                 errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
                             }
@@ -621,6 +658,7 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
+                // console.log(modal);
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');
@@ -641,12 +679,12 @@
             }
 
             // Utility Functions
-            function refreshSectionContent() {
+            function refreshSubjectContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('admin.sections.index') }}",
+                    url: "{{ route('admin.exams.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
