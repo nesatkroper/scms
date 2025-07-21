@@ -37,42 +37,6 @@ Route::get('/admin', function () {
     return view('welcome');
 });
 
-<<<<<<< Updated upstream
-R::prefix('/admin')
-  ->as('admin.')
-  ->middleware('auth')
-  ->group(function () {
-    R::get('/', [HomeController::class, 'index'])->name('home');
-    R::get('/home', [HomeController::class, 'index'])->name('home');
-
-    R::resources([
-      'attendances' => AttendanceController::class,
-      'books' => BookController::class,
-      'bookissues' => BookIssueController::class,
-      'classrooms' => ClassroomController::class,
-      'departments' => DepartmentController::class,
-      'events' => EventController::class,
-      'exams' => ExamController::class,
-      'expenses' => ExpenseController::class,
-      'feestructures' => FeeStructureController::class,
-      'grades' => GradeController::class,
-      'gradelevels' => GradeLevelController::class,
-      'gradescales' => GradeScaleController::class,
-      'guardians' => GuardianController::class,
-      'notices' => NoticeController::class,
-      'payments' => PaymentController::class,
-      'sections' => SectionController::class,
-      'settings' => SettingController::class,
-      'students' => StudentController::class,
-      'studentfees' => StudentFeeController::class,
-      'subjects' => SubjectController::class,
-      'teachers' => TeacherController::class,
-      'timetables' => TimetableController::class,
-      'timetable_entries' => TimetableEntryController::class,
-      'scores' => ScoreController::class
-
-=======
-
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -100,7 +64,6 @@ Route::middleware('auth')->group(function () {
         'teachers' => TeacherController::class,
         'timetables' => TimetableController::class,
         'timetable_entries' => TimetableEntryController::class,
->>>>>>> Stashed changes
     ]);
 
         // expenses bulk
