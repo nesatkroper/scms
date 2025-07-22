@@ -35,8 +35,8 @@ class GradeLevelController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('gradelevels.partials.table', compact('gradelevels'))->render(),
-                'cards' => view('gradelevels.partials.cardlist', compact('gradelevels'))->render(),
+                'table' => view('admin.gradelevels.partials.table', compact('gradelevels'))->render(),
+                'cards' => view('admin.gradelevels.partials.cardlist', compact('gradelevels'))->render(),
                 'pagination' => $gradelevels->links()->toHtml()
             ];
 
@@ -47,7 +47,7 @@ class GradeLevelController extends Controller
             ]);
         }
 
-        return view('gradelevels.index', compact('gradelevels'));
+        return view('admin.gradelevels.index', compact('gradelevels'));
     }
 
     public function store(StoreGradeLevelRequest $request)
@@ -86,7 +86,6 @@ class GradeLevelController extends Controller
         try {
             $gradeLevel = GradeLevel::findOrFail($id);
             $gradeLevel->update($request->validated());
-
             return response()->json([
                 'success' => true,
                 'message' => 'Grade level updated successfully',
@@ -213,7 +212,7 @@ class GradeLevelController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount grade levels",
-            'redirect' => route('gradelevels.index')
+            'redirect' => route('admin.gradelevels.index')
         ]);
     }
 }

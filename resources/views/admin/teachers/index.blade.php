@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Teachers')
 @section('content')
     <div
@@ -47,24 +47,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('teachers.partials.table', ['teachers' => $teachers])
+            @include('admin.teachers.partials.table', ['teachers' => $teachers])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('teachers.partials.cardlist', ['teachers' => $teachers])
+            @include('admin.teachers.partials.cardlist', ['teachers' => $teachers])
         </div>
         {{-- pagination --}}
-        @include('teachers.partials.pagination')
+        @include('admin.teachers.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('teachers.partials.create')
-    @include('teachers.partials.edit')
-    @include('teachers.partials.detail')
-    @include('teachers.partials.delete')
-    @include('teachers.partials.bulkedit')
-    @include('teachers.partials.bulkdelete')
+    @include('admin.teachers.partials.create')
+    @include('admin.teachers.partials.edit')
+    @include('admin.teachers.partials.detail')
+    @include('admin.teachers.partials.delete')
+    @include('admin.teachers.partials.bulkedit')
+    @include('admin.teachers.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -73,9 +73,70 @@
             // Core Configuration
             $.ajaxSetup({
                 headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    // 'Accept': 'application/json'
                 }
             });
+
+            selectfields();
+
+            function selectfields() {
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const header = select.querySelector('.select-header');
+                    const optionsBox = select.querySelector('.select-options');
+                    const searchInput = select.querySelector('.search-input');
+                    const optionsContainer = select.querySelector('.options-container');
+                    const selectedValue = select.querySelector('.selected-value');
+                    const noResults = select.querySelector('.no-results');
+                    const options = Array.from(select.querySelectorAll('.select-option'));
+                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
+
+                    // Toggle dropdown
+                    header.addEventListener('click', function() {
+                        select.classList.toggle('open');
+                        if (select.classList.contains('open')) {
+                            searchInput.focus();
+                        }
+                    });
+
+                    // Filter options
+                    searchInput.addEventListener('input', function() {
+                        const term = this.value.toLowerCase().trim();
+                        let hasMatch = false;
+
+                        options.forEach(option => {
+                            if (option.textContent.toLowerCase().includes(term)) {
+                                option.style.display = 'block';
+                                hasMatch = true;
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+
+                        noResults.style.display = hasMatch ? 'none' : 'block';
+                    });
+
+                    // Select option
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                            selectedValue.textContent = this.textContent;
+                            hiddenInput.value = this.dataset.value;
+                            select.classList.remove('open');
+                            console.log('Selected department_id:', this.dataset.value);
+                        });
+                    });
+
+                    // Close when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!select.contains(e.target)) {
+                            select.classList.remove('open');
+                        }
+                    });
+                });
+            }
 
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
@@ -128,7 +189,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('teachers.index') }}",
+                    url: "{{ route('admin.teachers.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -153,24 +214,81 @@
             }
 
             // CRUD Operations
+            // function handleCreateSubmit(e) {
+            //     e.stopPropagation();
+            //     e.preventDefault();
+            //     const form = $(this);
+            //     const submitBtn = $('#createSubmitBtn');
+            //     const originalBtnHtml = submitBtn.html();
+            //     submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
+            //     $.ajax({
+            //         url: form.attr('action'),
+            //         method: 'POST',
+            //         processData: false,
+            //         contentType: false,
+            //         data: form.serialize(),
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 closeModal('Modalcreate');
+            //                 ShowTaskMessage('success', response.message);
+            //                 refreshTeacherContent();
+            //                 form.trigger('reset');
+            //             } else {
+            //                 ShowTaskMessage('error', response.message || 'Error creating teacher');
+            //             }
+            //         },
+            //         error: function(xhr) {
+            //             const errors = xhr.responseJSON?.errors || {};
+            //             let errorMessages = Object.values(errors).flat().join('\n');
+            //             ShowTaskMessage('error', errorMessages || 'Error creating teacher');
+            //         },
+            //         // error: function(xhr) {
+            //         //     console.log(xhr.responseJSON.errors); // This will show validation errors
+            //         //     // Display errors to user
+            //         //     if (xhr.status === 422) {
+            //         //         const errors = xhr.responseJSON.errors;
+            //         //         for (const field in errors) {
+            //         //             console.log(errors[field][0]); 
+            //         //             ShowTaskMessage('error', `${field}: ${errors[field][0]}`);
+            //         //         }
+            //         //     }
+            //         // },
+            //         complete: function() {
+            //             submitBtn.prop('disabled', false).html(originalBtnHtml);
+            //         }
+            //     });
+            // }
+
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
+                // Create FormData object for file uploads
+                const formData = new FormData(form[0]);
 
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
-                    data: form.serialize(),
+                    processData: false,
+                    contentType: false,
+                    data: formData,
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
                             refreshTeacherContent();
                             form.trigger('reset');
+                            // Reset photo preview
+                            $('#photoPreview').addClass('hidden');
+                            $('#dropArea').removeClass('hidden');
+                            // Reset CV preview
+                            $('#cvFileName').addClass('hidden');
+                            $('#removeCv').addClass('hidden');
+                            $('#cvDropArea').removeClass('hidden');
                         } else {
                             ShowTaskMessage('error', response.message || 'Error creating teacher');
                         }
@@ -195,7 +313,7 @@
 
                 const teacherId = $(this).data('id');
 
-                $.get(`/teachers/${teacherId}`)
+                $.get(`/admin/teachers/${teacherId}`)
                     .done(function(response) {
                         if (response.success) {
                             $('#edit_teacher_id').val(response.teacher.teacher_id);
@@ -209,6 +327,7 @@
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load teacher data');
                         }
+
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
@@ -300,7 +419,7 @@
 
                 const teacherId = $(this).data('id');
 
-                $.get(`/teachers/${teacherId}`)
+                $.get(`/admin/teachers/${teacherId}`)
                     .done(function(response) {
                         if (response.success) {
                             const teacher = response.teacher;
@@ -372,7 +491,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('teachers.bulkDelete') }}",
+                        url: "{{ route('admin.teachers.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -426,7 +545,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('teachers.getBulkData') }}",
+                    url: "{{ route('admin.teachers.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -566,7 +685,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('teachers.bulkUpdate') }}",
+                    url: "{{ route('admin.teachers.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         teachers: dataform

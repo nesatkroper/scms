@@ -255,12 +255,12 @@
                 e.preventDefault();
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 editBtn.prop('disabled', true);
 
-                const subjectId = $(this).data('id');
+                const Id = $(this).data('id');
 
-                $.get(`/subjects/${subjectId}`)
+                $.get(`/admin/subjects/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             $('#edit_name').val(response.subject.name);
@@ -268,10 +268,10 @@
                             $('#edit_depid').val(response.subject.department_id);
                             $('#edit_credit_hours').val(response.subject.credit_hours);
                             $('#edit_description').val(response.subject.description);
-                            $('#Formedit').attr('action', `/subjects/${subjectId}`);
+                            $('#Formedit').attr('action', `subjects/${Id}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject data');
+                            ShowTaskMessage('error', response.message || 'Failed to load subject datas');
                         }
                     })
                     .fail(function(xhr) {
@@ -318,8 +318,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const subjectId = $(this).data('id');
-                $('#Formdelete').attr('action', `/subjects/${subjectId}`);
+                const Id = $(this).data('id');
+                $('#Formdelete').attr('action', `/admin/subjects/${Id}`);
                 showModal('Modaldelete');
             }
 
@@ -329,7 +329,7 @@
                 const submitBtn = $('#confirmDeleteBtn');
                 const originalBtnHtml = submitBtn.html();
 
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
 
                 $.ajax({
                     url: form.attr('action'),
@@ -359,12 +359,12 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
                 detailBtn.prop('disabled', true);
 
                 const subjectId = $(this).data('id');
 
-                $.get(`/subjects/${subjectId}`)
+                $.get(`/admin/subjects/${subjectId}`)
                     .done(function(response) {
                         if (response.success) {
                             const subject = response.subject;
@@ -654,7 +654,7 @@
                 backdrop.classList.remove('hidden');
                 const modal = document.getElementById(modalId);
                 modal.classList.remove('hidden');
-                console.log(modal);
+                // console.log(modal);
                 setTimeout(() => {
                     modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
                     modal.querySelector('div').classList.add('opacity-100', 'scale-100');

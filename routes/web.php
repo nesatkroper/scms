@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route as R;
 use App\Http\Controllers\{
     AuthController,
     AttendanceController,
     BookController,
+    BookCategoryController,
     BookIssueController,
     ClassroomController,
     DepartmentController,
@@ -14,7 +15,6 @@ use App\Http\Controllers\{
     FeeStructureController,
     GradeController,
     GradeLevelController,
-    GradeScaleController,
     GuardianController,
     NoticeController,
     PaymentController,
@@ -27,92 +27,83 @@ use App\Http\Controllers\{
     TeacherController,
     TimetableController,
     TimetableEntryController,
-    HomeController
+    HomeController,
+    ScoreController
 };
 use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::get('/admin', function () {
+R::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::resources([
-        'attendances' => AttendanceController::class,
-        'books' => BookController::class,
-        'bookissues' => BookIssueController::class,
-        'classrooms' => ClassroomController::class,
-        'departments' => DepartmentController::class,
-        'events' => EventController::class,
-        'exams' => ExamController::class,
-        'expenses' => ExpenseController::class,
-        'feestructures' => FeeStructureController::class,
-        'grades' => GradeController::class,
-        'gradelevels' => GradeLevelController::class,
-        'gradescales' => GradeScaleController::class,
-        'guardians' => GuardianController::class,
-        'notices' => NoticeController::class,
-        'payments' => PaymentController::class,
-        'sections' => SectionController::class,
-        'settings' => SettingController::class,
-        'students' => StudentController::class,
-        'studentfees' => StudentFeeController::class,
-        'subjects' => SubjectController::class,
-        'teachers' => TeacherController::class,
-        'timetables' => TimetableController::class,
-        'timetable_entries' => TimetableEntryController::class,
-    ]);
+R::prefix('/admin')
+    ->as('admin.')
+    ->middleware('auth')
+    ->group(function () {
+        R::get('/', [HomeController::class, 'index'])->name('home');
+        R::get('/home', [HomeController::class, 'index'])->name('home');
 
-        // expenses bulk
-    Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');
-    Route::post('/expenses/bulk-data', [ExpenseController::class, 'getBulkData'])->name('expenses.getBulkData');
-    Route::post('/expenses/bulk-update', [ExpenseController::class, 'bulkUpdate'])->name('expenses.bulkUpdate');
+        R::resources([
+            'attendances' => AttendanceController::class,
+            'bookcategory' => BookCategoryController::class,
+            'books' => BookController::class,
+            'bookissues' => BookIssueController::class,
+            'classrooms' => ClassroomController::class,
+            'departments' => DepartmentController::class,
+            'events' => EventController::class,
+            'exams' => ExamController::class,
+            'expenses' => ExpenseController::class,
+            'feestructures' => FeeStructureController::class,
+            'grades' => GradeController::class,
+            'gradelevels' => GradeLevelController::class,
+            'guardians' => GuardianController::class,
+            'notices' => NoticeController::class,
+            'payments' => PaymentController::class,
+            'sections' => SectionController::class,
+            'settings' => SettingController::class,
+            'students' => StudentController::class,
+            'studentfees' => StudentFeeController::class,
+            'subjects' => SubjectController::class,
+            'teachers' => TeacherController::class,
+            'timetables' => TimetableController::class,
+            'timetable_entries' => TimetableEntryController::class,
+            'scores' => ScoreController::class
 
-    // sections bulk
-    Route::post('/sections/bulk-delete', [SectionController::class, 'bulkDelete'])->name('sections.bulkDelete');
-    Route::post('/sections/bulk-data', [SectionController::class, 'getBulkData'])->name('sections.getBulkData');
-    Route::post('/sections/bulk-update', [SectionController::class, 'bulkUpdate'])->name('sections.bulkUpdate');
+        ]);
 
-    Route::post('bookissues/bulk-delete', [BookIssueController::class, 'bulkDelete'])->name('bookissues.bulkDelete');
-    Route::post('bookissues/get-bulk-data', [BookIssueController::class, 'getBulkData'])->name('bookissues.getBulkData');
-    Route::post('bookissues/bulk-update', [BookIssueController::class, 'bulkUpdate'])->name('bookissues.bulkUpdate');
-    // books bulk
-    Route::post('books/bulkDelete', [BookController::class, 'bulkDelete'])->name('books.bulkDelete');
-    Route::post('books/getBulkData', [BookController::class, 'getBulkData'])->name('books.getBulkData');
-    Route::post('books/bulkUpdate', [BookController::class, 'bulkUpdate'])->name('books.bulkUpdate');
+        $bulkRoutes = [
+            'expenses' => ExpenseController::class,
+            'sections' => SectionController::class,
+            'bookissues' => BookIssueController::class,
+            'bookcategory' => BookCategoryController::class,
+            'books' => BookController::class,
+            'students' => StudentController::class,
+            'guardians' => GuardianController::class,
+            'departments' => DepartmentController::class,
+            'gradelevels' => GradeLevelController::class,
+            'subjects' => SubjectController::class,
+            'exams' => ExamController::class,
+            'teachers' => TeacherController::class,
+        ];
 
-    Route::post('/students/bulk-delete', [StudentController::class, 'bulkDelete'])->name('students.bulkDelete');
-    Route::post('/students/bulk-data', [StudentController::class, 'getBulkData'])->name('students.getBulkData');
-    Route::post('/students/bulk-update', [StudentController::class, 'bulkUpdate'])->name('students.bulkUpdate');
+        foreach ($bulkRoutes as $prefix => $controller) {
+            R::prefix($prefix)
+                ->as($prefix . '.')
+                ->group(function () use ($controller) {
+                    R::post('/bulk-delete', [$controller, 'bulkDelete'])->name('bulkDelete');
+                    R::post('/bulk-data', [$controller, 'getBulkData'])->name('getBulkData');
+                    R::post('/bulk-update', [$controller, 'bulkUpdate'])->name('bulkUpdate');
+                });
+        }
 
-    //guardians
-    Route::post('/guardians/bulk-delete', [GuardianController::class, 'bulkDelete'])->name('guardians.bulkDelete');
-    Route::post('/guardians/bulk-data', [GuardianController::class, 'getBulkData'])->name('guardians.getBulkData');
-    Route::post('/guardians/bulk-update', [GuardianController::class, 'bulkUpdate'])->name('guardians.bulkUpdate');
-
-    // departments bulk
-    Route::post('/departments/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('departments.bulkDelete');
-    Route::post('/departments/bulk-data', [DepartmentController::class, 'getBulkData'])->name('departments.getBulkData');
-    Route::post('/departments/bulk-update', [DepartmentController::class, 'bulkUpdate'])->name('departments.bulkUpdate');
-
-    // gradelevels
-    Route::post('/gradelevels/bulk-delete', [GradeLevelController::class, 'bulkDelete'])->name('gradelevels.bulkDelete');
-    Route::post('/gradelevels/bulk-data', [GradeLevelController::class, 'getBulkData'])->name('gradelevels.getBulkData');
-    Route::post('/gradelevels/bulk-update', [GradeLevelController::class, 'bulkUpdate'])->name('gradelevels.bulkUpdate');
-
-    // subjects bulk
-    Route::post('/subjects/bulk-delete', [SubjectController::class, 'bulkDelete'])->name('subjects.bulkDelete');
-    Route::post('/subjects/bulk-data', [SubjectController::class, 'getBulkData'])->name('subjects.getBulkData');
-    Route::post('/subjects/bulk-update', [SubjectController::class, 'bulkUpdate'])->name('subjects.bulkUpdate');
-    // Teacher bulk
-    Route::post('/teachers/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('teachers.bulkDelete');
-    Route::post('/teachers/bulk-data', [TeacherController::class, 'getBulkData'])->name('teachers.getBulkData');
-    Route::post('/teachers/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('teachers.bulkUpdate');
-
-    Route::get('students/{student}/guardians/attach', [StudentGuardianController::class, 'create'])->name('student_guardians.create');
-    Route::post('students/{student}/guardians', [StudentGuardianController::class, 'store'])->name('student_guardians.store');
-    Route::delete('students/{student}/guardians/{guardian}', [StudentGuardianController::class, 'destroy'])->name('student_guardians.destroy');
-});
+        R::prefix('/students/{student}/guardians')
+            ->as('student_guardians.')
+            ->middleware('auth')
+            ->group(function () {
+                R::get('/attach', [StudentGuardianController::class, 'create'])->name('create');
+                R::post('/', [StudentGuardianController::class, 'store'])->name('store');
+                R::delete('/{guardian}', [StudentGuardianController::class, 'destroy'])->name('destroy');
+            });
+    });

@@ -172,17 +172,6 @@
           <span class="menu-tooltip">Grade Levels</span>
         </a>
       </li>
-      <li class="menu-item relative">
-        <a href="{{ route('admin.gradescales.index') }}"
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
-          <div class="wr-icon flex items-center">
-            <i class="ri-graduation-cap-fill text-xl"></i>
-            <span class="ml-3 sidebar-text text-hidden">Grade scales</span>
-          </div>
-          <span class="menu-tooltip">Grade scales</span>
-        </a>
-      </li>
-
       <!-- Academics -->
       <li class="menu-item relative">
         <div
@@ -273,6 +262,17 @@
         </div>
         <div class="submenu">
           <ul class="pl-2 pr-2">
+            <li>
+              <a href="{{ route('admin.bookcategory.index') }}"
+                class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
+                   dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                <div class="flex items-center">
+                  <i class="ri-book-fill text-lg"></i>
+                  <span class="ml-2">Books category</span>
+                </div>
+                <span class="menu-tooltip">Books category</span>
+              </a>
+            </li>
             <li>
               <a href="{{ route('admin.books.index') }}"
                 class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700

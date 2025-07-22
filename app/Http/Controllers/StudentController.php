@@ -44,8 +44,8 @@ class StudentController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('students.partials.table', compact('students'))->render(),
-                'cards' => view('students.partials.cardlist', compact('students'))->render(),
+                'table' => view('admin.students.partials.table', compact('students'))->render(),
+                'cards' => view('admin.students.partials.cardlist', compact('students'))->render(),
                 'pagination' => $students->links()->toHtml()
             ];
 
@@ -56,7 +56,7 @@ class StudentController extends Controller
             ]);
         }
 
-        return view('students.index', compact('students','users', 'sections'));
+        return view('admin.students.index', compact('students','users', 'sections'));
     }
 
     public function store(StoreStudentRequest $request)
@@ -296,7 +296,7 @@ class StudentController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount students",
-            'redirect' => route('students.index')
+            'redirect' => route('admin.students.index')
         ]);
     }
 }

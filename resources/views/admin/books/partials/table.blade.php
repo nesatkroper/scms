@@ -28,7 +28,8 @@
     <tbody>
         @if (count($books) > 0)
             @foreach ($books as $book)
-                <tr class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
+                <tr
+                    class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
                     <td class="px-4 py-2">{{ $book->id }}</td>
                     <td class="px-4 py-2">{{ Str::limit($book->title, 30) }}</td>
                     <td class="px-4 py-2">{{ Str::limit($book->author, 20) }}</td>
@@ -36,7 +37,9 @@
                     <td class="px-4 py-2">{{ $book->publication_year }}</td>
                     <td class="px-4 py-2">{{ Str::limit($book->publisher, 20) }}</td>
                     <td class="px-4 py-2">{{ $book->quantity }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($book->category, 20) }}</td>
+                    <td class="px-4 py-2">
+                        {!! Str::limit($book->category?->name, 20) ?? '<span class="text-red-500">No category</span>' !!}
+                    </td>
                     <td class="px-4 py-2">
                         {{ $book->created_at->format('Y-m-d') }}
                     </td>
@@ -115,7 +118,8 @@
             <tr>
                 <td colspan="12" class="p-4 text-center">
                     <div class="col-span-full py-12 text-center">
-                        <div class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+                        <div
+                            class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-12 w-12 mx-auto text-red-400 dark:text-red-500" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -123,7 +127,8 @@
                                     d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Books Found</h3>
-                            <p class="mt-2 text-sm text-red-500 dark:text-red-500">Add your first book to get started</p>
+                            <p class="mt-2 text-sm text-red-500 dark:text-red-500">Add your first book to get started
+                            </p>
                         </div>
                     </div>
                 </td>

@@ -20,7 +20,7 @@
         </div>
 
         <!-- Form Content -->
-        <form id="bulkEditForm" action="{{ route('students.bulkUpdate') }}" method="POST" class="p-4 pt-0">
+        <form id="bulkEditForm" action="{{ route('admin.students.bulkUpdate') }}" method="POST" class="p-4 pt-0">
             @csrf
             @method('PUT')
 

@@ -256,7 +256,7 @@
 
                 const bookId = $(this).data('id');
 
-                $.get(`/books/${bookId}`)
+                $.get(`/admin/books/${bookId}`)
                     .done(function(response) {
                         if (response.success) {
                             $('#edit_title').val(response.book.title);
@@ -345,7 +345,7 @@
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const bookId = $(this).data('id');
-                $('#Formdelete').attr('action', `/books/${bookId}`);
+                $('#Formdelete').attr('action', `/admin/books/${bookId}`);
                 showModal('Modaldelete');
             }
 
@@ -387,16 +387,13 @@
                 const originalContent = detailBtn.find('.btn-content').html();
                 detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 detailBtn.prop('disabled', true);
-
-                const bookId = $(this).data('id');
-
-                $.get(`/books/${bookId}`)
+                const Id = $(this).data('id');
+                $.get(`/admin/books/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const book = response.book;
                             const createdAt = book.created_at ? book.created_at.substring(0, 10) : '';
                             const updatedAt = book.updated_at ? book.updated_at.substring(0, 10) : '';
-
                             $('#detail_title').val(book.title ?? '');
                             $('#detail_author').val(book.author ?? '');
                             $('#detail_isbn').val(book.isbn ?? '');

@@ -15,14 +15,14 @@ class UpdateGradeLevelRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'name' => ['sometimes', 'string', 'max:255'],
+      'name' => ['required', 'string', 'max:255'],
       'code' => [
-        'sometimes',
+        'required',
         'string',
         'max:255',
-        Rule::unique('grade_levels')->ignore($this->route('grade_level')),
+        Rule::unique('grade_levels')->ignore($this->gradelevel),
       ],
-      'description' => ['sometimes', 'nullable', 'string'],
+      'description' => ['nullable', 'string'],
     ];
   }
 }

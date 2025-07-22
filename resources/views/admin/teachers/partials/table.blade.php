@@ -32,10 +32,27 @@
                 <tr
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
                     <td class="px-4 py-2">{{ $teacher->id }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-white">
+                        <div class="flex items-center">
+                            <img class="w-9 h-9 rounded-full object-cover"
+                                src="{{ $teacher->photo ? asset($teacher->photo) : 'https://placehold.co/40x40/6366F1/FFFFFF?text=' . substr($teacher->user->name, 0, 1) }}"
+                                alt="{{ $teacher->user->name }} image">
+
+                            <div class="pl-3">
+                                <div class="text-base font-semibold">
+                                    {{ $teacher->user->name }}
+                                </div>
+                                <div class="font-normal text-gray-500">
+                                    {{ $teacher->user->email }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
                     <td class="px-4 py-2">{{ $teacher->user->name }}</td>
                     <td class="px-4 py-2">{{ $teacher->name }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->department->name ?? 'N/A', 20) }}</td>
-                    <td class="px-4 py-2">{{ $teacher->salary }}</td>
+                    <td class="px-4 py-2">${{ $teacher->salary }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->qualification, 20) }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->specialization, 20) }}</td>
                     <td class="px-4 py-2">
@@ -127,7 +144,8 @@
                                     d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No teacher Found</h3>
-                            <p class="mt-2 text-sm text-red-500 dark:text-red-500">Create your first data to get started
+                            <p class="mt-2 text-sm text-red-500 dark:text-red-500">Create your first data to get
+                                started
                             </p>
                         </div>
                     </div>

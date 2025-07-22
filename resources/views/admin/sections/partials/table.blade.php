@@ -5,7 +5,6 @@
             <th scope="col" class="px-4 py-4">Name</th>
             <th scope="col" class="px-4 py-4">Grade Level</th>
             <th scope="col" class="px-4 py-4">Teacher</th>
-            <th scope="col" class="px-4 py-4">Capacity</th>
             <th scope="col" class="px-4 py-4">Date</th>
             <th scope="col" class="px-4 py-4">Actions</th>
             <th scope="col" class="px-2 py-4 w-20 flex gap-1.5 items-center">
@@ -30,8 +29,7 @@
                     <td class="px-4 py-2">{{ $section->id }}</td>
                     <td class="px-4 py-2">{{ $section->name }}</td>
                     <td class="px-4 py-2">{{ $section->gradeLevel->name ?? 'N/A' }}</td>
-                    <td class="px-4 py-2">{{ $section->teacher->user->name ?? 'Not assigned' }}</td>
-                    <td class="px-4 py-2">{{ $section->capacity }}</td>
+                    <td class="px-4 py-2">{{ $section->teacher->name?? 'Not assigned' }}</td>
                     <td class="px-4 py-2">
                         {{ $section->created_at->format('Y-m-d') }}
                     </td>

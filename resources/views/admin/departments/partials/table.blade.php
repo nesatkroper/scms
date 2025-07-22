@@ -1,6 +1,7 @@
 <table class="w-full text-sm text-left">
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
         <tr>
+            <th scope="col" class="px-4 py-4">Id</th>
             <th scope="col" class="px-4 py-4">Name</th>
             <th scope="col" class="px-4 py-4">Description</th>
             <th scope="col" class="px-4 py-4">Date</th>
@@ -26,6 +27,7 @@
             @foreach ($departments as $department)
                 <tr
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
+                    <td class="px-4 py-2">{{ $department->id }}</td>
                     <td class="px-4 py-2">{{ $department->name }}</td>
                     <td class="px-4 py-2">{{ Str::limit($department->description, 50) }}</td>
                     <td class="px-4 py-2">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Sections')
 @section('content')
     <div
@@ -48,24 +48,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('sections.partials.table', ['sections' => $sections])
+            @include('admin.sections.partials.table', ['sections' => $sections])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('sections.partials.cardlist', ['sections' => $sections])
+            @include('admin.sections.partials.cardlist', ['sections' => $sections])
         </div>
         {{-- pagination --}}
-        @include('sections.partials.pagination')
+        @include('admin.sections.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('sections.partials.create')
-    @include('sections.partials.edit')
-    @include('sections.partials.detail')
-    @include('sections.partials.delete')
-    @include('sections.partials.bulkedit')
-    @include('sections.partials.bulkdelete')
+    @include('admin.sections.partials.create')
+    @include('admin.sections.partials.edit')
+    @include('admin.sections.partials.detail')
+    @include('admin.sections.partials.delete')
+    @include('admin.sections.partials.bulkedit')
+    @include('admin.sections.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -187,7 +187,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('sections.index') }}",
+                    url: "{{ route('admin.sections.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -249,25 +249,25 @@
                 e.preventDefault();
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                editBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">loading...</span>');
                 editBtn.prop('disabled', true);
-
                 const Id = $(this).data('id');
-
-                $.get(`/sections/${Id}`)
+                $.get(`/admin/sections/${Id}`)
                     .done(function(response) {
+                        console.log(response.section.name)
                         if (response.success) {
                             $('#edit_name').val(response.section.name);
                             $('#edit_grade_level_id').val(response.section.grade_level_id);
                             $('#edit_teacher_id').val(response.section.teacher_id);
-                            $('#edit_capacity').val(response.section.capacity);
-                            $('#Formedit').attr('action', `/sections/${Id}`);
+                            $('#Formedit').attr('action', `sections/${Id}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load section data');
                         }
                     })
                     .fail(function(xhr) {
+
                         console.error('Error:', xhr.responseText);
                         ShowTaskMessage('error', 'Failed to load section data');
                     })
@@ -282,14 +282,14 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
                     data: form.serialize() + '&_method=PUT',
                     success: function(response) {
+                        console.log(response.section.name)
+                        console.log(response.message)
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
@@ -301,7 +301,7 @@
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating section');
+                        ShowTaskMessage('error', errorMessages || 'Error updating sectionS');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -312,7 +312,7 @@
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const sectionId = $(this).data('id');
-                $('#Formdelete').attr('action', `/sections/${sectionId}`);
+                $('#Formdelete').attr('action', `/admin/sections/${sectionId}`);
                 showModal('Modaldelete');
             }
 
@@ -352,26 +352,24 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                detailBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">loading...</span>');
                 detailBtn.prop('disabled', true);
-
-                const sectionId = $(this).data('id');
-
-                $.get(`/sections/${sectionId}`)
+                const Id = $(this).data('id');
+                $.get(`/admin/sections/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const section = response.section;
                             const gradeLevelName = section.grade_level?.name ?? "Unknown";
                             const teacherName = section.teacher?.user?.name ?? "Not assigned";
                             const createdAt = section.created_at ? section.created_at.substring(0, 10) : '';
-                            const updatedAt = section.updated_at ? section.updated_at.substring(0, 10) : ''; 
+                            const updatedAt = section.updated_at ? section.updated_at.substring(0, 10) : '';
                             $('#detail_name').val(section.name ?? '');
                             $('#detail_grade_level').val(gradeLevelName);
                             $('#detail_teacher').val(teacherName);
                             $('#detail_capacity').val(section.capacity ?? '');
                             $('#detail_created_at').val(createdAt);
                             $('#detail_updated_at').val(updatedAt);
-
                             showModal('Modaldetail');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load section details');
@@ -428,7 +426,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('sections.bulkDelete') }}",
+                        url: "{{ route('admin.sections.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -482,7 +480,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('sections.getBulkData') }}",
+                    url: "{{ route('admin.sections.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -506,28 +504,25 @@
                             <div class="flex justify-between items-center mb-2">
                                 <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Section #${index + 1}</h4>
                             </div>
-                            
+                            <div class="mb-4">
+                                <label for="sections[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Section Name <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="sections[${index}][name]" name="sections[${index}][name]"
+                                    class="w-full px-3 py-2 border rounded-md focus:outline
+                 focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                    value="${section.name}"
+                                    placeholder="Enter section name" required>
+                            </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
-                                <div class="mb-4">
-                                    <label for="sections[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Section Name <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="sections[${index}][name]" name="sections[${index}][name]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${section.name}"
-                                        placeholder="Enter section name" required>
-                                </div>
-
                                 <div class="mb-4">
                                     <label for="sections[${index}][grade_level_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Grade Level <span class="text-red-500">*</span>
                                     </label>
                                     <select id="sections[${index}][grade_level_id]" name="sections[${index}][grade_level_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400" required>
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 
+                                        focus:border-indigo-500 dark:bg-gray-700 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300" required>
                                         @foreach ($gradeLevels as $gradeLevel)
                                             <option value="{{ $gradeLevel->id }}" ${section.grade_level_id == {{ $gradeLevel->id }} ? 'selected' : ''}>
                                                 {{ $gradeLevel->name }}
@@ -541,9 +536,8 @@
                                         Teacher
                                     </label>
                                     <select id="sections[${index}][teacher_id]" name="sections[${index}][teacher_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400">
+                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 
+                                        focus:border-indigo-500 dark:bg-gray-700 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
                                         <option value="">Select Teacher</option>
                                         @foreach ($teachers as $teacher)
                                             <option value="{{ $teacher->id }}" ${section.teacher_id == {{ $teacher->id }} ? 'selected' : ''}>
@@ -551,18 +545,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="sections[${index}][capacity]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Capacity <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" id="sections[${index}][capacity]" name="sections[${index}][capacity]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${section.capacity}"
-                                        placeholder="Enter capacity" required>
                                 </div>
                             </div>
                         </div>
@@ -601,7 +583,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('sections.bulkUpdate') }}",
+                    url: "{{ route('admin.sections.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         sections: dataform
@@ -664,7 +646,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('sections.index') }}",
+                    url: "{{ route('admin.sections.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

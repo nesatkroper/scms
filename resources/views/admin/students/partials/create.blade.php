@@ -23,7 +23,7 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('students.store') }}" method="POST" class="py-4" enctype="multipart/form-data">
+        <form action="{{ route('admin.students.store') }}" method="POST" class="py-4" enctype="multipart/form-data">
             @csrf
 
             <div class="h-[65vh] md:h-auto overflow-y-auto px-4">

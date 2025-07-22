@@ -416,7 +416,7 @@
                     editBtn.prop('disabled', true);
 
                     // Fetch department data
-                    $.get(`/departments/${Id}`)
+                    $.get(`/admin/departments/${Id}`)
                         .done(function(data) {
                             // Populate form fields
                             $('#edit_name').val(data.department.name);
@@ -482,7 +482,7 @@
                     const departmentId = $(this).data('id');
 
                     // Fetch department data
-                    $.get(`/departments/${departmentId}`, function(data) {
+                    $.get(`/admin/departments/${departmentId}`, function(data) {
                         $('#detail_name').text(data.department.name);
                         $('#detail_description').text(data.department.description);
                         $('#detail_created_at').text(data.created_at);

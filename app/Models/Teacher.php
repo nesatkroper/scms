@@ -12,6 +12,8 @@ class Teacher extends Model
 
   protected $fillable = [
     'teacher_id',
+    'name',
+    'dob',
     'department_id',
     'user_id',
     'joining_date',
@@ -27,6 +29,7 @@ class Teacher extends Model
   ];
 
   protected $casts = [
+    'dob',
     'joining_date' => 'date',
     'salary' => 'decimal:2',
   ];

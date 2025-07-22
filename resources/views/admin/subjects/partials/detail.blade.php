@@ -31,22 +31,19 @@
                             Name
                         </label>
                         <input type="text" id="detail_name" name="detail_name"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white border-gray-400"
-                            disabled required>
+                            class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                            disabled readonly>
                     </div>
 
                     <!-- Code Field -->
                     <div class="mb-2">
-                        <label for="detail_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label for="detail_code"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Code
                         </label>
                         <input type="text" id="detail_code" name="detail_code"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white border-gray-400"
-                            disabled required>
+                            class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                            disabled readonly>
                     </div>
                     <!-- Department Field -->
                     <div class="mb-2">
@@ -55,9 +52,7 @@
                             Department
                         </label>
                         <input type="text" id="detail_depid" name="detail_depid"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white border-gray-400"
+                            class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
                             disabled readonly>
                     </div>
 
@@ -68,10 +63,8 @@
                             Credit hours
                         </label>
                         <input type="number" id="detail_credit_hours" name="credit_hours" disabled readonly
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white
-                        border-gray-400">
+                            class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                            disabled readonly>
                     </div>
 
                 </div>
@@ -81,10 +74,8 @@
                         Date
                     </label>
                     <input type="date" id="detail_updated_at" name="detail_updated_at" disabled readonly
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                         dark:border-gray-600 dark:text-white
-                        border-gray-400">
+                        class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                        disabled readonly>
                 </div>
                 <!-- Description Field (full width) -->
                 <div class="mb-2">
@@ -93,10 +84,8 @@
                         Description
                     </label>
                     <textarea id="detail_description" name="detail_description" rows="3" disabled readonly
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                     dark:border-gray-600 dark:text-white
-                    border-gray-400"></textarea>
+                        class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
+                        disabled readonly></textarea>
                 </div>
             </div>
 

@@ -28,16 +28,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
                 <!-- Teacher ID Field -->
                 <div class="mb-2">
-                    <label for="edit_teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Teacher ID <span class="text-red-500">*</span>
+                    <label for="edit_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Name <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="edit_teacher_id" name="teacher_id" value="{{ old('teacher_id') }}"
+                    <input type="text" id="edit_name" name="name"
                         class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('teacher_id') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter teacher ID" required>
+                        @error('name') border-red-500 @else border-gray-400 @enderror"
+                        placeholder="Enter name" required>
 
-                    @error('teacher_id')
+                    @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

@@ -1,6 +1,7 @@
 <!-- Edit Modal -->
 <div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+    <div
+        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -24,15 +25,16 @@
         <form id="Formedit" method="POST" class="p-4">
             @csrf
             @method('PUT')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
+            <div class="grid grid-cols-1 gap-1 sm:gap-3 mb-2">
                 <!-- Name Field -->
                 <div class="mb-2">
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Name <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="edit_name" name="name" value="{{ old('name') }}"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        class="w-full px-3 py-2 border rounded-md focus:outline
+                 focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                         @error('name') border-red-500 @else border-gray-400 @enderror"
                         placeholder="Enter section name" required>
 
@@ -43,13 +45,16 @@
 
                 <!-- Grade Level Field -->
                 <div class="mb-2">
-                    <label for="edit_grade_level_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label for="edit_grade_level_id"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Grade Level <span class="text-red-500">*</span>
                     </label>
                     <select id="edit_grade_level_id" name="grade_level_id"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('grade_level_id') border-red-500 @else border-gray-400 @enderror" required>
+                        class="w-full px-3 py-2 border rounded-md focus:outline
+                 focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                        @error('grade_level_id') border-red-500 @else border-gray-400 @enderror"
+                        required>
                         <option value="">Select grade level</option>
                         @foreach ($gradeLevels as $gradeLevel)
                             <option value="{{ $gradeLevel->id }}"
@@ -66,39 +71,25 @@
 
                 <!-- Teacher Field -->
                 <div class="mb-2">
-                    <label for="edit_teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label for="edit_teacher_id"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Teacher
                     </label>
                     <select id="edit_teacher_id" name="teacher_id"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                        class="w-full px-3 py-2 border rounded-md focus:outline
+                 focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                         @error('teacher_id') border-red-500 @else border-gray-400 @enderror">
                         <option value="">No teacher assigned</option>
                         @foreach ($teachers as $teacher)
                             <option value="{{ $teacher->id }}"
                                 {{ old('teacher_id') == $teacher->id ? 'selected' : '' }}>
-                                {{ $teacher->user->name }}
+                                {{ $teacher->name }}
                             </option>
                         @endforeach
                     </select>
 
                     @error('teacher_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Capacity Field -->
-                <div class="mb-2">
-                    <label for="edit_capacity" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Capacity <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" min="1" id="edit_capacity" name="capacity" value="{{ old('capacity', 30) }}"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('capacity') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter capacity" required>
-
-                    @error('capacity')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
