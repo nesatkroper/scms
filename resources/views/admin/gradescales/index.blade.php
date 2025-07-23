@@ -130,7 +130,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('admin.gradelevels.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -582,7 +582,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('gradelevels.index') }}",
+                    url: "{{ route('admin.gradelevels.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

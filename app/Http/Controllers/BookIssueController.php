@@ -53,7 +53,7 @@ class BookIssueController extends Controller
             ]);
         }
 
-        return view('bookissues.index', compact('bookIssues', 'books', 'users'));
+        return view('admin.bookissues.index', compact('bookIssues', 'books', 'users'));
     }
 
     public function store(StoreBookIssueRequest $request)
@@ -209,7 +209,7 @@ class BookIssueController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount book issues",
-            'redirect' => route('bookissues.index')
+            'redirect' => route('admin.bookissues.index')
         ]);
     }
 }

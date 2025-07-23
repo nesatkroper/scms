@@ -42,7 +42,7 @@
                 <ul>
                     <!-- Dashboard -->
                     <li class="menu-item relative">
-                        <a href="{{ route('home') }}"
+                        <a href="{{ route('admin.home') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="wr-icon flex items-center">
                                 <i class="fas fa-tachometer-alt w-6 text-center"></i>
@@ -184,7 +184,7 @@
                         </a>
                     </li>
                     <li class="menu-item relative">
-                        <a href="{{ route('gradelevels.index') }}"
+                        <a href="{{ route('admin.gradelevels.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="wr-icon flex items-center">
                                 <i class="ri-stairs-fill text-lg"></i>
@@ -193,7 +193,7 @@
                             <span class="menu-tooltip">Grade Levels</span>
                         </a>
                     </li>
-                    <li class="menu-item relative">
+                    {{-- <li class="menu-item relative">
                         <a href="{{ route('gradescales.index') }}"
                             class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
                             <div class="wr-icon flex items-center">
@@ -202,7 +202,7 @@
                             </div>
                             <span class="menu-tooltip">Grade scales</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <!-- Academics -->
                     <li class="menu-item relative">
@@ -315,7 +315,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('bookissues.index') }}"
+                                    <a href="{{ route('admin.bookissues.index') }}"
                                         class="flex items-center justify-between px-4 py-2 hover:bg-indigo-700
                                          dark:hover:bg-gray-700 rounded-md transition-all duration-200">
                                         <div class="flex items-center">
@@ -576,7 +576,7 @@
         <!-- Main content -->
         <div class="flex-1 flex flex-col transition-all duration-300 md:ml-72" id="main-content">
             <!-- Header -->
-            @include('layouts.header')
+            {{-- @include('layouts.header') --}}
 
             <!-- Main content area -->
             <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
