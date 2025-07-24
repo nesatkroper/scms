@@ -50,13 +50,13 @@ class GuardianController extends Controller
             ]);
         }
 
-        return view('guardians.index', compact('guardians', 'users'));
+        return view('admin.guardians.index', compact('guardians', 'users'));
     }
 
 
     public function create()
     {
-        return view('guardians.create');
+        return view('admin.guardians.create');
     }
 
     // public function store(StoreGuardianRequest $request)
@@ -65,46 +65,48 @@ class GuardianController extends Controller
     //     $guardian->load('students');
     //     return redirect()->route('guardians.index')->with('success', 'Guardian added successfully!');
     // }
-     public function store(StoreGuardianRequest $request)
-    {
-        $data = $request->validated();
-        
-        // Handle photo upload
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('guardian_photos', 'public');
-            $data['photo'] = $path;
-        }
+  
+    public function store(StoreGuardianRequest $request)
+{
+    $validated = $request->validated();
     
-        $guardian = Guardian::create($data);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Guardian created successfully',
-            'data' => $guardian
-        ]);
+    // Handle photo upload
+    if ($request->hasFile('photo')) {
+        $validated['photo'] = $request->file('photo')->store('guardian_photos', 'public');
     }
+    
+    $guardian = Guardian::create($validated);
+    
+    return response()->json([
+        'success' => true,
+        'message' => 'Guardian created successfully',
+        'data' => $guardian
+    ]);
+}
+
+
     public function show(Guardian $guardian)
     {
         $guardian->load('students');
-        return view('guardians.show', compact('guardian'));
+        return view('admin.guardians.show', compact('guardian'));
     }
 
     public function edit(Guardian $guardian)
     {
         $guardian->load('students');
-        return view('guardians.edit', compact('guardian'));
+        return view('admin.guardians.edit', compact('guardian'));
     }
 
     public function update(UpdateGuardianRequest $request, Guardian $guardian)
     {
         $guardian->update($request->validated());
         $guardian->load('students');
-        return redirect()->route('guardians.show', $guardian)->with('success', 'Guardian updated successfully!');
+        return redirect()->route('admin.guardians.show', $guardian)->with('success', 'Guardian updated successfully!');
     }
 
     public function destroy(Guardian $guardian)
     {
         $guardian->delete();
-        return redirect()->route('guardians.index')->with('success', 'Guardian deleted successfully!');
+        return redirect()->route('admin.guardians.index')->with('success', 'Guardian deleted successfully!');
     }
 }

@@ -39,10 +39,10 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('guardians.partials.table', ['guardians' => $guardians])
+            @include('admin.guardians.partials.table', ['guardians' => $guardians])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('guardians.partials.cardlist', ['guardians' => $guardians])
+            @include('admin.guardians.partials.cardlist', ['guardians' => $guardians])
         </div>
         {{-- pagination --}}
         <div class="mt-4">
@@ -53,12 +53,12 @@
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('guardians.partials.create')
-    @include('guardians.partials.edit')
-    @include('guardians.partials.detail')
-    @include('guardians.partials.delete')
-    @include('guardians.partials.bulkedit')
-    @include('guardians.partials.bulkdelete')
+    @include('admin.guardians.partials.create')
+    @include('admin.guardians.partials.edit')
+    @include('admin.guardians.partials.detail')
+    @include('admin.guardians.partials.delete')
+    @include('admin.guardians.partials.bulkedit')
+    @include('admin.guardians.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -107,7 +107,7 @@
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewguardian') || 'table';
                 $.ajax({
-                    url: "{{ route('guardians.index') }}",
+                    url: "{{ route('admin.guardians.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -371,7 +371,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('guardians.bulkDelete') }}",
+                        url: "{{ route('admin.guardians.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -423,7 +423,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('guardians.getBulkData') }}",
+                    url: "{{ route('admin.guardians.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -572,7 +572,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('guardians.bulkUpdate') }}",
+                    url: "{{ route('admin.guardians.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         guardians: dataform
@@ -635,7 +635,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('guardians.index') }}",
+                    url: "{{ route('admin.guardians.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
