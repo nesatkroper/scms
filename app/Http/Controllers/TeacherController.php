@@ -68,7 +68,7 @@ class TeacherController extends Controller
             }
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
-                $photoName = time() . '_' . $photo->getClientOriginalName();
+                $photoName = time()  . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
                 $photo->move($teacherPhotoPath, $photoName);
                 $validated['photo'] = 'photos/teacher/' . $photoName;
             }
@@ -79,7 +79,7 @@ class TeacherController extends Controller
 
             if ($request->hasFile('cv')) {
                 $cv = $request->file('cv');
-                $cvName = time() . '_' . $cv->getClientOriginalName();
+                $cvName = time()  . '-' . date('d-m-Y') . '_ed' . $cv->getClientOriginalName();
                 $cv->move($cvPath, $cvName);
                 $validated['cv'] = 'photos/cv/' . $cvName;
             }
@@ -115,21 +115,28 @@ class TeacherController extends Controller
             // Handle photo upload
             if ($request->hasFile('photo')) {
                 // Delete old photo if exists
-                if ($teacher->photo) {
-                    Storage::disk('public')->delete($teacher->photo);
+                if ($teacher->photo && file_exists(public_path($teacher->photo))) {
+                    unlink(public_path($teacher->photo));
                 }
-                $photoPath = $request->file('photo')->store('teachers/photos', 'public');
-                $data['photo'] = $photoPath;
+
+                $photo = $request->file('photo');
+                $photoName = time()  . '-' . date('d-m-Y') . '_ed' . $photo->getClientOriginalName();
+                $photoPath = public_path('photos/teacher');
+                $photo->move($photoPath, $photoName);
+                $data['photo'] = 'photos/teacher/' . $photoName;
             }
 
             // Handle CV upload
             if ($request->hasFile('cv')) {
                 // Delete old CV if exists
-                if ($teacher->cv) {
-                    Storage::disk('public')->delete($teacher->cv);
+                if ($teacher->cv && file_exists(public_path($teacher->cv))) {
+                    unlink(public_path($teacher->cv));
                 }
-                $cvPath = $request->file('cv')->store('teachers/cvs', 'public');
-                $data['cv'] = $cvPath;
+                $cv = $request->file('cv');
+                $cvName = time()  . '-' . date('d-m-Y') . '_ed' . $cv->getClientOriginalName();
+                $cvPath = public_path('photos/cv');
+                $cv->move($cvPath, $cvName);
+                $data['cv'] = 'photos/cv/' . $cvName;
             }
 
             $teacher->update($data);
@@ -149,13 +156,20 @@ class TeacherController extends Controller
 
     public function destroy(Teacher $teacher)
     {
+
         try {
             // Delete associated files
             if ($teacher->photo) {
-                Storage::disk('public')->delete($teacher->photo);
+                $photoPath = public_path($teacher->photo);
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
             }
             if ($teacher->cv) {
-                Storage::disk('public')->delete($teacher->cv);
+                $cvPath = public_path($teacher->cv);
+                if (file_exists($cvPath)) {
+                    unlink($cvPath);
+                }
             }
 
             $teacher->delete();
@@ -207,6 +221,48 @@ class TeacherController extends Controller
                 'message' => 'Error deleting teachers: ' . $e->getMessage()
             ], 500);
         }
+
+
+
+        // $ids = $request->input('ids');
+
+        // if (empty($ids)) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'No teachers selected'
+        //     ], 400);
+        // }
+
+        // try {
+        //     $teachers = Teacher::whereIn('id', $ids)->get();
+
+        //     foreach ($teachers as $teacher) {
+        //         // Delete associated files
+        //         if ($teacher->photo) {
+        //             $photoPath = public_path($teacher->photo);
+        //             if (file_exists($photoPath)) {
+        //                 unlink($photoPath);
+        //             }
+        //         }
+        //         if ($teacher->cv) {
+        //             $cvPath = public_path($teacher->cv);
+        //             if (file_exists($cvPath)) {
+        //                 unlink($cvPath);
+        //             }
+        //         }
+        //         $teacher->delete();
+        //     }
+
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => count($teachers) . ' teachers deleted successfully'
+        //     ]);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Error deleting teachers: ' . $e->getMessage()
+        //     ], 500);
+        // }
     }
 
     public function getBulkData(Request $request)
@@ -241,6 +297,46 @@ class TeacherController extends Controller
         }
     }
 
+    // public function bulkUpdate(Request $request)
+    // {
+    //     $request->validate([
+    //         'teachers' => 'required|array',
+    //         'teachers.*.id' => 'required|exists:teachers,id',
+    //     ]);
+
+    //     $updatedCount = 0;
+
+    //     foreach ($request->input('teachers') as $teacherData) {
+    //         $validator = Validator::make($teacherData, [
+    //             'id' => 'required|exists:teachers,id',
+    //             'department_id' => 'nullable|exists:departments,id',
+    //             'joining_date' => 'required|date',
+    //             'qualification' => 'required|string|max:255',
+    //             'specialization' => 'nullable|string',
+    //             'salary' => 'nullable|numeric|min:0',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             Log::error("Validation failed for teacher ID {$teacherData['id']}: " . json_encode($validator->errors()));
+    //             continue; // Skip invalid
+    //         }
+
+    //         try {
+    //             $teacher = Teacher::findOrFail($teacherData['id']);
+    //             $teacher->update($validator->validated());
+    //             $updatedCount++;
+    //         } catch (\Exception $e) {
+    //             Log::error("Error updating teacher: " . $e->getMessage());
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => "Successfully updated $updatedCount teachers",
+    //         'redirect' => route('admin.teachers.index')
+    //     ]);
+    // }
+
     public function bulkUpdate(Request $request)
     {
         $request->validate([
@@ -253,16 +349,24 @@ class TeacherController extends Controller
         foreach ($request->input('teachers') as $teacherData) {
             $validator = Validator::make($teacherData, [
                 'id' => 'required|exists:teachers,id',
-                'department_id' => 'nullable|exists:departments,id',
+                'teacher_id' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'gender' => 'required|in:male,female,other',
+                'dob' => 'required|date',
+                'department_id' => 'required|exists:departments,id',
                 'joining_date' => 'required|date',
                 'qualification' => 'required|string|max:255',
+                'experience' => 'nullable|string',
+                'phone' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
+                'address' => 'nullable|string',
                 'specialization' => 'nullable|string',
                 'salary' => 'nullable|numeric|min:0',
             ]);
 
             if ($validator->fails()) {
                 Log::error("Validation failed for teacher ID {$teacherData['id']}: " . json_encode($validator->errors()));
-                continue; // Skip invalid
+                continue;
             }
 
             try {

@@ -9,7 +9,7 @@
                 <path
                     d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
             </svg>
-            Teachers
+            Teachers List
         </h3>
         <div
             class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -48,6 +48,16 @@
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('admin.teachers.partials.table', ['teachers' => $teachers])
+            <x-table.table :headers="[
+                'Id',
+                'teacher',
+                'Experience',
+                'department',
+                'salary',
+                'qualification',
+                'specialization',
+                'joining date',
+            ]" />
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.teachers.partials.cardlist', ['teachers' => $teachers])
@@ -65,6 +75,9 @@
     @include('admin.teachers.partials.delete')
     @include('admin.teachers.partials.bulkedit')
     @include('admin.teachers.partials.bulkdelete')
+
+
+
 @endsection
 
 @push('scripts')
@@ -213,53 +226,6 @@
                 });
             }
 
-            // CRUD Operations
-            // function handleCreateSubmit(e) {
-            //     e.stopPropagation();
-            //     e.preventDefault();
-            //     const form = $(this);
-            //     const submitBtn = $('#createSubmitBtn');
-            //     const originalBtnHtml = submitBtn.html();
-            //     submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
-            //     $.ajax({
-            //         url: form.attr('action'),
-            //         method: 'POST',
-            //         processData: false,
-            //         contentType: false,
-            //         data: form.serialize(),
-            //         success: function(response) {
-            //             if (response.success) {
-            //                 closeModal('Modalcreate');
-            //                 ShowTaskMessage('success', response.message);
-            //                 refreshTeacherContent();
-            //                 form.trigger('reset');
-            //             } else {
-            //                 ShowTaskMessage('error', response.message || 'Error creating teacher');
-            //             }
-            //         },
-            //         error: function(xhr) {
-            //             const errors = xhr.responseJSON?.errors || {};
-            //             let errorMessages = Object.values(errors).flat().join('\n');
-            //             ShowTaskMessage('error', errorMessages || 'Error creating teacher');
-            //         },
-            //         // error: function(xhr) {
-            //         //     console.log(xhr.responseJSON.errors); // This will show validation errors
-            //         //     // Display errors to user
-            //         //     if (xhr.status === 422) {
-            //         //         const errors = xhr.responseJSON.errors;
-            //         //         for (const field in errors) {
-            //         //             console.log(errors[field][0]); 
-            //         //             ShowTaskMessage('error', `${field}: ${errors[field][0]}`);
-            //         //         }
-            //         //     }
-            //         // },
-            //         complete: function() {
-            //             submitBtn.prop('disabled', false).html(originalBtnHtml);
-            //         }
-            //     });
-            // }
-
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
@@ -294,10 +260,20 @@
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating teacher');
+                        // const errors = xhr.responseJSON?.errors || {};
+                        // let errorMessages = Object.values(errors).flat().join('\n');
+                        // ShowTaskMessage('error', errorMessages || 'Error creating teacher');
+                        console.log(xhr.responseJSON.errors); // This will show validation errors
+                        // Display errors to user
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                console.log(errors[field][0]);
+                                ShowTaskMessage('error', `${field}: ${errors[field][0]}`);
+                            }
+                        }
                     },
+
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
                     }
@@ -307,35 +283,67 @@
             function handleEditClick(e) {
                 e.preventDefault();
                 const editBtn = $(this);
-                const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                editBtn.prop('disabled', true);
+                const originalContent = editBtn.html();
+                editBtn.html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>')
+                    .prop('disabled', true);
 
                 const teacherId = $(this).data('id');
 
                 $.get(`/admin/teachers/${teacherId}`)
                     .done(function(response) {
-                        if (response.success) {
-                            $('#edit_teacher_id').val(response.teacher.teacher_id);
-                            $('#edit_depid').val(response.teacher.department_id);
-                            $('#edit_joining_date').val(response.teacher.joining_date);
-                            $('#edit_qualification').val(response.teacher.qualification);
-                            $('#edit_specialization').val(response.teacher.specialization);
-                            $('#edit_salary').val(response.teacher.salary);
+                        if (response.success && response.teacher) {
+                            const teacher = response.teacher;
+                            const date = teacher.joining_date ? teacher.joining_date.substring(0, 10) : '';
+                            const datedob = teacher.dob ? teacher.dob.substring(0, 10) : '';
+                            // Set form values
+                            console.log(teacher)
+                            $('#edit_name').val(teacher.name);
+                            $('#edit_user').val(teacher.user_id);
+                            $('#edit_phone').val(teacher.phone);
+                            $('#edit_email').val(teacher.email);
+                            $('#edit_gender').val(teacher.gender);
+                            $('#edit_dob').val(datedob);
+                            $('#edit_teacher_id').val(teacher.teacher_id);
+                            $('#edit_depid').val(teacher.department_id);
+                            $('#edit_joining_date').val(date);
+                            $('#edit_qualification').val(teacher.qualification);
+                            $('#edit_specialization').val(teacher.specialization);
+                            $('#edit_salary').val(teacher.salary);
+                            $('#edit_address').val(teacher.address);
+                            $('#edit_experience').val(teacher.experience);
+
+                            // Handle photo display
+                            if (teacher.photo) {
+                                $('#edit_photo').attr('src', '/' + teacher.photo).removeClass('hidden');
+                                $('#edit_initials').addClass('hidden');
+                            } else {
+                                $('#edit_photo').addClass('hidden');
+                                const initials = teacher.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                                $('#edit_initials').removeClass('hidden').find('span').text(initials);
+                            }
+
+                            // Handle CV display
+                            if (teacher.cv) {
+                                $('#current_cv').removeClass('hidden');
+                                $('#cv_link').attr('href', '/storage/' + teacher.cv).text(teacher.cv.split('/')
+                                    .pop());
+                            } else {
+                                $('#current_cv').addClass('hidden');
+                            }
+
+                            // Set form action
                             $('#Formedit').attr('action', `/teachers/${teacherId}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load teacher data');
                         }
-
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
                         ShowTaskMessage('error', 'Failed to load teacher data');
                     })
                     .always(function() {
-                        editBtn.find('.btn-content').html(originalContent);
-                        editBtn.prop('disabled', false);
+                        editBtn.html(originalContent).prop('disabled', false);
                     });
             }
 
@@ -344,13 +352,15 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
+                // Create FormData object to handle file uploads
+                const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
                 $.ajax({
-                    url: form.attr('action'),
+                    url: '/admin' + form.attr('action'),
                     method: 'POST',
-                    data: form.serialize() + '&_method=PUT',
+                    data: formData,
+                    processData: false, // Important for file uploads
+                    contentType: false, // Important for file uploads
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modaledit');
@@ -371,6 +381,19 @@
                 });
             }
 
+            // Preview photo before upload
+            $('#photo_upload').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#edit_photo').attr('src', e.target.result).removeClass('hidden');
+                        $('#edit_initials').addClass('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const teacherId = $(this).data('id');
@@ -387,7 +410,7 @@
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
 
                 $.ajax({
-                    url: form.attr('action'),
+                    url: '/admin' + form.attr('action'),
                     method: 'POST',
                     data: {
                         _method: 'DELETE'
@@ -417,24 +440,68 @@
                 detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 detailBtn.prop('disabled', true);
 
-                const teacherId = $(this).data('id');
+                const Id = $(this).data('id');
 
-                $.get(`/admin/teachers/${teacherId}`)
+                $.get(`/admin/teachers/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const teacher = response.teacher;
-                            const departmentName = teacher.department?.name ?? "Unknown";
-                            const updatedAt = teacher.updated_at ? teacher.updated_at.substring(0, 10) : '';
+                            const teach = response.teacher;
+                            const departmentName = teach.department?.name ?? "Unknown";
+                            const updatedAt = teach.updated_at ? teach.updated_at.substring(0, 10) : '';
+                            // Set basic info
+                            $('#detail_name').text(teach.name ?? '');
+                            $('.title').text(teach.name ?? '');
+                            $('#detail_user').val(teach.user_id);
+                            $('#detail_gender').val(teach.gender);
+                            $('#detail_salary').text(teach.salary);
+                            $('#detail_department').text(departmentName).toggleClass('hidden', !departmentName);
+                            $('#detail_specialization').text(teach.specialization ?? '');
+                            $('#detail_experience').text(teach.experience ?? '0');
+                            $('#detail_qualification').text(teach.qualification ?? '');
+                            $('#detail_joining_date').text(teach.joining_date ? new Date(teach.joining_date)
+                                .toLocaleDateString() : '');
+                            $('#detail_email').text(teach.email ?? '');
+                            $('#detail_phone').text(teach.phone ?? 'Not provided');
+                            $('#detail_dob').text(teach.dob ? new Date(teach.dob).toLocaleDateString() :
+                                '');
+                            $('#detail_address').text(teach.address ?? '');
 
-                            $('#detail_teacher_id').val(teacher.teacher_id ?? '');
-                            $('#detail_department').val(departmentName);
-                            $('#detail_joining_date').val(teacher.joining_date ?? '');
-                            $('#detail_qualification').val(teacher.qualification ?? '');
-                            $('#detail_specialization').val(teacher.specialization ?? '');
-                            $('#detail_salary').val(teacher.salary ?? '');
-                            $('#detail_created_at').val(teacher.created_at ?? '');
-                            $('#detail_updated_at').val(updatedAt);
+                            // Handle photo display
+                            const photoContainer = $('#detail_photo');
+                            const initialsContainer = $('#detail_initials');
+                            const initialsSpan = initialsContainer.find('span');
 
+                            if (teach.photo) {
+                                photoContainer.attr('src', `${window.location.origin}/${teach.photo}`)
+                                    .removeClass('hidden');
+                                initialsContainer.addClass('hidden');
+                            } else {
+                                // Display initials if no photo
+                                photoContainer.addClass('hidden');
+                                initialsContainer.removeClass('hidden');
+                                const nameParts = teach.name.split(' ');
+                                const initials = nameParts.map(part => part[0]).join('').toUpperCase();
+                                initialsSpan.text(initials);
+                            }
+
+                            // Handle CV preview
+                            if (teach.cv) {
+                                const cvPath = teach.cv.startsWith('http') ? teach.cv : `/${teach.cv}`;
+                                const fileName = teach.cv.split('/').pop();
+
+                                $('#cv_preview_container').removeClass('hidden');
+                                $('#no_cv_message').addClass('hidden');
+                                $('#cv_filename').text(fileName);
+                                $('#cv_download_btn').attr('href', cvPath);
+
+                                // Make the whole container clickable to view
+                                $('#cv_preview_container').off('click').on('click', function() {
+                                    window.open(cvPath, '_blank');
+                                });
+                            } else {
+                                $('#cv_preview_container').addClass('hidden');
+                                $('#no_cv_message').removeClass('hidden');
+                            }
                             showModal('Modaldetail');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load teacher details');
@@ -518,6 +585,196 @@
                 };
             }
 
+            // function handleBulkEdit() {
+            //     const selectedIds = getSelectedIds();
+            //     if (selectedIds.length === 0) {
+            //         ShowTaskMessage('error', 'Please select at least one teacher to edit');
+            //         return;
+            //     }
+
+            //     const bulkEditBtn = document.getElementById('bulkEditBtn');
+            //     const originalBtnText = bulkEditBtn.innerHTML;
+            //     bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
+            //     bulkEditBtn.disabled = true;
+
+            //     $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
+            //     if (selectedIds.length > 1) {
+            //         $('#bulkEditContainer').removeClass('md:h-auto')
+            //         $('#bulkEditContainer').addClass('h-[70vh]')
+            //     }
+            //     if (selectedIds.length > 5) {
+            //         ShowTaskMessage('error', 'You can only edit up to 5 teachers at a time');
+            //         bulkEditBtn.innerHTML = originalBtnText;
+            //         bulkEditBtn.disabled = false;
+            //         return;
+            //     }
+
+            //     document.getElementById('bulkEditCount').textContent = selectedIds.length;
+
+            //     $.ajax({
+            //         url: "{{ route('admin.teachers.getBulkData') }}",
+            //         method: 'POST',
+            //         data: {
+            //             ids: selectedIds
+            //         },
+            //         success: function(response) {
+            //             bulkEditBtn.innerHTML = originalBtnText;
+            //             bulkEditBtn.disabled = false;
+
+            //             if (!response.success) {
+            //                 ShowTaskMessage('error', response.message || 'Error loading data');
+            //                 return;
+            //             }
+
+            //             const container = document.getElementById('bulkEditContainer');
+            //             container.innerHTML = '';
+
+            //             response.data.forEach((teacher, index) => {
+            //                 const fieldHtml = `
+        //             <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+        //                 <input type="hidden" name="teachers[${index}][id]" value="${teacher.id}">
+        //                 <div class="flex justify-between items-center mb-2">
+        //                     <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Teacher #${index + 1}</h4>
+        //                 </div>
+
+        //                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        //                     
+        //                     <div class="mb-4">
+        //                         <label for="teachers[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        //                             Department <span class="text-red-500">*</span>
+        //                         </label>
+        //                         <select id="teachers[${index}][department_id]" name="teachers[${index}][department_id]"
+        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+        //                             border-gray-400" required>
+        //                             @foreach ($departments as $department)
+        //                                 <option value="{{ $department->id }}" ${teacher.department_id == {{ $department->id }} ? 'selected' : ''}>
+        //                                     {{ $department->name }}
+        //                                 </option>
+        //                             @endforeach
+        //                         </select>
+        //                     </div>
+
+        //                     <div class="mb-4">
+        //                         <label for="teachers[${index}][joining_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        //                             Joining Date <span class="text-red-500">*</span>
+        //                         </label>
+        //                         <input type="date" id="teachers[${index}][joining_date]" name="teachers[${index}][joining_date]"
+        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+        //                             border-gray-400"
+        //                             value="${teacher.joining_date}"
+        //                             required>
+        //                     </div>
+
+        //                     <div class="mb-4">
+        //                         <label for="teachers[${index}][qualification]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        //                             Qualification <span class="text-red-500">*</span>
+        //                         </label>
+        //                         <input type="text" id="teachers[${index}][qualification]" name="teachers[${index}][qualification]"
+        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+        //                             border-gray-400"
+        //                             value="${teacher.qualification}"
+        //                             placeholder="Enter qualification" required>
+        //                     </div>
+
+        //                     <div class="mb-4">
+        //                         <label for="teachers[${index}][specialization]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        //                             Specialization
+        //                         </label>
+        //                         <input type="text" id="teachers[${index}][specialization]" name="teachers[${index}][specialization]"
+        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+        //                             border-gray-400"
+        //                             value="${teacher.specialization || ''}"
+        //                             placeholder="Enter specialization">
+        //                     </div>
+
+        //                     <div class="mb-4">
+        //                         <label for="teachers[${index}][salary]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        //                             Salary
+        //                         </label>
+        //                         <input type="number" step="0.01" id="teachers[${index}][salary]" name="teachers[${index}][salary]"
+        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+        //                             border-gray-400"
+        //                             value="${teacher.salary || ''}"
+        //                             placeholder="Enter salary">
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         `;
+
+            //                 container.insertAdjacentHTML('beforeend', fieldHtml);
+            //             });
+
+            //             showModal('bulkEditModal');
+            //         },
+            //         error: function(xhr) {
+            //             bulkEditBtn.innerHTML = originalBtnText;
+            //             bulkEditBtn.disabled = false;
+            //             ShowTaskMessage('error', 'Error loading data');
+            //         }
+            //     });
+            // }
+
+            // function handleBulkEditSubmit(e) {
+            //     e.preventDefault();
+            //     const submitBtn = document.getElementById('bulkEditSubmitBtn');
+            //     const originalBtnHtml = submitBtn.innerHTML;
+            //     submitBtn.disabled = true;
+            //     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+
+            //     const dataform = [];
+            //     $('.sub-field').each(function(index) {
+            //         const data = {
+            //             id: $(this).find('input[type="hidden"]').val(),
+            //             teacher_id: $(this).find('input[name$="[teacher_id]"]').val(),
+            //             department_id: $(this).find('select[name$="[department_id]"]').val(),
+            //             joining_date: $(this).find('input[name$="[joining_date]"]').val(),
+            //             qualification: $(this).find('input[name$="[qualification]"]').val(),
+            //             specialization: $(this).find('input[name$="[specialization]"]').val(),
+            //             salary: $(this).find('input[name$="[salary]"]').val()
+            //         };
+            //         dataform.push(data);
+            //     });
+
+            //     $.ajax({
+            //         url: "{{ route('admin.teachers.bulkUpdate') }}",
+            //         method: 'POST',
+            //         data: {
+            //             teachers: dataform
+            //         },
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 closeModal('bulkEditModal');
+            //                 ShowTaskMessage('success', response.message);
+            //                 refreshTeacherContent();
+            //             } else {
+            //                 let errorMessage = response.message || 'Error updating teachers';
+            //                 if (response.errors) {
+            //                     errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
+            //                 }
+            //                 ShowTaskMessage('error', errorMessage);
+            //             }
+            //         },
+            //         error: function(xhr) {
+            //             let errorMessage = 'An error occurred while updating';
+            //             if (xhr.status === 422) {
+            //                 const errors = xhr.responseJSON?.errors || {};
+            //                 errorMessage = Object.values(errors).flat().join('\n');
+            //             }
+            //             ShowTaskMessage('error', errorMessage);
+            //         },
+            //         complete: function() {
+            //             submitBtn.disabled = false;
+            //             submitBtn.innerHTML = originalBtnHtml;
+            //         }
+            //     });
+            // }
+
+
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
                 if (selectedIds.length === 0) {
@@ -564,91 +821,176 @@
 
                         response.data.forEach((teacher, index) => {
                             const fieldHtml = `
-                        <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="teachers[${index}][id]" value="${teacher.id}">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Teacher #${index + 1}</h4>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="mb-4">
-                                    <label for="teachers[${index}][teacher_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Teacher ID <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="teachers[${index}][teacher_id]" name="teachers[${index}][teacher_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${teacher.teacher_id}"
-                                        placeholder="Enter teacher ID" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="teachers[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Department <span class="text-red-500">*</span>
-                                    </label>
-                                    <select id="teachers[${index}][department_id]" name="teachers[${index}][department_id]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400" required>
-                                        @foreach ($departments as $department)
-                                            <option value="{{ $department->id }}" ${teacher.department_id == {{ $department->id }} ? 'selected' : ''}>
-                                                {{ $department->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="teachers[${index}][joining_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Joining Date <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="date" id="teachers[${index}][joining_date]" name="teachers[${index}][joining_date]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${teacher.joining_date}"
-                                        required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="teachers[${index}][qualification]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Qualification <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="teachers[${index}][qualification]" name="teachers[${index}][qualification]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${teacher.qualification}"
-                                        placeholder="Enter qualification" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="teachers[${index}][specialization]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Specialization
-                                    </label>
-                                    <input type="text" id="teachers[${index}][specialization]" name="teachers[${index}][specialization]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${teacher.specialization || ''}"
-                                        placeholder="Enter specialization">
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="teachers[${index}][salary]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Salary
-                                    </label>
-                                    <input type="number" step="0.01" id="teachers[${index}][salary]" name="teachers[${index}][salary]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${teacher.salary || ''}"
-                                        placeholder="Enter salary">
-                                </div>
-                            </div>
+                <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <input type="hidden" name="teachers[${index}][id]" value="${teacher.id}">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Teacher #${index + 1}</h4>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Name -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="teachers[${index}][name]" name="teachers[${index}][name]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.name}"
+                                placeholder="Enter full name" required>
                         </div>
-                    `;
+
+                        <!-- Gender -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][gender]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Gender <span class="text-red-500">*</span>
+                            </label>
+                            <select id="teachers[${index}][gender]" name="teachers[${index}][gender]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400" required>
+                                <option value="male" ${teacher.gender === 'male' ? 'selected' : ''}>Male</option>
+                                <option value="female" ${teacher.gender === 'female' ? 'selected' : ''}>Female</option>
+                                <option value="other" ${teacher.gender === 'other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][dob]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Date of Birth <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="teachers[${index}][dob]" name="teachers[${index}][dob]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.dob}"
+                                required>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Department <span class="text-red-500">*</span>
+                            </label>
+                            <select id="teachers[${index}][department_id]" name="teachers[${index}][department_id]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400" required>
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department->id }}" ${teacher.department_id == {{ $department->id }} ? 'selected' : ''}>
+                                        {{ $department->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Joining Date -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][joining_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Joining Date <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="teachers[${index}][joining_date]" name="teachers[${index}][joining_date]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.joining_date}"
+                                required>
+                        </div>
+
+                        <!-- Qualification -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][qualification]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Qualification <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="teachers[${index}][qualification]" name="teachers[${index}][qualification]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.qualification}"
+                                placeholder="Enter qualification" required>
+                        </div>
+
+                        <!-- Experience -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][experience]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Experience
+                            </label>
+                            <input type="text" id="teachers[${index}][experience]" name="teachers[${index}][experience]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.experience || ''}"
+                                placeholder="Enter experience">
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][phone]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Phone
+                            </label>
+                            <input type="text" id="teachers[${index}][phone]" name="teachers[${index}][phone]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.phone || ''}"
+                                placeholder="Enter phone number">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][email]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Email
+                            </label>
+                            <input type="email" id="teachers[${index}][email]" name="teachers[${index}][email]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.email || ''}"
+                                placeholder="Enter email">
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][address]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Address
+                            </label>
+                            <textarea id="teachers[${index}][address]" name="teachers[${index}][address]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                placeholder="Enter address">${teacher.address || ''}</textarea>
+                        </div>
+
+                        <!-- Specialization -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][specialization]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Specialization
+                            </label>
+                            <input type="text" id="teachers[${index}][specialization]" name="teachers[${index}][specialization]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.specialization || ''}"
+                                placeholder="Enter specialization">
+                        </div>
+
+                        <!-- Salary -->
+                        <div class="mb-4">
+                            <label for="teachers[${index}][salary]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Salary
+                            </label>
+                            <input type="number" step="0.01" id="teachers[${index}][salary]" name="teachers[${index}][salary]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${teacher.salary || ''}"
+                                placeholder="Enter salary">
+                        </div>
+                    </div>
+                </div>
+                `;
 
                             container.insertAdjacentHTML('beforeend', fieldHtml);
                         });
@@ -675,9 +1017,16 @@
                     const data = {
                         id: $(this).find('input[type="hidden"]').val(),
                         teacher_id: $(this).find('input[name$="[teacher_id]"]').val(),
+                        name: $(this).find('input[name$="[name]"]').val(),
+                        gender: $(this).find('select[name$="[gender]"]').val(),
+                        dob: $(this).find('input[name$="[dob]"]').val(),
                         department_id: $(this).find('select[name$="[department_id]"]').val(),
                         joining_date: $(this).find('input[name$="[joining_date]"]').val(),
                         qualification: $(this).find('input[name$="[qualification]"]').val(),
+                        experience: $(this).find('input[name$="[experience]"]').val(),
+                        phone: $(this).find('input[name$="[phone]"]').val(),
+                        email: $(this).find('input[name$="[email]"]').val(),
+                        address: $(this).find('textarea[name$="[address]"]').val(),
                         specialization: $(this).find('input[name$="[specialization]"]').val(),
                         salary: $(this).find('input[name$="[salary]"]').val()
                     };
@@ -748,7 +1097,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('teachers.index') }}",
+                    url: "{{ route('admin.teachers.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

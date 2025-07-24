@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/mainjq.css') }}">
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -40,7 +39,7 @@
     <script src="{{ asset('assets/js/mainjq.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/validation.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/validation.js') }}"></script>
     <!-- Cropper.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     @stack('scripts')

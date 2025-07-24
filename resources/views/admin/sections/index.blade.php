@@ -321,7 +321,6 @@
                 const form = $(this);
                 const submitBtn = $('#confirmDeleteBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
 
                 $.ajax({

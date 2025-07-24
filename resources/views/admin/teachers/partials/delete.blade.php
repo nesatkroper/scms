@@ -37,7 +37,7 @@
             <form id="Formdelete" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="submit"
+                <button type="submit" id="confirmDeleteBtn"
                     class="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"

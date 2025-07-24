@@ -1,9 +1,10 @@
 <table class="w-full text-sm text-left">
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
         <tr class="text-nowrap">
-            <th scope="col" class="px-4 py-4">Id</th>
-            <th scope="col" class="px-4 py-4">user</th>
+            {{-- <th scope="col" class="px-4 py-4">Id</th> --}}
             <th scope="col" class="px-4 py-4">teacher</th>
+            <th scope="col" class="px-4 py-4">gender</th>
+            <th scope="col" class="px-4 py-4">Experience</th>
             <th scope="col" class="px-4 py-4">department</th>
             <th scope="col" class="px-4 py-4">salary</th>
             <th scope="col" class="px-4 py-4">qualification</th>
@@ -31,26 +32,25 @@
             @foreach ($teachers as $teacher)
                 <tr
                     class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
-                    <td class="px-4 py-2">{{ $teacher->id }}</td>
+                    {{-- <td class="px-4 py-2">{{ $teacher->id }}</td> --}}
                     <td class="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-white">
                         <div class="flex items-center">
-                            <img class="w-9 h-9 rounded-full object-cover"
+                            <img class="detail-btn size-10 rounded-full object-cover cursor-pointer"
                                 src="{{ $teacher->photo ? asset($teacher->photo) : 'https://placehold.co/40x40/6366F1/FFFFFF?text=' . substr($teacher->user->name, 0, 1) }}"
-                                alt="{{ $teacher->user->name }} image">
+                                alt="{{ $teacher->name }} image" data-id="{{ $teacher->id }}">
 
                             <div class="pl-3">
                                 <div class="text-base font-semibold">
-                                    {{ $teacher->user->name }}
+                                    {{ $teacher->name }}
                                 </div>
-                                <div class="font-normal text-gray-500">
-                                    {{ $teacher->user->email }}
+                                <div class="font-normal text-gray-500 truncate w-[85%]">
+                                    {{ $teacher->email }}
                                 </div>
                             </div>
                         </div>
                     </td>
-
-                    <td class="px-4 py-2">{{ $teacher->user->name }}</td>
-                    <td class="px-4 py-2">{{ $teacher->name }}</td>
+                    <td class="px-4 py-2">{{ $teacher->gender ?? 'N/A' }}</td>
+                    <td class="px-4 py-2">{{ Str::limit($teacher->experience ?? 'N/A', 20) }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->department->name ?? 'N/A', 20) }}</td>
                     <td class="px-4 py-2">${{ $teacher->salary }}</td>
                     <td class="px-4 py-2">{{ Str::limit($teacher->qualification, 20) }}</td>

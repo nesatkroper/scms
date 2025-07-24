@@ -51,7 +51,7 @@ class UpdateTeacherRequest extends FormRequest
       'qualification' => 'required|string|max:255',
       'experience' => 'required|string|max:255',
       'phone' => 'required|string|max:20',
-      'email' => 'required|email|unique:teachers',
+      'email' => 'required|email|max:255|unique:teachers,email,' . $this->teacher->id,
       'address' => 'required|string',
       'specialization' => 'nullable|string',
       'salary' => 'nullable|numeric|min:0',

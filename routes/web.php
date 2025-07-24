@@ -37,13 +37,15 @@ Auth::routes();
 R::get('/', function () {
     return view('welcome');
 });
+R::get('/test', function () {
+    return view('test');
+});
 
 R::prefix('/admin')
     ->as('admin.')
     ->middleware('auth')
     ->group(function () {
         R::get('/', [HomeController::class, 'index'])->name('home');
-        R::get('/home', [HomeController::class, 'index'])->name('home');
 
         R::resources([
             'attendances' => AttendanceController::class,
