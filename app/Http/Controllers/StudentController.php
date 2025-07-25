@@ -6,7 +6,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Student;
-use App\Models\Section;
+use App\Models\GradeLevel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,18 +20,18 @@ class StudentController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        $sections = Section::all();
         $users = User::all();
+        $gradeLevels = GradeLevel::all();
 
-        $students = Student::with(['section', 'user'])
+        $students = Student::with('gradeLevel')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
                     ->orWhere('admission_date', 'like', "%{$search}%")
-                    ->orWhereHas('section', function($q) use ($search) {
+                    ->orWhereHas('gradeLevel', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('user', function($q) use ($search) {
-                        $q->where('email', 'like', "%{$search}%");
                     });
             })
             ->orderBy('created_at', 'desc')
@@ -56,47 +56,34 @@ class StudentController extends Controller
             ]);
         }
 
-        return view('admin.students.index', compact('students','users', 'sections'));
+        return view('admin.students.index', compact('students', 'gradeLevels', 'users'));
     }
 
     public function store(StoreStudentRequest $request)
     {
         try {
-            // Handle image upload
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('student_images', 'public');
+            $validated = $request->validated();
+            $studentPhotoPath = public_path('photos/student');
+
+            if (!file_exists($studentPhotoPath)) {
+                mkdir($studentPhotoPath, 0755, true);
             }
 
-            // Create user first
-            $user = User::create([
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'role' => 'student',
-            ]);
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
+                $photo->move($studentPhotoPath, $photoName);
+                $validated['photo'] = 'photos/student/' . $photoName;
+            }
 
-            // Create student with user relationship
-            $student = $user->student()->create([
-                'name' => $request->name,
-                'image' => $imagePath,
-                'admission_date' => $request->admission_date,
-                'section_id' => $request->section_id,
-            ]);
+            $student = Student::create($validated);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully!',
-                'student' => $student->load(['section', 'user'])
+                'student' => $student
             ]);
         } catch (\Exception $e) {
-            // Clean up if there's an error
-            if (isset($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
-            }
-            if (isset($user)) {
-                $user->delete();
-            }
-
             return response()->json([
                 'success' => false,
                 'message' => 'Error creating student: ' . $e->getMessage()
@@ -106,7 +93,7 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
-        $student->load(['section', 'user']);
+        $student->load('gradeLevel', 'user', 'guardians');
         return response()->json([
             'success' => true,
             'student' => $student
@@ -117,28 +104,27 @@ class StudentController extends Controller
     {
         try {
             $data = $request->validated();
-            
-            // Handle image upload if new image is provided
-            if ($request->hasFile('image')) {
-                // Delete old image if it exists
-                if ($student->image) {
-                    Storage::disk('public')->delete($student->image);
+
+            // Handle photo upload
+            if ($request->hasFile('photo')) {
+                // Delete old photo if exists
+                if ($student->photo && file_exists(public_path($student->photo))) {
+                    unlink(public_path($student->photo));
                 }
-                $data['image'] = $request->file('image')->store('student_images', 'public');
+
+                $photo = $request->file('photo');
+                $photoName = time() . '-' . date('d-m-Y') . '_ed' . $photo->getClientOriginalName();
+                $photoPath = public_path('photos/student');
+                $photo->move($photoPath, $photoName);
+                $data['photo'] = 'photos/student/' . $photoName;
             }
 
-            // Update student
             $student->update($data);
-
-            // Update user email if changed
-            if ($request->has('email')) {
-                $student->user->update(['email' => $request->email]);
-            }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Student updated successfully',
-                'student' => $student->fresh(['section', 'user'])
+                'student' => $student->fresh('gradeLevel')
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -151,16 +137,15 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         try {
-            // Delete associated user
-            $user = $student->user;
-            
-            // Delete image if exists
-            if ($student->image) {
-                Storage::disk('public')->delete($student->image);
+            // Delete associated files
+            if ($student->photo) {
+                $photoPath = public_path($student->photo);
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
             }
-            
+
             $student->delete();
-            $user->delete();
 
             return response()->json([
                 'success' => true,
@@ -186,24 +171,22 @@ class StudentController extends Controller
         }
 
         try {
-            $students = Student::whereIn('id', $ids)->with('user')->get();
-            $count = 0;
+            $students = Student::whereIn('id', $ids)->get();
 
             foreach ($students as $student) {
-                // Delete image if exists
-                if ($student->image) {
-                    Storage::disk('public')->delete($student->image);
+                // Delete associated files
+                if ($student->photo) {
+                    $photoPath = public_path($student->photo);
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
                 }
-                
-                // Delete student and user
-                $student->user->delete();
                 $student->delete();
-                $count++;
             }
 
             return response()->json([
                 'success' => true,
-                'message' => $count . ' students deleted successfully'
+                'message' => count($students) . ' students deleted successfully'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -232,7 +215,7 @@ class StudentController extends Controller
         }
 
         try {
-            $students = Student::with(['section', 'user'])->whereIn('id', $ids)->get();
+            $students = Student::whereIn('id', $ids)->get();
             return response()->json([
                 'success' => true,
                 'data' => $students
@@ -257,36 +240,28 @@ class StudentController extends Controller
         foreach ($request->input('students') as $studentData) {
             $validator = Validator::make($studentData, [
                 'id' => 'required|exists:students,id',
-                'name' => 'sometimes|string|max:255',
-                'email' => [
-                    'sometimes',
-                    'email',
-                    Rule::unique('users', 'email')->ignore(Student::find($studentData['id'])->user_id, 'id'),
-                ],
-                'admission_date' => 'sometimes|date',
-                'section_id' => 'sometimes|exists:sections,id',
+                'name' => 'required|string|max:255',
+                'gender' => 'required|in:male,female,other',
+                'dob' => 'required|date',
+                'grade_level_id' => 'required|exists:grade_levels,id',
+                'user_id' => 'nullable|exists:users,id',
+                'phone' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
+                'address' => 'nullable|string',
+                'blood_group' => 'nullable|string|max:10',
+                'nationality' => 'nullable|string|max:100',
+                'religion' => 'nullable|string|max:100',
+                'admission_date' => 'required|date',
             ]);
 
             if ($validator->fails()) {
                 Log::error("Validation failed for student ID {$studentData['id']}: " . json_encode($validator->errors()));
-                continue; // Skip invalid
+                continue;
             }
 
             try {
                 $student = Student::findOrFail($studentData['id']);
-                
-                // Update student data
-                $student->update([
-                    'name' => $studentData['name'] ?? $student->name,
-                    'admission_date' => $studentData['admission_date'] ?? $student->admission_date,
-                    'section_id' => $studentData['section_id'] ?? $student->section_id,
-                ]);
-
-                // Update user email if provided
-                if (isset($studentData['email'])) {
-                    $student->user->update(['email' => $studentData['email']]);
-                }
-
+                $student->update($validator->validated());
                 $updatedCount++;
             } catch (\Exception $e) {
                 Log::error("Error updating student: " . $e->getMessage());

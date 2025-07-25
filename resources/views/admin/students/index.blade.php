@@ -9,11 +9,11 @@
                 <path
                     d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
             </svg>
-            Students
+            Students List
         </h3>
         <div
             class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal"
+            <button data-tooltip-target="tooltip" data-tooltip-placement="top" id="openCreateModal"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -21,10 +21,16 @@
                         clip-rule="evenodd" />
                 </svg>
                 Create New
+                <div id="tooltip" role="tooltip"
+                class="text-sm font-medium">
+                placement tooltip t
+            </div>
             </button>
+
+
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search students..."
+                    <input type="search" id="searchInput" placeholder="Search student..."
                         class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
                         focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -46,6 +52,36 @@
                 </div>
             </div>
         </div>
+        
+        <button data-tooltip-target="tooltip-t" data-tooltip-placement="top" class="tooltip-btn">
+            tooltip-t
+            <div id="tooltip-t" role="tooltip"
+                class="text-sm font-medium">
+                placement tooltip t
+            </div>
+        </button>
+        <button data-tooltip-target="tooltip-b" data-tooltip-placement="bottom" class="tooltip-btn">
+            tooltip-b
+            <div id="tooltip-b" role="tooltip"
+                class="text-sm font-medium">
+                b placement tooltip
+            </div>
+        </button>
+        <button data-tooltip-target="tooltip-l" data-tooltip-placement="left" class="tooltip-btn">
+            tooltip-r
+            <div id="tooltip-l" role="tooltip"
+                class="text-sm font-medium">
+                left placement tooltip
+            </div>
+        </button>
+        <button data-tooltip-target="tooltip-r" data-tooltip-placement="right" class="tooltip-btn">
+            tooltip-r
+            <div id="tooltip-r" role="tooltip"
+                class="text-sm font-medium">
+                Right placement tooltip
+            </div>
+        </button>
+
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('admin.students.partials.table', ['students' => $students])
         </div>
@@ -65,8 +101,10 @@
     @include('admin.students.partials.delete')
     @include('admin.students.partials.bulkedit')
     @include('admin.students.partials.bulkdelete')
-@endsection
 
+
+
+@endsection
 
 @push('scripts')
     <script>
@@ -74,6 +112,7 @@
             // Core Configuration
             $.ajaxSetup({
                 headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
@@ -124,6 +163,7 @@
                             selectedValue.textContent = this.textContent;
                             hiddenInput.value = this.dataset.value;
                             select.classList.remove('open');
+                            console.log('Selected grade_level_id:', this.dataset.value);
                         });
                     });
 
@@ -211,38 +251,40 @@
                 });
             }
 
-            // CRUD Operations
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
-                // Handle file upload
                 const formData = new FormData(form[0]);
-
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
-                    data: formData,
                     processData: false,
                     contentType: false,
+                    data: formData,
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
                             refreshStudentContent();
                             form.trigger('reset');
+                            // Reset photo preview
+                            $('#photoPreview').addClass('hidden');
+                            $('#dropArea').removeClass('hidden');
                         } else {
                             ShowTaskMessage('error', response.message || 'Error creating student');
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating student');
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                ShowTaskMessage('error', `${field}: ${errors[field][0]}`);
+                            }
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -253,29 +295,44 @@
             function handleEditClick(e) {
                 e.preventDefault();
                 const editBtn = $(this);
-                const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                editBtn.prop('disabled', true);
+                const originalContent = editBtn.html();
+                editBtn.html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>')
+                    .prop('disabled', true);
 
-                const studentId = $(this).data('id');
+                const Id = $(this).data('id');
 
-                $.get(`/admin/students/${studentId}`)
+                $.get(`/admin/students/${Id}`)
                     .done(function(response) {
-                        if (response.success) {
-                            $('#edit_name').val(response.student.name);
-                            $('#edit_email').val(response.student.user.email);
-                            $('#edit_section_id').val(response.student.section_id);
-                            $('#edit_admission_date').val(response.student.admission_date);
-                            $('#current_image').val(response.student.image);
+                        if (response.success && response.student) {
+                            const student = response.student;
+                            const date = student.admission_date ? student.admission_date.substring(0, 10) : '';
+                            const datedob = student.dob ? student.dob.substring(0, 10) : '';
 
-                            // Display current image if exists
-                            if (response.student.image) {
-                                $('#current_image_preview').attr('src', `/storage/${response.student.image}`)
-                                    .removeClass('hidden');
+                            // Set form values
+                            $('#edit_name').val(student.name);
+                            $('#edit_user').val(student.user_id);
+                            $('#edit_phone').val(student.phone);
+                            $('#edit_email').val(student.email);
+                            $('#edit_gender').val(student.gender);
+                            $('#edit_dob').val(datedob);
+                            $('#edit_grade_level_id').val(student.grade_level_id);
+                            $('#edit_address').val(student.address);
+                            $('#edit_blood_group').val(student.blood_group);
+                            $('#edit_nationality').val(student.nationality);
+                            $('#edit_religion').val(student.religion);
+                            $('#edit_admission_date').val(date);
+
+                            // Handle photo display
+                            if (student.photo) {
+                                $('#edit_photo').attr('src', '/' + student.photo).removeClass('hidden');
+                                $('#edit_initials').addClass('hidden');
                             } else {
-                                $('#current_image_preview').addClass('hidden');
+                                $('#edit_photo').addClass('hidden');
+                                const initials = student.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                                $('#edit_initials').removeClass('hidden').find('span').text(initials);
                             }
 
+                            // Set form action
                             $('#Formedit').attr('action', `/students/${studentId}`);
                             showModal('Modaledit');
                         } else {
@@ -287,8 +344,7 @@
                         ShowTaskMessage('error', 'Failed to load student data');
                     })
                     .always(function() {
-                        editBtn.find('.btn-content').html(originalContent);
-                        editBtn.prop('disabled', false);
+                        editBtn.html(originalContent).prop('disabled', false);
                     });
             }
 
@@ -297,15 +353,11 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
+                const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
-                // Handle file upload
-                const formData = new FormData(form[0]);
-                formData.append('_method', 'PUT');
-
                 $.ajax({
-                    url: form.attr('action'),
+                    url: '/admin' + form.attr('action'),
                     method: 'POST',
                     data: formData,
                     processData: false,
@@ -330,10 +382,23 @@
                 });
             }
 
+            // Preview photo before upload
+            $('#photo_upload').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#edit_photo').attr('src', e.target.result).removeClass('hidden');
+                        $('#edit_initials').addClass('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const studentId = $(this).data('id');
-                $('#Formdelete').attr('action', `/admin/students/${studentId}`);
+                $('#Formdelete').attr('action', `/students/${studentId}`);
                 showModal('Modaldelete');
             }
 
@@ -346,7 +411,7 @@
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
 
                 $.ajax({
-                    url: form.attr('action'),
+                    url: '/admin' + form.attr('action'),
                     method: 'POST',
                     data: {
                         _method: 'DELETE'
@@ -376,28 +441,49 @@
                 detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 detailBtn.prop('disabled', true);
 
-                const studentId = $(this).data('id');
+                const Id = $(this).data('id');
 
-                $.get(`/admin/students/${studentId}`)
+                $.get(`/admin/students/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const student = response.student;
-                            const sectionName = student.section?.name ?? "Unknown";
+                            const gradeLevelName = student.grade_level?.name ?? "Unknown";
                             const updatedAt = student.updated_at ? student.updated_at.substring(0, 10) : '';
 
-                            $('#detail_name').val(student.name ?? '');
-                            $('#detail_email').val(student.user?.email ?? '');
-                            $('#detail_section').val(sectionName);
-                            $('#detail_admission_date').val(student.admission_date ?? '');
-                            $('#detail_created_at').val(student.created_at ?? '');
-                            $('#detail_updated_at').val(updatedAt);
+                            // Set basic info
+                            $('#detail_name').text(student.name ?? '');
+                            $('.title').text(student.name ?? '');
+                            $('#detail_user').val(student.user_id);
+                            $('#detail_gender').val(student.gender);
+                            $('#detail_grade_level').text(gradeLevelName).toggleClass('hidden', !
+                                gradeLevelName);
+                            $('#detail_blood_group').text(student.blood_group ?? '');
+                            $('#detail_nationality').text(student.nationality ?? '');
+                            $('#detail_religion').text(student.religion ?? '');
+                            $('#detail_admission_date').text(student.admission_date ? new Date(student
+                                .admission_date).toLocaleDateString() : '');
+                            $('#detail_email').text(student.email ?? '');
+                            $('#detail_phone').text(student.phone ?? 'Not provided');
+                            $('#detail_dob').text(student.dob ? new Date(student.dob).toLocaleDateString() :
+                                '');
+                            $('#detail_address').text(student.address ?? '');
 
-                            // Display image if exists
-                            if (student.image) {
-                                $('#detail_image_preview').attr('src', `/storage/${student.image}`).removeClass(
-                                    'hidden');
+                            // Handle photo display
+                            const photoContainer = $('#detail_photo');
+                            const initialsContainer = $('#detail_initials');
+                            const initialsSpan = initialsContainer.find('span');
+
+                            if (student.photo) {
+                                photoContainer.attr('src', `${window.location.origin}/${student.photo}`)
+                                    .removeClass('hidden');
+                                initialsContainer.addClass('hidden');
                             } else {
-                                $('#detail_image_preview').addClass('hidden');
+                                // Display initials if no photo
+                                photoContainer.addClass('hidden');
+                                initialsContainer.removeClass('hidden');
+                                const nameParts = student.name.split(' ');
+                                const initials = nameParts.map(part => part[0]).join('').toUpperCase();
+                                initialsSpan.text(initials);
                             }
 
                             showModal('Modaldetail');
@@ -494,12 +580,12 @@
                 const originalBtnText = bulkEditBtn.innerHTML;
                 bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
                 bulkEditBtn.disabled = true;
+
                 $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
                 if (selectedIds.length > 1) {
                     $('#bulkEditContainer').removeClass('md:h-auto')
                     $('#bulkEditContainer').addClass('h-[70vh]')
                 }
-
                 if (selectedIds.length > 5) {
                     ShowTaskMessage('error', 'You can only edit up to 5 students at a time');
                     bulkEditBtn.innerHTML = originalBtnText;
@@ -529,67 +615,163 @@
 
                         response.data.forEach((student, index) => {
                             const fieldHtml = `
-                                <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                                    <input type="hidden" name="students[${index}][id]" value="${student.id}">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Student #${index + 1}</h4>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
-                                        <div class="mb-4">
-                                            <label for="students[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                                Name <span class="text-red-500">*</span>
-                                            </label>
-                                            <input type="text" id="students[${index}][name]" name="students[${index}][name]"
-                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                                border-gray-400"
-                                                value="${student.name}"
-                                                placeholder="Enter student name" required>
-                                        </div>
+                <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <input type="hidden" name="students[${index}][id]" value="${student.id}">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Student #${index + 1}</h4>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Name -->
+                        <div class="mb-4">
+                            <label for="students[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="students[${index}][name]" name="students[${index}][name]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.name}"
+                                placeholder="Enter full name" required>
+                        </div>
 
-                                        <div class="mb-4">
-                                            <label for="students[${index}][email]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                                Email <span class="text-red-500">*</span>
-                                            </label>
-                                            <input type="email" id="students[${index}][email]" name="students[${index}][email]"
-                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                                border-gray-400"
-                                                value="${student.user.email}"
-                                                placeholder="Enter email" required>
-                                        </div>
+                        <!-- Gender -->
+                        <div class="mb-4">
+                            <label for="students[${index}][gender]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Gender <span class="text-red-500">*</span>
+                            </label>
+                            <select id="students[${index}][gender]" name="students[${index}][gender]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400" required>
+                                <option value="male" ${student.gender === 'male' ? 'selected' : ''}>Male</option>
+                                <option value="female" ${student.gender === 'female' ? 'selected' : ''}>Female</option>
+                                <option value="other" ${student.gender === 'other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
 
-                                        <div class="mb-4">
-                                            <label for="students[${index}][admission_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                                Admission Date <span class="text-red-500">*</span>
-                                            </label>
-                                            <input type="date" id="students[${index}][admission_date]" name="students[${index}][admission_date]"
-                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                                border-gray-400"
-                                                value="${student.admission_date}"
-                                                required>
-                                        </div>
+                        <!-- Date of Birth -->
+                        <div class="mb-4">
+                            <label for="students[${index}][dob]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Date of Birth <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="students[${index}][dob]" name="students[${index}][dob]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.dob}"
+                                required>
+                        </div>
 
-                                        <div class="mb-4">
-                                            <label for="students[${index}][section_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                                Section <span class="text-red-500">*</span>
-                                            </label>
-                                            <select id="students[${index}][section_id]" name="students[${index}][section_id]"
-                                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                                border-gray-400" required>
-                                                @foreach ($sections as $section)
-                                                    <option value="{{ $section->id }}" ${student.section_id == {{ $section->id }} ? 'selected' : ''}>
-                                                        {{ $section->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
+                        <!-- Grade Level -->
+                        <div class="mb-4">
+                            <label for="students[${index}][grade_level_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Grade Level <span class="text-red-500">*</span>
+                            </label>
+                            <select id="students[${index}][grade_level_id]" name="students[${index}][grade_level_id]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400" required>
+                                @foreach ($gradeLevels as $gradeLevel)
+                                    <option value="{{ $gradeLevel->id }}" ${student.grade_level_id == {{ $gradeLevel->id }} ? 'selected' : ''}>
+                                        {{ $gradeLevel->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Admission Date -->
+                        <div class="mb-4">
+                            <label for="students[${index}][admission_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Admission Date <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="students[${index}][admission_date]" name="students[${index}][admission_date]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.admission_date}"
+                                required>
+                        </div>
+
+                        <!-- Blood Group -->
+                        <div class="mb-4">
+                            <label for="students[${index}][blood_group]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Blood Group
+                            </label>
+                            <input type="text" id="students[${index}][blood_group]" name="students[${index}][blood_group]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.blood_group || ''}"
+                                placeholder="Enter blood group">
+                        </div>
+
+                        <!-- Nationality -->
+                        <div class="mb-4">
+                            <label for="students[${index}][nationality]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Nationality
+                            </label>
+                            <input type="text" id="students[${index}][nationality]" name="students[${index}][nationality]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.nationality || ''}"
+                                placeholder="Enter nationality">
+                        </div>
+
+                        <!-- Religion -->
+                        <div class="mb-4">
+                            <label for="students[${index}][religion]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Religion
+                            </label>
+                            <input type="text" id="students[${index}][religion]" name="students[${index}][religion]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.religion || ''}"
+                                placeholder="Enter religion">
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="mb-4">
+                            <label for="students[${index}][phone]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Phone
+                            </label>
+                            <input type="text" id="students[${index}][phone]" name="students[${index}][phone]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.phone || ''}"
+                                placeholder="Enter phone number">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label for="students[${index}][email]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Email
+                            </label>
+                            <input type="email" id="students[${index}][email]" name="students[${index}][email]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                value="${student.email || ''}"
+                                placeholder="Enter email">
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-4">
+                            <label for="students[${index}][address]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Address
+                            </label>
+                            <textarea id="students[${index}][address]" name="students[${index}][address]"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                                border-gray-400"
+                                placeholder="Enter address">${student.address || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+                `;
 
                             container.insertAdjacentHTML('beforeend', fieldHtml);
                         });
@@ -613,14 +795,21 @@
 
                 const dataform = [];
                 $('.sub-field').each(function(index) {
-                    const student = {
+                    const data = {
                         id: $(this).find('input[type="hidden"]').val(),
                         name: $(this).find('input[name$="[name]"]').val(),
-                        email: $(this).find('input[name$="[email]"]').val(),
+                        gender: $(this).find('select[name$="[gender]"]').val(),
+                        dob: $(this).find('input[name$="[dob]"]').val(),
+                        grade_level_id: $(this).find('select[name$="[grade_level_id]"]').val(),
                         admission_date: $(this).find('input[name$="[admission_date]"]').val(),
-                        section_id: $(this).find('select[name$="[section_id]"]').val()
+                        blood_group: $(this).find('input[name$="[blood_group]"]').val(),
+                        nationality: $(this).find('input[name$="[nationality]"]').val(),
+                        religion: $(this).find('input[name$="[religion]"]').val(),
+                        phone: $(this).find('input[name$="[phone]"]').val(),
+                        email: $(this).find('input[name$="[email]"]').val(),
+                        address: $(this).find('textarea[name$="[address]"]').val()
                     };
-                    dataform.push(student);
+                    dataform.push(data);
                 });
 
                 $.ajax({
@@ -798,36 +987,21 @@
             const TasksmsContainer = document.createElement('div');
             TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
             TasksmsContainer.innerHTML = `
-                <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-                    border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-                    <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-                    </svg>
-                    <div class="flex-1 text-sm sm:text-base">${message}</div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                        <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            `;
+        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
+            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
+            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
+            </svg>
+            <div class="flex-1 text-sm sm:text-base">${message}</div>
+            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
+                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    `;
             document.body.appendChild(TasksmsContainer);
             setTimeout(() => TasksmsContainer.remove(), 3000);
-        }
-
-        // Image preview for create and edit forms
-        function previewImage(input, previewId) {
-            const preview = document.getElementById(previewId);
-            const file = input.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
         }
     </script>
 @endpush
