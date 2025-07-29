@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
+        <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
             @include('admin.teachers.partials.table', ['teachers' => $teachers])
             <x-table.table :headers="[
                 'Id',

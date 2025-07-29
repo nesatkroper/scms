@@ -61,8 +61,6 @@
         @include('admin.subjects.partials.pagination')
 
     </div>
-
-    </style>
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 

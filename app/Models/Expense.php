@@ -33,4 +33,8 @@ class Expense extends Model
   {
     return $this->belongsTo(User::class, 'approved_by');
   }
+  public function approver()
+  {
+    return $this->belongsTo(User::class, 'approver_id'); // 'approver_id' គឺ column នៅក្នុងតារាង `expenses` ដែលទាក់ទងទៅ user
+  }
 }
