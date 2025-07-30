@@ -1,9 +1,9 @@
 <!-- Create Modal -->
 <div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div
-        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-6xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+        class="relative bg-white dark:bg-gray-800 rounded-sm shadow-2xl w-full max-w-full h-full transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
-        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex justify-between items-center px-4 py-2 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
@@ -12,7 +12,7 @@
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         clip-rule="evenodd" />
                 </svg>
-                Create New Score
+                Create New Scores
             </h3>
             <button id="closeCreateModal"
                 class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -26,127 +26,74 @@
         <form action="{{ route('admin.scores.store') }}" method="POST" class="p-4">
             @csrf
 
-            <div class="h-[65vh] md:h-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                    <!-- Name Field -->
-                    <div class="mb-2">
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Name <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('name') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter subject name" required>
-
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Code Field -->
-                    <div class="mb-2">
-                        <label for="code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Code <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="code" name="code" value="{{ old('code') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('code') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter code" required>
-
-                        @error('code')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <!-- exam Field -->
-                    <div class="mb-2">
-                        <label for="exam_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Exam
-                        </label>
-
-                        <div data-name="exam_id"
-                            class="custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('code') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter code" required>
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value">
-                                    {{ old('exam_name', 'Select exam') }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search exams...">
-                                </div>
-                                <div class="options-container">
-                                    @foreach ($exams as $exam)
-                                        <div class=" {{ old('exam_id') == $exam->id ? 'selected' : '' }} 
-                                            select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                            data-value="{{ $exam->id }}">
-                                            {{ $exam->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                                    found</div>
-                            </div>
-                        </div>
-
-                        <!-- Hidden input for form submission -->
-                        <input type="hidden" name="exam_id" id="exam_id"
-                            value="{{ old('exam_id') }}">
-
-                        @error('exam_id')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-
-                    <!-- Credit Hours Field -->
-                    <div class="mb-2">
-                        <label for="credit_hours"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Credit hours <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" min="0" lang="3" max="100" id="credit_hours"
-                            name="credit_hours" value="{{ old('credit_hours') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('credit_hours') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter credit hours" required>
-
-                        @error('credit_hours')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+            {{-- <div class="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="exam_id"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam</label>
+                    <select id="exam_id" name="exam_id" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                        <option value="">Select Exam</option>
+                        @foreach ($exams as $exam)
+                            <option value="{{ $exam->id }}">{{ $exam->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <!-- Description Field (full width) -->
-                <div class="mb-2">
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Description
-                    </label>
-                    <textarea id="description" name="description" rows="3"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                    @error('description') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter subject description">{{ old('description') }}</textarea>
+                <div>
+                    <label for="semester"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Semester</label>
+                    <select id="semester" name="semester" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                        <option value="1" {{ $semester == 1 ? 'selected' : '' }}>Semester 1</option>
+                        <option value="2" {{ $semester == 2 ? 'selected' : '' }}>Semester 2</option>
+                    </select>
+                </div>
+            </div> --}}
 
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+            <div class="h-[65vh] md:h-auto overflow-y-auto">
+                <div class="mb-2">
+                    <table class="w-full text-sm text-left">
+                        <thead
+                            class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase sticky top-0">
+                            <tr class="text-nowrap">
+                                <th scope="col" class="px-4 py-2">Student</th>
+                                @foreach ($subjects as $subject)
+                                    <th scope="col" class="px-4 py-2">{{ $subject->name }} </th>
+                                @endforeach
+                                <th scope="col" class="px-4 py-2">Total points</th>
+                                <th scope="col" class="px-4 py-2">Average</th>
+                                <th scope="col" class="px-4 py-2">Rank</th>
+                                <th scope="col" class="px-4 py-2">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($students as $student)
+                                <tr
+                                    class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
+                                    <td class="px-2 py-1 font-medium">{{ $student->name }} ({{ $student->gender }})</td>
+                                    @foreach ($subjects as $subject)
+                                        <td class="px-2 py-1">
+                                            <input type="hidden"
+                                                name="scores[{{ $student->id }}][{{ $subject->id }}][student_id]"
+                                                value="{{ $student->id }}">
+                                            <input type="hidden"
+                                                name="scores[{{ $student->id }}][{{ $subject->id }}][subject_id]"
+                                                value="{{ $subject->id }}">
+
+                                            <input type="number"
+                                                name="scores[{{ $student->id }}][{{ $subject->id }}][score]"
+                                                min="0" max="100"
+                                                class="w-full min-w-25 px-3 py-1 border rounded-md focus:outline focus:outline-white
+                                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                                    border-slate-300"
+                                                placeholder="0-100 PT">
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- Form Actions -->
@@ -167,7 +114,7 @@
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                             clip-rule="evenodd" />
                     </svg>
-                    Create
+                    Save Scores
                 </button>
             </div>
         </form>

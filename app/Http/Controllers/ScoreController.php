@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Score;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,14 +17,16 @@ class ScoreController extends Controller
     $search = $request->input('search');
     $perPage = $request->input('per_page', 10);
     $viewType = $request->input('view', 'table');
-
-    $query = Score::with(['student', 'exam']);
+    $semester = now()->month <= 6 ? 1 : 2;
+    $query = Score::with(['student', 'exam', 'subject']);
 
     // Apply filters
     if ($request->filled('student_id')) {
       $query->where('student_id', $request->student_id);
     }
-
+    if ($request->filled('subject_id')) {
+      $query->where('subject_id', $request->subject_id);
+    }
     if ($request->filled('exam_id')) {
       $query->where('exam_id', $request->exam_id);
     }
@@ -49,6 +52,9 @@ class ScoreController extends Controller
           ->orWhereHas('student', function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%");
           })
+          ->orWhereHas('subject', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+          })
           ->orWhereHas('exam', function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%");
           });
@@ -70,6 +76,7 @@ class ScoreController extends Controller
 
     $students = Student::orderBy('name')->get();
     $exams = Exam::orderBy('name')->get();
+    $subjects = Subject::orderBy('name')->get();
 
     if ($request->ajax()) {
       $html = [
@@ -85,28 +92,167 @@ class ScoreController extends Controller
       ]);
     }
 
-    return view('admin.scores.index', compact('scores', 'students', 'exams'));
+    return view('admin.scores.index', compact('scores', 'students', 'exams', 'subjects', 'semester'));
   }
+
+  // public function create()
+  // {
+  //   $students = Student::orderBy('name')->get();
+  //   $exams = Exam::orderBy('name')->get();
+
+  //   return response()->json([
+  //     'success' => true,
+  //     'html' => view('admin.scores.partials.create', compact('students', 'exams'))->render()
+  //   ]);
+  // }
+
+  // public function store(Request $request)
+  // {
+  //   $validator = Validator::make($request->all(), [
+  //     'student_id' => 'required|exists:students,id',
+  //     'exam_id' => 'required|exists:exams,id',
+  //     'subject_id' => 'required|exists:subjects,id',
+  //     'score' => 'required|numeric|min:0',
+  //     'grade' => 'nullable|string|max:10',
+  //     'remarks' => 'nullable|string|max:255',
+  //   ]);
+
+  //   if ($validator->fails()) {
+  //     return response()->json([
+  //       'success' => false,
+  //       'errors' => $validator->errors()
+  //     ], 422);
+  //   }
+
+  //   // Check if score already exists for this student and exam
+  //   $existingScore = Score::where('student_id', $request->student_id)
+  //     ->where('exam_id', $request->exam_id)
+  //     ->first();
+
+  //   if ($existingScore) {
+  //     return response()->json([
+  //       'success' => false,
+  //       'message' => 'A score already exists for this student and exam combination.'
+  //     ], 409);
+  //   }
+
+  //   try {
+  //     $score = Score::create($validator->validated());
+
+  //     return response()->json([
+  //       'success' => true,
+  //       'message' => 'Score created successfully!',
+  //       'data' => $score
+  //     ]);
+  //   } catch (\Exception $e) {
+  //     return response()->json([
+  //       'success' => false,
+  //       'message' => 'Failed to create score: ' . $e->getMessage()
+  //     ], 500);
+  //   }
+  // }
+
 
   public function create()
   {
     $students = Student::orderBy('name')->get();
     $exams = Exam::orderBy('name')->get();
+    $subjects = Subject::orderBy('name')->get();
+    $semester = now()->month <= 6 ? 1 : 2; // Default to current semester
 
     return response()->json([
       'success' => true,
-      'html' => view('admin.scores.partials.create', compact('students', 'exams'))->render()
+      'html' => view('admin.scores.partials.create', compact('students', 'exams', 'subjects', 'semester'))->render()
     ]);
   }
+
+  // public function store(Request $request)
+  // {
+  //   // Validate the request data
+  //   $validator = Validator::make($request->all(), [
+  //     'scores' => 'required|array',
+  //     'scores.*.student_id' => 'required|exists:students,id',
+  //     'scores.*.exam_id' => 'required|exists:exams,id',
+  //     'scores.*.subject_id' => 'required|exists:subjects,id',
+  //     'scores.*.semester' => 'required|in:1,2',
+  //     'scores.*.score' => 'required|numeric|min:0|max:100',
+  //   ]);
+
+  //   if ($validator->fails()) {
+  //     return response()->json([
+  //       'success' => false,
+  //       'errors' => $validator->errors()
+  //     ], 422);
+  //   }
+
+  //   $createdCount = 0;
+  //   $errors = [];
+
+  //   foreach ($request->input('scores') as $scoreData) {
+  //     // Skip if score is empty
+  //     if (empty($scoreData['score'])) {
+  //       continue;
+  //     }
+
+  //     try {
+  //       // Check if score already exists for this combination
+  //       $existingScore = Score::where('student_id', $scoreData['student_id'])
+  //         ->where('exam_id', $scoreData['exam_id'])
+  //         ->where('subject_id', $scoreData['subject_id'])
+  //         ->where('semester', $scoreData['semester'])
+  //         ->first();
+
+  //       if ($existingScore) {
+  //         $errors[] = "Score already exists for student {$scoreData['student_id']}, subject {$scoreData['subject_id']}, exam {$scoreData['exam_id']}, semester {$scoreData['semester']}";
+  //         continue;
+  //       }
+
+  //       // Calculate grade based on score (you can customize this)
+  //       $grade = $this->calculateGrade($scoreData['score']);
+  //       $remarks = $this->getRemarks($grade);
+
+  //       // Create the score
+  //       Score::create([
+  //         'student_id' => $scoreData['student_id'],
+  //         'exam_id' => $scoreData['exam_id'],
+  //         'subject_id' => $scoreData['subject_id'],
+  //         'semester' => $scoreData['semester'],
+  //         'score' => $scoreData['score'],
+  //         'grade' => $grade,
+  //         'remarks' => $remarks,
+  //       ]);
+
+  //       $createdCount++;
+  //     } catch (\Exception $e) {
+  //       $errors[] = "Failed to create score for student {$scoreData['student_id']}: " . $e->getMessage();
+  //     }
+  //   }
+
+  //   if (count($errors)) {
+  //     return response()->json([
+  //       'success' => $createdCount > 0,
+  //       'message' => "Created {$createdCount} scores, but encountered some errors",
+  //       'errors' => $errors
+  //     ], $createdCount > 0 ? 200 : 500);
+  //   }
+
+  //   return response()->json([
+  //     'success' => true,
+  //     'message' => "Successfully created {$createdCount} scores"
+  //   ]);
+  // }
 
   public function store(Request $request)
   {
     $validator = Validator::make($request->all(), [
-      'student_id' => 'required|exists:students,id',
       'exam_id' => 'required|exists:exams,id',
-      'score' => 'required|numeric|min:0',
-      'grade' => 'nullable|string|max:10',
-      'remarks' => 'nullable|string|max:255',
+      'semester' => 'required|in:1,2',
+      'grade_id' => 'required|exists:grades,id',
+      'scores' => 'required|array',
+      'scores.*.*.student_id' => 'required|exists:students,id',
+      'scores.*.*.subject_id' => 'required|exists:subjects,id',
+      'scores.*.*.grade_id' => 'required|exists:grades,id',
+      'scores.*.*.score' => 'required|numeric|min:0|max:100',
     ]);
 
     if ($validator->fails()) {
@@ -116,31 +262,84 @@ class ScoreController extends Controller
       ], 422);
     }
 
-    // Check if score already exists for this student and exam
-    $existingScore = Score::where('student_id', $request->student_id)
-      ->where('exam_id', $request->exam_id)
-      ->first();
+    $createdCount = 0;
+    $errors = [];
 
-    if ($existingScore) {
-      return response()->json([
-        'success' => false,
-        'message' => 'A score already exists for this student and exam combination.'
-      ], 409);
+    foreach ($request->input('scores') as $studentId => $subjects) {
+      foreach ($subjects as $subjectId => $scoreData) {
+        try {
+          $existingScore = Score::where([
+            'student_id' => $studentId,
+            'subject_id' => $subjectId,
+            'exam_id' => $request->exam_id,
+            'semester' => $request->semester,
+            'grade_id' => $request->grade_id,
+          ])->first();
+
+          if ($existingScore) {
+            $errors[] = "Score already exists for this combination";
+            continue;
+          }
+
+          $grade = $this->calculateGrade($scoreData['score']);
+          $remarks = $this->getRemarks($grade);
+
+          Score::create([
+            'student_id' => $studentId,
+            'subject_id' => $subjectId,
+            'exam_id' => $request->exam_id,
+            'semester' => $request->semester,
+            'grade_id' => $request->grade_id,
+            'score' => $scoreData['score'],
+            'grade' => $grade,
+            'remarks' => $remarks,
+          ]);
+
+          $createdCount++;
+        } catch (\Exception $e) {
+          $errors[] = "Failed to create score: " . $e->getMessage();
+        }
+      }
     }
 
-    try {
-      $score = Score::create($validator->validated());
+    if (!empty($errors)) {
+      return response()->json([
+        'success' => $createdCount > 0,
+        'message' => "Created {$createdCount} scores, but encountered some errors",
+        'errors' => $errors
+      ], $createdCount > 0 ? 200 : 500);
+    }
 
-      return response()->json([
-        'success' => true,
-        'message' => 'Score created successfully!',
-        'data' => $score
-      ]);
-    } catch (\Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Failed to create score: ' . $e->getMessage()
-      ], 500);
+    return response()->json([
+      'success' => true,
+      'message' => "Successfully created {$createdCount} scores"
+    ]);
+  }
+
+  // Helper method to calculate grade
+  private function calculateGrade($score)
+  {
+    if ($score >= 90) return 'A';
+    if ($score >= 80) return 'B';
+    if ($score >= 70) return 'C';
+    if ($score >= 60) return 'D';
+    return 'F';
+  }
+
+  // Helper method to get remarks
+  private function getRemarks($grade)
+  {
+    switch ($grade) {
+      case 'A':
+        return 'Excellent';
+      case 'B':
+        return 'Good';
+      case 'C':
+        return 'Average';
+      case 'D':
+        return 'Below Average';
+      default:
+        return 'Fail';
     }
   }
 

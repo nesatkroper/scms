@@ -4,7 +4,7 @@
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <div class="md:flex gap-2 justify-between items-center mb-3">
-            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+            <h3 class="mb-3 sm:mb-sm-0 text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                 <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -21,7 +21,7 @@
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         clip-rule="evenodd" />
                 </svg>
-                Add New Score
+                Add Score
             </button>
 
         </div>
@@ -131,6 +131,44 @@
                             value="{{ request('grade') }}"
                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
                     </div>
+                    <!-- grade Filter -->
+                    {{-- <div>
+                        <label for="gradeFilter"
+                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Grade</label>
+                        <div data-name="grade_id"
+                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                            <div class="select-header cursor-pointer flex justify-between items-center">
+                                <span class="selected-value truncate">
+                                    {{ request('grade_id') ? $grades->firstWhere('id', request('grade_id'))?->name : 'Select grade' }}
+                                </span>
+                                <span class="arrow transition-transform duration-300">▼</span>
+                            </div>
+                            <div
+                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
+                                    <input type="search"
+                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                        placeholder="Search grade...">
+                                </div>
+                                <div class="options-container">
+                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
+                                        data-value="">
+                                        All grade
+                                    </div>
+                                    @foreach ($grades as $grade)
+                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('exam_id') == $exam->id ? 'selected' : '' }}"
+                                            data-value="{{ $grade->id }}">
+                                            {{ $grade->name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
+                                    found
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="grade_id" id="gradeFilter" value="{{ request('grade_id') }}">
+                    </div> --}}
 
                     <!-- Score Range Filter -->
                     <div class="grid grid-cols-2 gap-2">
@@ -408,7 +446,45 @@
             $('#createnew').off('click').on('click', function() {
                 showModal('Modalcreate');
             });
+
+            // Modal close buttons
+            $('[id^="close"], [id^="cancel"]').on('click', function() {
+                const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
+                    $(this).closest('[id$="Modal"]').attr('id');
+                if (modalId) closeModal(modalId);
+            });
+
             $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
+
+            // Utility Functions
+            function refreshSubjectContent() {
+                const currentView = localStorage.getItem('viewitem') || 'table';
+                const searchTerm = searchInput.val() || '';
+
+                $.ajax({
+                    url: "{{ route('admin.scores.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm,
+                        view: currentView
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            tableContainer.html(response.html.table);
+                            cardContainer.html(response.html.cards);
+                            $('.pagination').html(response.html.pagination);
+                            attachRowEventHandlers();
+                            updateBulkActionsBar();
+                        } else {
+                            ShowTaskMessage('error', 'Failed to refresh data');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Refresh failed:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to refresh data');
+                    }
+                });
+            }
 
             function attachRowEventHandlers() {
                 // $('.edit-btn').off('click').on('click', handleEditClick);
