@@ -14,7 +14,6 @@ class Classroom extends Model
     'name',
     'room_number',
     'capacity',
-    'facilities',
   ];
 
   protected $casts = [

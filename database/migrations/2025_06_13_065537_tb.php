@@ -12,7 +12,6 @@ return new class extends Migration {
       $table->string('name');
       $table->string('room_number')->unique();
       $table->integer('capacity');
-      $table->text('facilities')->nullable();
       $table->timestamps();
       $table->softDeletes();
     });
@@ -36,6 +35,7 @@ return new class extends Migration {
       $table->integer('quantity');
       $table->text('description')->nullable();
       $table->string('cover_image')->nullable();
+      $table->longText('content')->nullable();
       $table->timestamps();
       $table->softDeletes();
     });
@@ -73,6 +73,9 @@ return new class extends Migration {
 
     Schema::create('teachers', function (Blueprint $table) {
       $table->id();
+      $table->string('name');
+      $table->enum('gender', ['male', 'female'])->default('male');
+      $table->date('dob');
       $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
       $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
       $table->date('joining_date');
@@ -85,15 +88,6 @@ return new class extends Migration {
       $table->decimal('salary', 10, 2)->nullable();
       $table->string('photo')->nullable();
       $table->string('cv')->nullable();
-      $table->timestamps();
-      $table->softDeletes();
-    });
-
-    Schema::create('sections', function (Blueprint $table) {
-      $table->id();
-      $table->string('name');
-      $table->foreignId('grade_level_id')->constrained()->onDelete('cascade');
-      $table->foreignId('teacher_id')->nullable()->constrained()->onDelete('set null');
       $table->timestamps();
       $table->softDeletes();
     });
@@ -114,20 +108,8 @@ return new class extends Migration {
       $table->foreignId('subject_id')->constrained()->onDelete('cascade');
       $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
       $table->foreignId('classroom_id')->constrained()->onDelete('cascade');
-      $table->foreignId('section_id')->nullable()->constrained()->onDelete('cascade');
       $table->string('semester')->nullable();
       $table->year('academic_year');
-      $table->timestamps();
-      $table->softDeletes();
-    });
-
-    Schema::create('timetable_slots', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('course_offering_id')->constrained('course_offerings')->onDelete('cascade');
-      $table->time('start_time');
-      $table->time('end_time');
-      $table->enum('day', ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
-      $table->string('room_override')->nullable();
       $table->timestamps();
       $table->softDeletes();
     });
@@ -241,18 +223,6 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
-    Schema::create('timetables', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('section_id')->constrained()->onDelete('cascade');
-      $table->string('title');
-      $table->text('description')->nullable();
-      $table->boolean('is_active')->default(false);
-      $table->date('start_date');
-      $table->date('end_date');
-      $table->timestamps();
-      $table->softDeletes();
-    });
-
     Schema::create('attendances', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained()->onDelete('cascade');
@@ -314,6 +284,84 @@ return new class extends Migration {
       $table->timestamps();
       $table->softDeletes();
     });
+
+    Schema::create('provinces', function (Blueprint $table) {
+      $table->id();
+      $table->string('type');
+      $table->string('code');
+      $table->string('khmer_name');
+      $table->string('name');
+      $table->timestamps();
+    });
+
+    Schema::create('districts', function (Blueprint $table) {
+      $table->id();
+      $table->string('type');
+      $table->string('code');
+      $table->string('khmer_name');
+      $table->string('name');
+      $table->unsignedBigInteger('province_id');
+      $table->timestamps();
+      $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+    });
+
+    Schema::create('communes', function (Blueprint $table) {
+      $table->id();
+      $table->string('type');
+      $table->string('code');
+      $table->string('khmer_name');
+      $table->string('name');
+      $table->unsignedBigInteger('province_id');
+      $table->unsignedBigInteger('district_id');
+      $table->timestamps();
+      $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+      $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+    });
+
+    Schema::create('villages', function (Blueprint $table) {
+      $table->id();
+      $table->string('type');
+      $table->string('code');
+      $table->string('khmer_name');
+      $table->string('name');
+      $table->unsignedBigInteger('province_id');
+      $table->unsignedBigInteger('district_id');
+      $table->unsignedBigInteger('commune_id');
+      $table->timestamps();
+      $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+      $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+      $table->foreign('commune_id')->references('id')->on('communes')->onDelete('cascade');
+    });
+
+    Schema::create('addresses', function (Blueprint $table) {
+      $table->id();
+      $table->unsignedBigInteger('province_id');
+      $table->unsignedBigInteger('district_id');
+      $table->unsignedBigInteger('commune_id');
+      $table->unsignedBigInteger('village_id');
+
+      $table->string('description')->nullable();
+      $table->enum('status', ['active', 'inactive'])->default('active');
+      $table->timestamps();
+      $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+      $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+      $table->foreign('commune_id')->references('id')->on('communes')->onDelete('cascade');
+      $table->foreign('village_id')->references('id')->on('villages')->onDelete('cascade');
+    });
+
+    // Schema::create('scores', function (Blueprint $table) {
+    //   $table->id();
+    //   $table->foreignId('student_id')->constrained()->onDelete('cascade');
+    //   $table->foreignId('exam_id')->constrained()->onDelete('cascade');
+    //   $table->string('semester');
+    //   $table->integer('score');
+    //   $table->string('grade')->nullable();
+    //   $table->text('remarks')->nullable();
+    //   $table->timestamps();
+    //   $table->softDeletes();
+
+    //   $table->unique(['student_id', 'exam_id', 'semester']);
+    // });
   }
 
   public function down(): void
@@ -323,8 +371,6 @@ return new class extends Migration {
     Schema::dropIfExists('grades');
     Schema::dropIfExists('exams');
     Schema::dropIfExists('attendances');
-    Schema::dropIfExists('timetable_slots');
-    Schema::dropIfExists('timetables');
     Schema::dropIfExists('student_course');
     Schema::dropIfExists('course_offerings');
     Schema::dropIfExists('book_issues');
@@ -334,7 +380,6 @@ return new class extends Migration {
     Schema::dropIfExists('student_guardian');
     Schema::dropIfExists('students');
     Schema::dropIfExists('guardians');
-    Schema::dropIfExists('sections');
     Schema::dropIfExists('subjects');
     Schema::dropIfExists('teachers');
     Schema::dropIfExists('departments');
@@ -344,5 +389,6 @@ return new class extends Migration {
     Schema::dropIfExists('book_categories');
     Schema::dropIfExists('expense_categories');
     Schema::dropIfExists('classrooms');
+    Schema::dropIfExists('addresses');
   }
 };
