@@ -29,8 +29,10 @@ use App\Http\Controllers\{
   TimetableEntryController,
   HomeController,
   ScoreController,
-  UserController
+  UserController,
+  RoleController,
 };
+
 use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
@@ -50,6 +52,9 @@ R::prefix('/admin')
 
     R::resources([
       'users' => UserController::class,
+      'roles' => RoleController::class,
+
+
       'attendances' => AttendanceController::class,
       'bookcategory' => BookCategoryController::class,
       'books' => BookController::class,

@@ -469,7 +469,8 @@
             <li><a href="{{ route('admin.users.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Users</a>
             </li>
-            <li><a href="#" class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Role</a>
+            <li><a href="{{ route('admin.roles.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Role</a>
             </li>
           </ul>
         </div>

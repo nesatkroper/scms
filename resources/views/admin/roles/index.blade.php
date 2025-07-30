@@ -1,14 +1,16 @@
 @extends('layouts.admin')
-@section('title', 'Users')
+@section('title', 'Roles')
 @section('content')
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        <path fill-rule="evenodd"
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.356 1.636a1 1 0 10-1.412-1.412l-.708.708a1 1 0 001.414 1.414l.707-.707zM6.343 4.343a1 1 0 00-1.414-1.414l-.707.707a1 1 0 101.414 1.414l.707-.707zm-.707 7.071l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM3 10a1 1 0 110-2h1a1 1 0 110 2H3zm15 0a1 1 0 110-2h1a1 1 0 110 2h-1zm-6.343 4.343l-.707.707a1 1 0 001.414 1.414l.707-.707a1 1 0 00-1.414-1.414zm-7.071 0a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zM10 15a1 1 0 100 2h1a1 1 0 100-2h-1z"
+          clip-rule="evenodd" />
       </svg>
-      Users
+      Roles
     </h3>
     <div
       class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -19,20 +21,20 @@
             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
             clip-rule="evenodd" />
         </svg>
-        Create New User
+        Create New Role
       </button>
     </div>
     <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-      @include('admin.users.partials.table', ['users' => $users])
+      @include('admin.roles.partials.table', ['roles' => $roles])
     </div>
-    @include('admin.users.partials.pagination')
+    @include('admin.roles.partials.pagination')
 
   </div>
   <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-  @include('admin.users.partials.create')
-  @include('admin.users.partials.edit')
-  @include('admin.users.partials.delete')
+  @include('admin.roles.partials.create')
+  @include('admin.roles.partials.edit')
+  @include('admin.roles.partials.delete')
 @endsection
 @push('scripts')
   <script>
@@ -43,7 +45,6 @@
         }
       });
 
-      // Custom select fields logic (kept as it might be used in modals)
       function selectfields() {
         document.querySelectorAll('.custom-select').forEach(select => {
           const header = select.querySelector('.select-header');
@@ -85,7 +86,7 @@
               selectedValue.textContent = this.textContent;
               hiddenInput.value = this.dataset.value;
               select.classList.remove('open');
-              console.log('Selected value:', this.dataset.value); // Updated log message
+              console.log('Selected value:', this.dataset.value);
             });
           });
 
@@ -97,8 +98,7 @@
         });
       }
 
-      // Initialize custom selects on page load
-      selectfields();
+      selectfields(); // Initialize custom selects
 
       const backdrop = document.getElementById('modalBackdrop');
       const tableContainer = $('#TableContainer');
@@ -126,16 +126,16 @@
             if (response.success) {
               closeModal('Modalcreate');
               ShowTaskMessage('success', response.message);
-              refreshUserContent();
+              refreshRoleContent(); // Changed to refreshRoleContent
               form.trigger('reset');
             } else {
-              ShowTaskMessage('error', response.message || 'Error creating user');
+              ShowTaskMessage('error', response.message || 'Error creating role'); // Changed message
             }
           },
           error: function(xhr) {
             const errors = xhr.responseJSON?.errors || {};
             let errorMessages = Object.values(errors).flat().join('\n');
-            ShowTaskMessage('error', errorMessages || 'Error creating user');
+            ShowTaskMessage('error', errorMessages || 'Error creating role'); // Changed message
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -153,56 +153,19 @@
 
         const Id = $(this).data('id');
 
-        $.get(`/admin/users/${Id}`)
+        $.get(`/admin/roles/${Id}`) // Changed URL to roles
           .done(function(response) {
             if (response.success) {
-              $('#edit_name').val(response.user.name);
-              $('#edit_email').val(response.user.email);
-              $('#edit_phone').val(response.user.phone);
-              $('#edit_address').val(response.user.address);
-              $('#edit_date_of_birth').val(response.user.date_of_birth);
-
-              // Update custom select for gender
-              const editGenderSelect = document.querySelector('#Modaledit .custom-select[data-name="gender"]');
-              const editGenderSelectedValue = editGenderSelect.querySelector('.selected-value');
-              const editGenderHiddenInput = document.querySelector('#edit_gender');
-              editGenderHiddenInput.value = response.user.gender;
-              editGenderSelectedValue.textContent = response.user.gender ? response.user.gender.charAt(0)
-                .toUpperCase() + response.user.gender.slice(1) : 'Select Gender';
-              editGenderSelect.querySelectorAll('.select-option').forEach(option => {
-                if (option.dataset.value === response.user.gender) {
-                  option.classList.add('selected');
-                } else {
-                  option.classList.remove('selected');
-                }
-              });
-
-              // Update custom select for type
-              const editTypeSelect = document.querySelector('#Modaledit .custom-select[data-name="type"]');
-              const editTypeSelectedValue = editTypeSelect.querySelector('.selected-value');
-              const editTypeHiddenInput = document.querySelector('#edit_type');
-              editTypeHiddenInput.value = response.user.type;
-              editTypeSelectedValue.textContent = response.user.type ? response.user.type.charAt(0).toUpperCase() +
-                response.user.type.slice(1) : 'Select Type';
-              editTypeSelect.querySelectorAll('.select-option').forEach(option => {
-                if (option.dataset.value === response.user.type) {
-                  option.classList.add('selected');
-                } else {
-                  option.classList.remove('selected');
-                }
-              });
-
-              $('#edit_avatar').val(response.user.avatar);
-
-              $('#Formedit').attr('action', `users/${Id}`);
+              $('#edit_name').val(response.role.name); // Changed to response.role
+              $('#Formedit').attr('action', `roles/${Id}`); // Changed action URL
               showModal('Modaledit');
             } else {
-              ShowTaskMessage('error', response.message || 'Failed to load user data');
+              ShowTaskMessage('error', response.message || 'Failed to load role data'); // Changed message
             }
           })
           .fail(function(xhr) {
             console.error('Error:', xhr.responseText);
-            ShowTaskMessage('error', 'Failed to load user data');
+            ShowTaskMessage('error', 'Failed to load role data'); // Changed message
           })
           .always(function() {
             editBtn.find('.btn-content').html(originalContent);
@@ -226,15 +189,15 @@
             if (response.success) {
               closeModal('Modaledit');
               ShowTaskMessage('success', response.message);
-              refreshUserContent();
+              refreshRoleContent(); // Changed to refreshRoleContent
             } else {
-              ShowTaskMessage('error', response.message || 'Error updating user');
+              ShowTaskMessage('error', response.message || 'Error updating role'); // Changed message
             }
           },
           error: function(xhr) {
             const errors = xhr.responseJSON?.errors || {};
             let errorMessages = Object.values(errors).flat().join('\n');
-            ShowTaskMessage('error', errorMessages || 'Error updating user');
+            ShowTaskMessage('error', errorMessages || 'Error updating role'); // Changed message
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -245,7 +208,7 @@
       function handleDeleteClick(e) {
         e.preventDefault();
         const Id = $(this).data('id');
-        $('#Formdelete').attr('action', `/admin/users/${Id}`);
+        $('#Formdelete').attr('action', `/admin/roles/${Id}`); // Changed URL
         showModal('Modaldelete');
       }
 
@@ -268,13 +231,13 @@
             if (response.success) {
               closeModal('Modaldelete');
               ShowTaskMessage('success', response.message);
-              refreshUserContent();
+              refreshRoleContent(); // Changed to refreshRoleContent
             } else {
-              ShowTaskMessage('error', response.message || 'Error deleting user');
+              ShowTaskMessage('error', response.message || 'Error deleting role'); // Changed message
             }
           },
           error: function(xhr) {
-            ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting user');
+            ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting role'); // Changed message
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -305,23 +268,23 @@
         }, 300);
       }
 
-      function refreshUserContent() {
+      function refreshRoleContent() { // Renamed from refreshUserContent
         $.ajax({
-          url: "{{ route('admin.users.index') }}",
+          url: "{{ route('admin.roles.index') }}", // Changed route
           method: 'GET',
-          data: {}, // Removed search and view parameters
+          data: {},
           success: function(response) {
             if (response.success) {
               tableContainer.html(response.html.table);
               $('.pagination').html(response.html.pagination);
               attachRowEventHandlers();
             } else {
-              ShowTaskMessage('error', 'Failed to refresh user data');
+              ShowTaskMessage('error', 'Failed to refresh role data'); // Changed message
             }
           },
           error: function(xhr) {
             console.error('Refresh failed:', xhr.responseText);
-            ShowTaskMessage('error', 'Failed to refresh user data');
+            ShowTaskMessage('error', 'Failed to refresh role data'); // Changed message
           }
         });
       }
@@ -329,10 +292,10 @@
       function attachRowEventHandlers() {
         $('.edit-btn').off('click').on('click', handleEditClick);
         $('.delete-btn').off('click').on('click', handleDeleteClick);
-        $('.detail-btn').off('click').on('click', handleDetailClick);
+        // Removed detail-btn as roles might not have complex details requiring a separate modal
+        // If you need a detail view for roles, you can re-add it and implement handleDetailClick
       }
 
-      // Initialize event listeners
       function initialize() {
         $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
         $('#Formedit').off('submit').on('submit', handleEditSubmit);
