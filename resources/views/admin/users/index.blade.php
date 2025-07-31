@@ -1,140 +1,61 @@
 @extends('layouts.admin')
+
 @section('title', 'Users')
+
 @section('content')
-  <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-      </svg>
-      Users
-    </h3>
-    <div
-      class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-      <button id="openCreateModal"
-        class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-            clip-rule="evenodd" />
-        </svg>
-        Create New User
-      </button>
+  <x-page.index title="Users" icon-svg-path="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+    create-button-text="Create New User"
+    create-button-icon-svg-path="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
+
+    <div id="TableContainer">
+      <x-table.table :headers="['Id', 'Name', 'Email', 'Phone', 'Type', 'Gender', 'Date of Birth']">
+        @if (count($users) > 0)
+          @foreach ($users as $user)
+            <tr
+              class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
+              <x-table.td>{{ $user->id }}</x-table.td>
+              <x-table.td>{{ $user->name }}</x-table.td>
+              <x-table.td>{{ $user->email }}</x-table.td>
+              <x-table.td>{{ $user->phone ?? 'N/A' }}</x-table.td>
+              <x-table.td>{{ ucfirst($user->type) }}</x-table.td>
+              <x-table.td>{{ ucfirst($user->gender ?? 'N/A') }}</x-table.td>
+              <x-table.td>
+                {{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('Y-m-d') : 'N/A' }}
+              </x-table.td>
+              <x-table.td class="text-right">
+                <x-table.action :userId="$user->id" />
+              </x-table.td>
+            </tr>
+          @endforeach
+        @else
+          <x-table.no-data :colspan="count(['Id', 'Name', 'Email', 'Phone', 'Type', 'Gender', 'Date of Birth']) + 1" />
+        @endif
+      </x-table.table>
+      <x-table.pagination :paginator="$users" />
     </div>
-    <x-table.table :headers="['Id', 'Name', 'Email', 'Phone', 'Type', 'Gender', 'Date of Birth']">
-      @if (count($users) > 0)
-        @foreach ($users as $user)
-          <tr class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
-            <x-table.td>{{ $user->id }}</x-table.td>
-            <x-table.td>{{ $user->name }}</x-table.td>
-            <x-table.td>{{ $user->email }}</x-table.td>
-            <x-table.td>{{ $user->phone ?? 'N/A' }}</x-table.td>
-            <x-table.td>{{ ucfirst($user->type) }}</x-table.td>
-            <x-table.td>{{ ucfirst($user->gender ?? 'N/A') }}</x-table.td>
-            <x-table.td>
-              {{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('Y-m-d') : 'N/A' }}
-            </x-table.td>
-            <x-table.td class="text-right">
-              <x-table.action :userId="$user->id" />
-            </x-table.td>
-          </tr>
-        @endforeach
-      @else
-        <x-table.no-data :colspan="count(['Id', 'Name', 'Email', 'Phone', 'Type', 'Gender', 'Date of Birth']) + 1" />
-      @endif
-    </x-table.table>
-    <x-table.pagination :paginator="$users" />
 
-  </div>
-  <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+    @include('admin.users.partials.create')
+    @include('admin.users.partials.edit')
+    @include('admin.users.partials.delete')
 
-  @include('admin.users.partials.create')
-  @include('admin.users.partials.edit')
-  @include('admin.users.partials.delete')
-
+  </x-page.index>
 @endsection
+
 @push('scripts')
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM Content Loaded - Initializing scripts.');
+      console.log('DOM Content Loaded - Initializing Users page specific scripts.');
 
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      function selectfields() {
-        document.querySelectorAll('.custom-select').forEach(select => {
-          const header = select.querySelector('.select-header');
-          const optionsBox = select.querySelector('.select-options');
-          const searchInput = select.querySelector('.search-input');
-          const optionsContainer = select.querySelector('.options-container');
-          const selectedValue = select.querySelector('.selected-value');
-          const noResults = select.querySelector('.no-results');
-          const options = Array.from(select.querySelectorAll('.select-option'));
-          const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-          header.addEventListener('click', function() {
-            select.classList.toggle('open');
-            if (select.classList.contains('open')) {
-              searchInput.focus();
-            }
-          });
-
-          searchInput.addEventListener('input', function() {
-            const term = this.value.toLowerCase().trim();
-            let hasMatch = false;
-
-            options.forEach(option => {
-              if (option.textContent.toLowerCase().includes(term)) {
-                option.style.display = 'block';
-                hasMatch = true;
-              } else {
-                option.style.display = 'none';
-              }
-            });
-
-            noResults.style.display = hasMatch ? 'none' : 'block';
-          });
-
-          options.forEach(option => {
-            option.addEventListener('click', function() {
-              options.forEach(opt => opt.classList.remove('selected'));
-              this.classList.add('selected');
-              selectedValue.textContent = this.textContent;
-              hiddenInput.value = this.dataset.value;
-              select.classList.remove('open');
-              console.log('Selected value:', this.dataset.value);
-            });
-          });
-
-          document.addEventListener('click', function(e) {
-            if (!select.contains(e.target)) {
-              select.classList.remove('open');
-            }
-          });
-        });
-      }
-
-      selectfields();
-
-      const backdrop = document.getElementById('modalBackdrop');
-      const tableContainer = $(
-        '#TableContainer'
-      );
-
+      const tableContainer = $('#TableContainer');
       const openCreateBtn = document.getElementById('openCreateModal');
-      console.log('Found openCreateModal button:', openCreateBtn);
 
       if (openCreateBtn) {
         openCreateBtn.addEventListener('click', function() {
-          console.log('Create button clicked! Attempting to show Modalcreate.');
-          showModal('Modalcreate');
+          console.log('Users page: Create button clicked! Attempting to show Modalcreate.');
+          window.showModal('Modalcreate');
         });
       } else {
-        console.error('Error: "openCreateModal" button not found!');
+        console.error('Users page: "openCreateModal" button not found!');
       }
 
       function handleCreateSubmit(e) {
@@ -151,18 +72,18 @@
           data: form.serialize(),
           success: function(response) {
             if (response.success) {
-              closeModal('Modalcreate');
-              ShowTaskMessage('success', response.message);
+              window.closeModal('Modalcreate');
+              window.ShowTaskMessage('success', response.message);
               refreshUserContent();
               form.trigger('reset');
             } else {
-              ShowTaskMessage('error', response.message || 'Error creating user');
+              window.ShowTaskMessage('error', response.message || 'Error creating user');
             }
           },
           error: function(xhr) {
             const errors = xhr.responseJSON?.errors || {};
             let errorMessages = Object.values(errors).flat().join('\n');
-            ShowTaskMessage('error', errorMessages || 'Error creating user');
+            window.ShowTaskMessage('error', errorMessages || 'Error creating user');
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -189,7 +110,6 @@
               $('#edit_address').val(response.user.address);
               $('#edit_date_of_birth').val(response.user.date_of_birth);
 
-              // Update custom select for gender
               const editGenderSelect = document.querySelector('#Modaledit .custom-select[data-name="gender"]');
               const editGenderSelectedValue = editGenderSelect.querySelector('.selected-value');
               const editGenderHiddenInput = document.querySelector('#edit_gender');
@@ -204,7 +124,6 @@
                 }
               });
 
-              // Update custom select for type
               const editTypeSelect = document.querySelector('#Modaledit .custom-select[data-name="type"]');
               const editTypeSelectedValue = editTypeSelect.querySelector('.selected-value');
               const editTypeHiddenInput = document.querySelector('#edit_type');
@@ -222,14 +141,15 @@
               $('#edit_avatar').val(response.user.avatar);
 
               $('#Formedit').attr('action', `users/${Id}`);
-              showModal('Modaledit');
+              window.showModal('Modaledit');
+              window.selectfields();
             } else {
-              ShowTaskMessage('error', response.message || 'Failed to load user data');
+              window.ShowTaskMessage('error', response.message || 'Failed to load user data');
             }
           })
           .fail(function(xhr) {
             console.error('Error:', xhr.responseText);
-            ShowTaskMessage('error', 'Failed to load user data');
+            window.ShowTaskMessage('error', 'Failed to load user data');
           })
           .always(function() {
             editBtn.find('.btn-content').html(originalContent);
@@ -251,17 +171,17 @@
           data: form.serialize() + '&_method=PUT',
           success: function(response) {
             if (response.success) {
-              closeModal('Modaledit');
-              ShowTaskMessage('success', response.message);
+              window.closeModal('Modaledit');
+              window.ShowTaskMessage('success', response.message);
               refreshUserContent();
             } else {
-              ShowTaskMessage('error', response.message || 'Error updating user');
+              window.ShowTaskMessage('error', response.message || 'Error updating user');
             }
           },
           error: function(xhr) {
             const errors = xhr.responseJSON?.errors || {};
             let errorMessages = Object.values(errors).flat().join('\n');
-            ShowTaskMessage('error', errorMessages || 'Error updating user');
+            window.ShowTaskMessage('error', errorMessages || 'Error updating user');
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -273,7 +193,7 @@
         e.preventDefault();
         const Id = $(this).data('id');
         $('#Formdelete').attr('action', `/admin/users/${Id}`);
-        showModal('Modaldelete');
+        window.showModal('Modaldelete');
       }
 
       function handleDeleteSubmit(e) {
@@ -293,15 +213,15 @@
           },
           success: function(response) {
             if (response.success) {
-              closeModal('Modaldelete');
-              ShowTaskMessage('success', response.message);
+              window.closeModal('Modaldelete');
+              window.ShowTaskMessage('success', response.message);
               refreshUserContent();
             } else {
-              ShowTaskMessage('error', response.message || 'Error deleting user');
+              window.ShowTaskMessage('error', response.message || 'Error deleting user');
             }
           },
           error: function(xhr) {
-            ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting user');
+            window.ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting user');
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -309,105 +229,41 @@
         });
       }
 
-      function showModal(modalId) {
-        console.log(`showModal called for: ${modalId}`);
-        const backdrop = document.getElementById('modalBackdrop');
-        const modal = document.getElementById(modalId);
-
-        if (backdrop) {
-          backdrop.classList.remove('hidden');
-          console.log('Backdrop hidden class removed.');
-        } else {
-          console.error('Error: modalBackdrop element not found!');
-        }
-
-        if (modal) {
-          modal.classList.remove('hidden');
-          console.log(`Modal ${modalId} hidden class removed.`);
-          setTimeout(() => {
-            const innerDiv = modal.querySelector('div'); // Targets the direct child div for transitions
-            if (innerDiv) {
-              innerDiv.classList.remove('opacity-0', 'scale-95');
-              innerDiv.classList.add('opacity-100', 'scale-100');
-              console.log(`Modal ${modalId} inner div transition classes applied.`);
-            } else {
-              console.error(`Error: Inner div for modal ${modalId} not found!`);
-            }
-          }, 10);
-          document.body.style.overflow = 'hidden';
-          console.log('Body overflow set to hidden.');
-        } else {
-          console.error(`Error: Modal element with ID "${modalId}" not found!`);
-        }
-      }
-
-      function closeModal(modalId) {
-        console.log(`closeModal called for: ${modalId}`);
-        const modal = document.getElementById(modalId);
-        const backdrop = document.getElementById('modalBackdrop'); // Ensure backdrop is found here too
-
-        if (modal) {
-          const innerDiv = modal.querySelector('div');
-          if (innerDiv) {
-            innerDiv.classList.remove('opacity-100', 'scale-100');
-            innerDiv.classList.add('opacity-0', 'scale-95');
-          }
-
-          setTimeout(() => {
-            modal.classList.add('hidden');
-            if (backdrop) {
-              backdrop.classList.add('hidden');
-            }
-            document.body.style.overflow = 'auto';
-          }, 300); // Match this duration with your CSS transition duration
-        }
-      }
-
       function refreshUserContent() {
-        console.log('Refreshing user content...');
+        console.log('Users page: Refreshing user content.');
         $.ajax({
           url: "{{ route('admin.users.index') }}",
           method: 'GET',
-          data: {},
+          data: {
+            per_page: $('#perPageSelect').val(),
+            page: {{ request()->query('page', 1) }}
+          },
           success: function(response) {
             if (response.success) {
-
-              console.warn('Note: #TableContainer not found in the provided HTML. Update target if needed.');
-
-              if (tableContainer.length) {
-                tableContainer.html(response.html.table);
-              } else {
-                console.error('refreshUserContent: #TableContainer element not found!');
-              }
-
-
-              $('.pagination').html(response.html.pagination);
+              tableContainer.html(response.html.table);
               attachRowEventHandlers();
-              selectfields();
+              window.selectfields();
             } else {
-              ShowTaskMessage('error', 'Failed to refresh user data');
+              window.ShowTaskMessage('error', 'Failed to refresh user data');
             }
           },
           error: function(xhr) {
-            console.error('Refresh failed:', xhr.responseText);
-            ShowTaskMessage('error', 'Failed to refresh user data');
+            console.error('Users page: Refresh failed:', xhr.responseText);
+            window.ShowTaskMessage('error', 'Failed to refresh user data');
           }
         });
       }
 
       function attachRowEventHandlers() {
-        // Use event delegation for dynamically loaded content
         $(document).off('click', '.edit-btn').on('click', '.edit-btn', handleEditClick);
         $(document).off('click', '.delete-btn').on('click', '.delete-btn', handleDeleteClick);
         $(document).off('click', '.detail-btn').on('click', '.detail-btn', handleDetailClick);
 
-        // Re-attach dropdown toggles for dynamically loaded content
         $(document).off('click', '.btn-toggle-dropdown').on('click', '.btn-toggle-dropdown', function(e) {
-          e.stopPropagation(); // Prevent document click from immediately closing
+          e.stopPropagation();
           $(this).closest('.relative').find('.dropdown-menu').toggleClass('hidden');
         });
 
-        // Close dropdowns when clicking outside
         $(document).off('click', function(e) {
           if (!$(e.target).closest('.relative').length) {
             $('.dropdown-menu').addClass('hidden');
@@ -415,64 +271,35 @@
         });
       }
 
-      // Dummy handleDetailClick if it's not defined elsewhere
       function handleDetailClick(e) {
         e.preventDefault();
         const Id = $(this).data('id');
-        ShowTaskMessage('info', `Details for user ID: ${Id}`);
-        // Implement actual detail fetching/modal opening here
+        window.ShowTaskMessage('info', `Details for user ID: ${Id}`);
       }
 
-
-      // Initialize event listeners
-      function initialize() {
-        console.log('Initializing form and modal event listeners.');
+      function initializeUserPageScripts() {
+        console.log('Users page: Initializing form and modal event listeners.');
         $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
         $('#Formedit').off('submit').on('submit', handleEditSubmit);
         $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
 
-        // Close buttons for modals
-        $('[id^="close"], [id^="cancel"]').on('click', function() {
-          const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
-            $(this).closest('[id$="Modal"]').attr('id');
-          if (modalId) closeModal(modalId);
-        });
-
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') {
-            $('[id^="Modal"]').each(function() {
-              if (!$(this).hasClass('hidden')) {
-                closeModal(this.id);
-              }
-            });
-          }
-        });
-
         attachRowEventHandlers();
       }
 
-      initialize(); // Call initialize on DOMContentLoaded
+      initializeUserPageScripts();
     });
 
-    function ShowTaskMessage(type, message) {
-      const TasksmsContainer = document.createElement('div');
-      TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-      TasksmsContainer.innerHTML = `
-                <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'}
-                    border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-                    <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-                    </svg>
-                    <div class="flex-1 text-sm sm:text-base">${message}</div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                        <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            `;
-      document.body.appendChild(TasksmsContainer);
-      setTimeout(() => TasksmsContainer.remove(), 3000);
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const perPageSelect = document.getElementById('perPageSelect');
+      if (perPageSelect) {
+        perPageSelect.addEventListener('change', function() {
+          const selectedValue = this.value;
+          const currentUrl = new URL(window.location.href);
+          currentUrl.searchParams.set('per_page', selectedValue);
+          currentUrl.searchParams.delete('page');
+          window.location.href = currentUrl.toString();
+        });
+      }
+    });
   </script>
 @endpush

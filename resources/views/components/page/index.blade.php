@@ -1,48 +1,35 @@
-@extends('layouts.admin')
+<div
+  class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+  <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+    <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="{{ $iconSvgPath }}" clip-rule="evenodd" />
+    </svg>
+    {{ $title }}
+  </h3>
 
-@section('title', $title)
-
-@section('content')
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    {{-- Page Title Section --}}
-    <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="{{ $iconSvgPath }}" clip-rule="evenodd" />
+    class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+    <button id="openCreateModal"
+      class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="{{ $createButtonIconSvgPath }}" clip-rule="evenodd" />
       </svg>
-      {{ $title }}
-    </h3>
-
-    {{-- Create Button Section --}}
-    <div
-      class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-      <button id="openCreateModal"
-        class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="{{ $createButtonIconSvgPath }}" clip-rule="evenodd" />
-        </svg>
-        {{ $createButtonText }}
-      </button>
-      {{-- This is where other page-specific action buttons or search bars can be added via the slot --}}
-    </div>
-
-    {{-- Main Content Slot --}}
-    {{ $slot }}
-
+      {{ $createButtonText }}
+    </button>
   </div>
 
-  {{-- Generic Modal Backdrop (remains here as it's a global overlay) --}}
-  <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+  {{ $slot }}
 
-@endsection
+</div>
+
+<div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
 @push('scripts')
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       console.log('DOM Content Loaded - Initializing generic Page Index scripts.');
 
-      // Ensure jQuery AJAX setup for CSRF token (if jQuery is used globally)
       if (typeof $ !== 'undefined') {
         $.ajaxSetup({
           headers: {
@@ -51,9 +38,6 @@
         });
       }
 
-      // --- Generic Modal Functions (remain here) ---
-
-      // Function to show a modal
       window.showModal = function(modalId) {
         console.log(`showModal called for: ${modalId}`);
         const backdrop = document.getElementById('modalBackdrop');
@@ -70,7 +54,7 @@
           modal.classList.remove('hidden');
           console.log(`Modal ${modalId} hidden class removed.`);
           setTimeout(() => {
-            const innerDiv = modal.querySelector('div'); // Targets the direct child div for transitions
+            const innerDiv = modal.querySelector('div');
             if (innerDiv) {
               innerDiv.classList.remove('opacity-0', 'scale-95');
               innerDiv.classList.add('opacity-100', 'scale-100');
@@ -86,7 +70,6 @@
         }
       };
 
-      // Function to close a modal
       window.closeModal = function(modalId) {
         console.log(`closeModal called for: ${modalId}`);
         const modal = document.getElementById(modalId);
@@ -105,11 +88,10 @@
               backdrop.classList.add('hidden');
             }
             document.body.style.overflow = 'auto';
-          }, 300); // Match this duration with your CSS transition duration
+          }, 300);
         }
       };
 
-      // Global function for displaying task messages (toasts)
       window.ShowTaskMessage = function(type, message) {
         const TasksmsContainer = document.createElement('div');
         TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
@@ -133,7 +115,6 @@
         setTimeout(() => TasksmsContainer.remove(), 3000);
       };
 
-      // Function to re-initialize custom select fields (important after AJAX content refresh)
       window.selectfields = function() {
         document.querySelectorAll('.custom-select').forEach(select => {
           const header = select.querySelector('.select-header');
@@ -142,10 +123,8 @@
           const selectedValue = select.querySelector('.selected-value');
           const noResults = select.querySelector('.no-results');
           const options = Array.from(select.querySelectorAll('.select-option'));
-          const hiddenInput = select.querySelector(
-          `input[name="${select.dataset.name}"]`); // Find hidden input within the same select
+          const hiddenInput = select.querySelector(`input[name="${select.dataset.name}"]`);
 
-          // Clone and replace elements to remove old event listeners
           const cloneHeader = header.cloneNode(true);
           header.parentNode.replaceChild(cloneHeader, header);
           const newHeader = cloneHeader;
@@ -154,7 +133,6 @@
           searchInput.parentNode.replaceChild(cloneSearchInput, searchInput);
           const newSearchInput = cloneSearchInput;
 
-          // Re-attach listeners to new elements
           newHeader.addEventListener('click', function() {
             select.classList.toggle('open');
             if (select.classList.contains('open')) {
@@ -179,7 +157,6 @@
           });
 
           options.forEach(option => {
-            // Remove existing listeners before re-attaching
             const cloneOption = option.cloneNode(true);
             option.parentNode.replaceChild(cloneOption, option);
             cloneOption.addEventListener('click', function() {
@@ -194,7 +171,6 @@
         });
       };
 
-      // Global document click listener for closing custom select dropdowns
       function handleDocumentClickForSelects(e) {
         document.querySelectorAll('.custom-select').forEach(select => {
           if (!select.contains(e.target)) {
@@ -202,13 +178,10 @@
           }
         });
       }
-      document.addEventListener('click', handleDocumentClickForSelects); // Attach once
+      document.addEventListener('click', handleDocumentClickForSelects);
 
-      // Initialize custom select fields on page load
       selectfields();
 
-      // Generic modal close listeners (for buttons with 'close' or 'cancel' in ID, or escape key)
-      // These can be attached here as they are generic modal behaviors.
       $('[id^="close"], [id^="cancel"]').on('click', function() {
         const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
           $(this).closest('[id$="Modal"]').attr('id');

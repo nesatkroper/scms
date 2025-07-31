@@ -70,24 +70,10 @@
             <p class="invalid-feedback error-password mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Confirm Password Field -->
-          <div class="mb-2">
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Confirm Password <span class="text-red-500">*</span>
-            </label>
-            <input type="password" id="password_confirmation" name="password_confirmation"
-              class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                                    border-slate-300"
-              placeholder="Confirm password" required>
-            <p class="invalid-feedback error-password_confirmation mt-1 text-sm text-red-600"></p>
-          </div>
-
-          <!-- Type Field (Custom Select) -->
+          <!-- Type Field (Custom Select) - Now Dynamic -->
           <div class="mb-2">
             <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              User Type <span class="text-red-500">*</span>
+              User Role <span class="text-red-500">*</span>
             </label>
             <div data-name="type"
               class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -109,12 +95,13 @@
                     placeholder="Search types...">
                 </div>
                 <div class="options-container">
-                  @foreach (['admin', 'teacher', 'student', 'parent', 'staff'] as $typeOption)
+                  {{-- Iterate over roles passed from the controller --}}
+                  @foreach ($roles as $role)
                     <div
-                      class="{{ old('type') == $typeOption ? 'selected' : '' }}
+                      class="{{ old('type') == $role->name ? 'selected' : '' }}
                                                 select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                      data-value="{{ $typeOption }}">
-                      {{ ucfirst($typeOption) }}
+                      data-value="{{ $role->name }}">
+                      {{ ucfirst($role->name) }}
                     </div>
                   @endforeach
                 </div>
