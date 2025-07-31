@@ -6,18 +6,17 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class NoData extends Component
 {
-  public $headers;
+  public $colspan;
 
-  public function __construct(
-    array $headers = [],
-  ) {
-    $this->headers = $headers;
+  public function __construct(int $colspan)
+  {
+    $this->colspan = $colspan;
   }
 
   public function render(): View|Closure|string
   {
-    return view('components.table.table');
+    return view('components.table.no-data');
   }
 }

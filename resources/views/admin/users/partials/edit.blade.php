@@ -1,8 +1,6 @@
-<!-- Edit User Modal -->
 <div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
   <div
     class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
-    <!-- Header -->
     <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -21,53 +19,48 @@
       </button>
     </div>
 
-    <!-- Form Content -->
     <form id="Formedit" method="POST" class="p-4">
       @csrf
       @method('PUT')
 
       <div class="h-[65vh] md:h-auto px-4 overflow-y-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-          <!-- Name Field -->
           <div class="mb-2">
             <label for="edit_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Name <span class="text-red-500">*</span>
             </label>
             <input type="text" id="edit_name" name="name"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Enter name" required>
             <p class="invalid-feedback error-name mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Email Field -->
           <div class="mb-2">
             <label for="edit_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Email <span class="text-red-500">*</span>
             </label>
             <input type="email" id="edit_email" name="email"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Enter email" required>
             <p class="invalid-feedback error-email mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Password Field (Optional for update) -->
           <div class="mb-2">
             <label for="edit_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               New Password
             </label>
             <input type="password" id="edit_password" name="password"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Leave blank to keep current password">
             <p class="invalid-feedback error-password mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Confirm Password Field -->
           <div class="mb-2">
             <label for="edit_password_confirmation"
               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -75,34 +68,27 @@
             </label>
             <input type="password" id="edit_password_confirmation" name="password_confirmation"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Confirm new password">
             <p class="invalid-feedback error-password_confirmation mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Type Field (Custom Select) -->
           <div class="mb-2">
             <label for="edit_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               User Type <span class="text-red-500">*</span>
             </label>
             <div data-name="type"
               class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
               <div class="select-header cursor-pointer flex justify-between items-center">
                 <span class="selected-value" id="edit_type_selected_value">Select Type</span>
                 <span class="arrow transition-transform duration-300">▼</span>
               </div>
               <div
                 class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                  <input type="search"
-                    class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                    placeholder="Search types...">
-                </div>
+                {{-- Removed search-container and search-input --}}
                 <div class="options-container">
                   @foreach (['admin', 'teacher', 'student', 'parent', 'staff'] as $typeOption)
                     <div
@@ -112,61 +98,51 @@
                     </div>
                   @endforeach
                 </div>
-                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                  found</div>
+                {{-- Removed no-results --}}
               </div>
             </div>
             <input type="hidden" name="type" id="edit_type" value="">
             <p class="invalid-feedback error-type mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Phone Field -->
           <div class="mb-2">
             <label for="edit_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Phone
             </label>
             <input type="tel" id="edit_phone" name="phone"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Enter phone number">
             <p class="invalid-feedback error-phone mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Date of Birth Field -->
           <div class="mb-2">
             <label for="edit_date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Date of Birth
             </label>
             <input type="date" id="edit_date_of_birth" name="date_of_birth"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
             <p class="invalid-feedback error-date_of_birth mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Gender Field (Custom Select) -->
           <div class="mb-2">
             <label for="edit_gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Gender
             </label>
             <div data-name="gender"
               class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                           focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
               <div class="select-header cursor-pointer flex justify-between items-center">
                 <span class="selected-value" id="edit_gender_selected_value">Select Gender</span>
                 <span class="arrow transition-transform duration-300">▼</span>
               </div>
               <div
                 class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                  <input type="search"
-                    class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                    placeholder="Search genders...">
-                </div>
+                {{-- Removed search-container and search-input --}}
                 <div class="options-container">
                   @foreach (['male', 'female', 'other'] as $genderOption)
                     <div
@@ -176,43 +152,39 @@
                     </div>
                   @endforeach
                 </div>
-                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                  found</div>
+                {{-- Removed no-results --}}
               </div>
             </div>
             <input type="hidden" name="gender" id="edit_gender" value="">
             <p class="invalid-feedback error-gender mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Avatar Field -->
           <div class="mb-2 col-span-1 md:col-span-2">
             <label for="edit_avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Avatar URL
             </label>
             <input type="text" id="edit_avatar" name="avatar"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                           border-slate-300"
               placeholder="Enter avatar URL (optional)">
             <p class="invalid-feedback error-avatar mt-1 text-sm text-red-600"></p>
           </div>
 
-          <!-- Address Field (full width) -->
           <div class="mb-2 col-span-1 md:col-span-2">
             <label for="edit_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Address
             </label>
             <textarea id="edit_address" name="address" rows="2"
               class="w-full px-3 py-2 border rounded-md focus:outline
-                            focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                           focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                           dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Enter user address"></textarea>
             <p class="invalid-feedback error-address mt-1 text-sm text-red-600"></p>
           </div>
         </div>
       </div>
-      <!-- Form Actions -->
       <div class="flex justify-end space-x-3 pt-4 px-4 border-t border-gray-200 dark:border-gray-700">
         <button type="button" id="cancelEditModal"
           class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">

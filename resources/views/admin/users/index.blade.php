@@ -22,10 +22,29 @@
         Create New User
       </button>
     </div>
-    <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-      @include('admin.users.partials.table', ['users' => $users])
-    </div>
-    @include('admin.users.partials.pagination')
+    <x-table.table :headers="['Id', 'Name', 'Email', 'Phone', 'Type', 'Gender', 'Date of Birth']">
+      @if (count($users) > 0)
+        @foreach ($users as $user)
+          <tr class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
+            <x-table.td>{{ $user->id }}</x-table.td>
+            <x-table.td>{{ $user->name }}</x-table.td>
+            <x-table.td>{{ $user->email }}</x-table.td>
+            <x-table.td>{{ $user->phone ?? 'N/A' }}</x-table.td>
+            <x-table.td>{{ ucfirst($user->type) }}</x-table.td>
+            <x-table.td>{{ ucfirst($user->gender ?? 'N/A') }}</x-table.td>
+            <x-table.td>
+              {{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('Y-m-d') : 'N/A' }}
+            </x-table.td>
+            <x-table.td class="text-right">
+              <x-table.action :userId="$user->id" />
+            </x-table.td>
+          </tr>
+        @endforeach
+      @else
+        <x-table.no-data :colspan="count(['Id', 'Name', 'Email', 'Phone', 'Type', 'Gender', 'Date of Birth']) + 1" />
+      @endif
+    </x-table.table>
+    <x-table.pagination :paginator="$users" />
 
   </div>
   <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
@@ -43,7 +62,7 @@
         }
       });
 
-      // Custom select fields logic (kept as it might be used in modals)
+
       function selectfields() {
         document.querySelectorAll('.custom-select').forEach(select => {
           const header = select.querySelector('.select-header');
@@ -97,7 +116,6 @@
         });
       }
 
-      // Initialize custom selects on page load
       selectfields();
 
       const backdrop = document.getElementById('modalBackdrop');
@@ -380,5 +398,20 @@
       document.body.appendChild(TasksmsContainer);
       setTimeout(() => TasksmsContainer.remove(), 3000);
     }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const perPageSelect = document.getElementById('perPageSelect');
+      if (perPageSelect) {
+        perPageSelect.addEventListener('change', function() {
+          const selectedValue = this.value;
+          const currentUrl = new URL(window.location.href);
+          currentUrl.searchParams.set('per_page', selectedValue);
+          currentUrl.searchParams.delete('page');
+          window.location.href = currentUrl.toString();
+        });
+      }
+    });
   </script>
 @endpush

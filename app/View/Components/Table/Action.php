@@ -6,18 +6,17 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class Action extends Component
 {
-  public $headers;
+  public $userId;
 
-  public function __construct(
-    array $headers = [],
-  ) {
-    $this->headers = $headers;
+  public function __construct($userId)
+  {
+    $this->userId = $userId;
   }
 
   public function render(): View|Closure|string
   {
-    return view('components.table.table');
+    return view('components.table.action');
   }
 }
