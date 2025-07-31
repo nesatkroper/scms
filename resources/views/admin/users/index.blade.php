@@ -52,16 +52,18 @@
   @include('admin.users.partials.create')
   @include('admin.users.partials.edit')
   @include('admin.users.partials.delete')
+
 @endsection
 @push('scripts')
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM Content Loaded - Initializing scripts.');
+
       $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-
 
       function selectfields() {
         document.querySelectorAll('.custom-select').forEach(select => {
@@ -104,7 +106,7 @@
               selectedValue.textContent = this.textContent;
               hiddenInput.value = this.dataset.value;
               select.classList.remove('open');
-              console.log('Selected value:', this.dataset.value); // Updated log message
+              console.log('Selected value:', this.dataset.value);
             });
           });
 
@@ -119,13 +121,20 @@
       selectfields();
 
       const backdrop = document.getElementById('modalBackdrop');
-      const tableContainer = $('#TableContainer');
+      const tableContainer = $(
+        '#TableContainer'
+      );
 
       const openCreateBtn = document.getElementById('openCreateModal');
+      console.log('Found openCreateModal button:', openCreateBtn);
+
       if (openCreateBtn) {
         openCreateBtn.addEventListener('click', function() {
+          console.log('Create button clicked! Attempting to show Modalcreate.');
           showModal('Modalcreate');
         });
+      } else {
+        console.error('Error: "openCreateModal" button not found!');
       }
 
       function handleCreateSubmit(e) {
@@ -301,38 +310,80 @@
       }
 
       function showModal(modalId) {
-        backdrop.classList.remove('hidden');
+        console.log(`showModal called for: ${modalId}`);
+        const backdrop = document.getElementById('modalBackdrop');
         const modal = document.getElementById(modalId);
-        modal.classList.remove('hidden');
-        setTimeout(() => {
-          modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-          modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-        }, 10);
-        document.body.style.overflow = 'hidden';
+
+        if (backdrop) {
+          backdrop.classList.remove('hidden');
+          console.log('Backdrop hidden class removed.');
+        } else {
+          console.error('Error: modalBackdrop element not found!');
+        }
+
+        if (modal) {
+          modal.classList.remove('hidden');
+          console.log(`Modal ${modalId} hidden class removed.`);
+          setTimeout(() => {
+            const innerDiv = modal.querySelector('div'); // Targets the direct child div for transitions
+            if (innerDiv) {
+              innerDiv.classList.remove('opacity-0', 'scale-95');
+              innerDiv.classList.add('opacity-100', 'scale-100');
+              console.log(`Modal ${modalId} inner div transition classes applied.`);
+            } else {
+              console.error(`Error: Inner div for modal ${modalId} not found!`);
+            }
+          }, 10);
+          document.body.style.overflow = 'hidden';
+          console.log('Body overflow set to hidden.');
+        } else {
+          console.error(`Error: Modal element with ID "${modalId}" not found!`);
+        }
       }
 
       function closeModal(modalId) {
+        console.log(`closeModal called for: ${modalId}`);
         const modal = document.getElementById(modalId);
-        modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-        modal.querySelector('div').classList.add('opacity-0', 'scale-95');
+        const backdrop = document.getElementById('modalBackdrop'); // Ensure backdrop is found here too
 
-        setTimeout(() => {
-          modal.classList.add('hidden');
-          backdrop.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-        }, 300);
+        if (modal) {
+          const innerDiv = modal.querySelector('div');
+          if (innerDiv) {
+            innerDiv.classList.remove('opacity-100', 'scale-100');
+            innerDiv.classList.add('opacity-0', 'scale-95');
+          }
+
+          setTimeout(() => {
+            modal.classList.add('hidden');
+            if (backdrop) {
+              backdrop.classList.add('hidden');
+            }
+            document.body.style.overflow = 'auto';
+          }, 300); // Match this duration with your CSS transition duration
+        }
       }
 
       function refreshUserContent() {
+        console.log('Refreshing user content...');
         $.ajax({
           url: "{{ route('admin.users.index') }}",
           method: 'GET',
-          data: {}, // Removed search and view parameters
+          data: {},
           success: function(response) {
             if (response.success) {
-              tableContainer.html(response.html.table);
+
+              console.warn('Note: #TableContainer not found in the provided HTML. Update target if needed.');
+
+              if (tableContainer.length) {
+                tableContainer.html(response.html.table);
+              } else {
+                console.error('refreshUserContent: #TableContainer element not found!');
+              }
+
+
               $('.pagination').html(response.html.pagination);
               attachRowEventHandlers();
+              selectfields();
             } else {
               ShowTaskMessage('error', 'Failed to refresh user data');
             }
@@ -345,17 +396,42 @@
       }
 
       function attachRowEventHandlers() {
-        $('.edit-btn').off('click').on('click', handleEditClick);
-        $('.delete-btn').off('click').on('click', handleDeleteClick);
-        $('.detail-btn').off('click').on('click', handleDetailClick);
+        // Use event delegation for dynamically loaded content
+        $(document).off('click', '.edit-btn').on('click', '.edit-btn', handleEditClick);
+        $(document).off('click', '.delete-btn').on('click', '.delete-btn', handleDeleteClick);
+        $(document).off('click', '.detail-btn').on('click', '.detail-btn', handleDetailClick);
+
+        // Re-attach dropdown toggles for dynamically loaded content
+        $(document).off('click', '.btn-toggle-dropdown').on('click', '.btn-toggle-dropdown', function(e) {
+          e.stopPropagation(); // Prevent document click from immediately closing
+          $(this).closest('.relative').find('.dropdown-menu').toggleClass('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        $(document).off('click', function(e) {
+          if (!$(e.target).closest('.relative').length) {
+            $('.dropdown-menu').addClass('hidden');
+          }
+        });
       }
+
+      // Dummy handleDetailClick if it's not defined elsewhere
+      function handleDetailClick(e) {
+        e.preventDefault();
+        const Id = $(this).data('id');
+        ShowTaskMessage('info', `Details for user ID: ${Id}`);
+        // Implement actual detail fetching/modal opening here
+      }
+
 
       // Initialize event listeners
       function initialize() {
+        console.log('Initializing form and modal event listeners.');
         $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
         $('#Formedit').off('submit').on('submit', handleEditSubmit);
         $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
 
+        // Close buttons for modals
         $('[id^="close"], [id^="cancel"]').on('click', function() {
           const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
             $(this).closest('[id$="Modal"]').attr('id');
@@ -375,43 +451,28 @@
         attachRowEventHandlers();
       }
 
-      initialize();
+      initialize(); // Call initialize on DOMContentLoaded
     });
 
     function ShowTaskMessage(type, message) {
       const TasksmsContainer = document.createElement('div');
       TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
       TasksmsContainer.innerHTML = `
-        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'}
-            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-            </svg>
-            <div class="flex-1 text-sm sm:text-base">${message}</div>
-            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    `;
+                <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'}
+                    border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
+                    <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
+                    </svg>
+                    <div class="flex-1 text-sm sm:text-base">${message}</div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
+                        <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            `;
       document.body.appendChild(TasksmsContainer);
       setTimeout(() => TasksmsContainer.remove(), 3000);
     }
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const perPageSelect = document.getElementById('perPageSelect');
-      if (perPageSelect) {
-        perPageSelect.addEventListener('change', function() {
-          const selectedValue = this.value;
-          const currentUrl = new URL(window.location.href);
-          currentUrl.searchParams.set('per_page', selectedValue);
-          currentUrl.searchParams.delete('page');
-          window.location.href = currentUrl.toString();
-        });
-      }
-    });
   </script>
 @endpush

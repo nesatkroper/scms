@@ -23,7 +23,7 @@
     </div>
 
     <!-- Form Content -->
-    <form action="{{ route('admin.users.store') }}" method="POST" class="py-4">
+    <form id="ModalcreateForm" action="{{ route('admin.users.store') }}" method="POST" class="py-4">
       @csrf
 
       <div class="h-[65vh] md:h-auto px-4 overflow-y-auto">
@@ -35,9 +35,9 @@
             </label>
             <input type="text" id="name" name="name" value="{{ old('name') }}"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300"
               placeholder="Enter name" required>
             <p class="invalid-feedback error-name mt-1 text-sm text-red-600"></p>
           </div>
@@ -49,9 +49,9 @@
             </label>
             <input type="email" id="email" name="email" value="{{ old('email') }}"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300"
               placeholder="Enter email" required>
             <p class="invalid-feedback error-email mt-1 text-sm text-red-600"></p>
           </div>
@@ -63,9 +63,9 @@
             </label>
             <input type="password" id="password" name="password"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300"
               placeholder="Enter password" required>
             <p class="invalid-feedback error-password mt-1 text-sm text-red-600"></p>
           </div>
@@ -77,9 +77,9 @@
             </label>
             <input type="password" id="password_confirmation" name="password_confirmation"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300"
               placeholder="Confirm password" required>
             <p class="invalid-feedback error-password_confirmation mt-1 text-sm text-red-600"></p>
           </div>
@@ -91,8 +91,8 @@
             </label>
             <div data-name="type"
               class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
               <div class="select-header cursor-pointer flex justify-between items-center">
                 <span class="selected-value">
                   {{ old('type', 'Select Type') }}
@@ -104,15 +104,15 @@
                 <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
                   <input type="search"
                     class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
                     placeholder="Search types...">
                 </div>
                 <div class="options-container">
                   @foreach (['admin', 'teacher', 'student', 'parent', 'staff'] as $typeOption)
                     <div
                       class="{{ old('type') == $typeOption ? 'selected' : '' }}
-                                            select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
+                                                select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
                       data-value="{{ $typeOption }}">
                       {{ ucfirst($typeOption) }}
                     </div>
@@ -133,9 +133,9 @@
             </label>
             <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300"
               placeholder="Enter phone number">
             <p class="invalid-feedback error-phone mt-1 text-sm text-red-600"></p>
           </div>
@@ -147,9 +147,9 @@
             </label>
             <input type="date" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300">
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300">
             <p class="invalid-feedback error-date_of_birth mt-1 text-sm text-red-600"></p>
           </div>
 
@@ -160,8 +160,8 @@
             </label>
             <div data-name="gender"
               class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
               <div class="select-header cursor-pointer flex justify-between items-center">
                 <span class="selected-value">
                   {{ old('gender', 'Select Gender') }}
@@ -173,15 +173,15 @@
                 <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
                   <input type="search"
                     class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
                     placeholder="Search genders...">
                 </div>
                 <div class="options-container">
                   @foreach (['male', 'female', 'other'] as $genderOption)
                     <div
                       class="{{ old('gender') == $genderOption ? 'selected' : '' }}
-                                            select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
+                                                select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
                       data-value="{{ $genderOption }}">
                       {{ ucfirst($genderOption) }}
                     </div>
@@ -202,9 +202,9 @@
             </label>
             <input type="text" id="avatar" name="avatar" value="{{ old('avatar') }}"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                            border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                                    border-slate-300"
               placeholder="Enter avatar URL (optional)">
             <p class="invalid-feedback error-avatar mt-1 text-sm text-red-600"></p>
           </div>
@@ -216,8 +216,8 @@
             </label>
             <textarea id="address" name="address" rows="2"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
               placeholder="Enter user address">{{ old('address') }}</textarea>
             <p class="invalid-feedback error-address mt-1 text-sm text-red-600"></p>
           </div>
@@ -241,7 +241,7 @@
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clip-rule="evenodd" />
           </svg>
-          Create
+          Save
         </button>
       </div>
     </form>
