@@ -185,15 +185,25 @@
           <!-- Avatar Field -->
           <div class="mb-2 col-span-1 md:col-span-2">
             <label for="avatar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Avatar URL
+              Avatar
             </label>
-            <input type="text" id="avatar" name="avatar" value="{{ old('avatar') }}"
+            <input type="file" id="avatar" name="avatar"
               class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                                    border-slate-300"
-              placeholder="Enter avatar URL (optional)">
+                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                border-slate-300">
             <p class="invalid-feedback error-avatar mt-1 text-sm text-red-600"></p>
+
+            @if (isset($user) && $user->avatar)
+              <div class="mt-2">
+                <img src="{{ asset($user->avatar) }}" alt="Current Avatar"
+                  class="w-20 h-20 object-cover rounded-full">
+                <label class="inline-flex items-center mt-2">
+                  <input type="checkbox" name="clear_avatar" value="1" class="form-checkbox">
+                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Clear Avatar</span>
+                </label>
+              </div>
+            @endif
           </div>
 
           <!-- Address Field (full width) -->
