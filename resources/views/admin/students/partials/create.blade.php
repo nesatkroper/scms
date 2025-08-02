@@ -179,14 +179,13 @@
                                 Date of Birth <span class="text-red-500">*</span>
                             </label>
                             <input type="date" id="dob" name="dob" value="{{ old('dob') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('dob') border-red-500 @else border-gray-400 @enderror"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required>
                             <p class="error-dob mt-1 text-sm text-red-600"></p>
                         </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-2">
-                    <!-- Contact Information -->
                     <div class="mb-2">
                         <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Email
@@ -319,6 +318,7 @@
                         Create
                     </button>
                 </div>
+            </div>
         </form>
     </div>
 </div>

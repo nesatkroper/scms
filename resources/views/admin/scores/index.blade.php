@@ -2,7 +2,7 @@
 
 @section('content')
     <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+        class="px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <div class="md:flex gap-2 justify-between items-center mb-3">
             <h3 class="mb-3 sm:mb-sm-0 text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                 <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
@@ -14,7 +14,7 @@
                 Scores Management
             </h3>
 
-            <button id="createnew"
+            {{-- <button id="createnew"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -22,7 +22,16 @@
                         clip-rule="evenodd" />
                 </svg>
                 Add Score
-            </button>
+            </button> --}}
+            <a href="{{route('admin.scores.create')}}"
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd" />
+                </svg>
+                Add Score
+            </a>
 
         </div>
         <div

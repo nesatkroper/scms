@@ -27,123 +27,119 @@
         </div>
 
         <!-- Content -->
-        <div class="p-4 overflow-y-auto max-h-[80vh]">
-            <div class="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700">
-                <!-- Profile Header -->
-                <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
-                    <!-- Circular Avatar -->
-                    <div class="absolute -bottom-12">
-                        <div
-                            class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
-                            <img id="detail_photo" src="" alt="" class="w-full h-full object-cover">
-                            <div id="detail_initials"
-                                class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
-                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
-                            </div>
+        <div class="bg-white dark:bg-slate-800 overflow-y-auto max-h-[80vh]">
+            <!-- Profile Header -->
+            <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
+                <!-- Circular Avatar -->
+                <div class="absolute -bottom-12">
+                    <div
+                        class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
+                        <img id="detail_photo" src="" alt="" class="w-full h-full object-cover">
+                        <div id="detail_initials"
+                            class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
+                            <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Profile Body -->
-                <div class="pt-16 pb-5 px-5">
-                    <!-- Name and Title -->
-                    <div class="text-center mb-4">
-                        <h3 id="detail_name" class="text-xl font-bold text-gray-800 dark:text-white"></h3>
-                        <p id="detail_specialization" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
+            <!-- Profile Body -->
+            <div class="pt-16 pb-5 px-5">
+                <!-- Name and Title -->
+                <div class="text-center mb-4">
+                    <h3 id="detail_name" class="text-xl font-bold text-gray-800 dark:text-white"></h3>
+                    <p id="detail_specialization" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
+                    </p>
+                    <span id="detail_department"
+                        class="inline-block mt-1 px-3 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 hidden">
+                    </span>
+                </div>
+
+                <!-- Stats -->
+                <div
+                    class="grid grid-cols-3 gap-4 text-center border-y border-gray-100 dark:border-slate-700 py-3 mb-4">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs">Experience</p>
+                        <p class="font-bold text-gray-700 dark:text-gray-200">
+                            <span id="detail_experience"></span><span class="text-xs font-normal"> yrs</span>
                         </p>
-                        <span id="detail_department"
-                            class="inline-block mt-1 px-3 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 hidden">
-                        </span>
                     </div>
-
-                    <!-- Stats -->
-                    <div
-                        class="grid grid-cols-3 gap-4 text-center border-y border-gray-100 dark:border-slate-700 py-3 mb-4">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Experience</p>
-                            <p class="font-bold text-gray-700 dark:text-gray-200">
-                                <span id="detail_experience"></span><span class="text-xs font-normal"> yrs</span>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Qualification</p>
-                            <p id="detail_qualification" class="font-bold text-gray-700 dark:text-gray-200 text-sm">
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Since</p>
-                            <p id="detail_joining_date" class="font-bold text-gray-700 dark:text-gray-200 text-sm">
-                            </p>
-                        </div>
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs">Qualification</p>
+                        <p id="detail_qualification" class="font-bold text-gray-700 dark:text-gray-200 text-sm">
+                        </p>
                     </div>
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs">Since</p>
+                        <p id="detail_joining_date" class="font-bold text-gray-700 dark:text-gray-200 text-sm">
+                        </p>
+                    </div>
+                </div>
 
-                    <!-- Contact Info -->
-                    <div class="space-y-3 text-sm">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                            <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                                <div
-                                    class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                                    <i class="ri-mail-line"></i>
-                                </div>
-                                <span id="detail_email" class="truncate"></span>
+                <!-- Contact Info -->
+                <div class="space-y-3 text-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                        <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                            <div
+                                class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
+                                <i class="ri-mail-line"></i>
                             </div>
-                            <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                                <div
-                                    class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                                    <i class="ri-phone-line"></i>
-                                </div>
-                                <span id="detail_phone"></span>
-                            </div>
-                            <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                                <div
-                                    class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                                    <i class="ri-calendar-line"></i>
-                                </div>
-                                <span id="detail_dob"></span>
-                            </div>
-                            <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                                <div
-                                    class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                                    <i class="ri-money-dollar-circle-line"></i>
-                                </div>
-                                <span id="detail_salary" class="truncate"></span>
-                            </div>
+                            <span id="detail_email" class="truncate"></span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
                             <div
                                 class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                                <i class="ri-map-pin-line"></i>
+                                <i class="ri-phone-line"></i>
                             </div>
-                            <p id="detail_address"></p>
+                            <span id="detail_phone"></span>
                         </div>
-                        <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CV/Resume</h4>
-                            <div id="cv_preview_container" class="hidden">
-                                <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                    <div
-                                        class="p-4 rounded-lg bg-white dark:bg-gray-600 text-indigo-600 dark:text-indigo-400">
-                                        <i class="ri-file-text-line text-4xl"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p id="cv_filename"
-                                            class="text-sm font-medium text-gray-800 dark:text-gray-200 truncate"></p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">Click to view</p>
-                                    </div>
-                                    <a id="cv_download_btn" href="#" download
-                                        class="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-600 rounded-full">
-                                        <i class="ri-download-line"></i>
-                                    </a>
+                        <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                            <div
+                                class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
+                                <i class="ri-calendar-line"></i>
+                            </div>
+                            <span id="detail_dob"></span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                            <div
+                                class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
+                                <i class="ri-money-dollar-circle-line"></i>
+                            </div>
+                            <span id="detail_salary" class="truncate"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                        <div class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+                        <p id="detail_address"></p>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CV/Resume</h4>
+                        <div id="cv_preview_container" class="hidden">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <div
+                                    class="p-4 rounded-lg bg-white dark:bg-gray-600 text-indigo-600 dark:text-indigo-400">
+                                    <i class="ri-file-text-line text-4xl"></i>
                                 </div>
+                                <div class="flex-1 min-w-0">
+                                    <p id="cv_filename"
+                                        class="text-sm font-medium text-gray-800 dark:text-gray-200 truncate"></p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Click to view</p>
+                                </div>
+                                <a id="cv_download_btn" href="#" download
+                                    class="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-600 rounded-full">
+                                    <i class="ri-download-line"></i>
+                                </a>
                             </div>
-                            <div id="no_cv_message" class="text-sm text-gray-500 dark:text-gray-400 italic">
-                                No CV/resume uploaded
-                            </div>
+                        </div>
+                        <div id="no_cv_message" class="text-sm text-gray-500 dark:text-gray-400 italic">
+                            No CV/resume uploaded
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Footer -->
         <div class="flex justify-end p-4 border-t border-gray-200 dark:border-gray-700">
             <button type="button" id="closeDetailModalBtn"

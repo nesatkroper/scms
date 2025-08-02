@@ -9,12 +9,12 @@
                     <div data-id="{{ $student->id }}"
                         class="detail-btn size-32 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
                         @if ($student->photo)
-                            <img src="{{ asset('storage/' . $student->photo) }}" alt="{{ $student->name }}"
+                            <img src="{{ asset($student->photo) }}" alt="{{ $student->name }}"
                                 class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
                                 <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">
-                                    {{ substr($student->name, 0, 1) }}
+                                    {{ substr($student->name, 0, 2) }}
                                 </span>
                             </div>
                         @endif
@@ -28,7 +28,7 @@
                 <div class="text-center mb-4">
                     <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ $student->name }}</h3>
                     <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
-                        {{ $student->grade_level->name ?? 'Student' }}
+                        {{ $student->gradeLevel->name ?? 'Student' }}
                     </p>
                     @if ($student->section)
                         <span
@@ -43,13 +43,13 @@
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs">Age</p>
                         <p class="font-bold text-gray-700 dark:text-gray-200">
-                            {{ $student->age ?? '-' }}<span class="text-xs font-normal"> yrs</span>
+                            <span class="text-xs font-normal"> yrs</span>
                         </p>
                     </div>
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs">Grade</p>
                         <p class="font-bold text-gray-700 dark:text-gray-200 text-sm">
-                            {{ $student->grade_level->name ?? '-' }}
+                            {{ $student->gradeLevel->name ?? '-' }}
                         </p>
                     </div>
                     <div>
@@ -116,10 +116,6 @@
             </div>
             <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200 mb-2">No Students Found</h3>
             <p class="text-gray-500 dark:text-gray-400 mb-4">Add your first student to get started</p>
-            <a href="{{ route('students.create') }}"
-                class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md">
-                <i class="ri-add-line mr-2"></i> Add New Student
-            </a>
         </div>
     </div>
 @endif

@@ -153,17 +153,98 @@ class ScoreController extends Controller
   // }
 
 
-  public function create()
+  // public function create()
+  // {
+  //   $students = Student::orderBy('name')->get();
+  //   $exams = Exam::orderBy('name')->get();
+  //   $subjects = Subject::orderBy('name')->get();
+  //   $scores = Score::with(['student', 'exam', 'subject']);
+  //   $semester = now()->month <= 6 ? 1 : 2; // Default to current semester
+
+  //   return view('admin.scores.create', compact('students', 'exams', 'subjects', 'semester', 'scores'));
+
+  //   // return response()->json([
+  //   //   'success' => true,
+  //   //   'html' => view('admin.scores.partials.create', compact('students', 'exams', 'subjects', 'semester'))->render()
+  //   // ]);
+  // }
+  public function create(Request $request)
   {
+    $search = $request->input('search');
+    $perPage = $request->input('per_page', 10);
+    $semester = now()->month <= 6 ? 1 : 2;
+    $query = Score::with(['student', 'exam', 'subject']);
+
+    // Apply filters
+    if ($request->filled('student_id')) {
+      $query->where('student_id', $request->student_id);
+    }
+    if ($request->filled('subject_id')) {
+      $query->where('subject_id', $request->subject_id);
+    }
+    if ($request->filled('exam_id')) {
+      $query->where('exam_id', $request->exam_id);
+    }
+
+    if ($request->filled('min_score')) {
+      $query->where('score', '>=', $request->min_score);
+    }
+
+    if ($request->filled('max_score')) {
+      $query->where('score', '<=', $request->max_score);
+    }
+
+    if ($request->filled('grade')) {
+      $query->where('grade', 'like', '%' . $request->grade . '%');
+    }
+
+    // Apply search
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+        $q->where('score', 'like', "%{$search}%")
+          ->orWhere('grade', 'like', "%{$search}%")
+          ->orWhere('remarks', 'like', "%{$search}%")
+          ->orWhereHas('student', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+          })
+          ->orWhereHas('subject', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+          })
+          ->orWhereHas('exam', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+          });
+      });
+    }
+
+    $scores = $query->latest()
+      ->paginate($perPage)
+      ->appends([
+        'search' => $search,
+        'per_page' => $perPage,
+        'student_id' => $request->student_id,
+        'exam_id' => $request->exam_id,
+        'min_score' => $request->min_score,
+        'max_score' => $request->max_score,
+        'grade' => $request->grade
+      ]);
+
     $students = Student::orderBy('name')->get();
     $exams = Exam::orderBy('name')->get();
     $subjects = Subject::orderBy('name')->get();
-    $semester = now()->month <= 6 ? 1 : 2; // Default to current semester
 
-    return response()->json([
-      'success' => true,
-      'html' => view('admin.scores.partials.create', compact('students', 'exams', 'subjects', 'semester'))->render()
-    ]);
+    if ($request->ajax()) {
+      $html = [
+        'table' => view('admin.scores.table', compact('scores'))->render(),
+        'pagination' => $scores->links()->toHtml()
+      ];
+
+      return response()->json([
+        'success' => true,
+        'html' => $html,
+      ]);
+    }
+
+    return view('admin.scores.create', compact('scores', 'students', 'exams', 'subjects', 'semester'));
   }
 
   // public function store(Request $request)

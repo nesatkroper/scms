@@ -104,7 +104,6 @@ class StudentController extends Controller
     {
         try {
             $data = $request->validated();
-
             // Handle photo upload
             if ($request->hasFile('photo')) {
                 // Delete old photo if exists

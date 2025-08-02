@@ -1,7 +1,7 @@
 <!-- Create Modal -->
-<div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+<div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center hidden">
     <div
-        class="relative bg-white dark:bg-gray-800 rounded-sm shadow-2xl w-full max-w-full h-full transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
+        class="relative bg-white dark:bg-gray-800 shadow-2xl w-full max-w-full h-full transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
         <!-- Header -->
         <div class="flex justify-between items-center px-4 py-2 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -26,12 +26,12 @@
         <form action="{{ route('admin.scores.store') }}" method="POST" class="p-4">
             @csrf
 
-            {{-- <div class="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label for="exam_id"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam</label>
                     <select id="exam_id" name="exam_id" required
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                        class="w-full px-3 py-1 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
                         <option value="">Select Exam</option>
                         @foreach ($exams as $exam)
                             <option value="{{ $exam->id }}">{{ $exam->name }}</option>
@@ -43,12 +43,12 @@
                     <label for="semester"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Semester</label>
                     <select id="semester" name="semester" required
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                        class="w-full px-3 py-1 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
                         <option value="1" {{ $semester == 1 ? 'selected' : '' }}>Semester 1</option>
                         <option value="2" {{ $semester == 2 ? 'selected' : '' }}>Semester 2</option>
                     </select>
                 </div>
-            </div> --}}
+            </div>
 
             <div class="h-[65vh] md:h-auto overflow-y-auto">
                 <div class="mb-2">
@@ -83,13 +83,15 @@
                                             <input type="number"
                                                 name="scores[{{ $student->id }}][{{ $subject->id }}][score]"
                                                 min="0" max="100"
-                                                class="w-full min-w-25 px-3 py-1 border rounded-md focus:outline focus:outline-white
-                                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                                                    border-slate-300"
-                                                placeholder="0-100 PT">
+                                                class="score-input w-full min-w-25 px-2 py-0.5 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                                placeholder="0-100 PT" data-student-id="{{ $student->id }}"
+                                                data-subject-id="{{ $subject->id }}">
                                         </td>
                                     @endforeach
+                                    <td class="px-4 py-2 total" data-student-id="{{ $student->id }}">0</td>
+                                    <td class="px-4 py-2 average" data-student-id="{{ $student->id }}">0</td>
+                                    <td class="px-4 py-2 rank" data-student-id="{{ $student->id }}"></td>
+                                    <td class="px-4 py-2 grade" data-student-id="{{ $student->id }}"></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -120,3 +122,83 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const scoreInputs = document.querySelectorAll('.score-input');
+        const studentData = {};
+
+        // Initialize student data
+        document.querySelectorAll('[data-student-id]').forEach(row => {
+            const studentId = row.dataset.studentId;
+            if (!studentData[studentId]) {
+                studentData[studentId] = {
+                    total: 0,
+                    average: 0,
+                    subjectCount: 0,
+                    scores: {}
+                };
+            }
+        });
+
+        // Update calculations when scores change
+        scoreInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const studentId = this.dataset.studentId;
+                const subjectId = this.dataset.subjectId;
+                const score = parseFloat(this.value) || 0;
+
+                // Update student data
+                studentData[studentId].scores[subjectId] = score;
+                studentData[studentId].total = Object.values(studentData[studentId].scores)
+                    .reduce((sum, val) => sum + (val || 0), 0);
+                studentData[studentId].subjectCount = Object.keys(studentData[studentId].scores)
+                    .filter(k => studentData[studentId].scores[k] > 0).length;
+                studentData[studentId].average = studentData[studentId].subjectCount > 0 ?
+                    (studentData[studentId].total / studentData[studentId].subjectCount)
+                    .toFixed(2) :
+                    0;
+
+                // Update UI
+                document.querySelector(`.total[data-student-id="${studentId}"]`).textContent =
+                    studentData[studentId].total;
+                document.querySelector(`.average[data-student-id="${studentId}"]`).textContent =
+                    studentData[studentId].average;
+                document.querySelector(`.grade[data-student-id="${studentId}"]`).textContent =
+                    calculateGrade(studentData[studentId].average);
+
+                // Calculate ranks
+                updateRanks();
+            });
+        });
+
+        // Calculate grade based on average (matches your controller's method)
+        function calculateGrade(average) {
+            if (average >= 90) return 'A';
+            if (average >= 80) return 'B';
+            if (average >= 70) return 'C';
+            if (average >= 60) return 'D';
+            return 'F';
+        }
+
+        // Update ranks based on averages
+        function updateRanks() {
+            const students = Object.keys(studentData).map(id => ({
+                id,
+                average: parseFloat(studentData[id].average) || 0
+            }));
+
+            // Sort students by average (descending)
+            students.sort((a, b) => b.average - a.average);
+
+            // Assign ranks (handle ties)
+            let currentRank = 1;
+            students.forEach((student, index) => {
+                if (index > 0 && student.average < students[index - 1].average) {
+                    currentRank = index + 1;
+                }
+                document.querySelector(`.rank[data-student-id="${student.id}"]`).textContent =
+                    currentRank;
+            });
+        }
+    });
+</script>

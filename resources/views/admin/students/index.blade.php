@@ -21,10 +21,9 @@
                         clip-rule="evenodd" />
                 </svg>
                 Create New
-                <div id="tooltip" role="tooltip"
-                class="text-sm font-medium">
-                placement tooltip t
-            </div>
+                <div id="tooltip" role="tooltip" class="text-sm font-medium">
+                    placement tooltip t
+                </div>
             </button>
 
 
@@ -52,35 +51,31 @@
                 </div>
             </div>
         </div>
-        
-        <button data-tooltip-target="tooltip-t" data-tooltip-placement="top" class="tooltip-btn">
+
+        {{-- <button data-tooltip-target="tooltip-t" data-tooltip-placement="top" class="tooltip-btn">
             tooltip-t
-            <div id="tooltip-t" role="tooltip"
-                class="text-sm font-medium">
+            <div id="tooltip-t" role="tooltip" class="text-sm font-medium">
                 placement tooltip t
             </div>
         </button>
         <button data-tooltip-target="tooltip-b" data-tooltip-placement="bottom" class="tooltip-btn">
             tooltip-b
-            <div id="tooltip-b" role="tooltip"
-                class="text-sm font-medium">
+            <div id="tooltip-b" role="tooltip" class="text-sm font-medium">
                 b placement tooltip
             </div>
         </button>
         <button data-tooltip-target="tooltip-l" data-tooltip-placement="left" class="tooltip-btn">
             tooltip-r
-            <div id="tooltip-l" role="tooltip"
-                class="text-sm font-medium">
+            <div id="tooltip-l" role="tooltip" class="text-sm font-medium">
                 left placement tooltip
             </div>
         </button>
         <button data-tooltip-target="tooltip-r" data-tooltip-placement="right" class="tooltip-btn">
             tooltip-r
-            <div id="tooltip-r" role="tooltip"
-                class="text-sm font-medium">
+            <div id="tooltip-r" role="tooltip" class="text-sm font-medium">
                 Right placement tooltip
             </div>
-        </button>
+        </button> --}}
 
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('admin.students.partials.table', ['students' => $students])
@@ -101,8 +96,6 @@
     @include('admin.students.partials.delete')
     @include('admin.students.partials.bulkedit')
     @include('admin.students.partials.bulkdelete')
-
-
 
 @endsection
 
@@ -192,12 +185,9 @@
             const bulkEditBtn = $('#bulkEditBtn');
             const bulkDeleteBtn = $('#bulkDeleteBtn');
 
-            const openCreateBtn = document.getElementById('openCreateModal');
-            if (openCreateBtn) {
-                openCreateBtn.addEventListener('click', function() {
-                    showModal('Modalcreate');
-                });
-            }
+            $('#openCreateModal').off('click').on('click', function() {
+                showModal('Modalcreate');
+            });
 
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
@@ -241,7 +231,7 @@
                             attachRowEventHandlers();
                             updateBulkActionsBar();
                         } else {
-                            ShowTaskMessage('error', 'Failed to load data');
+                            ShowTaskMessage('error', 'Failed to load datas');
                         }
                     },
                     error: function(xhr) {
@@ -304,36 +294,36 @@
                 $.get(`/admin/students/${Id}`)
                     .done(function(response) {
                         if (response.success && response.student) {
-                            const student = response.student;
-                            const date = student.admission_date ? student.admission_date.substring(0, 10) : '';
-                            const datedob = student.dob ? student.dob.substring(0, 10) : '';
-
+                            const std = response.student;
+                            const date = std.admission_date ? std.admission_date.substring(0, 10) : '';
+                            const datedob = std.dob ? std.dob.substring(0, 10) : '';
+                            // const age = datedob - Date().Now();
                             // Set form values
-                            $('#edit_name').val(student.name);
-                            $('#edit_user').val(student.user_id);
-                            $('#edit_phone').val(student.phone);
-                            $('#edit_email').val(student.email);
-                            $('#edit_gender').val(student.gender);
+                            $('#edit_name').val(std.name);
+                            $('#edit_user').val(std.user_id);
+                            $('#edit_phone').val(std.phone);
+                            $('#edit_email').val(std.email);
+                            $('#edit_gender').val(std.gender);
                             $('#edit_dob').val(datedob);
-                            $('#edit_grade_level_id').val(student.grade_level_id);
-                            $('#edit_address').val(student.address);
-                            $('#edit_blood_group').val(student.blood_group);
-                            $('#edit_nationality').val(student.nationality);
-                            $('#edit_religion').val(student.religion);
                             $('#edit_admission_date').val(date);
-
+                            $('#edit_grade_level_id').val(std.grade_level_id);
+                            $('#edit_address').val(std.address);
+                            $('#edit_blood_group').val(std.blood_group);
+                            $('#edit_nationality').val(std.nationality);
+                            $('#edit_religion').val(std.religion);
+                            // $('#edit_age').val(age);
                             // Handle photo display
-                            if (student.photo) {
-                                $('#edit_photo').attr('src', '/' + student.photo).removeClass('hidden');
+                            if (std.photo) {
+                                $('#edit_photo').attr('src', '/' + std.photo).removeClass('hidden');
                                 $('#edit_initials').addClass('hidden');
                             } else {
                                 $('#edit_photo').addClass('hidden');
-                                const initials = student.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                                const initials = std.name.split(' ').map(n => n[0]).join('').toUpperCase();
                                 $('#edit_initials').removeClass('hidden').find('span').text(initials);
                             }
 
                             // Set form action
-                            $('#Formedit').attr('action', `/students/${studentId}`);
+                            $('#Formedit').attr('action', `/students/${Id}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load student data');
@@ -397,8 +387,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const studentId = $(this).data('id');
-                $('#Formdelete').attr('action', `/students/${studentId}`);
+                const Id = $(this).data('id');
+                $('#Formdelete').attr('action', `/students/${Id}`);
                 showModal('Modaldelete');
             }
 
