@@ -1,43 +1,79 @@
 <?php
 
-// app/Models/Student.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
 {
-    use HasFactory;
-    protected $fillable = ['user_id', 'student_id', 'admission_date', 'section_id'];
+  use HasFactory, SoftDeletes;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+  protected $fillable = [
+    'name',
+    'phone',
+    'email',
+    'address',
+    'photo',
+    'dob',
+    'gender',
+    'grade_level_id',
+    'user_id',
+    'blood_group',
+    'nationality',
+    'religion',
+    'admission_date',
+  ];
 
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
-    }
+  protected $casts = [
+    'dob' => 'date',
+    'admission_date' => 'date',
+  ];
 
-    public function guardians()
-    {
-        return $this->belongsToMany(Guardian::class, 'student_guardian');
-    }
+  public function gradeLevel()
+  {
+    return $this->belongsTo(GradeLevel::class);
+  }
 
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class);
-    }
+  public function user()
+  {
+    return $this->belongsTo(User::class);
+  }
 
-    public function grades()
-    {
-        return $this->hasMany(Grade::class);
-    }
+  public function guardians()
+  {
+    return $this
+      ->belongsToMany(Guardian::class, 'student_guardian')
+      ->withPivot('relation_to_student')
+      ->withTimestamps();
+  }
 
-    public function studentFees()
-    {
-        return $this->hasMany(StudentFee::class);
-    }
+  public function courseOfferings()
+  {
+    return $this
+      ->belongsToMany(CourseOffering::class, 'student_course')
+      ->withPivot('grade_final')
+      ->withTimestamps();
+  }
+
+  public function bookIssues()
+  {
+    return $this->hasMany(BookIssue::class);
+  }
+
+  public function attendances()
+  {
+    return $this->hasMany(Attendance::class);
+  }
+
+  public function grades()
+  {
+    return $this->hasMany(Grade::class);
+  }
+
+  public function studentFees()
+  {
+    return $this->hasMany(StudentFee::class);
+  }
 }

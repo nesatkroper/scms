@@ -156,7 +156,7 @@ class HomeController extends Controller
             ]
         ];
 
-        return view('home', $data);
+        return view('admin.home', $data);
     }
 
     protected function getRecentActivities()

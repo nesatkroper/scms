@@ -37,8 +37,8 @@ class SubjectController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('subjects.partials.table', compact('subjects'))->render(),
-                'cards' => view('subjects.partials.cardlist', compact('subjects'))->render(),
+                'table' => view('admin.subjects.partials.table', compact('subjects'))->render(),
+                'cards' => view('admin.subjects.partials.cardlist', compact('subjects'))->render(),
                 'pagination' => $subjects->links()->toHtml()
             ];
 
@@ -49,7 +49,7 @@ class SubjectController extends Controller
             ]);
         }
 
-        return view('subjects.index', compact('subjects', 'departments'));
+        return view('admin.subjects.index', compact('subjects', 'departments'));
     }
 
     public function store(StoreSubjectRequest $request)
@@ -209,7 +209,7 @@ class SubjectController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount subjects",
-            'redirect' => route('subjects.index')
+            'redirect' => route('admin.subjects.index')
         ]);
     }
 }

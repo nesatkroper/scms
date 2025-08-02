@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class TeacherController extends Controller
 {
@@ -23,7 +24,7 @@ class TeacherController extends Controller
         $departments = Department::all();
         $teachers = Teacher::with('department')
             ->when($search, function ($query) use ($search) {
-                return $query->where('teacher_id', 'like', "%{$search}%")
+                return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('qualification', 'like', "%{$search}%")
                     ->orWhere('specialization', 'like', "%{$search}%")
                     ->orWhere('joining_date', 'like', "%{$search}%")
@@ -42,8 +43,8 @@ class TeacherController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('teachers.partials.table', compact('teachers'))->render(),
-                'cards' => view('teachers.partials.cardlist', compact('teachers'))->render(),
+                'table' => view('admin.teachers.partials.table', compact('teachers'))->render(),
+                'cards' => view('admin.teachers.partials.cardlist', compact('teachers'))->render(),
                 'pagination' => $teachers->links()->toHtml()
             ];
 
@@ -54,13 +55,36 @@ class TeacherController extends Controller
             ]);
         }
 
-        return view('teachers.index', compact('teachers', 'departments', 'users'));
+        return view('admin.teachers.index', compact('teachers', 'departments', 'users'));
     }
 
     public function store(StoreTeacherRequest $request)
     {
         try {
-            $teacher = Teacher::create($request->validated());
+            $validated = $request->validated();
+            $teacherPhotoPath = public_path('photos/teacher');
+            if (!file_exists($teacherPhotoPath)) {
+                mkdir($teacherPhotoPath, 0755, true);
+            }
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $photoName = time()  . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
+                $photo->move($teacherPhotoPath, $photoName);
+                $validated['photo'] = 'photos/teacher/' . $photoName;
+            }
+            $cvPath = public_path('photos/cv');
+            if (!file_exists($cvPath)) {
+                mkdir($cvPath, 0755, true);
+            }
+
+            if ($request->hasFile('cv')) {
+                $cv = $request->file('cv');
+                $cvName = time()  . '-' . date('d-m-Y') . '_ed' . $cv->getClientOriginalName();
+                $cv->move($cvPath, $cvName);
+                $validated['cv'] = 'photos/cv/' . $cvName;
+            }
+
+            $teacher = Teacher::create($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Teacher created successfully!',
@@ -86,7 +110,37 @@ class TeacherController extends Controller
     public function update(UpdateTeacherRequest $request, Teacher $teacher)
     {
         try {
-            $teacher->update($request->validated());
+            $data = $request->validated();
+
+            // Handle photo upload
+            if ($request->hasFile('photo')) {
+                // Delete old photo if exists
+                if ($teacher->photo && file_exists(public_path($teacher->photo))) {
+                    unlink(public_path($teacher->photo));
+                }
+
+                $photo = $request->file('photo');
+                $photoName = time()  . '-' . date('d-m-Y') . '_ed' . $photo->getClientOriginalName();
+                $photoPath = public_path('photos/teacher');
+                $photo->move($photoPath, $photoName);
+                $data['photo'] = 'photos/teacher/' . $photoName;
+            }
+
+            // Handle CV upload
+            if ($request->hasFile('cv')) {
+                // Delete old CV if exists
+                if ($teacher->cv && file_exists(public_path($teacher->cv))) {
+                    unlink(public_path($teacher->cv));
+                }
+                $cv = $request->file('cv');
+                $cvName = time()  . '-' . date('d-m-Y') . '_ed' . $cv->getClientOriginalName();
+                $cvPath = public_path('photos/cv');
+                $cv->move($cvPath, $cvName);
+                $data['cv'] = 'photos/cv/' . $cvName;
+            }
+
+            $teacher->update($data);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Teacher updated successfully',
@@ -102,8 +156,24 @@ class TeacherController extends Controller
 
     public function destroy(Teacher $teacher)
     {
+
         try {
+            // Delete associated files
+            if ($teacher->photo) {
+                $photoPath = public_path($teacher->photo);
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
+            }
+            if ($teacher->cv) {
+                $cvPath = public_path($teacher->cv);
+                if (file_exists($cvPath)) {
+                    unlink($cvPath);
+                }
+            }
+
             $teacher->delete();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Teacher deleted successfully'
@@ -128,10 +198,22 @@ class TeacherController extends Controller
         }
 
         try {
-            $count = Teacher::whereIn('id', $ids)->delete();
+            $teachers = Teacher::whereIn('id', $ids)->get();
+
+            foreach ($teachers as $teacher) {
+                // Delete associated files
+                if ($teacher->photo) {
+                    Storage::disk('public')->delete($teacher->photo);
+                }
+                if ($teacher->cv) {
+                    Storage::disk('public')->delete($teacher->cv);
+                }
+                $teacher->delete();
+            }
+
             return response()->json([
                 'success' => true,
-                'message' => $count . ' teachers deleted successfully'
+                'message' => count($teachers) . ' teachers deleted successfully'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -139,6 +221,48 @@ class TeacherController extends Controller
                 'message' => 'Error deleting teachers: ' . $e->getMessage()
             ], 500);
         }
+
+
+
+        // $ids = $request->input('ids');
+
+        // if (empty($ids)) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'No teachers selected'
+        //     ], 400);
+        // }
+
+        // try {
+        //     $teachers = Teacher::whereIn('id', $ids)->get();
+
+        //     foreach ($teachers as $teacher) {
+        //         // Delete associated files
+        //         if ($teacher->photo) {
+        //             $photoPath = public_path($teacher->photo);
+        //             if (file_exists($photoPath)) {
+        //                 unlink($photoPath);
+        //             }
+        //         }
+        //         if ($teacher->cv) {
+        //             $cvPath = public_path($teacher->cv);
+        //             if (file_exists($cvPath)) {
+        //                 unlink($cvPath);
+        //             }
+        //         }
+        //         $teacher->delete();
+        //     }
+
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => count($teachers) . ' teachers deleted successfully'
+        //     ]);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Error deleting teachers: ' . $e->getMessage()
+        //     ], 500);
+        // }
     }
 
     public function getBulkData(Request $request)
@@ -173,6 +297,46 @@ class TeacherController extends Controller
         }
     }
 
+    // public function bulkUpdate(Request $request)
+    // {
+    //     $request->validate([
+    //         'teachers' => 'required|array',
+    //         'teachers.*.id' => 'required|exists:teachers,id',
+    //     ]);
+
+    //     $updatedCount = 0;
+
+    //     foreach ($request->input('teachers') as $teacherData) {
+    //         $validator = Validator::make($teacherData, [
+    //             'id' => 'required|exists:teachers,id',
+    //             'department_id' => 'nullable|exists:departments,id',
+    //             'joining_date' => 'required|date',
+    //             'qualification' => 'required|string|max:255',
+    //             'specialization' => 'nullable|string',
+    //             'salary' => 'nullable|numeric|min:0',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             Log::error("Validation failed for teacher ID {$teacherData['id']}: " . json_encode($validator->errors()));
+    //             continue; // Skip invalid
+    //         }
+
+    //         try {
+    //             $teacher = Teacher::findOrFail($teacherData['id']);
+    //             $teacher->update($validator->validated());
+    //             $updatedCount++;
+    //         } catch (\Exception $e) {
+    //             Log::error("Error updating teacher: " . $e->getMessage());
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => "Successfully updated $updatedCount teachers",
+    //         'redirect' => route('admin.teachers.index')
+    //     ]);
+    // }
+
     public function bulkUpdate(Request $request)
     {
         $request->validate([
@@ -185,22 +349,24 @@ class TeacherController extends Controller
         foreach ($request->input('teachers') as $teacherData) {
             $validator = Validator::make($teacherData, [
                 'id' => 'required|exists:teachers,id',
-                'teacher_id' => [
-                    'required',
-                    'string',
-                    'max:50',
-                    Rule::unique('teachers', 'teacher_id')->ignore($teacherData['id'], 'id'),
-                ],
-                'department_id' => 'nullable|exists:departments,id',
+                'teacher_id' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'gender' => 'required|in:male,female,other',
+                'dob' => 'required|date',
+                'department_id' => 'required|exists:departments,id',
                 'joining_date' => 'required|date',
                 'qualification' => 'required|string|max:255',
+                'experience' => 'nullable|string',
+                'phone' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
+                'address' => 'nullable|string',
                 'specialization' => 'nullable|string',
                 'salary' => 'nullable|numeric|min:0',
             ]);
 
             if ($validator->fails()) {
                 Log::error("Validation failed for teacher ID {$teacherData['id']}: " . json_encode($validator->errors()));
-                continue; // Skip invalid
+                continue;
             }
 
             try {
@@ -215,7 +381,7 @@ class TeacherController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Successfully updated $updatedCount teachers",
-            'redirect' => route('teachers.index')
+            'redirect' => route('admin.teachers.index')
         ]);
     }
 }

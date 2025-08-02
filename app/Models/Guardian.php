@@ -1,23 +1,31 @@
 <?php
 
-// app/Models/Guardian.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Guardian extends Model
 {
-    use HasFactory;
-    protected $fillable = ['user_id', 'occupation', 'company', 'relation'];
+  use HasFactory, SoftDeletes;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+  protected $fillable = [
+    'name',
+    'phone',
+    'email',
+    'address',
+    'occupation',
+    'company',
+    'relation',
+    'photo',
+  ];
 
-    public function students()
-    {
-        return $this->belongsToMany(Student::class, 'student_guardian');
-    }
+  public function students()
+  {
+    return $this
+      ->belongsToMany(Student::class, 'student_guardian')
+      ->withPivot('relation_to_student')
+      ->withTimestamps();
+  }
 }

@@ -1,22 +1,39 @@
 <?php
-// app/Models/FeeStructure.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FeeStructure extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'grade_level_id', 'amount', 'frequency', 'effective_from', 'effective_to', 'description'];
+  use HasFactory, SoftDeletes;
 
-    public function gradeLevel()
-    {
-        return $this->belongsTo(GradeLevel::class);
-    }
+  protected $fillable = [
+    'name',
+    'grade_level_id',
+    'amount',
+    'frequency',
+    'effective_from',
+    'effective_to',
+    'description',
+  ];
 
-    public function studentFees()
-    {
-        return $this->hasMany(StudentFee::class);
-    }
+  protected $casts = [
+    'amount' => 'decimal:2',
+    'effective_from' => 'date',
+    'effective_to' => 'date',
+    'frequency' => \App\Enums\FeeFrequencyEnum::class,
+  ];
+
+  public function gradeLevel()
+  {
+    return $this->belongsTo(GradeLevel::class);
+  }
+
+  public function studentFees()
+  {
+    return $this->hasMany(StudentFee::class);
+  }
 }

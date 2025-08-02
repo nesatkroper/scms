@@ -1,24 +1,47 @@
 <?php
 
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateStudentRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
+  public function authorize(): bool
+  {
+    return true;
+  }
 
-    public function rules()
-    {
-        return [
-            'user_id' => 'sometimes|exists:users,id|unique:students,user_id,' . $this->student->id,
-            'student_id' => 'sometimes|string|unique:students,student_id,' . $this->student->id,
-            'admission_date' => 'sometimes|date',
-            'section_id' => 'sometimes|exists:sections,id',
-        ];
-    }
+  public function rules(): array
+  {
+    return [
+      'name' => ['sometimes', 'string', 'max:255'],
+      'phone' => ['sometimes', 'string', 'max:20'],
+      'email' => [
+        'sometimes',
+        'string',
+        'email',
+        'max:255',
+        Rule::unique('students')->ignore($this->route('student')),
+      ],
+      'address' => ['sometimes', 'string'],
+      'photo' => ['sometimes', 'nullable', 'string'],
+      'dob' => ['sometimes', 'nullable', 'date', 'before_or_equal:today'],
+      'gender' => ['sometimes', 'nullable', 'string', 'in:Male,Female,Other'],
+      'grade_level_id' => ['sometimes', 'nullable', 'exists:grade_levels,id'],
+      'user_id' => ['sometimes', 'nullable', 'exists:users,id'],
+      'blood_group' => ['sometimes', 'nullable', 'string', 'max:5'],
+      'nationality' => ['sometimes', 'nullable', 'string', 'max:255'],
+      'religion' => ['sometimes', 'nullable', 'string', 'max:255'],
+      'admission_date' => ['sometimes', 'date', 'before_or_equal:today'],
+      // For pivot table student_guardian (if updating relationships)
+      'guardians' => ['nullable', 'array'],
+      'guardians.*.guardian_id' => ['required_with:guardians', 'exists:guardians,id'],
+      'guardians.*.relation_to_student' => ['nullable', 'string', 'max:255'],
+      // For pivot table student_course (if updating enrollments/grades)
+      'course_offerings' => ['nullable', 'array'],
+      'course_offerings.*.course_offering_id' => ['required_with:course_offerings', 'exists:course_offerings,id'],
+      'course_offerings.*.grade_final' => ['nullable', 'numeric', 'min:0', 'max:100'],
+    ];
+  }
 }

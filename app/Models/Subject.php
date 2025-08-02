@@ -1,28 +1,39 @@
 <?php
 
-// app/Models/Subject.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subject extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'code', 'department_id', 'description', 'credit_hours'];
+  use HasFactory, SoftDeletes;
 
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
+  protected $fillable = [
+    'name',
+    'code',
+    'department_id',
+    'description',
+    'credit_hours',
+  ];
 
-    public function classSubjects()
-    {
-        return $this->hasMany(ClassSubject::class);
-    }
+  protected $casts = [
+    'credit_hours' => 'integer',
+  ];
 
-    public function exams()
-    {
-        return $this->hasMany(Exam::class);
-    }
+  public function department()
+  {
+    return $this->belongsTo(Department::class);
+  }
+
+  public function courseOfferings()
+  {
+    return $this->hasMany(CourseOffering::class);
+  }
+
+  public function exams()
+  {
+    return $this->hasMany(Exam::class);
+  }
 }
