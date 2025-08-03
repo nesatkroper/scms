@@ -8132,6 +8132,18 @@
         },
         {
             "name": "laravel/pint",
+<<<<<<< HEAD
+            "version": "v1.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/pint.git",
+                "reference": "9ab851dba4faa51a3c3223dd3d07044129021024"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/9ab851dba4faa51a3c3223dd3d07044129021024",
+                "reference": "9ab851dba4faa51a3c3223dd3d07044129021024",
+=======
             "version": "v1.24.0",
             "source": {
                 "type": "git",
@@ -8142,6 +8154,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/pint/zipball/0345f3b05f136801af8c339f9d16ef29e6b4df8a",
                 "reference": "0345f3b05f136801af8c339f9d16ef29e6b4df8a",
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
                 "shasum": ""
             },
             "require": {
@@ -8152,7 +8165,11 @@
                 "php": "^8.2.0"
             },
             "require-dev": {
+<<<<<<< HEAD
+                "friendsofphp/php-cs-fixer": "^3.76.0",
+=======
                 "friendsofphp/php-cs-fixer": "^3.82.2",
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
                 "illuminate/view": "^11.45.1",
                 "larastan/larastan": "^3.5.0",
                 "laravel-zero/framework": "^11.45.0",
@@ -8197,7 +8214,11 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
+<<<<<<< HEAD
+            "time": "2025-07-03T10:37:47+00:00"
+=======
             "time": "2025-07-10T18:09:32+00:00"
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
         },
         {
             "name": "laravel/sail",
@@ -8959,7 +8980,12 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+            "version": "11.5.25",
+=======
             "version": "11.5.27",
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
@@ -8967,8 +8993,25 @@
             },
             "dist": {
                 "type": "zip",
+<<<<<<< HEAD
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/864ab32b3ff52058f917c5b19b3cef821e4a4f1b",
+                "reference": "864ab32b3ff52058f917c5b19b3cef821e4a4f1b",
+=======
+            "version": "11.5.26",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "4ad8fe263a0b55b54a8028c38a18e3c5bef312e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ad8fe263a0b55b54a8028c38a18e3c5bef312e0",
+                "reference": "4ad8fe263a0b55b54a8028c38a18e3c5bef312e0",
+>>>>>>> Stashed changes
+=======
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/446d43867314781df7e9adf79c3ec7464956fd8f",
                 "reference": "446d43867314781df7e9adf79c3ec7464956fd8f",
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
                 "shasum": ""
             },
             "require": {
@@ -9040,7 +9083,15 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.25"
+=======
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.26"
+>>>>>>> Stashed changes
+=======
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.27"
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
             },
             "funding": [
                 {
@@ -9064,7 +9115,15 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+            "time": "2025-06-27T04:36:07+00:00"
+=======
+            "time": "2025-07-04T05:58:21+00:00"
+>>>>>>> Stashed changes
+=======
             "time": "2025-07-11T04:10:06+00:00"
+>>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
         },
         {
             "name": "sebastian/cli-parser",
