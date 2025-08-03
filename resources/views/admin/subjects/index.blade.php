@@ -67,7 +67,7 @@
     @include('admin.subjects.partials.create')
     @include('admin.subjects.partials.edit')
     @include('admin.subjects.partials.detail')
-    @include('admin.subjects.partials.delete')
+    <x-modal.confirmdelete title="subject" />
     @include('admin.subjects.partials.bulkedit')
     @include('admin.subjects.partials.bulkdelete')
 @endsection
@@ -253,7 +253,8 @@
                 e.preventDefault();
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
+                editBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 editBtn.prop('disabled', true);
 
                 const Id = $(this).data('id');
@@ -327,7 +328,8 @@
                 const submitBtn = $('#confirmDeleteBtn');
                 const originalBtnHtml = submitBtn.html();
 
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
+                submitBtn.prop('disabled', true).html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
 
                 $.ajax({
                     url: form.attr('action'),
@@ -357,7 +359,8 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
+                detailBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
                 detailBtn.prop('disabled', true);
 
                 const subjectId = $(this).data('id');

@@ -24,17 +24,17 @@
         Create New Role
       </button>
     </div>
-    <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
+    <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
       @include('admin.roles.partials.table', ['roles' => $roles])
     </div>
     @include('admin.roles.partials.pagination')
 
   </div>
   <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
-
   @include('admin.roles.partials.create')
   @include('admin.roles.partials.edit')
-  @include('admin.roles.partials.delete')
+  <x-modal.confirmdelete title="User"/>
+  
 @endsection
 @push('scripts')
   <script>
@@ -44,61 +44,6 @@
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-
-      function selectfields() {
-        document.querySelectorAll('.custom-select').forEach(select => {
-          const header = select.querySelector('.select-header');
-          const optionsBox = select.querySelector('.select-options');
-          const searchInput = select.querySelector('.search-input');
-          const optionsContainer = select.querySelector('.options-container');
-          const selectedValue = select.querySelector('.selected-value');
-          const noResults = select.querySelector('.no-results');
-          const options = Array.from(select.querySelectorAll('.select-option'));
-          const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-          header.addEventListener('click', function() {
-            select.classList.toggle('open');
-            if (select.classList.contains('open')) {
-              searchInput.focus();
-            }
-          });
-
-          searchInput.addEventListener('input', function() {
-            const term = this.value.toLowerCase().trim();
-            let hasMatch = false;
-
-            options.forEach(option => {
-              if (option.textContent.toLowerCase().includes(term)) {
-                option.style.display = 'block';
-                hasMatch = true;
-              } else {
-                option.style.display = 'none';
-              }
-            });
-
-            noResults.style.display = hasMatch ? 'none' : 'block';
-          });
-
-          options.forEach(option => {
-            option.addEventListener('click', function() {
-              options.forEach(opt => opt.classList.remove('selected'));
-              this.classList.add('selected');
-              selectedValue.textContent = this.textContent;
-              hiddenInput.value = this.dataset.value;
-              select.classList.remove('open');
-              console.log('Selected value:', this.dataset.value);
-            });
-          });
-
-          document.addEventListener('click', function(e) {
-            if (!select.contains(e.target)) {
-              select.classList.remove('open');
-            }
-          });
-        });
-      }
-
-      selectfields(); // Initialize custom selects
 
       const backdrop = document.getElementById('modalBackdrop');
       const tableContainer = $('#TableContainer');
@@ -292,8 +237,6 @@
       function attachRowEventHandlers() {
         $('.edit-btn').off('click').on('click', handleEditClick);
         $('.delete-btn').off('click').on('click', handleDeleteClick);
-        // Removed detail-btn as roles might not have complex details requiring a separate modal
-        // If you need a detail view for roles, you can re-add it and implement handleDetailClick
       }
 
       function initialize() {

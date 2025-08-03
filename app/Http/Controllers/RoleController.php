@@ -7,53 +7,92 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    $roles = Role::withCount('permissions', 'users')->paginate(10);
-    return view('admin.roles.index', compact('roles'));
-  }
+    $search = $request->input('search');
+    $perPage = $request->input('per_page', 10);
 
-  public function create()
-  {
-    $permissions = Permission::all();
-    return view('admin.roles.create', compact('permissions'));
+    $roles = Role::withCount(['permissions', 'users'])
+      ->when($search, function ($query) use ($search) {
+        return $query->where('name', 'like', "%{$search}%");
+      })
+      ->orderBy('created_at', 'desc')
+      ->paginate($perPage)
+      ->appends([
+        'search' => $search,
+        'per_page' => $perPage,
+      ]);
+
+    if ($request->ajax()) {
+      $html = [
+        'table' => view('admin.roles.partials.table', compact('roles'))->render(),
+        'pagination' => $roles->links()->toHtml()
+      ];
+
+      return response()->json([
+        'success' => true,
+        'html' => $html,
+      ]);
+    }
+
+    return view('admin.roles.index', compact('roles'));
   }
 
   public function store(Request $request)
   {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
       'name' => 'required|string|max:255|unique:roles,name',
       'permissions' => 'nullable|array',
-      'permissions.*' => 'exists:permissions,name',
+      'permissions.*' => 'exists:permissions,id',
     ]);
 
-    $role = Role::create([
-      'name' => $request->name,
-      'guard_name' => 'web',
-    ]);
-
-    if ($request->has('permissions')) {
-      $role->syncPermissions($request->permissions);
+    if ($validator->fails()) {
+      return response()->json([
+        'success' => false,
+        'errors' => $validator->errors(),
+        'message' => 'Validation failed'
+      ], 422);
     }
 
-    return redirect()->route('admin.roles.index')
-      ->with('success', 'Role created successfully.');
+    try {
+      $role = Role::create([
+        'name' => $request->name,
+        'guard_name' => 'web',
+      ]);
+
+      if ($request->has('permissions')) {
+        $role->syncPermissions($request->permissions);
+      }
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Role created successfully!',
+        'role' => $role->loadCount(['permissions', 'users'])
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error creating role: ' . $e->getMessage()
+      ], 500);
+    }
   }
 
-  public function edit(Role $role)
+  public function show(Role $role)
   {
-    $permissions = Permission::all();
-    $rolePermissions = $role->permissions->pluck('id')->toArray();
-
-    return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
+    return response()->json([
+      'success' => true,
+      'role' => $role->load(['permissions']),
+      'permissions' => Permission::all()
+    ]);
   }
 
   public function update(Request $request, Role $role)
   {
-    $request->validate([
+    $validator = Validator::make($request->all(), [
       'name' => [
         'required',
         'string',
@@ -64,33 +103,62 @@ class RoleController extends Controller
       'permissions.*' => 'exists:permissions,id',
     ]);
 
-    $role->update([
-      'name' => $request->name,
-    ]);
+    if ($validator->fails()) {
+      return response()->json([
+        'success' => false,
+        'errors' => $validator->errors(),
+        'message' => 'Validation failed'
+      ], 422);
+    }
 
-    $permissionIds = collect($request->permissions)->map(fn($id) => (int) $id)->toArray();
+    try {
+      $role->update([
+        'name' => $request->name,
+      ]);
 
-    $role->syncPermissions($permissionIds);
+      $permissionIds = collect($request->permissions)->map(fn($id) => (int) $id)->toArray();
+      $role->syncPermissions($permissionIds);
 
-    return redirect()->route('admin.roles.index')
-      ->with('success', 'Role updated successfully.');
+      return response()->json([
+        'success' => true,
+        'message' => 'Role updated successfully',
+        'role' => $role->loadCount(['permissions', 'users'])
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error updating role: ' . $e->getMessage()
+      ], 500);
+    }
   }
 
   public function destroy(Role $role)
   {
     if ($role->name === 'admin') {
-      return redirect()->route('admin.roles.index')
-        ->with('error', 'Cannot delete the default "admin" role.');
+      return response()->json([
+        'success' => false,
+        'message' => 'Cannot delete the default "admin" role.'
+      ], 403);
     }
 
     if ($role->users()->count() > 0) {
-      return redirect()->route('admin.roles.index')
-        ->with('error', 'Cannot delete role assigned to users. Please unassign users first.');
+      return response()->json([
+        'success' => false,
+        'message' => 'Cannot delete role assigned to users. Please unassign users first.'
+      ], 403);
     }
 
-    $role->delete();
-
-    return redirect()->route('admin.roles.index')
-      ->with('success', 'Role deleted successfully.');
+    try {
+      $role->delete();
+      return response()->json([
+        'success' => true,
+        'message' => 'Role deleted successfully'
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error deleting role: ' . $e->getMessage()
+      ], 500);
+    }
   }
 }
