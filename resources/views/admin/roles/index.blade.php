@@ -4,12 +4,10 @@
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.356 1.636a1 1 0 10-1.412-1.412l-.708.708a1 1 0 001.414 1.414l.707-.707zM6.343 4.343a1 1 0 00-1.414-1.414l-.707.707a1 1 0 101.414 1.414l.707-.707zm-.707 7.071l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zM3 10a1 1 0 110-2h1a1 1 0 110 2H3zm15 0a1 1 0 110-2h1a1 1 0 110 2h-1zm-6.343 4.343l-.707.707a1 1 0 001.414 1.414l.707-.707a1 1 0 00-1.414-1.414zm-7.071 0a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zM10 15a1 1 0 100 2h1a1 1 0 100-2h-1z"
-                    clip-rule="evenodd" />
-            </svg>
+            <div
+                class="flex justify-center items-center not-only:size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900">
+                <i class="fa-brands fa-critical-role"></i>
+            </div>
             Roles
         </h3>
         <div
@@ -30,10 +28,6 @@
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                     <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
                 </div>
-                <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-                </button>
             </div>
         </div>
         <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
@@ -49,6 +43,7 @@
 
 @endsection
 @push('scripts')
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             $.ajaxSetup({
@@ -84,7 +79,11 @@
                 const form = $(this);
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
-
+                // Check validity before submitting
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
                 $.ajax({
@@ -95,18 +94,31 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshContent(); // Changed to refreshContent
+                            refreshContent();
                             form.trigger('reset');
+                            // Reset validation state
+                            form.removeClass('was-validated');
+                            form.find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
                         } else {
-                            ShowTaskMessage('error', response.message ||
-                                'Error creating role'); // Changed message
+                            ShowTaskMessage('error', response.message || 'Error creating role');
                         }
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages ||
-                            'Error creating role'); // Changed message
+
+                        if (xhr.status === 422) {
+                            // Name field specific handling
+                            if (errors.name) {
+                                $('#name').addClass('border-red-500 is-invalid');
+                                $('#error-name').text(errors.name[0]);
+                            }
+                            // Add similar blocks for other fields if needed
+                        } else {
+                            const errorMsg = xhr.responseJSON?.message ||
+                                xhr.statusText ||
+                                'Network error occurred';
+                            ShowTaskMessage('error', errorMsg);
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -129,6 +141,9 @@
                         if (response.success) {
                             $('#edit_name').val(response.role.name); // Changed to response.role
                             $('#Formedit').attr('action', `roles/${Id}`); // Changed action URL
+
+                            $('#Formedit').removeClass('was-validated');
+                            $('#Formedit').find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', response.message ||
@@ -150,6 +165,11 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
+                // Check validity before submitting
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
 
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
@@ -162,6 +182,8 @@
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
                             refreshContent(); // Changed to refreshContent
+                            form.removeClass('was-validated');
+                            form.find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
                         } else {
                             ShowTaskMessage('error', response.message ||
                                 'Error updating role'); // Changed message
@@ -169,9 +191,20 @@
                     },
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages ||
-                            'Error updating role'); // Changed message
+
+                        if (xhr.status === 422) {
+                            // Name field specific handling
+                            if (errors.name) {
+                                $('#edit_name').addClass('border-red-500 is-invalid');
+                                $('#edit-error-name').text(errors.name[0]);
+                            }
+                            // Add similar blocks for other fields if needed
+                        } else {
+                            const errorMsg = xhr.responseJSON?.message ||
+                                xhr.statusText ||
+                                'Network error occurred';
+                            ShowTaskMessage('error', errorMsg);
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -221,28 +254,6 @@
                 });
             }
 
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
             // Search and Pagination
             function searchData(searchTerm) {
                 $.ajax({
@@ -297,48 +308,10 @@
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-
-                $('[id^="close"], [id^="cancel"]').on('click', function() {
-                    const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
-                        $(this).closest('[id$="Modal"]').attr('id');
-                    if (modalId) closeModal(modalId);
-                });
-
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        $('[id^="Modal"]').each(function() {
-                            if (!$(this).hasClass('hidden')) {
-                                closeModal(this.id);
-                            }
-                        });
-                    }
-                });
-
                 attachRowEventHandlers();
             }
 
             initialize();
         });
-
-        function ShowTaskMessage(type, message) {
-            const TasksmsContainer = document.createElement('div');
-            TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-            TasksmsContainer.innerHTML = `
-        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'}
-            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-            </svg>
-            <div class="flex-1 text-sm sm:text-base">${message}</div>
-            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    `;
-            document.body.appendChild(TasksmsContainer);
-            setTimeout(() => TasksmsContainer.remove(), 3000);
-        }
     </script>
 @endpush

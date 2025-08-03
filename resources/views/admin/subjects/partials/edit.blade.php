@@ -34,7 +34,7 @@
                     <input type="text" id="edit_name" name="name" value="{{ old('name') }}"
                         class="w-full px-3 py-2 border rounded-md focus:outline
                  focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500
                         @error('name') border-red-500 @else border-gray-400 @enderror"
                         placeholder="Enter subject name" required>
 
@@ -51,7 +51,7 @@
                     <input type="text" id="edit_code" name="code" value="{{ old('code') }}"
                         class="w-full px-3 py-2 border rounded-md focus:outline
                  focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500
                         @error('code') border-red-500 @else border-gray-400 @enderror"
                         placeholder="Enter code" required>
 
@@ -68,7 +68,7 @@
                     <select id="edit_depid" name="department_id"
                         class="w-full px-3 py-2.5 border rounded-md focus:outline
                  focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500
                         @error('department_id') border-red-500 @else border-gray-400 @enderror">
                         <option value="">Select department</option>
                         @foreach ($departments as $department)
@@ -93,7 +93,7 @@
                     <input type="text" id="edit_credit_hours" name="credit_hours" value="{{ old('credit_hours') }}"
                         class="w-full px-3 py-2 border rounded-md focus:outline
                  focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500
                         @error('credit_hours') border-red-500 @else border-gray-400 @enderror"
                         placeholder="Enter credit hours" required>
 
@@ -112,7 +112,7 @@
                 <textarea id="edit_description" name="description" rows="3"
                     class="w-full px-3 py-2 border rounded-md focus:outline
                  focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                      dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500
                     @error('description') border-red-500 @else border-gray-400 @enderror"
                     placeholder="Enter subject description">{{ old('description') }}</textarea>
 
