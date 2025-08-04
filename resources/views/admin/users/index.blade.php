@@ -149,15 +149,12 @@
                             for (const field in errors) {
                                 if (errors.hasOwnProperty(field)) {
                                     const errorMessage = errors[field][0];
-                                    // Display error message in corresponding HTML element
                                     $(`#error-${field}`).text(errorMessage);
-                                    console.log(field)
-                                    console.log(field)
                                 }
                             }
                             ShowTaskMessage('error', `Invalid field something was wrong!`);
                         }
-                        
+
                     },
 
                     complete: function() {
@@ -259,6 +256,10 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 // Create FormData object to handle file uploads
                 const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
@@ -278,7 +279,15 @@
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#edit-error-${field}`).text(errorMessage);
+                                }
+                            }
+                        }
                         let errorMessages = Object.values(errors).flat().join('\n');
                         ShowTaskMessage('error', errorMessages || 'Error updating users');
                     },

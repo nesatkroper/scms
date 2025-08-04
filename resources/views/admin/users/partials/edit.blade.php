@@ -22,7 +22,7 @@
         </div>
 
         <!-- Form Content -->
-        <form id="Formedit" method="POST" class="overflow-y-auto max-h-[80vh]" enctype="multipart/form-data">
+        <form id="Formedit" method="POST" class="overflow-y-auto max-h-[80vh] needs-validation" novalidate enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -74,7 +74,7 @@
                                 User Role <span class="text-red-500">*</span>
                             </label>
                             <select id="role" name="type"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('user_id') border-red-500 @else border-gray-400 @enderror"
+                                class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('user_id') border-red-500 @else border-gray-400 @enderror"
                                 required>
                                 <option value="">Select user Type</option>
                                 @foreach ($roles as $role)
@@ -84,7 +84,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <p id="edit-error-user" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
+                            <p id="edit-error-type" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
                             <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
                                 field user is required
                             </div>
@@ -111,7 +111,7 @@
                         <div class="mb-2">
                             <label for="edit_password"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Password
+                                New Password
                             </label>
                             <input type="password" id="edit_password" name="password"
                                 class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -120,9 +120,20 @@
                                 placeholder="Leave blank to keep current password">
 
                             <p id="edit-error-password" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field password is required
-                            </div>
+                        </div>
+                        <!-- Password Field (optional for edit) -->
+                        <div class="mb-2">
+                            <label for="edit_confirm_password"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Confirm new password
+                            </label>
+                            <input type="password" id="edit_confirm_password" name="confirm_password"
+                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white"
+                                placeholder="Confirm password">
+
+                            <p id="edit_confirm_password" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
                         </div>
 
                         <!-- Phone Field -->

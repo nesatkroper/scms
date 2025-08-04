@@ -38,7 +38,7 @@
                                 class="w-full h-full object-cover rounded-full hidden">
                             <div id="create_initials"
                                 class="absolute inset-0 rounded-full w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
-                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">+</span>
+                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"><i class="ri-account-circle-fill text-8xl"></i></span>
                             </div>
                             <input type="file" id="avatar_upload" name="avatar" accept="image/*" class="hidden">
                             <label for="avatar_upload"
