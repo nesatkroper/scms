@@ -734,8 +734,8 @@
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-                $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit)
-                
+                $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
+
                 // Attach initial event handlers
                 attachRowEventHandlers();
                 updateBulkActionsBar();
@@ -744,5 +744,7 @@
             // Start the application
             initialize();
         });
+
+        
     </script>
 @endpush

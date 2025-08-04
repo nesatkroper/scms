@@ -68,8 +68,13 @@
         <!-- User profile -->
         <div class="relative">
             <button class="cursor-pointer flex items-center focus:outline-none" id="user-menu-button">
-                <img src="{{ asset('images/user.png') }}" alt="User"
-                    class="size-9 rounded-full border-2 border-indigo-500 dark:border-white">
+                @if (auth()->user()->avatar)
+                    <img src="{{ asset(auth()->user()->avatar) }}" alt="User"
+                        class="size-9 rounded-full border-2 border-indigo-500 dark:border-white">
+                @else
+                    <img src="{{ asset('images/user.png') }}" alt="User"
+                        class="size-9 rounded-full border-2 border-indigo-500 dark:border-white">
+                @endif
             </button>
             <!-- Dropdown menu with icons -->
             <div id="user-dropdown"
@@ -128,7 +133,7 @@
                     title: 'Home',
                     type: 'Page',
                     icon: 'fas fa-tachometer-alt',
-                    url: '/home'
+                    url: 'admin/home'
                 },
 
                 {
@@ -136,14 +141,14 @@
                     title: 'User Settings',
                     type: 'Page',
                     icon: 'fas fa-cog',
-                    url: '/settings'
+                    url: 'admin/settings'
                 },
                 {
                     id: 3,
                     title: 'Project Report',
                     type: 'Document',
                     icon: 'fas fa-file-alt',
-                    url: '/reports'
+                    url: 'admin/reports'
                 },
                 {
                     id: 4,
@@ -157,21 +162,21 @@
                     title: 'Subjects',
                     type: 'Page',
                     icon: 'fas fa-tachometer-alt',
-                    url: '/subjects'
+                    url: 'admin/subjects'
                 },
                 {
                     id: 5,
                     title: 'Students',
                     type: 'Page',
                     icon: 'fas fa-user-graduate',
-                    url: '/students'
+                    url: 'admin/students'
                 },
                 {
                     id: 5,
                     title: 'Teachers',
                     type: 'Page',
                     icon: 'fas fa-chalkboard-teacher',
-                    url: '/teachers'
+                    url: 'admin/teachers'
                 },
             ];
 

@@ -1,4 +1,4 @@
-<div class="overflow-x-auto rounded-md border border-gray-200 dark:border-gray-700 shadow-sm min-h-[65vh]">
+<div class="overflow-x-auto min-h-[65vh]">
   <table class="w-full text-sm text-left">
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
       <tr class="text-nowrap">
