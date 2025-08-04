@@ -12,19 +12,17 @@ use Illuminate\Validation\Rule;
 
 class GradeLevelController extends Controller
 {
-
     public function index(Request $request)
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        $gradelevels = GradeLevel::with('sections')
-            ->when($search, function ($query) use ($search) {
-                return $query->where('id', 'like', "%{$search}%")
-                    ->orWhere('name', 'like', "%{$search}%")
-                    ->orWhere('code', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            })
+        $gradelevels = GradeLevel::when($search, function ($query) use ($search) {
+            return $query->where('id', 'like', "%{$search}%")
+                ->orWhere('name', 'like', "%{$search}%")
+                ->orWhere('code', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->appends([
@@ -52,10 +50,6 @@ class GradeLevelController extends Controller
 
     public function store(StoreGradeLevelRequest $request)
     {
-        // $gradeLevel = GradeLevel::create($request->validated());
-        // $gradeLevel->load('sections');
-        // return redirect()->route('gradelevels.index')->with('success', 'Grade level added successfully!');
-
         try {
             $gradelevel = GradeLevel::create($request->validated());
             return response()->json([
@@ -73,8 +67,6 @@ class GradeLevelController extends Controller
 
     public function show(GradeLevel $gradelevel)
     {
-        $gradelevel->load('sections');
-        // return view('gradelevels.show', compact('gradeLevel'));
         return response()->json([
             'success' => true,
             'gradeLevel' => $gradelevel
@@ -89,7 +81,7 @@ class GradeLevelController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Grade level updated successfully',
-                'gradeLevel' => $gradeLevel->fresh('sections')
+                'gradeLevel' => $gradeLevel->fresh()
             ]);
         } catch (\Exception $e) {
             return response()->json([

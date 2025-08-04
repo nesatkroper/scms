@@ -72,11 +72,9 @@
     @include('admin.teachers.partials.create')
     @include('admin.teachers.partials.edit')
     @include('admin.teachers.partials.detail')
-    @include('admin.teachers.partials.delete')
+    <x-modal.confirmdelete title="Teacher" />
     @include('admin.teachers.partials.bulkedit')
     @include('admin.teachers.partials.bulkdelete')
-
-
 
 @endsection
 

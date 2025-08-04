@@ -64,7 +64,7 @@
     @include('admin.gradelevels.partials.create')
     @include('admin.gradelevels.partials.edit')
     @include('admin.gradelevels.partials.detail')
-    @include('admin.gradelevels.partials.delete')
+    <x-modal.confirmdelete title="Grade levels"/>
     @include('admin.gradelevels.partials.bulkedit')
     @include('admin.gradelevels.partials.bulkdelete')
 @endsection
