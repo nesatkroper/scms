@@ -20,7 +20,7 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('bookissues.store') }}" method="POST" class="py-4">
+        <form action="{{ route('admin.bookissues.store') }}" method="POST" class="py-4">
             @csrf
 
             <div class="h-[65vh] md:h-auto overflow-y-auto px-4">

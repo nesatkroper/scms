@@ -48,24 +48,24 @@
             </div>
         </div>
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('bookissues.partials.table', ['bookIssues' => $bookIssues])
+            @include('admin.bookissues.partials.table', ['bookIssues' => $bookIssues])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('bookissues.partials.cardlist', ['bookIssues' => $bookIssues])
+            @include('admin.bookissues.partials.cardlist', ['bookIssues' => $bookIssues])
         </div>
         {{-- pagination --}}
-        @include('bookissues.partials.pagination')
+        @include('admin.bookissues.partials.pagination')
     </div>
 
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-    @include('bookissues.partials.create')
-    @include('bookissues.partials.edit')
-    @include('bookissues.partials.detail')
-    @include('bookissues.partials.delete')
-    @include('bookissues.partials.bulkedit')
-    @include('bookissues.partials.bulkdelete')
+    @include('admin.bookissues.partials.create')
+    @include('admin.bookissues.partials.edit')
+    @include('admin.bookissues.partials.detail')
+    @include('admin.bookissues.partials.delete')
+    @include('admin.bookissues.partials.bulkedit')
+    @include('admin.bookissues.partials.bulkdelete')
 @endsection
 
 @push('scripts')
@@ -194,7 +194,7 @@
                 editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 editBtn.prop('disabled', true);
                 const Id = $(this).data('id');
-                $.get(`/bookissues/${Id}`)
+                $.get(`/admin/bookissues/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const bookIssue = response.bookIssue;
@@ -302,7 +302,7 @@
 
                 const Id = $(this).data('id');
 
-                $.get(`/bookissues/${Id}`)
+                $.get(`/admin/bookissues/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const bookIssue = response.bookIssue;
@@ -373,7 +373,7 @@
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
 
                     $.ajax({
-                        url: "{{ route('gradelevels.bulkDelete') }}",
+                        url: "{{ route('admin.bookissues.bulkDelete') }}",
                         method: 'POST',
                         data: {
                             ids: selectedIds
@@ -427,7 +427,7 @@
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
 
                 $.ajax({
-                    url: "{{ route('gradelevels.getBulkData') }}",
+                    url: "{{ route('admin.bookissues.getBulkData') }}",
                     method: 'POST',
                     data: {
                         ids: selectedIds
@@ -524,7 +524,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('gradelevels.bulkUpdate') }}",
+                    url: "{{ route('admin.bookcategory.bulkUpdate') }}",
                     method: 'POST',
                     data: {
                         grade_levels: dataform
@@ -588,7 +588,7 @@
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('admin.gradelevels.index') }}",
+                    url: "{{ route('admin.bookissues.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,

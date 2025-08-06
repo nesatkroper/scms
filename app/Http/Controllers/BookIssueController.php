@@ -41,8 +41,8 @@ class BookIssueController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'table' => view('bookissues.partials.table', compact('bookIssues'))->render(),
-                'cards' => view('bookissues.partials.cardlist', compact('bookIssues'))->render(),
+                'table' => view('admin.bookissues.partials.table', compact('bookIssues'))->render(),
+                'cards' => view('admin.bookissues.partials.cardlist', compact('bookIssues'))->render(),
                 'pagination' => $bookIssues->links()->toHtml()
             ];
 
