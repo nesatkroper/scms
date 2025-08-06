@@ -48,16 +48,6 @@
         </div>
         <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
             @include('admin.teachers.partials.table', ['teachers' => $teachers])
-            <x-table.table :headers="[
-                'Id',
-                'teacher',
-                'Experience',
-                'department',
-                'salary',
-                'qualification',
-                'specialization',
-                'joining date',
-            ]" />
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.teachers.partials.cardlist', ['teachers' => $teachers])

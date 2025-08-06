@@ -23,7 +23,7 @@
         </div>
 
         <!-- Form Content -->
-        <form action="{{ route('admin.students.store') }}" method="POST" class="py-4" enctype="multipart/form-data">
+        <form action="{{ route('admin.students.store') }}" method="POST" class="py-4 needs-validation " novalidate enctype="multipart/form-data">
             @csrf
 
             <div class="h-[65vh] md:h-[75vh] overflow-y-auto px-4">
@@ -145,67 +145,20 @@
                     <!-- Empty column to maintain layout -->
                     <div class="mb-2">
                         <!-- Personal Information -->
-                        <div class="mb-2">
-                            <label for="name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Full Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('name') border-red-500 @else border-gray-400 @enderror"
-                                placeholder="Enter full name" required>
-                            <p class="error-name mt-1 text-sm text-red-600"></p>
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="gender"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Gender <span class="text-red-500">*</span>
-                            </label>
-                            <select id="gender" name="gender"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('gender') border-red-500 @else border-gray-400 @enderror"
-                                required>
-                                <option value="">Select gender</option>
-                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
-                                </option>
-                                <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                            <p class="error-gender mt-1 text-sm text-red-600"></p>
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="dob"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Date of Birth <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="dob" name="dob" value="{{ old('dob') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                required>
-                            <p class="error-dob mt-1 text-sm text-red-600"></p>
-                        </div>
+                        <x-fields.input label="Full Name" name="name" placeholder="Enter full name"
+                            :required="true" />
+                        <x-fields.select name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
+                        <x-fields.input type="date" label="Date of Birth" name="dob"
+                            placeholder="Enter Date of Birth" :required="true" />
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-2">
-                    <div class="mb-2">
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Email
-                        </label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('email') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter email address">
-                        <p class="error-email mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Phone
-                        </label>
-                        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('phone') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter phone number">
-                        <p class="error-phone mt-1 text-sm text-red-600"></p>
-                    </div>
-
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 mb-2">
+                    <!-- Email Field -->
+                    <x-fields.input type="email" label="Email" name="email" placeholder="Enter email"
+                        :required="true" />
+                    <x-fields.input type="tel" label="Phone" name="phone" placeholder="Enter phone number"
+                        :required="true" />
+                        
                     <!-- Student Information -->
                     <div class="mb-2">
                         <label for="grade_level_id"

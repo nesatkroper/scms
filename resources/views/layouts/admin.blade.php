@@ -30,9 +30,10 @@
             <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
                 <div class="sm:p-4">
                     @yield('content')
+                    @include('admin.partials.footer')
                 </div>
             </main>
-            @include('admin.partials.footer')
+            
         </div>
     </div>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>

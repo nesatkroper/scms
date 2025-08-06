@@ -93,10 +93,9 @@
     @include('admin.students.partials.create')
     @include('admin.students.partials.edit')
     @include('admin.students.partials.detail')
-    @include('admin.students.partials.delete')
+    <x-modal.confirmdelete title="students" />
     @include('admin.students.partials.bulkedit')
     @include('admin.students.partials.bulkdelete')
-
 @endsection
 
 @push('scripts')

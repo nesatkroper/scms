@@ -6,7 +6,6 @@
             <th scope="col" class="px-4 py-4">Gender</th>
             <th scope="col" class="px-4 py-4">Age</th>
             <th scope="col" class="px-4 py-4">Grade Level</th>
-            <th scope="col" class="px-4 py-4">Section</th>
             <th scope="col" class="px-4 py-4">Parent</th>
             <th scope="col" class="px-4 py-4">Blood Group</th>
             <th scope="col" class="px-4 py-4">Date of birth</th>
@@ -52,7 +51,6 @@
                     <td class="px-4 py-2">{{ $student->gender ?? 'N/A' }}</td>
                     <td class="px-4 py-2">{{ $student->age ?? 'N/A' }}</td>
                     <td class="px-4 py-2">{{ $student->gradeLevel->name?? 'N/A' }}</td>
-                    <td class="px-4 py-2">{{ $student->section->name ?? 'N/A' }}</td>
                     <td class="px-4 py-2">{{ $student->parent->name ?? 'N/A' }}</td>
                     <td class="px-4 py-2">{{ $student->blood_group ?? 'N/A' }}</td>
                     <td class="px-4 py-2">
