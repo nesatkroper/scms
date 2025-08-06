@@ -114,17 +114,6 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
-<<<<<<< HEAD
-        Schema::create('subjects', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->foreignId('department_id')->nullable()->constrained();
-            $table->text('description')->nullable();
-            $table->integer('credit_hours')->default(1);
-            $table->timestamps();
-        });
-=======
     Schema::create('guardians', function (Blueprint $table) {
       $table->id();
       $table->string('name');
@@ -157,7 +146,6 @@ return new class extends Migration {
       $table->timestamps();
       $table->softDeletes();
     });
->>>>>>> 5a9208602ccd80c67dc9db89161dfd2d10b0907e
 
     Schema::create('student_guardian', function (Blueprint $table) {
       $table->foreignId('student_id')->constrained()->onDelete('cascade');

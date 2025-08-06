@@ -36,6 +36,7 @@
         <x-table.pagination :paginator="$roles" />
 
     </div>
+
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
     @include('admin.roles.partials.create')
     @include('admin.roles.partials.edit')

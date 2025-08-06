@@ -52,21 +52,7 @@
                 <div class="pt-16 pb-4 px-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
                         <!-- Name Field -->
-                        <div class="mb-2">
-                            <label for="edit_name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="edit_name" name="name"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Enter name" required>
-
-                            <p id="edit-error-name" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field name is required
-                            </div>
-                        </div>
+                        <x-fields.input :edit="true" label="Name" name="name" placeholder="Enter name" :required="true" />
 
                         <div class="mb-2">
                             <label for="user_id"
@@ -89,23 +75,10 @@
                                 field user is required
                             </div>
                         </div>
-
+                        
                         <!-- Email Field -->
-                        <div class="mb-2">
-                            <label for="edit_email"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Email <span class="text-red-500">*</span>
-                            </label>
-                            <input type="email" id="edit_email" name="email"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Enter email address" required>
-
-                            <p id="edit-error-email" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field email is required
-                            </div>
-                        </div>
+                        <x-fields.input :edit="true" type="email" label="Email" name="email" placeholder="Enter email address"
+                            :required="true" />
 
                         <!-- Password Field (optional for edit) -->
                         <div class="mb-2">
@@ -137,22 +110,7 @@
                         </div>
 
                         <!-- Phone Field -->
-                        <div class="mb-2">
-                            <label for="edit_phone"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Phone
-                            </label>
-                            <input type="tel" id="edit_phone" name="phone"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('phone') border-red-500 @else border-gray-400 @enderror"
-                                placeholder="Enter phone number">
-
-                            @error('phone')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
+                        <x-fields.input :edit="true" type="tel" label="Phone" name="phone" placeholder="Enter phone nubmer"/>
                         <!-- Address Field -->
                         <div class="mb-2">
                             <label for="edit_address"
@@ -186,26 +144,7 @@
                         </div>
 
                         <!-- Gender Field -->
-                        <div class="mb-2">
-                            <label for="edit_gender"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Gender
-                            </label>
-                            <select id="edit_gender" name="gender"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                >
-                                <option value="">Select gender</option>
-                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
-                                </option>
-                                <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                            </select>
-
-                            @error('gender')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <x-fields.select :edit="true" name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
                     </div>
                 </div>
             </div>

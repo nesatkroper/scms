@@ -17,7 +17,7 @@ class UserController extends Controller
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 10);
+    $perPage = $request->input('per_page', 4);
     $roles = Role::all();
 
     $users = User::with('roles')
@@ -35,7 +35,7 @@ class UserController extends Controller
 
     if ($request->ajax()) {
       $html = [
-        'table' => view('x-table.table', compact('users'))->render(),
+        'table' => view('admin.users.partials.table', compact('users'))->render(),
         'pagination' => $users->links()->toHtml()
       ];
 

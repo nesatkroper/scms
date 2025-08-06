@@ -1,71 +1,22 @@
 @extends('layouts.admin')
-
 @section('title', 'Users')
-
 @section('content')
     <x-page.index title="Users" icon-svg-path="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
         create-button-text="Create New User"
         create-button-icon-svg-path="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
-        <div id="TableContainer">
-            <x-table.table :headers="['Name', 'Phone', 'Type', 'Gender', 'Date of Birth']">
-                @if (count($users) > 0)
-                    @foreach ($users as $user)
-                        <tr
-                            class="text-nowrap border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700">
-                            <x-table.td class="whitespace-nowrap text-gray-900 dark:text-white">
-                                <div class="flex items-center">
-                                    @if ($user->avatar)
-                                        <img class="w-10 h-10 rounded-full object-cover cursor-grab"
-                                            src="{{ asset($user->avatar) }}" alt="{{ $user->name }} image"
-                                            data-id="{{ $user->id }}">
-                                    @else
-                                        <div
-                                            class="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-600 text-white font-bold cursor-default select-none">
-                                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                                        </div>
-                                    @endif
-
-                                    <div class="pl-3">
-                                        <div class="text-base font-semibold">
-                                            {{ $user->name }}
-                                        </div>
-                                        <div class="font-normal text-gray-500 truncate">
-                                            {{ $user->email }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </x-table.td>
-                            <x-table.td>{{ $user->phone ?? 'N/A' }}</x-table.td>
-                            <x-table.td> {{ $user->getRoleNames()->first() ?? 'N/A' }}</x-table.td>
-                            <x-table.td>{{ ucfirst($user->gender ?? 'N/A') }}</x-table.td>
-                            <x-table.td>
-                                {{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('Y-m-d') : 'N/A' }}
-                            </x-table.td>
-                            <x-table.td class="text-right">
-                                <x-table.action :userId="$user->id" />
-                            </x-table.td>
-                        </tr>
-                    @endforeach
-                @else
-                    <x-table.no-data :colspan="count(['Id', 'Name', 'Phone', 'Type', 'Gender', 'Date of Birth']) + 1" />
-                @endif
-            </x-table.table>
-            <x-table.pagination :paginator="$users" />
+        <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
+            @include('admin.users.partials.table', ['users' => $users])
         </div>
-
-        @include('admin.users.partials.create')
-        @include('admin.users.partials.edit')
-        <x-modal.confirmdelete title="User" />
-
     </x-page.index>
+    @include('admin.users.partials.create')
+    @include('admin.users.partials.edit')
+    <x-modal.confirmdelete title="User" />
 @endsection
 
 @push('scripts')
     <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Core Configuration
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');
@@ -116,7 +67,6 @@
                     return;
                 }
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
                 // Create FormData object for file uploads
                 const formData = new FormData(form[0]);
 
@@ -176,10 +126,8 @@
                     .done(function(response) {
                         if (response.success && response.user) {
                             const user = response.user;
-
                             // Format date of birth
                             const datedob = user.date_of_birth ? user.date_of_birth.substring(0, 10) : '';
-
                             // Set form values with null checks
                             $('#edit_name').val(user.name || '');
                             $('#edit_user').val(user.user_id || '');
@@ -347,30 +295,6 @@
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
                     }
                 });
-            }
-
-            // Modal Management
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
             }
 
             // Utility Functions

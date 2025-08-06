@@ -25,24 +25,8 @@
         <!-- Form Content -->
         <form action="{{ route('admin.roles.store') }}" method="POST" class="py-4 needs-validation" novalidate>
             @csrf
-
             <div class="px-4">
-                <!-- Name Field -->
-                <div class="mb-2">
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Role Name <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}"
-                        class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                        placeholder="Enter role name" required maxlength="255">
-                    <p id="error-name" class="error-name mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                    <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                        field name is required
-                    </div>
-                </div>
+                <x-fields.input label="Name" name="name" placeholder="Enter name" :required="true" />
             </div>
             <!-- Form Actions -->
             <div class="flex justify-end space-x-3 pt-4 px-4 border-t border-gray-200 dark:border-gray-700">

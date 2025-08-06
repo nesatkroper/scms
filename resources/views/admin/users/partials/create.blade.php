@@ -38,7 +38,8 @@
                                 class="w-full h-full object-cover rounded-full hidden">
                             <div id="create_initials"
                                 class="absolute inset-0 rounded-full w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
-                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"><i class="ri-account-circle-fill text-8xl"></i></span>
+                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"><i
+                                        class="ri-account-circle-fill text-8xl"></i></span>
                             </div>
                             <input type="file" id="avatar_upload" name="avatar" accept="image/*" class="hidden">
                             <label for="avatar_upload"
@@ -53,189 +54,29 @@
                 <div class="pt-16 pb-4 px-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
                         <!-- Name Field -->
-                        <div class="mb-2">
-                            <label for="name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}"
-                                class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                                placeholder="Enter name" required>
-                            <p id="error-name" class="error-name mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field name is required
-                            </div>
-                        </div>
-
+                        <x-fields.input label="Name" name="name" placeholder="Enter name" :required="true" />
                         <!-- Email Field -->
-                        <div class="mb-2">
-                            <label for="email"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Email <span class="text-red-500">*</span>
-                            </label>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}"
-                                class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                                placeholder="Enter email" required>
-                            <p id="error-email" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field email is required
-                            </div>
-                        </div>
-
+                        <x-fields.input type="email" label="Email" name="email" placeholder="Enter email"
+                            :required="true" />
                         <!-- Password Field -->
-                        <div class="mb-2">
-                            <label for="password"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Password <span class="text-red-500">*</span>
-                            </label>
-                            <input type="password" id="password" name="password"
-                                class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                                placeholder="Enter password" required>
-                            <p id="error-password" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field password is required
-                            </div>
-                        </div>
-
-                        <!-- Password Confirmation Field -->
-                        <div class="mb-2">
-                            <label for="password_confirmation"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Confirm Password <span class="text-red-500">*</span>
-                            </label>
-                            <input type="password" id="password_confirmation" name="password_confirmation"
-                                class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                                placeholder="Confirm password" required>
-                            <p id="error-password_confirmation" class="error-password_confirmation mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field confirm password is required
-                            </div>
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="type"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                User Role <span class="text-red-500">*</span>
-                            </label>
-                            <div data-name="type"
-                                class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                                <div class="select-header cursor-pointer flex justify-between items-center">
-                                    <span class="selected-value">
-                                        {{ old('type', 'Select Type') }}
-                                    </span>
-                                    <span class="arrow transition-transform duration-300">▼</span>
-                                </div>
-                                <div
-                                    class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                    <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                        <input type="search"
-                                            class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                                                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                            placeholder="Search types...">
-                                    </div>
-                                    <div class="options-container">
-                                        {{-- Iterate over roles passed from the controller --}}
-                                        @foreach ($roles as $role)
-                                            <div class="{{ old('type') == $role->name ? 'selected' : '' }}
-                                                select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                                data-value="{{ $role->name }}">
-                                                {{ ucfirst($role->name) }}
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <div class="no-results p-2 text-center text-red-500" style="display: none;">No
-                                        results
-                                        found</div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="type" id="type" value="{{ old('type') }}">
-                            <p id="error-type" class="error-type mt-1 text-sm text-red-600"></p>
-                            <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                                field role is required
-                            </div>
-                        </div>
-
-                        <!-- Phone Field -->
-                        <div class="mb-2">
-                            <label for="phone"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Phone
-                            </label>
-                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                                placeholder="Enter phone number">
-                            <p class="error-phone mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                           
-                        </div>
-
+                        <x-fields.input type="password" label="Password" name="password" placeholder="Enter password"
+                            :required="true" />
+                        <!-- Confirm Password Field -->
+                        <x-fields.input type="password" label="Confirm Password" name="password_confirmation"
+                            placeholder="Enter Confirm password" :required="true" />
+                        <!-- User Role Select (Searchable) -->
+                        <x-fields.select name="type" label="User Role" :options="$roles" 
+                        :value="old('type')" required="true" searchable="true" />
+                        <!-- Phone Number Field -->
+                        <x-fields.input type="tel" label="Phone number" name="phone"
+                            placeholder="Enter phone number" />
                         <!-- Address Field -->
-                        <div class="mb-2">
-                            <label for="address"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Address
-                            </label>
-                            <input type="text" id="address" name="address" value="{{ old('address') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300"
-                                placeholder="Enter address">
-                            <p class="error-address mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
-
+                        <x-fields.input label="Address" name="address" placeholder="Enter address" />
                         <!-- Date of Birth Field -->
-                        <div class="mb-2">
-                            <label for="date_of_birth"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Date of Birth
-                            </label>
-                            <input type="date" id="date_of_birth" name="date_of_birth"
-                                value="{{ old('date_of_birth') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300">
-                            <p class="error-date_of_birth mt-1 text-sm text-red-600 dark:text-red-500"></p>
-
-                        </div>
-
-                        <!-- Gender Field -->
-                        <div class="mb-2">
-                            <label for="gender"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Gender
-                            </label>
-                            <select id="gender" name="gender"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                        border-slate-300">
-                                <option value="">Select gender</option>
-                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
-                                </option>
-                                <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                            <p class="error-gender mt-1 text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
+                        <x-fields.input type="date" label="Date of Birth" name="date_of_birth"
+                            placeholder="Enter Date of Birth" />
+                        <!-- Gender Select (Non-searchable) -->
+                        <x-fields.select name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
                     </div>
                 </div>
             </div>
