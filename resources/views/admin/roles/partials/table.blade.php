@@ -9,7 +9,7 @@
                 <x-table.td>{{ $role->created_at->format('Y-m-d H:i:s') }}</x-table.td>
                 <x-table.td>{{ $role->updated_at->format('Y-m-d H:i:s') }}</x-table.td>
                 <x-table.td class="text-right">
-                    <x-table.action :userId="$role->id" />
+                    <x-table.action :id="$role->id" />
                 </x-table.td>
             </tr>
         @endforeach

@@ -33,7 +33,7 @@
                     {{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('Y-m-d') : 'N/A' }}
                 </x-table.td>
                 <x-table.td class="text-right">
-                    <x-table.action :userId="$user->id" />
+                    <x-table.action :id="$user->id"/>
                 </x-table.td>
             </tr>
         @endforeach

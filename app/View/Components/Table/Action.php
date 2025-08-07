@@ -8,11 +8,11 @@ use Illuminate\View\Component;
 
 class Action extends Component
 {
-  public $userId;
+  public $id;
 
-  public function __construct($userId)
+  public function __construct($id)
   {
-    $this->userId = $userId;
+    $this->id = $id;
   }
 
   public function render(): View|Closure|string
