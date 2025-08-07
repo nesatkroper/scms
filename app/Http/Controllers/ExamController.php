@@ -16,7 +16,7 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 4);
         $viewType = $request->input('view', 'table');
         $subjects = Subject::all();
         $exams = Exam::with('subject')

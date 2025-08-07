@@ -1,13 +1,14 @@
 @extends('layouts.admin')
 @section('title', 'Users')
 @section('content')
-    <x-page.index title="Users" icon-svg-path="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-        create-button-text="Create New User"
-        create-button-icon-svg-path="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
+    <x-page.index :showReset="true" :showViewToggle="false" title="Users"
+        iconSvgPath="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" btn-text="Create New User"
+        btn-icon-svg-path="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
         <div id="TableContainer" class="table-respone overflow-x-auto">
             @include('admin.users.partials.table', ['users' => $users])
         </div>
     </x-page.index>
+
     @include('admin.users.partials.create')
     @include('admin.users.partials.edit')
     <x-modal.confirmdelete title="User" />
@@ -17,15 +18,20 @@
     <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');
             const resetSearch = $('#resetSearch');
-            const listViewBtn = $('#listViewBtn');
-            const cardViewBtn = $('#cardViewBtn');
             const tableContainer = $('#TableContainer');
-            const cardContainer = $('#CardContainer');
+            const perPageSelect = $('#perPageSelect');
 
+            // Initialize modal for create button
             const openCreateBtn = document.getElementById('openCreateModal');
             if (openCreateBtn) {
                 openCreateBtn.addEventListener('click', function() {
@@ -33,13 +39,21 @@
                 });
             }
 
-            // Search and Pagination
+            // Handle per page selection change
+            perPageSelect.off('change').on('change', function() {
+                const perPage = $(this).val();
+                refreshContent();
+            });
+
+            // Search function
             function searchData(searchTerm) {
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
                     url: "{{ route('admin.users.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -57,17 +71,19 @@
                 });
             }
 
+            // Handle create form submission
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
+
                 if (!this.checkValidity()) {
                     $(this).addClass('was-validated');
                     return;
                 }
+
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-                // Create FormData object for file uploads
                 const formData = new FormData(form[0]);
 
                 $.ajax({
@@ -104,15 +120,14 @@
                             }
                             ShowTaskMessage('error', `Invalid field something was wrong!`);
                         }
-
                     },
-
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
                     }
                 });
             }
 
+            // Handle edit button click
             function handleEditClick(e) {
                 e.preventDefault();
                 const editBtn = $(this);
@@ -139,13 +154,14 @@
                             $('#edit_password').val(''); // Don't pre-fill password for security
                             $('#edit_address').val(user.address || '');
 
-                            // Handle role selection (check if roles exist and has at least one)
+                            // Handle role selection
                             if (user.roles && user.roles.length > 0) {
                                 $('#role').val(user.roles[0].name);
                             } else {
-                                $('#role').val(''); // or set to default role if needed
+                                $('#role').val('');
                             }
-                            // Handle photo display with better null checks
+
+                            // Handle photo display
                             if (user.avatar) {
                                 $('#edit_avatar').attr('src', window.location.origin + '/' + user.avatar)
                                     .removeClass('hidden');
@@ -155,11 +171,11 @@
                                 let initials = '?';
                                 if (user.name) {
                                     initials = user.name.split(' ')
-                                        .filter(n => n.length > 0) // filter out empty parts
+                                        .filter(n => n.length > 0)
                                         .map(n => n[0])
                                         .join('')
                                         .toUpperCase()
-                                        .substring(0, 2); // limit to 2 characters
+                                        .substring(0, 2);
                                 }
                                 $('#edit_initials').removeClass('hidden').find('span').text(initials);
                             }
@@ -199,24 +215,27 @@
                     });
             }
 
+            // Handle edit form submission
             function handleEditSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
+
                 if (!this.checkValidity()) {
                     $(this).addClass('was-validated');
                     return;
                 }
-                // Create FormData object to handle file uploads
+
                 const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
                 $.ajax({
                     url: '/admin' + form.attr('action'),
                     method: 'POST',
                     data: formData,
-                    processData: false, // Important for file uploads
-                    contentType: false, // Important for file uploads
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modaledit');
@@ -235,9 +254,9 @@
                                     $(`#edit-error-${field}`).text(errorMessage);
                                 }
                             }
+                            let errorMessages = Object.values(errors).flat().join('\n');
+                            ShowTaskMessage('error', errorMessages || 'Error updating users');
                         }
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating users');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -245,19 +264,7 @@
                 });
             }
 
-            // Preview photo before upload
-            $('#photo_upload').change(function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#edit_photo').attr('src', e.target.result).removeClass('hidden');
-                        $('#edit_initials').addClass('hidden');
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
-
+            // Handle delete button click
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const Id = $(this).data('id');
@@ -265,6 +272,7 @@
                 showModal('Modaldelete');
             }
 
+            // Handle delete form submission
             function handleDeleteSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
@@ -297,14 +305,17 @@
                 });
             }
 
-            // Utility Functions
+            // Refresh table content
             function refreshContent() {
                 const searchTerm = searchInput.val() || '';
+                const perPage = perPageSelect.val() || '';
+
                 $.ajax({
                     url: "{{ route('admin.users.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -322,11 +333,13 @@
                 });
             }
 
+            // Attach event handlers to table rows
             function attachRowEventHandlers() {
                 $('.edit-btn').off('click').on('click', handleEditClick);
                 $('.delete-btn').off('click').on('click', handleDeleteClick);
             }
 
+            // Debounce function for search input
             function debounce(func, wait) {
                 let timeout;
                 return function() {
@@ -336,9 +349,10 @@
                     timeout = setTimeout(() => func.apply(context, args), wait);
                 };
             }
-            // Event Listeners
+
+            // Initialize all event listeners
             function initialize() {
-                // Search
+                // Search functionality
                 searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
                 resetSearch.on('click', () => {
                     searchInput.val('');
@@ -353,6 +367,7 @@
                 // Attach initial event handlers
                 attachRowEventHandlers();
             }
+
             // Start the application
             initialize();
         });

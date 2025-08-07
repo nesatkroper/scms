@@ -13,24 +13,49 @@
         <button id="openCreateModal"
             class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="{{ $createButtonIconSvgPath }}" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="{{ $btnIconSvgPath }}" clip-rule="evenodd" />
             </svg>
-            {{ $createButtonText }}
+            {{ $btnText }}
         </button>
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
-            <div class="relative w-full">
-                <input type="search" id="searchInput" placeholder="Search subjects..."
-                    class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
+
+        @if ($showSearch || $showReset || $showViewToggle)
+            <div class="flex items-center mt-3 md:mt-0 gap-2">
+                @if ($showSearch)
+                    <div class="relative w-full">
+                        <input type="search" id="searchInput" placeholder="Search {{ $title }}..."
+                            class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+                        <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+                    </div>
+                @endif
+
+                @if ($showReset)
+                    <button id="resetSearch"
+                        class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                        <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+                    </button>
+                @endif
+
+                @if ($showViewToggle)
+                    <div
+                        class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
+                        <button id="listViewBtn"
+                            class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                            <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
+                        </button>
+                        <button id="cardViewBtn"
+                            class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+                            <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
+                        </button>
+                    </div>
+                @endif
             </div>
-        </div>
+        @endif
     </div>
 
     {{ $slot }}
 
 </div>
-
 <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
 @push('scripts')

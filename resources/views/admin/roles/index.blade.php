@@ -1,46 +1,16 @@
 @extends('layouts.admin')
 @section('title', 'Roles')
 @section('content')
-    <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-        <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <div
-                class="flex justify-center items-center not-only:size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900">
-                <i class="fa-brands fa-critical-role"></i>
-            </div>
-            Roles
-        </h3>
-        <div
-            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                Create New Role
-            </button>
-            <div class="flex items-center mt-3 md:mt-0 gap-2">
-                <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search subjects..."
-                        class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                    <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-                </div>
-            </div>
-        </div>
+    <x-page.index :showReset="false" :showViewToggle="false" title="Roles"
+        iconSvgPath="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" btn-text="Create New User"
+        btn-icon-svg-path="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
         <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
             @include('admin.roles.partials.table', ['roles' => $roles])
         </div>
-        <x-table.pagination :paginator="$roles" />
-
-    </div>
-
-    <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+    </x-page.index>
     @include('admin.roles.partials.create')
     @include('admin.roles.partials.edit')
-    <x-modal.confirmdelete title="User" />
+    <x-modal.confirmdelete title="Roles" />
 
 @endsection
 @push('scripts')
@@ -56,6 +26,7 @@
             const backdrop = document.getElementById('modalBackdrop');
             const tableContainer = $('#TableContainer');
             const searchInput = $('#searchInput');
+            const perPageSelect = $('#perPageSelect');
 
             function debounce(func, wait) {
                 let timeout;
@@ -255,13 +226,20 @@
                 });
             }
 
+            // Handle per page selection change
+            perPageSelect.off('change').on('change', function() {
+                const perPage = $(this).val();
+                refreshContent();
+            });
             // Search and Pagination
             function searchData(searchTerm) {
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
                     url: "{{ route('admin.roles.index') }}",
                     method: 'GET',
                     data: {
-                        search: searchTerm
+                        search: searchTerm,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -280,10 +258,13 @@
             }
 
             function refreshContent() {
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
                     url: "{{ route('admin.roles.index') }}", // Changed route
                     method: 'GET',
-                    data: {},
+                    data: {
+                        per_page: perPage
+                    },
                     success: function(response) {
                         if (response.success) {
                             tableContainer.html(response.html.table);
