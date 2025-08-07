@@ -28,7 +28,7 @@ class StoreTeacherRequest extends FormRequest
       'address' => ['required', 'string'],
       'specialization' => ['nullable', 'string'],
       'salary' => ['nullable', 'numeric', 'min:0'],
-      'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
       'cv' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
     ];
   }
