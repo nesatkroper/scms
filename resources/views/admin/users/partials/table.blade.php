@@ -5,6 +5,6 @@
         'gender' => ['label' => 'Gender'],
         'date_of_birth' => ['label' => 'Date of Birth'],
     ]" :items="$users" empty-message="Create your first users to get started"
-    :checkbox="false" :actions="true" />
+    :checkbox="false" :actions="['edit', 'delete']"  />
 
 <x-table.pagination :paginator="$users" />

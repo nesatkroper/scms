@@ -12,19 +12,28 @@ class DynamicTable extends Component
         $items,
         $emptyMessage,
         $actions,
-        $checkbox;
+        $checkbox,
+        $actionItems;
     public function __construct(
         array $headers,
         $items = [],
         string $emptyMessage = 'No records found',
         bool $checkbox = true,
-        bool $actions = true
+        $actions = true
     ) {
         $this->headers = $headers;
         $this->items = $items;
         $this->emptyMessage = $emptyMessage;
         $this->checkbox = $checkbox;
         $this->actions = $actions;
+        // Handle actions parameter
+        if (is_bool($actions)) {
+            $this->actions = $actions;
+            $this->actionItems = $actions ? ['edit', 'detail', 'delete'] : [];
+        } else {
+            $this->actions = !empty($actions);
+            $this->actionItems = is_array($actions) ? $actions : [];
+        }
     }
     public function render(): View|Closure|string
     {

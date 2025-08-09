@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\modal;
+namespace App\View\Components\Modal;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Confirmdelete extends Component
+class Modal extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Confirmdelete extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.modal.confirmdelete');
+        return view('components.modal.modal');
     }
 }
