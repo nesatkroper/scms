@@ -26,7 +26,7 @@
       @csrf
       @method('PUT')
 
-      <div class="h-[65vh] md:h-auto px-4 overflow-y-auto">
+      <div class="px-4 overflow-y-auto max-h-[65vh] md:max-h-auto">
         <div class="grid grid-cols-1 2 gap-1 sm:gap-4 mb-2">
           <!-- Name Field -->
           <div class="mb-2">
@@ -45,11 +45,12 @@
           </div>
 
           <!-- Permissions Field -->
-          <div class="mb-4 max-h-48 overflow-y-auto">
+          <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Permissions
             </label>
-            <div id="permissions-container-edit" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div id="permissions-container-edit"
+              class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto border p-2 rounded-md border-gray-300 dark:border-gray-700">
               <!-- Permissions checkboxes will be injected here via JavaScript -->
             </div>
             <p id="edit-error-permissions" class="mt-1 text-sm text-red-600 dark:text-red-500"></p>
@@ -83,7 +84,7 @@
     </form>
   </div>
 </div>
-
+s
 {{-- <!-- Edit User Modal -->
 <div id="Modaledit" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
     <div

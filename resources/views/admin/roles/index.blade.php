@@ -16,50 +16,69 @@
 @push('scripts')
   <script src="{{ asset('assets/js/modal.js') }}"></script>
   <script>
+    // This script is for the roles.index Blade file
     document.addEventListener('DOMContentLoaded', function() {
       $.ajaxSetup({
         headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-csrf-token"]').attr('content')
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
 
-      const backdrop = document.getElementById('modalBackdrop');
       const tableContainer = $('#TableContainer');
       const searchInput = $('#searchInput');
       const perPageSelect = $('#perPageSelect');
 
       function debounce(func, wait) {
         let timeout;
-        return function() {
-          const context = this,
-            args = arguments;
+        return function(...args) {
+          const context = this;
+          const later = () => {
+            timeout = null;
+            func.apply(context, args);
+          };
           clearTimeout(timeout);
-          timeout = setTimeout(() => func.apply(context, args), wait);
+          timeout = setTimeout(later, wait);
         };
       }
       searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
 
-      // --- Create Modal Logic ---
       const openCreateBtn = document.getElementById('openCreateModal');
-      const createPermissionsContainer = $('#permissions-container-create');
       if (openCreateBtn) {
         openCreateBtn.addEventListener('click', function() {
           // Fetch all permissions and populate the create modal
-          $.get("{{ route('admin.permissions.index') }}", {
-              ajax: true
-            })
-            .done(function(response) {
-              if (response.success) {
-                populatePermissions(createPermissionsContainer, response.permissions, []);
-                showModal('Modalcreate');
-              } else {
-                ShowTaskMessage('error', 'Failed to load permissions for creation.');
-              }
-            });
+          fetchPermissions('permissions-container-create');
+          showModal('Modalcreate');
         });
       }
 
-      $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
+      function fetchPermissions(containerId, rolePermissions = []) {
+        $.get('/admin/permissions-list')
+          .done(function(response) {
+            const container = $(`#${containerId}`);
+            container.empty();
+            if (response.success && response.permissions.length > 0) {
+              response.permissions.forEach(permission => {
+                const isChecked = rolePermissions.includes(permission.id) ? 'checked' : '';
+                container.append(`
+                            <div class="flex items-center space-x-2">
+                                <input id="permission-${permission.id}-${containerId}" name="permissions[]" type="checkbox"
+                                    value="${permission.id}" ${isChecked}
+                                    class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="permission-${permission.id}-${containerId}"
+                                    class="text-sm font-medium text-gray-900 dark:text-gray-300">
+                                    ${permission.name}
+                                </label>
+                            </div>
+                        `);
+              });
+            } else {
+              container.html('<p class="text-sm text-gray-500">No permissions found.</p>');
+            }
+          })
+          .fail(function(xhr) {
+            console.error('Error fetching permissions:', xhr.responseText);
+          });
+      }
 
       function handleCreateSubmit(e) {
         e.preventDefault();
@@ -78,32 +97,28 @@
           data: form.serialize(),
           success: function(response) {
             if (response.success) {
-              closeModal('Modalcreate');
               ShowTaskMessage('success', response.message);
-              refreshContent();
-              form.trigger('reset');
-              form.removeClass('was-validated');
-              form.find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
+              // Check for a redirect URL and perform the redirection
+              if (response.redirect_url) {
+                window.location.href = response.redirect_url;
+              }
             } else {
               ShowTaskMessage('error', response.message || 'Error creating role');
             }
           },
           error: function(xhr) {
             const errors = xhr.responseJSON?.errors || {};
-
             if (xhr.status === 422) {
               if (errors.name) {
                 $('#name').addClass('border-red-500 is-invalid');
                 $('#error-name').text(errors.name[0]);
               }
               if (errors.permissions) {
-                $('#permissions-container-create').addClass('border-red-500 is-invalid');
+                $('#permissions-container-create').addClass('border-red-500');
                 $('#create-error-permissions').text(errors.permissions[0]);
               }
             } else {
-              const errorMsg = xhr.responseJSON?.message ||
-                xhr.statusText ||
-                'Network error occurred';
+              const errorMsg = xhr.responseJSON?.message || xhr.statusText || 'Network error occurred';
               ShowTaskMessage('error', errorMsg);
             }
           },
@@ -113,36 +128,29 @@
         });
       }
 
-      // --- Edit Modal Logic ---
       function handleEditClick(e) {
         e.preventDefault();
         const editBtn = $(this);
+        const Id = $(this).data('id');
         const originalContent = editBtn.find('.btn-content').html();
         editBtn.find('.btn-content').html(
           '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
         editBtn.prop('disabled', true);
-
-        const Id = $(this).data('id');
 
         $.get(`/admin/roles/${Id}`)
           .done(function(response) {
             if (response.success) {
               $('#edit_name').val(response.role.name);
               $('#Formedit').attr('action', `/admin/roles/${Id}`);
-
-              // Clear old permissions
-              const permissionsContainer = $('#permissions-container-edit');
-              permissionsContainer.empty();
-
-              const rolePermissions = response.role.permissions.map(p => p.id);
-              populatePermissions(permissionsContainer, response.permissions, rolePermissions);
-
               $('#Formedit').removeClass('was-validated');
               $('#Formedit').find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
+
+              const rolePermissionIds = response.role.permissions.map(p => p.id);
+              fetchPermissions('permissions-container-edit', rolePermissionIds);
+
               showModal('Modaledit');
             } else {
-              ShowTaskMessage('error', response.message ||
-                'Failed to load role data');
+              ShowTaskMessage('error', response.message || 'Failed to load role data');
             }
           })
           .fail(function(xhr) {
@@ -153,22 +161,6 @@
             editBtn.find('.btn-content').html(originalContent);
             editBtn.prop('disabled', false);
           });
-      }
-
-      function populatePermissions(container, allPermissions, rolePermissions) {
-        container.empty();
-        allPermissions.forEach(permission => {
-          const isChecked = rolePermissions.includes(permission.id);
-          const checkboxHtml = `
-                <label class="inline-flex items-center text-gray-800 dark:text-gray-200 cursor-pointer">
-                    <input type="checkbox" name="permissions[]" value="${permission.id}"
-                           class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
-                           ${isChecked ? 'checked' : ''}>
-                    <span class="ml-2 text-sm font-medium">${permission.name}</span>
-                </label>
-            `;
-          container.append(checkboxHtml);
-        });
       }
 
       function handleEditSubmit(e) {
@@ -189,32 +181,27 @@
           data: form.serialize() + '&_method=PUT',
           success: function(response) {
             if (response.success) {
-              closeModal('Modaledit');
               ShowTaskMessage('success', response.message);
-              refreshContent();
-              form.removeClass('was-validated');
-              form.find('.is-valid, .is-invalid').removeClass('is-valid is-invalid');
+              if (response.redirect_url) {
+                window.location.href = response.redirect_url;
+              }
             } else {
-              ShowTaskMessage('error', response.message ||
-                'Error updating role');
+              ShowTaskMessage('error', response.message || 'Error updating role');
             }
           },
           error: function(xhr) {
             const errors = xhr.responseJSON?.errors || {};
-
             if (xhr.status === 422) {
               if (errors.name) {
                 $('#edit_name').addClass('border-red-500 is-invalid');
                 $('#edit-error-name').text(errors.name[0]);
               }
               if (errors.permissions) {
-                $('#permissions-container-edit').addClass('border-red-500 is-invalid');
+                $('#permissions-container-edit').addClass('border-red-500');
                 $('#edit-error-permissions').text(errors.permissions[0]);
               }
             } else {
-              const errorMsg = xhr.responseJSON?.message ||
-                xhr.statusText ||
-                'Network error occurred';
+              const errorMsg = xhr.responseJSON?.message || xhr.statusText || 'Network error occurred';
               ShowTaskMessage('error', errorMsg);
             }
           },
@@ -252,13 +239,11 @@
               ShowTaskMessage('success', response.message);
               refreshContent();
             } else {
-              ShowTaskMessage('error', response.message ||
-                'Error deleting role');
+              ShowTaskMessage('error', response.message || 'Error deleting role');
             }
           },
           error: function(xhr) {
-            ShowTaskMessage('error', xhr.responseJSON?.message ||
-              'Error deleting role');
+            ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting role');
           },
           complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -326,6 +311,9 @@
       }
 
       function initialize() {
+        $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
+        $('#Formedit').off('submit').on('submit', handleEditSubmit);
+        $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
         attachRowEventHandlers();
       }
 

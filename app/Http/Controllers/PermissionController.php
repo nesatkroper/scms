@@ -24,7 +24,7 @@ class PermissionController extends BaseController
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%");
       })
-      ->orderBy('id', 'asc')
+      ->orderBy('id', 'desc')
       ->paginate($perPage)
       ->appends([
         'search' => $search,

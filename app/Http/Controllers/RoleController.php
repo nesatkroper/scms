@@ -13,7 +13,7 @@ class RoleController extends BaseController
 {
   protected function ModelPermissionName(): string
   {
-    return 'permissions';
+    return 'roles'; // Changed this to 'roles' for clarity and consistency
   }
   public function index(Request $request)
   {
@@ -72,10 +72,11 @@ class RoleController extends BaseController
         $role->syncPermissions($request->permissions);
       }
 
+      // Add the redirect URL to the JSON response
       return response()->json([
         'success' => true,
         'message' => 'Role created successfully!',
-        'role' => $role->loadCount(['permissions', 'users'])
+        'redirect_url' => route('admin.roles.index')
       ]);
     } catch (\Exception $e) {
       return response()->json([
@@ -123,10 +124,11 @@ class RoleController extends BaseController
       $permissionIds = collect($request->permissions)->map(fn($id) => (int) $id)->toArray();
       $role->syncPermissions($permissionIds);
 
+      // Add the redirect URL to the JSON response
       return response()->json([
         'success' => true,
         'message' => 'Role updated successfully',
-        'role' => $role->loadCount(['permissions', 'users'])
+        'redirect_url' => route('admin.roles.index')
       ]);
     } catch (\Exception $e) {
       return response()->json([

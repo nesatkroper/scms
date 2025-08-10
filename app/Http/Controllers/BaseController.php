@@ -12,7 +12,7 @@ abstract class BaseController extends Controller
   public function __construct()
   {
     $this->model = $this->ModelPermissionName();
-    // $this->applyPermissions();
+    $this->applyPermissions();
   }
 
   abstract protected function ModelPermissionName(): string;
