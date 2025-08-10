@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/mainjq.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    @PwaHead
   </head>
 
   <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
@@ -342,7 +342,7 @@
 
             <li class="menu-item relative">
               <div
-                class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg 
+                class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg
                             mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
                 <div class="wr-icon flex items-center">
                   <i class="fas fa-money-bill-wave w-6 text-center"></i>
@@ -586,6 +586,8 @@
     <script src="https://cambodianeedpeace.org/script.js" data-position="top" defer></script>
 
     @stack('scripts')
+    @stack('script')
+    @RegisterServiceWorkerScript
   </body>
 
 </html>
