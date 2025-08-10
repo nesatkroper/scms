@@ -9,8 +9,12 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-class RoleController extends Controller
+class RoleController extends BaseController
 {
+  protected function ModelPermissionName(): string
+  {
+    return 'permissions';
+  }
   public function index(Request $request)
   {
     $search = $request->input('search');
@@ -20,7 +24,7 @@ class RoleController extends Controller
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%");
       })
-      ->orderBy('created_at', 'desc')
+      ->orderBy('id', 'asc')
       ->paginate($perPage)
       ->appends([
         'search' => $search,

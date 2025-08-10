@@ -1,5 +1,5 @@
 @extends('layouts.error')
-@section('title', '404')
+@section('title', '403')
 @section('content')
 
   <div class="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 animate-fade-in">
@@ -19,17 +19,17 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-school-accent book-icon" fill="none"
           viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
         </svg>
-        <span class="text-6xl font-bold text-school-primary">4</span>
+        <span class="text-6xl font-bold text-school-primary">3</span>
       </div>
 
       <!-- Error Message -->
       <div class="space-y-2">
-        <h2 class="text-2xl font-bold text-school-dark error-text">Page Not Found</h2>
-        <p class="text-gray-600">Looks like this page is missing from our school records.</p>
-        <p class="text-gray-500 text-sm">The page you’re looking for may have been moved, deleted, or is temporarily
-          unavailable.</p>
+        <h2 class="text-2xl font-bold text-school-dark error-text">Access Forbidden</h2>
+        <p class="text-gray-600">Sorry, you don't have permission to access this area of the school system.</p>
+        <p class="text-gray-500 text-sm">This section is restricted. Please check with the school administrator if you
+          believe this is an error.</p>
       </div>
 
       <!-- Action Buttons -->

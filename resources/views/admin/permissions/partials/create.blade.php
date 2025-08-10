@@ -1,4 +1,4 @@
-<!-- Create Role Modal -->
+<!-- Create Permission Modal -->
 <div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
   <div
     class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
@@ -12,7 +12,7 @@
             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
             clip-rule="evenodd" />
         </svg>
-        Create New Role
+        Create New Permission
       </h3>
       <button id="closeCreateModal"
         class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Form Content -->
-    <form action="{{ route('admin.roles.store') }}" method="POST" class="py-4 needs-validation" novalidate>
+    <form action="{{ route('admin.permissions.store') }}" method="POST" class="py-4 needs-validation" novalidate>
       @csrf
       <div class="px-4">
         <x-fields.input label="Name" name="name" placeholder="Enter name" :required="true" />

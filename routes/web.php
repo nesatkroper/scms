@@ -27,6 +27,7 @@ use App\Http\Controllers\{
   TimetableController,
   TimetableEntryController,
   HomeController,
+  PermissionController,
   ScoreController,
   UserController,
   RoleController,
@@ -39,19 +40,16 @@ Auth::routes();
 R::get('/', function () {
   return view('welcome');
 });
-R::get('/test', function () {
-  return view('test');
-});
 
 R::prefix('/admin')
   ->as('admin.')
-  ->middleware('auth')
   ->group(function () {
     R::get('/', [HomeController::class, 'index'])->name('home');
 
     R::resources([
       'users' => UserController::class,
       'roles' => RoleController::class,
+      'permissions' => PermissionController::class,
 
 
       'attendances' => AttendanceController::class,
