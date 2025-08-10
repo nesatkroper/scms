@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -13,8 +12,9 @@ class RoleController extends BaseController
 {
   protected function ModelPermissionName(): string
   {
-    return 'roles'; // Changed this to 'roles' for clarity and consistency
+    return 'roles';
   }
+
   public function index(Request $request)
   {
     $search = $request->input('search');
@@ -31,19 +31,13 @@ class RoleController extends BaseController
         'per_page' => $perPage,
       ]);
 
-    if ($request->ajax()) {
-      $html = [
-        'table' => view('admin.roles.partials.table', compact('roles'))->render(),
-        'pagination' => $roles->links()->toHtml()
-      ];
-
-      return response()->json([
-        'success' => true,
-        'html' => $html,
-      ]);
-    }
-
     return view('admin.roles.index', compact('roles'));
+  }
+
+  public function create()
+  {
+    $permissions = Permission::all();
+    return view('admin.roles.create', compact('permissions'));
   }
 
   public function store(Request $request)
@@ -55,11 +49,9 @@ class RoleController extends BaseController
     ]);
 
     if ($validator->fails()) {
-      return response()->json([
-        'success' => false,
-        'errors' => $validator->errors(),
-        'message' => 'Validation failed'
-      ], 422);
+      return redirect()->back()
+        ->withErrors($validator)
+        ->withInput();
     }
 
     try {
@@ -72,27 +64,18 @@ class RoleController extends BaseController
         $role->syncPermissions($request->permissions);
       }
 
-      // Add the redirect URL to the JSON response
-      return response()->json([
-        'success' => true,
-        'message' => 'Role created successfully!',
-        'redirect_url' => route('admin.roles.index')
-      ]);
+      return redirect()->route('admin.roles.index')
+        ->with('success', 'Role created successfully!');
     } catch (\Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Error creating role: ' . $e->getMessage()
-      ], 500);
+      return redirect()->back()
+        ->with('error', 'Error creating role: ' . $e->getMessage());
     }
   }
 
-  public function show(Role $role)
+  public function edit(Role $role)
   {
-    return response()->json([
-      'success' => true,
-      'role' => $role->load(['permissions']),
-      'permissions' => Permission::all()
-    ]);
+    $permissions = Permission::all();
+    return view('admin.roles.edit', compact('role', 'permissions'));
   }
 
   public function update(Request $request, Role $role)
@@ -109,11 +92,9 @@ class RoleController extends BaseController
     ]);
 
     if ($validator->fails()) {
-      return response()->json([
-        'success' => false,
-        'errors' => $validator->errors(),
-        'message' => 'Validation failed'
-      ], 422);
+      return redirect()->back()
+        ->withErrors($validator)
+        ->withInput();
     }
 
     try {
@@ -124,47 +105,33 @@ class RoleController extends BaseController
       $permissionIds = collect($request->permissions)->map(fn($id) => (int) $id)->toArray();
       $role->syncPermissions($permissionIds);
 
-      // Add the redirect URL to the JSON response
-      return response()->json([
-        'success' => true,
-        'message' => 'Role updated successfully',
-        'redirect_url' => route('admin.roles.index')
-      ]);
+      return redirect()->route('admin.roles.index')
+        ->with('success', 'Role updated successfully!');
     } catch (\Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Error updating role: ' . $e->getMessage()
-      ], 500);
+      return redirect()->back()
+        ->with('error', 'Error updating role: ' . $e->getMessage());
     }
   }
 
   public function destroy(Role $role)
   {
     if ($role->name === 'admin') {
-      return response()->json([
-        'success' => false,
-        'message' => 'Cannot delete the default "admin" role.'
-      ], 403);
+      return redirect()->back()
+        ->with('error', 'Cannot delete the default "admin" role.');
     }
 
     if ($role->users()->count() > 0) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Cannot delete role assigned to users. Please unassign users first.'
-      ], 403);
+      return redirect()->back()
+        ->with('error', 'Cannot delete role assigned to users. Please unassign users first.');
     }
 
     try {
       $role->delete();
-      return response()->json([
-        'success' => true,
-        'message' => 'Role deleted successfully'
-      ]);
+      return redirect()->route('admin.roles.index')
+        ->with('success', 'Role deleted successfully!');
     } catch (\Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Error deleting role: ' . $e->getMessage()
-      ], 500);
+      return redirect()->back()
+        ->with('error', 'Error deleting role: ' . $e->getMessage());
     }
   }
 }

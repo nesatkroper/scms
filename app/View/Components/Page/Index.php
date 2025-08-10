@@ -14,7 +14,8 @@ class Index extends Component
     $btnIconSvgPath,
     $showSearch,
     $showReset,
-    $showViewToggle;
+    $showViewToggle,
+    $canCreate;
 
   public function __construct(
     string $title,
@@ -23,7 +24,8 @@ class Index extends Component
     string $btnIconSvgPath = 'M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z',
     bool $showSearch = true,
     bool $showReset = true,
-    bool $showViewToggle = true
+    bool $showViewToggle = true,
+    bool $canCreate = true
   ) {
     $this->title = $title;
     $this->iconSvgPath = $iconSvgPath;
@@ -32,6 +34,7 @@ class Index extends Component
     $this->showSearch = $showSearch;
     $this->showReset = $showReset;
     $this->showViewToggle = $showViewToggle;
+    $this->canCreate = $canCreate;
   }
 
 
