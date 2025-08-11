@@ -34,10 +34,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-
+        $teachers = Teacher::count();
+        $students = Student::count();
         $data = [
-            'totalStudents' => 142,
-            'totalTeachers' => 18,
+            'totalStudents' => $students,
+            'totalTeachers' => $teachers,
             'activeClasses' => 12,
             'feesCollected' => 87550.00,
             'recentStudents' => [

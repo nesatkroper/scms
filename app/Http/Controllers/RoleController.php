@@ -12,7 +12,7 @@ class RoleController extends BaseController
 {
   protected function ModelPermissionName(): string
   {
-    return 'roles';
+    return 'role';
   }
 
   public function index(Request $request)

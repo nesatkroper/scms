@@ -55,7 +55,7 @@
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs">Since</p>
                         <p class="font-bold text-gray-700 dark:text-gray-200 text-sm">
-                            {{ optional($student->admission_date)->format('Y') ?? '-' }}
+                            {{ optional($student->admission_date)->format('D-M-Y') ?? '-' }}
                         </p>
                     </div>
                 </div>

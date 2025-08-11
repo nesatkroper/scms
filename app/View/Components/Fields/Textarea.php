@@ -45,8 +45,8 @@ class Textarea extends Component
         $this->rows = $rows;
         $this->edit = $edit;
         $this->detail = $detail;
-        $this->readonly = $readonly;
-        $this->disabled = $disabled;
+        $this->readonly = $readonly || $detail;
+        $this->disabled = $disabled || $detail;
         $this->maxlength = $maxlength;
         $this->autocomplete = $autocomplete;
         $this->pattern = $pattern;
