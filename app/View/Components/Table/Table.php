@@ -8,12 +8,13 @@ use Illuminate\View\Component;
 
 class Table extends Component
 {
-  public $headers;
+  public $headers,$checkbox;
 
   public function __construct(
-    array $headers = [],
+    array $headers = [],bool $checkbox = true
   ) {
     $this->headers = $headers;
+    $this->checkbox = $checkbox;
   }
 
   public function render(): View|Closure|string

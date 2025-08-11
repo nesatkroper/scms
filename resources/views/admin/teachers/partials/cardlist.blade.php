@@ -6,7 +6,8 @@
             <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-24 flex items-end justify-center">
                 <!-- Circular Avatar -->
                 <div class="absolute -bottom-15">
-                    <div data-id="{{ $teacher->id }}" class="detail-btn size-32 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
+                    <div data-id="{{ $teacher->id }}"
+                        class="detail-btn size-32 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
                         @if ($teacher->photo)
                             <img src="{{ asset($teacher->photo) }}" alt="{{ $teacher->name }}"
                                 class="w-full h-full object-cover">
@@ -18,7 +19,7 @@
                             </div>
                         @endif
                     </div>
-                </div> 
+                </div>
             </div>
 
             <!-- Profile Body -->
@@ -77,9 +78,9 @@
                         <div class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
                             <i class="ri-money-dollar-circle-line"></i>
                         </div>
-                        <span>{{ $teacher->salary ? '$' . number_format($teacher->salary) : 'Not disclosed' }}</span>
+                        <span>${{ $teacher->salary }}</span>
                     </div>
-                    
+
                 </div>
             </div>
 

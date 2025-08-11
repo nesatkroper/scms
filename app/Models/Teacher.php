@@ -45,11 +45,6 @@ class Teacher extends Model
     return $this->belongsTo(User::class);
   }
 
-  public function sections()
-  {
-    return $this->hasMany(Section::class);
-  }
-
   public function courseOfferings()
   {
     return $this->hasMany(CourseOffering::class);

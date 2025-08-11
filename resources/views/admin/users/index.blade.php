@@ -2,8 +2,7 @@
 @section('title', 'Users')
 @section('content')
     <x-page.index :showReset="true" :showViewToggle="false" title="Users"
-        iconSvgPath="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" btn-text="Create New User"
-        btn-icon-svg-path="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
+        iconSvgPath="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" btn-text="Create New User">
         <div id="TableContainer" class="table-respone overflow-x-auto">
             @include('admin.users.partials.table', ['users' => $users])
         </div>

@@ -1,74 +1,27 @@
 @extends('layouts.admin')
 @section('title', 'Book Categories')
 @section('content')
-
-    <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-        <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
-            </svg>
-            Book Categories
-        </h3>
-        <div
-            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                Create New
-            </button>
-            <div class="flex items-center mt-3 md:mt-0 gap-2">
-                <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search book categories..."
-                        class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                    <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-                </div>
-                <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-                </button>
-                <div
-                    class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
-                    <button id="listViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                        <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                    <button id="cardViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
-                        <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <x-page.index :showReset="true" :showViewToggle="true" title="Book Categories" btn-text="Create New Category"
+        iconSvgPath="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
+        btn-icon-svg-path="">
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('admin.bookcategory.partials.table', ['categories' => $categories])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.bookcategory.partials.cardlist', ['categories' => $categories])
         </div>
-        {{-- pagination --}}
-        @include('admin.bookcategory.partials.pagination')
-    </div>
-
-    <!-- Modal Backdrop -->
-    <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+    </x-page.index>
 
     @include('admin.bookcategory.partials.create')
     @include('admin.bookcategory.partials.edit')
     @include('admin.bookcategory.partials.detail')
-    @include('admin.bookcategory.partials.delete')
+    <x-modal.confirmdelete title="Category" />
     @include('admin.bookcategory.partials.bulkedit')
     @include('admin.bookcategory.partials.bulkdelete')
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Core Configuration
@@ -94,12 +47,18 @@
             const bulkEditBtn = $('#bulkEditBtn');
             const bulkDeleteBtn = $('#bulkDeleteBtn');
 
-            const openCreateBtn = document.getElementById('openCreateModal');
-            if (openCreateBtn) {
-                openCreateBtn.addEventListener('click', function() {
-                    showModal('Modalcreate');
+            // Bulk Actions
+            function getSelectedIds() {
+                const selectedIds = [];
+                $('.row-checkbox:checked').each(function() {
+                    selectedIds.push($(this).val());
                 });
+                return selectedIds;
             }
+            
+            $('#openCreateModal').off('click').on('click', function() {
+                showModal('Modalcreate');
+            });
 
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
@@ -153,13 +112,45 @@
                 });
             }
 
+            // Utility Functions
+            function refreshContent() {
+                const currentView = localStorage.getItem('viewitem') || 'table';
+                const searchTerm = searchInput.val() || '';
+                $.ajax({
+                    url: "{{ route('admin.bookcategory.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm,
+                        view: currentView
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            tableContainer.html(response.html.table);
+                            cardContainer.html(response.html.cards);
+                            $('.pagination').html(response.html.pagination);
+                            attachRowEventHandlers();
+                            updateBulkActionsBar();
+                        } else {
+                            ShowTaskMessage('error', 'Failed to refresh data');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Refresh failed:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to refresh data');
+                    }
+                });
+            }
+
             // CRUD Operations
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
-
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
                 $.ajax({
@@ -170,17 +161,24 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshBookCategoryContent();
+                            refreshContent();
                             form.trigger('reset');
                         } else {
                             ShowTaskMessage('error', response.message ||
-                            'Error creating book category');
+                                'Error creating book category');
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating book category');
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#error-${field}`).text(errorMessage);
+                                }
+                            }
+                            ShowTaskMessage('error', `Invalid field something was wrong!`);
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -222,7 +220,10 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
                 $.ajax({
@@ -234,16 +235,24 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshBookCategoryContent();
+                            refreshContent();
                         } else {
                             ShowTaskMessage('error', response.message ||
-                            'Error updating book category');
+                                'Error updating book category');
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating book category');
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#edit-error-${field}`).text(errorMessage);
+                                }
+                            }
+                            let errorMessages = Object.values(errors).flat().join('\n');
+                            ShowTaskMessage('error', errorMessages || 'Error updating book category');
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -276,10 +285,10 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshBookCategoryContent();
+                            refreshContent();
                         } else {
                             ShowTaskMessage('error', response.message ||
-                            'Error deleting book category');
+                                'Error deleting book category');
                         }
                     },
                     error: function(xhr) {
@@ -306,8 +315,8 @@
                     .done(function(response) {
                         if (response.success) {
                             const category = response.category;
-                            const createdAt = category.created_at ? category.created_at.substring(0, 10) :'';
-                            const updatedAt = category.updated_at ? category.updated_at.substring(0, 10) :'';
+                            const createdAt = category.created_at ? category.created_at.substring(0, 10) : '';
+                            const updatedAt = category.updated_at ? category.updated_at.substring(0, 10) : '';
                             $('#detail_name').val(category.name ?? '');
                             $('#detail_description').val(category.description ?? '');
                             $('#detail_created_at').val(createdAt);
@@ -315,7 +324,7 @@
                             showModal('Modaldetail');
                         } else {
                             ShowTaskMessage('error', response.message ||
-                            'Failed to load book category details');
+                                'Failed to load book category details');
                         }
                     })
                     .fail(function(xhr) {
@@ -326,15 +335,6 @@
                         detailBtn.find('.btn-content').html(originalContent);
                         detailBtn.prop('disabled', false);
                     });
-            }
-
-            // Bulk Actions
-            function getSelectedIds() {
-                const selectedIds = [];
-                document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
-                    selectedIds.push(checkbox.value);
-                });
-                return selectedIds;
             }
 
             function updateBulkActionsBar() {
@@ -367,18 +367,19 @@
                     const originalBtnHtml = deleteBtn.innerHTML;
                     deleteBtn.disabled = true;
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
-
+                    const searchTerm = searchInput.val() || '';
                     $.ajax({
                         url: "{{ route('admin.bookcategory.bulkDelete') }}",
                         method: 'POST',
                         data: {
-                            ids: selectedIds
+                            ids: selectedIds,
+                            search: searchTerm
                         },
                         success: function(response) {
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshBookCategoryContent();
+                                refreshContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
                                     'Error deleting book categories');
@@ -402,7 +403,6 @@
                     ShowTaskMessage('error', 'Please select at least one book category to edit');
                     return;
                 }
-
                 const bulkEditBtn = document.getElementById('bulkEditBtn');
                 const originalBtnText = bulkEditBtn.innerHTML;
                 bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
@@ -421,12 +421,13 @@
                 }
 
                 document.getElementById('bulkEditCount').textContent = selectedIds.length;
-
+                const searchTerm = searchInput.val() || '';
                 $.ajax({
                     url: "{{ route('admin.bookcategory.getBulkData') }}",
                     method: 'POST',
                     data: {
-                        ids: selectedIds
+                        ids: selectedIds,
+                        search: searchTerm
                     },
                     success: function(response) {
                         bulkEditBtn.innerHTML = originalBtnText;
@@ -514,7 +515,7 @@
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshBookCategoryContent();
+                            refreshContent();
                         } else {
                             let errorMessage = response.message || 'Error updating book categories';
                             if (response.errors) {
@@ -538,63 +539,12 @@
                 });
             }
 
-            // Modal Management
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
-            // Utility Functions
-            function refreshBookCategoryContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const searchTerm = searchInput.val() || '';
-
-                $.ajax({
-                    url: "{{ route('admin.bookcategory.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                            updateBulkActionsBar();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to refresh data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Refresh failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to refresh data');
-                    }
-                });
-            }
-
             function attachRowEventHandlers() {
                 $('.edit-btn').off('click').on('click', handleEditClick);
+                $('#selectAllCheckbox').off('change').on('change', function() {
+                    $('.row-checkbox').prop('checked', this.checked);
+                    updateBulkActionsBar();
+                });
                 $('.delete-btn').off('click').on('click', handleDeleteClick);
                 $('.detail-btn').off('click').on('click', handleDetailClick);
                 $('.row-checkbox').off('change').on('change', updateBulkActionsBar);
@@ -648,24 +598,6 @@
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
                 $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
 
-                // Modal close buttons
-                $('[id^="close"], [id^="cancel"]').on('click', function() {
-                    const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
-                        $(this).closest('[id$="Modal"]').attr('id');
-                    if (modalId) closeModal(modalId);
-                });
-
-                // Close modals with Escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        $('[id^="Modal"]').each(function() {
-                            if (!$(this).hasClass('hidden')) {
-                                closeModal(this.id);
-                            }
-                        });
-                    }
-                });
-
                 // Attach initial event handlers
                 attachRowEventHandlers();
                 updateBulkActionsBar();
@@ -674,27 +606,5 @@
             // Start the application
             initialize();
         });
-
-        // Global notification function
-        function ShowTaskMessage(type, message) {
-            const TasksmsContainer = document.createElement('div');
-            TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-            TasksmsContainer.innerHTML = `
-        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-            </svg>
-            <div class="flex-1 text-sm sm:text-base">${message}</div>
-            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    `;
-            document.body.appendChild(TasksmsContainer);
-            setTimeout(() => TasksmsContainer.remove(), 3000);
-        }
     </script>
 @endpush

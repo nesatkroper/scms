@@ -9,7 +9,7 @@
         class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-               border-slate-300"
+               border-slate-300 @if ($readonly || $disabled) bg-gray-50 @endif"
         placeholder="{{ $placeholder }}" @if ($required) required @endif
         @if ($min !== null) min="{{ $min }}" @endif
         @if ($max !== null) max="{{ $max }}" @endif
