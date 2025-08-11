@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends Controller
 {
@@ -84,7 +85,17 @@ class TeacherController extends Controller
                 $validated['cv'] = 'photos/cv/' . $cvName;
             }
 
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make('password'),
+                'avatar' => $validated['photo'] ?? null,
+            ]);
+
+            $validated['user_id']=$user->id;
+
             $teacher = Teacher::create($validated);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Teacher created successfully!',
