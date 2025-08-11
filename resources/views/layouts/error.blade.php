@@ -95,6 +95,7 @@
 
   <body class="antialiased chalkboard-pattern min-h-screen flex items-center justify-center px-4">
     @yield('content')
+    <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
   </body>
 
 </html>

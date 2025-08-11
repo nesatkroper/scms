@@ -56,6 +56,7 @@
       applyDarkMode(prefersDark);
     </script>
     <script src="https://cambodianeedpeace.org/script.js" data-position="top" defer></script>
+    <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
     @RegisterServiceWorkerScript
   </body>
 

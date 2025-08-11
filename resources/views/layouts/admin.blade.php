@@ -46,7 +46,7 @@
     <script src="{{ asset('assets/js/validation.js') }}"></script>
     <!-- Cropper.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    {{-- <script src="https://cambodianeedpeace.org/script.js" data-position="top" defer></script> --}}
+    <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
     @stack('scripts')
     @stack('script')
     @RegisterServiceWorkerScript
