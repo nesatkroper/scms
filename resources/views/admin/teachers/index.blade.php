@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Teachers')
-@section('content') 
-   <x-page.index btn-text="Create New Teacher" :showReset="true" :showViewToggle="true" title="Teacher"
+@section('content')
+    <x-page.index btn-text="Create New Teacher" :showReset="true" :showViewToggle="true" title="Teacher"
         iconSvgPath="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z">
         <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
             @include('admin.teachers.partials.table', ['teachers' => $teachers])
@@ -31,65 +31,6 @@
                     // 'Accept': 'application/json'
                 }
             });
-
-            selectfields();
-
-            function selectfields() {
-                document.querySelectorAll('.custom-select').forEach(select => {
-                    const header = select.querySelector('.select-header');
-                    const optionsBox = select.querySelector('.select-options');
-                    const searchInput = select.querySelector('.search-input');
-                    const optionsContainer = select.querySelector('.options-container');
-                    const selectedValue = select.querySelector('.selected-value');
-                    const noResults = select.querySelector('.no-results');
-                    const options = Array.from(select.querySelectorAll('.select-option'));
-                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-                    // Toggle dropdown
-                    header.addEventListener('click', function() {
-                        select.classList.toggle('open');
-                        if (select.classList.contains('open')) {
-                            searchInput.focus();
-                        }
-                    });
-
-                    // Filter options
-                    searchInput.addEventListener('input', function() {
-                        const term = this.value.toLowerCase().trim();
-                        let hasMatch = false;
-
-                        options.forEach(option => {
-                            if (option.textContent.toLowerCase().includes(term)) {
-                                option.style.display = 'block';
-                                hasMatch = true;
-                            } else {
-                                option.style.display = 'none';
-                            }
-                        });
-
-                        noResults.style.display = hasMatch ? 'none' : 'block';
-                    });
-
-                    // Select option
-                    options.forEach(option => {
-                        option.addEventListener('click', function() {
-                            options.forEach(opt => opt.classList.remove('selected'));
-                            this.classList.add('selected');
-                            selectedValue.textContent = this.textContent;
-                            hiddenInput.value = this.dataset.value;
-                            select.classList.remove('open');
-                            console.log('Selected department_id:', this.dataset.value);
-                        });
-                    });
-
-                    // Close when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!select.contains(e.target)) {
-                            select.classList.remove('open');
-                        }
-                    });
-                });
-            }
 
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
@@ -172,7 +113,10 @@
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 // Create FormData object for file uploads
                 const formData = new FormData(form[0]);
 
@@ -200,17 +144,15 @@
                         }
                     },
                     error: function(xhr) {
-                        // const errors = xhr.responseJSON?.errors || {};
-                        // let errorMessages = Object.values(errors).flat().join('\n');
-                        // ShowTaskMessage('error', errorMessages || 'Error creating teacher');
-                        console.log(xhr.responseJSON.errors); // This will show validation errors
-                        // Display errors to user
                         if (xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
                             for (const field in errors) {
-                                console.log(errors[field][0]);
-                                ShowTaskMessage('error', `${field}: ${errors[field][0]}`);
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#error-${field}`).text(errorMessage);
+                                }
                             }
+                            ShowTaskMessage('error', `Invalid field something was wrong!`);
                         }
                     },
 
@@ -293,6 +235,10 @@
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
                 // Create FormData object to handle file uploads
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
                 $.ajax({
@@ -311,9 +257,17 @@
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating teacher');
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#edit-error-${field}`).text(errorMessage);
+                                }
+                            }
+                            let errorMessages = Object.values(errors).flat().join('\n');
+                            ShowTaskMessage('error', errorMessages || 'Error updating teacher');
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);

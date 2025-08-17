@@ -45,6 +45,7 @@
                                 <i class="ri-camera-line text-indigo-600 dark:text-indigo-300"></i>
                             </label>
                         </div>
+                        {{-- <x-photo-upload name="avatar" size="xl" /> --}}
                     </div>
                 </div>
 

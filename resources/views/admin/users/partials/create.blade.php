@@ -32,7 +32,7 @@
                 <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                     <!-- Circular Avatar -->
                     <div class="absolute -bottom-12">
-                        <div
+                        {{-- <div
                             class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 shadow-lg relative">
                             <img id="create_avatar_preview" src="" alt=""
                                 class="w-full h-full object-cover rounded-full hidden">
@@ -46,7 +46,8 @@
                                 class="size-8 flex justify-center items-center absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-6009">
                                 <i class="ri-camera-line text-indigo-600 dark:text-indigo-300"></i>
                             </label>
-                        </div>
+                        </div> --}}
+                        <x-photo-upload name="avatar" size="xl"/>
                     </div>
                 </div>
 
@@ -65,8 +66,8 @@
                         <x-fields.input type="password" label="Confirm Password" name="password_confirmation"
                             placeholder="Enter Confirm password" :required="true" />
                         <!-- User Role Select (Searchable) -->
-                        <x-fields.select name="type" label="User Role" :options="$roles" 
-                        :value="old('type')" required="true" searchable="true" />
+                        <x-fields.select name="type" label="User Role" :options="$roles" :value="old('type')"
+                            required="true" searchable="true" />
                         <!-- Phone Number Field -->
                         <x-fields.input type="tel" label="Phone number" name="phone"
                             placeholder="Enter phone number" />
@@ -95,8 +96,7 @@
                 <button type="submit" id="createSubmitBtn"
                     class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
                     <span class="btn-content flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                            fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                 clip-rule="evenodd" />

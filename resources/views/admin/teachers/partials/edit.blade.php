@@ -22,7 +22,7 @@
         </div>
 
         <!-- Form Content -->
-        <form id="Formedit" method="POST" class="p-4 overflow-y-auto max-h-[80vh]">
+        <form id="Formedit" method="POST" class="overflow-y-auto max-h-[80vh] needs-validation" novalidate>
             @csrf
             @method('PUT')
 
@@ -61,7 +61,8 @@
                         <div id="current_cv" class="mt-2 hidden">
                             <span class="text-sm text-gray-600 dark:text-gray-300">Current file: </span>
                             <a href="#" target="_blank"
-                                class="text-indigo-600 dark:text-indigo-400 text-sm hover:underline truncate w-[90%]" id="cv_link"></a>
+                                class="text-indigo-600 dark:text-indigo-400 text-sm hover:underline truncate w-[90%]"
+                                id="cv_link"></a>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
@@ -297,3 +298,249 @@
         </form>
     </div>
 </div>
+
+<!-- Add this right before the closing </form> tag in your edit modal -->
+<!-- Cropper Modal (same as create page but with edit-specific IDs) -->
+<div id="editCropModal"
+    class="overflow-hidden rounded-xl fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg bg-opacity-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Crop Image</h3>
+            <button id="closeEditCropModal"
+                class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <div class="img-container">
+                    <img id="editImageToCrop" class="max-w-full max-h-[60vh]" src="" alt="Image to crop">
+                </div>
+            </div>
+
+            <div class="md:w-64 flex flex-col gap-3">
+                <div class="preview-container overflow-hidden rounded-lg" style="width: 200px; height: 200px;"></div>
+
+                <div class="flex gap-2 mt-2">
+                    <button type="button" id="editRotateLeft"
+                        class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                        </svg>
+                    </button>
+                    <button type="button" id="editRotateRight"
+                        class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8V4m0 0h-4m4 0l-4 4m4 11v4m0 0h-4m4 0l-4-4" />
+                        </svg>
+                    </button>
+                    <button type="button" id="editFlipHorizontal"
+                        class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex gap-2 mt-auto pt-4">
+                    <button type="button" id="cancelEditCrop"
+                        class="cursor-pointer px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex-1">
+                        Cancel
+                    </button>
+                    <button type="button" id="applyEditCrop"
+                        class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Edit Modal Photo Upload with Cropper.js
+        const editPhotoInput = document.getElementById('photo_upload');
+        const editPhotoPreview = document.getElementById('edit_photo');
+        const editCropModal = document.getElementById('editCropModal');
+        const editImageToCrop = document.getElementById('editImageToCrop');
+        const closeEditCropModal = document.getElementById('closeEditCropModal');
+        const cancelEditCrop = document.getElementById('cancelEditCrop');
+        const applyEditCrop = document.getElementById('applyEditCrop');
+        const editRotateLeft = document.getElementById('editRotateLeft');
+        const editRotateRight = document.getElementById('editRotateRight');
+        const editFlipHorizontal = document.getElementById('editFlipHorizontal');
+
+        let editCropper;
+        let editOriginalImageUrl;
+
+        // Handle file selection for edit modal
+        editPhotoInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                handleEditFile(this.files[0]);
+            }
+        });
+
+        // Handle file for edit modal
+        function handleEditFile(file) {
+            // Check if the file is an image
+            if (!file.type.match('image.*')) {
+                showAlert('Please select an image file (JPG, PNG)');
+                return;
+            }
+
+            // Check file size (2MB max)
+            if (file.size > 2 * 1024 * 1024) {
+                showAlert('File size exceeds 2MB limit');
+                return;
+            }
+
+            // Create a URL for the file
+            editOriginalImageUrl = URL.createObjectURL(file);
+
+            // Show crop modal
+            editImageToCrop.src = editOriginalImageUrl;
+            editCropModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+
+            // Initialize cropper after image is loaded
+            editImageToCrop.onload = function() {
+                if (editCropper) {
+                    editCropper.destroy();
+                }
+
+                editCropper = new Cropper(editImageToCrop, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    autoCropArea: 0.8,
+                    responsive: true,
+                    preview: '.preview-container',
+                    guides: true,
+                    center: true,
+                    highlight: true,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            };
+        }
+
+        // Close edit crop modal and clean up
+        function closeEditCrop() {
+            if (editCropper) {
+                editCropper.destroy();
+                editCropper = null;
+            }
+            if (editOriginalImageUrl) {
+                URL.revokeObjectURL(editOriginalImageUrl);
+                editOriginalImageUrl = null;
+            }
+            editCropModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            editPhotoInput.value = ''; // Reset the input
+        }
+
+        // Event listeners for edit modal
+        closeEditCropModal.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeEditCrop();
+        });
+
+        cancelEditCrop.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeEditCrop();
+        });
+
+        applyEditCrop.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (editCropper) {
+                const canvas = editCropper.getCroppedCanvas({
+                    width: 300,
+                    height: 300,
+                    minWidth: 256,
+                    minHeight: 256,
+                    maxWidth: 4096,
+                    maxHeight: 4096,
+                    fillColor: '#fff',
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high',
+                });
+
+                if (canvas) {
+                    canvas.toBlob((blob) => {
+                        // Update preview
+                        editPhotoPreview.src = URL.createObjectURL(blob);
+
+                        // Hide initials if shown
+                        document.getElementById('edit_initials').classList.add('hidden');
+
+                        // Create a new File object
+                        const file = new File([blob], 'profile-photo.jpg', {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        });
+
+                        // Create a new FileList and DataTransfer
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+
+                        // Update the file input
+                        editPhotoInput.files = dataTransfer.files;
+
+                        // Clean up
+                        if (editOriginalImageUrl) {
+                            URL.revokeObjectURL(editOriginalImageUrl);
+                        }
+                    }, 'image/jpeg', 0.9);
+                }
+            }
+            closeEditCrop();
+        });
+
+        editRotateLeft.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            editCropper && editCropper.rotate(-90);
+        });
+
+        editRotateRight.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            editCropper && editCropper.rotate(90);
+        });
+
+        editFlipHorizontal.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (editCropper) {
+                const scaleX = editCropper.getData().scaleX || 1;
+                editCropper.scaleX(-scaleX);
+            }
+        });
+
+        // Show alert message
+        function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className =
+                'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50';
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => {
+                    document.body.removeChild(alertDiv);
+                }, 300);
+            }, 3000);
+        }
+    });
+</script>
