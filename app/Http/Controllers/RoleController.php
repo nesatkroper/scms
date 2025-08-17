@@ -31,6 +31,18 @@ class RoleController extends BaseController
         'per_page' => $perPage,
       ]);
 
+    if ($request->ajax()) {
+      $html = [
+        'table' => view('admin.roles.table', compact('roles'))->render(),
+        'pagination' => $roles->links()->toHtml()
+      ];
+
+      return response()->json([
+        'success' => true,
+        'html' => $html
+      ]);
+    }
+
     return view('admin.roles.index', compact('roles'));
   }
 

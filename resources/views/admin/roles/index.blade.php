@@ -2,61 +2,179 @@
 @section('title', 'Roles')
 @section('content')
 
-  <x-page.alert />
+    <x-page.alert />
 
-  <a href="{{ route('admin.roles.create') }}"
-    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 w-48 mb-4">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-        clip-rule="evenodd" />
-    </svg>
-    Create New Role
-  </a>
+    <a href="{{ route('admin.roles.create') }}"
+        class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 w-48 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+        </svg>
+        Create New Role
+    </a>
 
-  <x-page.index :canCreate="false" :showReset="false" :showViewToggle="false" title="Roles"
-    iconSvgPath="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z">
+    <x-page.index :canCreate="false" :showSearch="true" :showReset="true" :showViewToggle="false" title="Roles"
+        iconSvgPath="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z">
 
-    <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
-      <x-table.dynamic-table :headers="[
-          'id' => ['label' => 'Id'],
-          'name' => ['label' => 'Name'],
-          'permissions_count' => ['label' => 'Permissions'],
-          'users_count' => ['label' => 'Users'],
-      ]" endpoint="roles" :items="$roles"
-        empty-message="Create your first roles to get started" :checkbox="false" :actions="['edit', 'delete']" />
+         <div id="TableContainer" class="table-respone overflow-x-auto">
+            @include('admin.roles.table', ['roles' => $roles])
+        </div>
+    </x-page.index>
 
-      <x-table.pagination :paginator="$roles" />
-    </div>
-  </x-page.index>
-
-  <x-modal.confirmdelete title="Roles" />
+    <x-modal.confirmdelete title="Role" />
 
 @endsection
 
 @push('scripts')
-  <script src="{{ asset('assets/js/modal.js') }}"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // DOM Elements
+            const backdrop = document.getElementById('modalBackdrop');
+            const searchInput = $('#searchInput');
+            const resetSearch = $('#resetSearch');
+            const tableContainer = $('#TableContainer');
+            const perPageSelect = $('#perPageSelect');
 
-      function handleDeleteClick(e) {
-        e.preventDefault();
-        const id = e.currentTarget.dataset.id;
-        const form = document.getElementById('Formdelete');
-        if (form) {
-          form.action = `/admin/roles/${id}`;
-        }
-        document.getElementById('Modaldelete').classList.remove('hidden');
-        document.getElementById('Modaldelete').classList.add('flex');
-      }
+            // Handle per page selection change
+            perPageSelect.off('change').on('change', function() {
+                const perPage = $(this).val();
+                refreshContent();
+            });
 
+            // Search function
+            function searchData(searchTerm) {
+                const perPage = perPageSelect.val() || '';
+                $.ajax({
+                    url: "{{ route('admin.roles.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm,
+                        per_page: perPage
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            tableContainer.html(response.html.table);
+                            $('.pagination').html(response.html.pagination);
+                            attachRowEventHandlers();
+                        } else {
+                            ShowTaskMessage('error', 'Failed to load data');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Search failed:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to load data');
+                    }
+                });
+            }
 
-      function attachRowEventHandlers() {
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        deleteButtons.forEach(button => {
-          button.addEventListener('click', handleDeleteClick);
+            // Handle delete button click
+            function handleDeleteClick(e) {
+                e.preventDefault();
+                const Id = $(this).data('id');
+                $('#Formdelete').attr('action', `/roles/${Id}`);
+                showModal('Modaldelete');
+            }
+
+            // Handle delete form submission
+            function handleDeleteSubmit(e) {
+                e.preventDefault();
+                const form = $(this);
+                const submitBtn = $('#confirmDeleteBtn');
+                const originalBtnHtml = submitBtn.html();
+
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
+
+                $.ajax({
+                    url: '/admin' + form.attr('action'),
+                    method: 'POST',
+                    data: {
+                        _method: 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            closeModal('Modaldelete');
+                            ShowTaskMessage('success', response.message);
+                            refreshContent();
+                        } else {
+                            ShowTaskMessage('error', response.message || 'Error deleting role');
+                        }
+                    },
+                    error: function(xhr) {
+                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting role');
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false).html(originalBtnHtml);
+                    }
+                });
+            }
+
+            // Refresh table content
+            function refreshContent() {
+                const searchTerm = searchInput.val() || '';
+                const perPage = perPageSelect.val() || '';
+
+                $.ajax({
+                    url: "{{ route('admin.roles.index') }}",
+                    method: 'GET',
+                    data: {
+                        search: searchTerm,
+                        per_page: perPage
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            tableContainer.html(response.html.table);
+                            $('.pagination').html(response.html.pagination);
+                            attachRowEventHandlers();
+                        } else {
+                            ShowTaskMessage('error', 'Failed to refresh data');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Refresh failed:', xhr.responseText);
+                        ShowTaskMessage('error', 'Failed to refresh data');
+                    }
+                });
+            }
+
+            // Attach event handlers to table rows
+            function attachRowEventHandlers() {
+                $('.delete-btn').off('click').on('click', handleDeleteClick);
+            }
+
+            // Debounce function for search input
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this,
+                        args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), wait);
+                };
+            }
+
+            // Initialize all event listeners
+            function initialize() {
+                // Search functionality
+                searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
+                resetSearch.on('click', () => {
+                    searchInput.val('');
+                    searchData('');
+                });
+
+                $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
+                // Attach initial event handlers
+                attachRowEventHandlers();
+            }
+
+            // Start the application
+            initialize();
         });
-      }
-      attachRowEventHandlers();
-    });
-  </script>
+    </script>
 @endpush
