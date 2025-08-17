@@ -15,22 +15,27 @@ class UpdateTeacherRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'name' => 'required|string|max:255',
-      'gender' => 'required|in:male,female,other',
-      'dob' => 'required|date',
+      'name'          => 'required|string|max:255',
+      'gender'        => 'required|in:male,female,other',
+      'dob'           => 'required|date',
       'department_id' => 'required|exists:departments,id',
-      'user_id' => 'required|exists:users,id',
-      'joining_date' => 'required|date',
+      'joining_date'  => 'required|date',
       'qualification' => 'required|string|max:255',
-      'experience' => 'required|string|max:255',
-      'phone' => 'required|string|max:20',
-      'email' => 'required|email|max:255|unique:teachers,email,' . $this->teacher->id,
-      'address' => 'required|string',
+      'experience'    => 'required|string|max:255',
+      'phone'         => 'required|string|max:20',
+      'email' => [
+        'required',
+        'email',
+        'max:255',
+        Rule::unique('teachers', 'email')->ignore($this->teacher->id),
+      ],
+
+      'address'        => 'required|string',
       'specialization' => 'nullable|string',
-      'salary' => 'nullable|numeric|min:0',
-      'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-      'cv' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-      'description' => 'nullable|string',
+      'salary'         => 'nullable|numeric|min:0',
+      'photo'          => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+      'cv'             => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+      'description'    => 'nullable|string',
     ];
   }
 }

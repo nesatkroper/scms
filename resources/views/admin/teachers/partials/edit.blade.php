@@ -46,6 +46,74 @@
                             </label>
                         </div>
                     </div>
+                    <!-- Cropper Modal (same as create page but with edit-specific IDs) -->
+                    <div id="editCropModal"
+                        class="overflow-hidden rounded-xl fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg bg-opacity-50 hidden">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl p-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Crop Image</h3>
+                                <button id="closeEditCropModal"
+                                    class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">
+                                    <div class="img-container">
+                                        <img id="editImageToCrop" class="max-w-full max-h-[60vh]" src=""
+                                            alt="Image to crop">
+                                    </div>
+                                </div>
+
+                                <div class="md:w-64 flex flex-col gap-3">
+                                    <div class="preview-container overflow-hidden rounded-lg"
+                                        style="width: 200px; height: 200px;"></div>
+
+                                    <div class="flex gap-2 mt-2">
+                                        <button type="button" id="editRotateLeft"
+                                            class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" id="editRotateRight"
+                                            class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 8V4m0 0h-4m4 0l-4 4m4 11v4m0 0h-4m4 0l-4-4" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" id="editFlipHorizontal"
+                                            class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex gap-2 mt-auto pt-4">
+                                        <button type="button" id="cancelEditCrop"
+                                            class="cursor-pointer px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex-1">
+                                            Cancel
+                                        </button>
+                                        <button type="button" id="applyEditCrop"
+                                            class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Profile Body -->
@@ -83,24 +151,7 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="mb-2">
-                            <label for="edit_user"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                User Account <span class="text-red-500">*</span>
-                            </label>
-                            <select id="edit_user" name="user_id"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('user_id') border-red-500 @else border-gray-400 @enderror"
-                                required>
-                                <option value="">Select user account</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            <p class="error-user mt-1 text-sm text-red-600"></p>
-                        </div>
+
                         <div class="mb-2">
                             <label for="edit_gender"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -111,7 +162,8 @@
                                 required>
                                 <option value="">Select gender</option>
                                 <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
+                                </option>
                                 <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
                             </select>
                             <p class="error-gender mt-1 text-sm text-red-600"></p>
@@ -272,7 +324,7 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+            <div class="flex justify-end space-x-3 p-4 border-t border-gray-200 dark:border-gray-700 mt-4">
                 <button type="button" id="cancelEditModal"
                     class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -299,69 +351,6 @@
     </div>
 </div>
 
-<!-- Add this right before the closing </form> tag in your edit modal -->
-<!-- Cropper Modal (same as create page but with edit-specific IDs) -->
-<div id="editCropModal"
-    class="overflow-hidden rounded-xl fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg bg-opacity-50 hidden">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl p-4">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Crop Image</h3>
-            <button id="closeEditCropModal"
-                class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-4">
-            <div class="flex-1">
-                <div class="img-container">
-                    <img id="editImageToCrop" class="max-w-full max-h-[60vh]" src="" alt="Image to crop">
-                </div>
-            </div>
-
-            <div class="md:w-64 flex flex-col gap-3">
-                <div class="preview-container overflow-hidden rounded-lg" style="width: 200px; height: 200px;"></div>
-
-                <div class="flex gap-2 mt-2">
-                    <button type="button" id="editRotateLeft"
-                        class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                        </svg>
-                    </button>
-                    <button type="button" id="editRotateRight"
-                        class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 8V4m0 0h-4m4 0l-4 4m4 11v4m0 0h-4m4 0l-4-4" />
-                        </svg>
-                    </button>
-                    <button type="button" id="editFlipHorizontal"
-                        class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="flex gap-2 mt-auto pt-4">
-                    <button type="button" id="cancelEditCrop"
-                        class="cursor-pointer px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex-1">
-                        Cancel
-                    </button>
-                    <button type="button" id="applyEditCrop"
-                        class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
-                        Apply
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Edit Modal Photo Upload with Cropper.js
@@ -381,8 +370,13 @@
 
         // Handle file selection for edit modal
         editPhotoInput.addEventListener('change', function(e) {
+            // if (this.files && this.files[0]) {
+            //     handleEditFile(this.files[0]);
+            // }
             if (this.files && this.files[0]) {
-                handleEditFile(this.files[0]);
+                const file = this.files[0];
+                this.value = '';
+                handleEditFile(file);
             }
         });
 
@@ -390,15 +384,14 @@
         function handleEditFile(file) {
             // Check if the file is an image
             if (!file.type.match('image.*')) {
-                showAlert('Please select an image file (JPG, PNG)');
+                ShowTaskMessage('error', 'Please select an image file (JPG, PNG)');
                 return;
             }
-
-            // Check file size (2MB max)
-            if (file.size > 2 * 1024 * 1024) {
-                showAlert('File size exceeds 2MB limit');
-                return;
-            }
+            // // Check file size (2MB max)
+            // if (file.size > 2 * 1024 * 1024) {
+            //     ShowTaskMessage('error', 'File size exceeds 2MB limit');
+            //     return;
+            // }
 
             // Create a URL for the file
             editOriginalImageUrl = URL.createObjectURL(file);
@@ -449,12 +442,14 @@
         closeEditCropModal.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
             closeEditCrop();
         });
 
         cancelEditCrop.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.stopImmediatePropagation();
             closeEditCrop();
         });
 
@@ -526,21 +521,5 @@
                 editCropper.scaleX(-scaleX);
             }
         });
-
-        // Show alert message
-        function showAlert(message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className =
-                'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50';
-            alertDiv.textContent = message;
-            document.body.appendChild(alertDiv);
-
-            setTimeout(() => {
-                alertDiv.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                setTimeout(() => {
-                    document.body.removeChild(alertDiv);
-                }, 300);
-            }, 3000);
-        }
     });
 </script>

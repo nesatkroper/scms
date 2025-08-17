@@ -1,5 +1,5 @@
 // Modal Management
-window.ShowTaskMessage = function (type, message) {
+window.ShowTaskMessage = function (type = 'error', message) {
     const TasksmsContainer = document.createElement('div');
     TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
     TasksmsContainer.innerHTML = `

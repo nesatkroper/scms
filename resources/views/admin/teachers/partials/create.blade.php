@@ -29,6 +29,7 @@
             <div class="h-[65vh] md:h-[75vh] overflow-y-auto px-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
                     <x-upload-file />
+                    <x-cvupload />
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-2">
                     <!-- Personal Information -->
@@ -42,18 +43,10 @@
                     <!-- Email Field -->
                     <x-fields.input type="email" label="Email" name="email" placeholder="Enter email"
                         :required="true" />
-
-                    <div class="mb-2">
-                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Phone <span class="text-red-500">*</span>
-                        </label>
-                        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('phone') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter phone number" required>
-                        <p class="error-phone mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <!-- Professional Information -->
+                    <x-fields.input type="tel" label="Phone" name="phone" placeholder="Enter phone number"
+                        :required="true" />
+                    {{-- <x-fields.select name="department_id" label="Department" :options="$departments" :value="old('department_id')"
+                        :required="true" searchable="true" /> --}}
                     <div class="mb-2">
                         <label for="department_id"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -71,101 +64,23 @@
                             @endforeach
                         </select>
                         <p class="error-department mt-1 text-sm text-red-600"></p>
+                        <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
+                            Field department is required.
+                        </div>
                     </div>
+                    <x-fields.input type="date" label="Joining Date" name="joining_date"
+                        placeholder="Enter joining date" :required="true" />
 
-                    <div class="mb-2">
-                        <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            User Account <span class="text-red-500">*</span>
-                        </label>
-                        <select id="user_id" name="user_id"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('user_id') border-red-500 @else border-gray-400 @enderror"
-                            required>
-                            <option value="">Select user account</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }} ({{ $user->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <p class="error-user mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="joining_date"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Joining Date <span class="text-red-500">*</span>
-                        </label>
-                        <input type="date" id="joining_date" name="joining_date" value="{{ old('joining_date') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('joining_date') border-red-500 @else border-gray-400 @enderror"
-                            required>
-                        <p class="error-joining_date mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="qualification"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Qualification <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="qualification" name="qualification"
-                            value="{{ old('qualification') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('qualification') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter qualifications" required>
-                        <p class="error-qualification mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="experience" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Experience <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="experience" name="experience" value="{{ old('experience') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('experience') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter years of experience" required>
-                        <p class="error-experience mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <!-- Optional Fields -->
-                    <div class="mb-2">
-                        <label for="specialization"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Specialization
-                        </label>
-                        <input type="text" id="specialization" name="specialization"
-                            value="{{ old('specialization') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('specialization') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter specializations">
-                        <p class="error-specialization mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="salary" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Salary
-                        </label>
-                        <input type="number" step="0.01" id="salary" name="salary"
-                            value="{{ old('salary') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('salary') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter salary amount">
-                        <p class="error-salary mt-1 text-sm text-red-600"></p>
-                    </div>
+                    <x-fields.input label="Qualification" name="qualification" placeholder="Enter qualification"
+                        :required="true" />
+                    <x-fields.input label="Experience" name="experience" placeholder="Enter experience"
+                        :required="true" />
+                    <x-fields.input label="Specialization" name="specialization" placeholder="Enter specialization" />
+                    <x-fields.input type="number" label="Salary" name="salary" placeholder="Enter salary" />
                 </div>
-                <div class="mb-2">
-                    <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Address <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="address" name="address" value="{{ old('address') }}"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('email') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter address address" required>
-                    <p class="error-address mt-1 text-sm text-red-600"></p>
-                </div>
-                <!-- Description -->
-                <div class="mb-2">
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Additional Information
-                    </label>
-                    <textarea id="description" name="description" rows="3"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('description') border-red-500 @else border-gray-400 @enderror"
-                        placeholder="Enter any additional information about the teacher">{{ old('description') }}</textarea>
-                    <p class="error-description mt-1 text-sm text-red-600"></p>
-                </div>
+                <x-fields.input label="Address" name="address" placeholder="Enter address" required />
+                <x-fields.textarea label="Additional Information"
+                    placeholder="Enter any additional information about the teacher" name="description" />
             </div>
 
             <!-- Form Actions -->

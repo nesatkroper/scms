@@ -92,7 +92,7 @@ class TeacherController extends Controller
                 'avatar' => $validated['photo'] ?? null,
             ]);
 
-            $validated['user_id']=$user->id;
+            $validated['user_id'] = $user->id;
 
             $teacher = Teacher::create($validated);
 
@@ -148,6 +148,14 @@ class TeacherController extends Controller
                 $cvPath = public_path('photos/cv');
                 $cv->move($cvPath, $cvName);
                 $data['cv'] = 'photos/cv/' . $cvName;
+            }
+
+            if ($teacher->user) {
+                $teacher->user->update([
+                    'name'   => $data['name'] ?? $teacher->name,
+                    'email'  => $data['email'] ?? $teacher->email,
+                    'avatar' => $data['photo'] ?? $teacher->avatar,
+                ]);
             }
 
             $teacher->update($data);
