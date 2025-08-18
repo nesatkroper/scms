@@ -38,13 +38,6 @@
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl p-4">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Crop Image</h3>
-                        <button id="closeCropModal"
-                            class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-4">
@@ -56,11 +49,11 @@
                         </div>
 
                         <div class="md:w-64 flex flex-col gap-3">
-                            <div class="preview-container overflow-hidden rounded-lg"
+                            <div class="preview-container overflow-hidden w-[200px] h-[200px] rounded-full mx-auto border border-gray-200"
                                 style="width: 200px; height: 200px;">
                             </div>
 
-                            <div class="flex gap-2 mt-2">
+                            <div class="flex gap-2 justify-center mt-2">
                                 <button type="button" id="rotateLeft"
                                     class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,10 +78,6 @@
                             </div>
 
                             <div class="flex gap-2 mt-auto pt-4">
-                                <button type="button" id="cancelCrop"
-                                    class="cursor-pointer px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex-1">
-                                    Cancel
-                                </button>
                                 <button type="button" id="applyCrop"
                                     class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
                                     Apply
@@ -117,8 +106,6 @@
             const removePhoto = document.getElementById('removePhoto');
             const cropModal = document.getElementById('cropModal');
             const imageToCrop = document.getElementById('imageToCrop');
-            const closeCropModal = document.getElementById('closeCropModal');
-            const cancelCrop = document.getElementById('cancelCrop');
             const applyCrop = document.getElementById('applyCrop');
             const rotateLeft = document.getElementById('rotateLeft');
             const rotateRight = document.getElementById('rotateRight');
@@ -179,7 +166,6 @@
                     if (cropper) {
                         cropper.destroy();
                     }
-
                     cropper = new Cropper(imageToCrop, {
                         aspectRatio: 1,
                         viewMode: 1,
@@ -257,21 +243,6 @@
                 e.stopPropagation();
                 resetPhoto();
             });
-
-            closeCropModal.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                closeCrop();
-            });
-
-            cancelCrop.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                closeCrop();
-            });
-
             applyCrop.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -358,16 +329,6 @@
         /* Cropper.js overrides */
         .cropper-view-box,
         .cropper-face {
-            border-radius: 50%;
-        }
-
-        /* Preview container */
-        .preview-container {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
             border-radius: 50%;
         }
 
