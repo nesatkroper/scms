@@ -26,7 +26,6 @@
                 </div>
             </button>
 
-
             <div class="flex items-center mt-3 md:mt-0 gap-2">
                 <div class="relative w-full">
                     <input type="search" id="searchInput" placeholder="Search student..."
@@ -246,7 +245,10 @@
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 const formData = new FormData(form[0]);
                 $.ajax({
                     url: form.attr('action'),
@@ -271,8 +273,12 @@
                         if (xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
                             for (const field in errors) {
-                                ShowTaskMessage('error', `${field}: ${errors[field][0]}`);
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#error-${field}`).text(errorMessage);
+                                }
                             }
+                            ShowTaskMessage('error', `Invalid field something was wrong!`);
                         }
                     },
                     complete: function() {
@@ -342,9 +348,12 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
                 $.ajax({
                     url: '/admin' + form.attr('action'),
                     method: 'POST',
@@ -361,9 +370,17 @@
                         }
                     },
                     error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating student');
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#edit-error-${field}`).text(errorMessage);
+                                }
+                            }
+                            let errorMessages = Object.values(errors).flat().join('\n');
+                            ShowTaskMessage('error', errorMessages || 'Error updating student');
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);

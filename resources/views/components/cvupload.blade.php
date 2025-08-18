@@ -69,18 +69,6 @@
             function unhighlightCv() {
                 cvDropArea.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900');
             }
-
-            function showAlert(message) {
-                const alertDiv = document.createElement('div');
-                alertDiv.className =
-                'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50';
-                alertDiv.textContent = message;
-                document.body.appendChild(alertDiv);
-                setTimeout(() => {
-                    alertDiv.remove();
-                }, 3000);
-            }
-
             function handleCvFile(file) {
                 const validTypes = [
                     'application/pdf',
@@ -89,12 +77,12 @@
                 ];
 
                 if (!validTypes.includes(file.type)) {
-                    showAlert('Please select a PDF, DOC, or DOCX file');
+                    ShowTaskMessage('error', 'Please select a PDF, DOC, or DOCX file');
                     return;
                 }
 
                 if (file.size > 5 * 1024 * 1024) {
-                    showAlert('File size exceeds 5MB limit');
+                    ShowTaskMessage('error', 'File size exceeds 5MB limit');
                     return;
                 }
 

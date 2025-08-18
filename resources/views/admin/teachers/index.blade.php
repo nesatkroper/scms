@@ -9,6 +9,7 @@
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.teachers.partials.cardlist', ['teachers' => $teachers])
         </div>
+        <x-table.pagination :paginator="$teachers" />
     </x-page.index>
 
     @include('admin.teachers.partials.create')
@@ -21,6 +22,7 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Core Configuration
@@ -130,7 +132,7 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshTeacherContent();
+                            refreshContent();
                             form.trigger('reset');
                             // Reset photo preview
                             $('#photoPreview').addClass('hidden');
@@ -251,7 +253,7 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshTeacherContent();
+                            refreshContent();
                         } else {
                             ShowTaskMessage('error', response.message || 'Error updating teacher');
                         }
@@ -313,7 +315,7 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshTeacherContent();
+                            refreshContent();
                         } else {
                             ShowTaskMessage('error', response.message || 'Error deleting teacher');
                         }
@@ -461,7 +463,7 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshTeacherContent();
+                                refreshContent();
                             } else {
                                 ShowTaskMessage('error', response.message ||
                                     'Error deleting teachers');
@@ -478,196 +480,6 @@
                     });
                 };
             }
-
-            // function handleBulkEdit() {
-            //     const selectedIds = getSelectedIds();
-            //     if (selectedIds.length === 0) {
-            //         ShowTaskMessage('error', 'Please select at least one teacher to edit');
-            //         return;
-            //     }
-
-            //     const bulkEditBtn = document.getElementById('bulkEditBtn');
-            //     const originalBtnText = bulkEditBtn.innerHTML;
-            //     bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-            //     bulkEditBtn.disabled = true;
-
-            //     $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
-            //     if (selectedIds.length > 1) {
-            //         $('#bulkEditContainer').removeClass('md:h-auto')
-            //         $('#bulkEditContainer').addClass('h-[70vh]')
-            //     }
-            //     if (selectedIds.length > 5) {
-            //         ShowTaskMessage('error', 'You can only edit up to 5 teachers at a time');
-            //         bulkEditBtn.innerHTML = originalBtnText;
-            //         bulkEditBtn.disabled = false;
-            //         return;
-            //     }
-
-            //     document.getElementById('bulkEditCount').textContent = selectedIds.length;
-
-            //     $.ajax({
-            //         url: "{{ route('admin.teachers.getBulkData') }}",
-            //         method: 'POST',
-            //         data: {
-            //             ids: selectedIds
-            //         },
-            //         success: function(response) {
-            //             bulkEditBtn.innerHTML = originalBtnText;
-            //             bulkEditBtn.disabled = false;
-
-            //             if (!response.success) {
-            //                 ShowTaskMessage('error', response.message || 'Error loading data');
-            //                 return;
-            //             }
-
-            //             const container = document.getElementById('bulkEditContainer');
-            //             container.innerHTML = '';
-
-            //             response.data.forEach((teacher, index) => {
-            //                 const fieldHtml = `
-        //             <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-        //                 <input type="hidden" name="teachers[${index}][id]" value="${teacher.id}">
-        //                 <div class="flex justify-between items-center mb-2">
-        //                     <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Teacher #${index + 1}</h4>
-        //                 </div>
-
-        //                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        //                     
-        //                     <div class="mb-4">
-        //                         <label for="teachers[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        //                             Department <span class="text-red-500">*</span>
-        //                         </label>
-        //                         <select id="teachers[${index}][department_id]" name="teachers[${index}][department_id]"
-        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-        //                             border-gray-400" required>
-        //                             @foreach ($departments as $department)
-        //                                 <option value="{{ $department->id }}" ${teacher.department_id == {{ $department->id }} ? 'selected' : ''}>
-        //                                     {{ $department->name }}
-        //                                 </option>
-        //                             @endforeach
-        //                         </select>
-        //                     </div>
-
-        //                     <div class="mb-4">
-        //                         <label for="teachers[${index}][joining_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        //                             Joining Date <span class="text-red-500">*</span>
-        //                         </label>
-        //                         <input type="date" id="teachers[${index}][joining_date]" name="teachers[${index}][joining_date]"
-        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-        //                             border-gray-400"
-        //                             value="${teacher.joining_date}"
-        //                             required>
-        //                     </div>
-
-        //                     <div class="mb-4">
-        //                         <label for="teachers[${index}][qualification]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        //                             Qualification <span class="text-red-500">*</span>
-        //                         </label>
-        //                         <input type="text" id="teachers[${index}][qualification]" name="teachers[${index}][qualification]"
-        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-        //                             border-gray-400"
-        //                             value="${teacher.qualification}"
-        //                             placeholder="Enter qualification" required>
-        //                     </div>
-
-        //                     <div class="mb-4">
-        //                         <label for="teachers[${index}][specialization]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        //                             Specialization
-        //                         </label>
-        //                         <input type="text" id="teachers[${index}][specialization]" name="teachers[${index}][specialization]"
-        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-        //                             border-gray-400"
-        //                             value="${teacher.specialization || ''}"
-        //                             placeholder="Enter specialization">
-        //                     </div>
-
-        //                     <div class="mb-4">
-        //                         <label for="teachers[${index}][salary]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        //                             Salary
-        //                         </label>
-        //                         <input type="number" step="0.01" id="teachers[${index}][salary]" name="teachers[${index}][salary]"
-        //                             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-        //                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-        //                             border-gray-400"
-        //                             value="${teacher.salary || ''}"
-        //                             placeholder="Enter salary">
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         `;
-
-            //                 container.insertAdjacentHTML('beforeend', fieldHtml);
-            //             });
-
-            //             showModal('bulkEditModal');
-            //         },
-            //         error: function(xhr) {
-            //             bulkEditBtn.innerHTML = originalBtnText;
-            //             bulkEditBtn.disabled = false;
-            //             ShowTaskMessage('error', 'Error loading data');
-            //         }
-            //     });
-            // }
-
-            // function handleBulkEditSubmit(e) {
-            //     e.preventDefault();
-            //     const submitBtn = document.getElementById('bulkEditSubmitBtn');
-            //     const originalBtnHtml = submitBtn.innerHTML;
-            //     submitBtn.disabled = true;
-            //     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-
-            //     const dataform = [];
-            //     $('.sub-field').each(function(index) {
-            //         const data = {
-            //             id: $(this).find('input[type="hidden"]').val(),
-            //             teacher_id: $(this).find('input[name$="[teacher_id]"]').val(),
-            //             department_id: $(this).find('select[name$="[department_id]"]').val(),
-            //             joining_date: $(this).find('input[name$="[joining_date]"]').val(),
-            //             qualification: $(this).find('input[name$="[qualification]"]').val(),
-            //             specialization: $(this).find('input[name$="[specialization]"]').val(),
-            //             salary: $(this).find('input[name$="[salary]"]').val()
-            //         };
-            //         dataform.push(data);
-            //     });
-
-            //     $.ajax({
-            //         url: "{{ route('admin.teachers.bulkUpdate') }}",
-            //         method: 'POST',
-            //         data: {
-            //             teachers: dataform
-            //         },
-            //         success: function(response) {
-            //             if (response.success) {
-            //                 closeModal('bulkEditModal');
-            //                 ShowTaskMessage('success', response.message);
-            //                 refreshTeacherContent();
-            //             } else {
-            //                 let errorMessage = response.message || 'Error updating teachers';
-            //                 if (response.errors) {
-            //                     errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
-            //                 }
-            //                 ShowTaskMessage('error', errorMessage);
-            //             }
-            //         },
-            //         error: function(xhr) {
-            //             let errorMessage = 'An error occurred while updating';
-            //             if (xhr.status === 422) {
-            //                 const errors = xhr.responseJSON?.errors || {};
-            //                 errorMessage = Object.values(errors).flat().join('\n');
-            //             }
-            //             ShowTaskMessage('error', errorMessage);
-            //         },
-            //         complete: function() {
-            //             submitBtn.disabled = false;
-            //             submitBtn.innerHTML = originalBtnHtml;
-            //         }
-            //     });
-            // }
-
 
             function handleBulkEdit() {
                 const selectedIds = getSelectedIds();
@@ -937,7 +749,7 @@
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshTeacherContent();
+                            refreshContent();
                         } else {
                             let errorMessage = response.message || 'Error updating teachers';
                             if (response.errors) {
@@ -961,32 +773,8 @@
                 });
             }
 
-            // Modal Management
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
             // Utility Functions
-            function refreshTeacherContent() {
+            function refreshContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
@@ -1069,25 +857,6 @@
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
                 $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
-
-                // Modal close buttons
-                $('[id^="close"], [id^="cancel"]').on('click', function() {
-                    const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
-                        $(this).closest('[id$="Modal"]').attr('id');
-                    if (modalId) closeModal(modalId);
-                });
-
-                // Close modals with Escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        $('[id^="Modal"]').each(function() {
-                            if (!$(this).hasClass('hidden')) {
-                                closeModal(this.id);
-                            }
-                        });
-                    }
-                });
-
                 // Attach initial event handlers
                 attachRowEventHandlers();
                 updateBulkActionsBar();
@@ -1096,27 +865,5 @@
             // Start the application
             initialize();
         });
-
-        // Global notification function
-        function ShowTaskMessage(type, message) {
-            const TasksmsContainer = document.createElement('div');
-            TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-            TasksmsContainer.innerHTML = `
-        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-            </svg>
-            <div class="flex-1 text-sm sm:text-base">${message}</div>
-            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    `;
-            document.body.appendChild(TasksmsContainer);
-            setTimeout(() => TasksmsContainer.remove(), 3000);
-        }
     </script>
 @endpush

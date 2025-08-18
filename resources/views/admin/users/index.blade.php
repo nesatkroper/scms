@@ -176,27 +176,17 @@
                                         .toUpperCase()
                                         .substring(0, 2);
                                 }
-                                $('#edit_initials').removeClass('hidden').find('span').text(initials);
-                            }
 
-                            $('#avatar_upload').off('change').on('change', function(e) {
-                                const file = e.target.files[0];
-                                if (file) {
-                                    if (!file.type.match('image.*')) {
-                                        ShowTaskMessage('error', 'Please select an image file');
-                                        return;
-                                    }
-
-                                    const reader = new FileReader();
-                                    reader.onload = function(e) {
-                                        $('#edit_avatar').attr('src', e.target.result).removeClass(
-                                            'hidden');
-                                        $('#edit_initials').addClass('hidden');
-                                    };
-                                    reader.readAsDataURL(file);
+                                if (user.avatar) {
+                                    $('#edit_avatar').attr('src', '/' + user.avatar).removeClass('hidden');
+                                    $('#edit_initials').addClass('hidden');
+                                } else {
+                                    $('#edit_photo').addClass('hidden');
+                                    const initials = user.name.split(' ').map(n => n[0]).join('')
+                                        .toUpperCase();
+                                    $('#edit_initials').removeClass('hidden').find('span').text(initials);
                                 }
-                            });
-
+                            }
                             // Set form action
                             $('#Formedit').attr('action', `/users/${Id}`);
                             showModal('Modaledit');

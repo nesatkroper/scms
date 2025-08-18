@@ -49,7 +49,7 @@
 
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="flex-1">
-                            <div class="img-container">
+                            <div class="img-container max-h-[60vh] w-full overflow-hidden">
                                 <img id="imageToCrop" class="max-w-full max-h-[60vh]" src=""
                                     alt="Image to crop">
                             </div>
@@ -109,7 +109,6 @@
             // =============================================
             // Photo Upload with Cropper.js Functionality
             // =============================================
-
             // Elements
             const photoInput = document.getElementById('photo');
             const dropArea = document.getElementById('dropArea');
@@ -157,15 +156,15 @@
             function handleFile(file) {
                 // Check if the file is an image
                 if (!file.type.match('image.*')) {
-                    showAlert('Please select an image file (JPG, PNG)');
+                    ShowTaskMessage('error','Please select an image file (JPG, PNG)');
                     return;
                 }
 
-                // Check file size (2MB max)
-                if (file.size > 2 * 1024 * 1024) {
-                    showAlert('File size exceeds 2MB limit');
-                    return;
-                }
+                // // Check file size (2MB max)
+                // if (file.size > 2 * 1024 * 1024) {
+                //     ShowTaskMessage('error','File size exceeds 2MB limit');
+                //     return;
+                // }
 
                 // Create a URL for the file
                 originalImageUrl = URL.createObjectURL(file);
@@ -221,22 +220,6 @@
                     URL.revokeObjectURL(photoPreviewImage.src);
                     photoPreviewImage.src = '';
                 }
-            }
-
-            // Show alert message
-            function showAlert(message) {
-                const alertDiv = document.createElement('div');
-                alertDiv.className =
-                    'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50';
-                alertDiv.textContent = message;
-                document.body.appendChild(alertDiv);
-
-                setTimeout(() => {
-                    alertDiv.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                    setTimeout(() => {
-                        document.body.removeChild(alertDiv);
-                    }, 300);
-                }, 3000);
             }
 
             // Event listeners for photo upload
@@ -372,13 +355,6 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <style>
-        /* Ensure the cropper container has proper dimensions */
-        .img-container {
-            max-height: 60vh;
-            width: 100%;
-            overflow: hidden;
-        }
-
         /* Cropper.js overrides */
         .cropper-view-box,
         .cropper-face {
@@ -399,7 +375,6 @@
         #dropArea.hidden {
             display: none;
         }
-
         /* Prevent body scrolling when modal is open */
         body.overflow-hidden {
             overflow: hidden;

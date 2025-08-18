@@ -40,4 +40,3 @@
     @endif
 </x-table.table>
 <x-bulkactions />
-<x-table.pagination :paginator="$categories" />

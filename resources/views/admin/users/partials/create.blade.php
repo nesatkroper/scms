@@ -108,25 +108,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Avatar preview for create modal
-        const avatarUpload = document.getElementById('avatar_upload');
-        const avatarPreview = document.getElementById('create_avatar_preview');
-        const initialsPreview = document.getElementById('create_initials');
-
-        avatarUpload.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    avatarPreview.src = e.target.result;
-                    avatarPreview.classList.remove('hidden');
-                    initialsPreview.classList.add('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-</script>

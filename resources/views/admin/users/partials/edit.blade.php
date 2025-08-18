@@ -22,7 +22,8 @@
         </div>
 
         <!-- Form Content -->
-        <form id="Formedit" method="POST" class="overflow-y-auto max-h-[80vh] needs-validation" novalidate enctype="multipart/form-data">
+        <form id="Formedit" method="POST" class="overflow-y-auto max-h-[80vh] needs-validation" novalidate
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -30,30 +31,15 @@
                 <!-- Profile Header -->
                 <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                     <!-- Circular Avatar -->
-                    <div class="absolute -bottom-12">
-                        <div
-                            class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 shadow-lg relative">
-                            <img id="edit_avatar" src="" alt=""
-                                class="w-full h-full object-cover rounded-full">
-                            <div id="edit_initials"
-                                class="absolute inset-0 rounded-full w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
-                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
-                            </div>
-                            <input type="file" id="avatar_upload" name="avatar" accept="image/*" class="hidden">
-                            <label for="avatar_upload"
-                                class="size-8 flex justify-center items-center absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <i class="ri-camera-line text-indigo-600 dark:text-indigo-300"></i>
-                            </label>
-                        </div>
-                        {{-- <x-photo-upload name="avatar" size="xl" /> --}}
-                    </div>
+                    <x-photos.upload :edit="true" name="avatar" />
                 </div>
 
                 <!-- Profile Body -->
                 <div class="pt-16 pb-4 px-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
                         <!-- Name Field -->
-                        <x-fields.input :edit="true" label="Name" name="name" placeholder="Enter name" :required="true" />
+                        <x-fields.input :edit="true" label="Name" name="name" placeholder="Enter name"
+                            :required="true" />
 
                         <div class="mb-2">
                             <label for="user_id"
@@ -76,10 +62,10 @@
                                 field user is required
                             </div>
                         </div>
-                        
+
                         <!-- Email Field -->
-                        <x-fields.input :edit="true" type="email" label="Email" name="email" placeholder="Enter email address"
-                            :required="true" />
+                        <x-fields.input :edit="true" type="email" label="Email" name="email"
+                            placeholder="Enter email address" :required="true" />
 
                         <!-- Password Field (optional for edit) -->
                         <div class="mb-2">
@@ -111,7 +97,8 @@
                         </div>
 
                         <!-- Phone Field -->
-                        <x-fields.input :edit="true" type="tel" label="Phone" name="phone" placeholder="Enter phone nubmer"/>
+                        <x-fields.input :edit="true" type="tel" label="Phone" name="phone"
+                            placeholder="Enter phone nubmer" />
                         <!-- Address Field -->
                         <div class="mb-2">
                             <label for="edit_address"
@@ -145,7 +132,8 @@
                         </div>
 
                         <!-- Gender Field -->
-                        <x-fields.select :edit="true" name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
+                        <x-fields.select :edit="true" name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']"
+                            :value="old('gender', 'male')" />
                     </div>
                 </div>
             </div>

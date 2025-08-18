@@ -10,6 +10,7 @@
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.bookcategory.partials.cardlist', ['categories' => $categories])
         </div>
+        <x-table.pagination :paginator="$categories"/>
     </x-page.index>
 
     @include('admin.bookcategory.partials.create')
@@ -591,14 +592,11 @@
 
                 bulkEditBtn.on('click', handleBulkEdit);
                 bulkDeleteBtn.on('click', handleBulkDelete);
-
                 // Form submissions
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
                 $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
-
-                // Attach initial event handlers
                 attachRowEventHandlers();
                 updateBulkActionsBar();
             }

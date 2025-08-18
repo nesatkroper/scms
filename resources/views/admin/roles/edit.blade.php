@@ -1,29 +1,42 @@
 @extends('layouts.admin')
 @section('title', 'Edit Role')
 @section('content')
-
-    <div>
-        <h2 class="text-2xl font-bold mb-4">Edit Role: {{ $role->name }}</h2>
-
+    <div
+        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+        <h2 class="text-2xl font-bold mb-2">Edit Role: {{ $role->name }}</h2>
         <form action="{{ route('admin.roles.update', $role->id) }}" method="POST"
-            class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+            class="bg-white dark:bg-gray-800 rounded-lg">
             @csrf
             @method('PUT')
-
-            <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Name <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="name" name="name" value="{{ old('name', $role->name) }}"
-                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
-                    placeholder="Enter name" required maxlength="255">
-                @error('name')
-                    <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                @enderror
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Name <span class="text-red-500">*</span>
+            </label>
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-20 border p-2 rounded-md border-gray-300 bg-violet-50 dark:bg-slate-800 dark:border-gray-700">
+                <div class="">
+                    <input type="text" id="name" name="name" value="{{ old('name', $role->name) }}"
+                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
+                        placeholder="Enter name" required maxlength="255">
+                    @error('name')
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="flex items-center mt-3 md:mt-0 gap-2">
+                    <div class="relative w-full">
+                        <input type="search" id="searchInput" placeholder="Search permissions ..."
+                            class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+                    </div>
+                    <button id="resetSearch"
+                        class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+                        <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
                     Permissions
                 </label>
                 <div

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -75,6 +76,13 @@ class StudentController extends Controller
                 $photo->move($studentPhotoPath, $photoName);
                 $validated['photo'] = 'photos/student/' . $photoName;
             }
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make('password'),
+                'avatar' => $validated['photo'] ?? null,
+            ]);
+            $validated['user_id'] = $user->id;
 
             $student = Student::create($validated);
 
@@ -117,7 +125,13 @@ class StudentController extends Controller
                 $photo->move($photoPath, $photoName);
                 $data['photo'] = 'photos/student/' . $photoName;
             }
-
+            if ($student->user) {
+                $student->user->update([
+                    'name'   => $data['name'] ?? $student->name,
+                    'email'  => $data['email'] ?? $student->email,
+                    'avatar' => $data['photo'] ?? $student->photo,
+                ]);
+            }
             $student->update($data);
 
             return response()->json([

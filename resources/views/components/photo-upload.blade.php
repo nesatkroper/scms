@@ -36,7 +36,8 @@
 </div>
 
 <!-- Cropper Modal -->
-<div id="cropModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 hidden">
+<div id="cropModal"
+    class="fixed inset-0 z-50 flex items-center justify-center rounded-xl bg-black bg-opacity-75 hidden">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl p-4">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold">Crop Your Image</h3>
@@ -45,7 +46,7 @@
                 <i class="ri-close-line text-2xl"></i>
             </button>
         </div>
-        <div class="cropper-container">
+        <div class="cropper-container w-full h-[60vh]">
             <img id="imageToCrop" src="" alt="" style="max-height: 60vh;">
         </div>
         <div class="flex justify-end space-x-3 mt-4">
@@ -132,21 +133,18 @@
             // Process the uploaded image
             function handleImageUpload(file) {
                 if (!file.type.match('image.*')) {
-                    alert('Please select an image file (JPEG, PNG, etc.)');
+                    ShowTaskMessage('error', 'Please select an image file (JPEG, PNG, etc.)');
                     return;
                 }
-
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     // Show crop modal with the image
                     imageToCrop.src = e.target.result;
                     cropModal.classList.remove('hidden');
-
                     // Initialize cropper
                     if (cropper) {
                         cropper.destroy();
                     }
-
                     cropper = new Cropper(imageToCrop, {
                         aspectRatio: 1,
                         viewMode: 1,
@@ -161,7 +159,6 @@
                 };
                 reader.readAsDataURL(file);
             }
-
             // Crop image button
             cropImageBtn.addEventListener('click', function() {
                 if (cropper) {
@@ -186,7 +183,6 @@
                                 type: 'image/jpeg',
                                 lastModified: Date.now()
                             });
-
                             // Create a new data transfer object
                             const dataTransfer = new DataTransfer();
                             dataTransfer.items.add(croppedFile);
@@ -207,23 +203,28 @@
                 }
             });
 
-            // Close crop modal
-            closeCropModal.addEventListener('click', function() {
+            function closeCrop() {
                 cropModal.classList.add('hidden');
                 if (cropper) {
                     cropper.destroy();
+                    cropper = null;
                 }
                 // Reset file input
                 photoUpload.value = '';
+            }
+            // Close crop modal
+            closeCropModal.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                closeCrop();
             });
 
-            cancelCrop.addEventListener('click', function() {
-                cropModal.classList.add('hidden');
-                if (cropper) {
-                    cropper.destroy();
-                }
-                // Reset file input
-                photoUpload.value = '';
+            cancelCrop.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                closeCrop();
             });
         });
     </script>
@@ -232,19 +233,9 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <style>
-        .cropper-container {
-            width: 100%;
-            height: 60vh;
-        }
-
         .cropper-view-box,
         .cropper-face {
             border-radius: 50%;
-        }
-
-        .size-35 {
-            width: 140px;
-            height: 140px;
         }
 
         #dropArea {
