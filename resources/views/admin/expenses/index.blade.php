@@ -1,77 +1,29 @@
 @extends('layouts.admin')
-@section('title', 'expensess')
+@section('title', 'Expensess')
 @section('content')
 
-    <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-        <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                    clip-rule="evenodd" />
-            </svg>
-            Expenses
-        </h3>
-        <div
-            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                Create New
-            </button>
-            <div class="flex items-center mt-3 md:mt-0 gap-2">
-                <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search expenses..."
-                        class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                    <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-                </div>
-                <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-                </button>
-                <div
-                    class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
-                    <button id="listViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                        <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                    <button id="cardViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
-                        <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <x-page.index :showReset="true" :showViewToggle="true" title="Expenses" btn-text="Create New"
+        iconSvgPath="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
+        btn-icon-svg-path="">
         <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
             @include('admin.expenses.partials.table', ['expenses' => $expenses])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.expenses.partials.cardlist', ['expenses' => $expenses])
         </div>
-        {{-- pagination --}}
-        @include('admin.expenses.partials.pagination')
-    </div>
-
-    <!-- Modal Backdrop -->
-    <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+        <x-table.pagination :paginator="$expenses" />
+    </x-page.index>
 
     @include('admin.expenses.partials.create')
     @include('admin.expenses.partials.edit')
     @include('admin.expenses.partials.detail')
-    @include('admin.expenses.partials.delete')
+    <x-modal.confirmdelete title="Expenses" />
     @include('admin.expenses.partials.bulkedit')
     @include('admin.expenses.partials.bulkdelete')
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Core Configuration
@@ -81,67 +33,9 @@
                 }
             });
 
-            selectfields();
-
-            function selectfields() {
-                document.querySelectorAll('.custom-select').forEach(select => {
-                    const header = select.querySelector('.select-header');
-                    const optionsBox = select.querySelector('.select-options');
-                    const searchInput = select.querySelector('.search-input');
-                    const optionsContainer = select.querySelector('.options-container');
-                    const selectedValue = select.querySelector('.selected-value');
-                    const noResults = select.querySelector('.no-results');
-                    const options = Array.from(select.querySelectorAll('.select-option'));
-                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-                    // Toggle dropdown
-                    header.addEventListener('click', function() {
-                        select.classList.toggle('open');
-                        if (select.classList.contains('open')) {
-                            searchInput.focus();
-                        }
-                    });
-
-                    // Filter options
-                    searchInput.addEventListener('input', function() {
-                        const term = this.value.toLowerCase().trim();
-                        let hasMatch = false;
-
-                        options.forEach(option => {
-                            if (option.textContent.toLowerCase().includes(term)) {
-                                option.style.display = 'block';
-                                hasMatch = true;
-                            } else {
-                                option.style.display = 'none';
-                            }
-                        });
-
-                        noResults.style.display = hasMatch ? 'none' : 'block';
-                    });
-
-                    // Select option
-                    options.forEach(option => {
-                        option.addEventListener('click', function() {
-                            options.forEach(opt => opt.classList.remove('selected'));
-                            this.classList.add('selected');
-                            selectedValue.textContent = this.textContent;
-                            hiddenInput.value = this.dataset.value;
-                            select.classList.remove('open');
-                            console.log('Selected department_id:', this.dataset.value);
-                        });
-                    });
-
-                    // Close when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!select.contains(e.target)) {
-                            select.classList.remove('open');
-                        }
-                    });
-                });
-            }
-
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
+            const perPageSelect = $('#perPageSelect');
             const searchInput = $('#searchInput');
             const resetSearch = $('#resetSearch');
             const listViewBtn = $('#listViewBtn');
@@ -156,12 +50,9 @@
             const bulkEditBtn = $('#bulkEditBtn');
             const bulkDeleteBtn = $('#bulkDeleteBtn');
 
-            const openCreateBtn = document.getElementById('openCreateModal');
-            if (openCreateBtn) {
-                openCreateBtn.addEventListener('click', function() {
-                    showModal('Modalcreate');
-                });
-            }
+            $('#openCreateModal').off('click').on('click', function() {
+                showModal('Modalcreate');
+            });
 
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
@@ -189,13 +80,15 @@
 
             // Search and Pagination
             function searchData(searchTerm) {
+                const perPage = perPageSelect.val() || '';
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 $.ajax({
                     url: "{{ route('admin.expenses.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        view: currentView
+                        view: currentView,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -219,9 +112,12 @@
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 
                 $.ajax({
@@ -239,11 +135,16 @@
                         }
                     },
                     error: function(xhr) {
-
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating expenses');
-                        $('.error').html(errorMessages)
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#error-${field}`).text(errorMessage);
+                                }
+                            }
+                            ShowTaskMessage('error', `Invalid field something was wrong!`);
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -258,7 +159,7 @@
                 editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
                 editBtn.prop('disabled', true);
                 const Id = $(this).data('id');
-                $.get(`/expenses/${Id}`)
+                $.get(`/admin/expenses/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const exp = response.expenses;
@@ -290,11 +191,13 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
                 $.ajax({
-                    url: form.attr('action'),
+                    url: '/admin' + form.attr('action'),
                     method: 'POST',
                     data: form.serialize() + '&_method=PUT',
                     success: function(response) {
@@ -309,7 +212,16 @@
                     error: function(xhr) {
                         const errors = xhr.responseJSON?.errors || {};
                         let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating expenses');
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            for (const field in errors) {
+                                if (errors.hasOwnProperty(field)) {
+                                    const errorMessage = errors[field][0];
+                                    $(`#error-${field}`).text(errorMessage);
+                                }
+                            }
+                            ShowTaskMessage('error', errorMessages || 'Error updating expenses');
+                        }
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -366,7 +278,7 @@
 
                 const Id = $(this).data('id');
 
-                $.get(`/expenses/${Id}`)
+                $.get(`/admin/expenses/${Id}`)
                     .done(function(response) {
                         if (response.success) {
                             const exp = response.expenses;
@@ -727,25 +639,6 @@
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
                 $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
-
-                // Modal close buttons
-                $('[id^="close"], [id^="cancel"]').on('click', function() {
-                    const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
-                        $(this).closest('[id$="Modal"]').attr('id');
-                    if (modalId) closeModal(modalId);
-                });
-
-                // Close modals with Escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        $('[id^="Modal"]').each(function() {
-                            if (!$(this).hasClass('hidden')) {
-                                closeModal(this.id);
-                            }
-                        });
-                    }
-                });
-
                 // Attach initial event handlers
                 attachRowEventHandlers();
                 updateBulkActionsBar();
@@ -754,27 +647,5 @@
             // Start the application
             initialize();
         });
-
-        // Global notification function
-        function ShowTaskMessage(type, message) {
-            const TasksmsContainer = document.createElement('div');
-            TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-            TasksmsContainer.innerHTML = `
-        <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-            border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-            <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-            </svg>
-            <div class="flex-1 text-sm sm:text-base">${message}</div>
-            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    `;
-            document.body.appendChild(TasksmsContainer);
-            setTimeout(() => TasksmsContainer.remove(), 10000);
-        }
     </script>
 @endpush

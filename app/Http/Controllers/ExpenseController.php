@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -19,13 +20,14 @@ class ExpenseController extends Controller
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
         $users = User::all();
+        $expenseCategory = ExpenseCategory::all();
         $expenses = Expense::with('approver')
             ->when($search, function ($query) use ($search) {
                 return $query->where('id', 'like', "%{$search}%")
                     ->orWhere('title', 'like', "%{$search}%")
                     ->orWhere('amount', 'like', "%{$search}%")
                     ->orWhere('date', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('expense_category_id', 'like', "%{$search}%")
                     ->orWhere('approved_by', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })

@@ -29,22 +29,7 @@
                 <!-- Profile Header -->
                 <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                     <!-- Circular Avatar -->
-                    <div class="absolute -bottom-12">
-                        <div
-                            class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 shadow-lg relative">
-                            <img id="edit_photo" src="" alt=""
-                                class="w-full h-full object-cover rounded-full">
-                            <div id="edit_initials"
-                                class="rounded-full w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
-                                <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
-                            </div>
-                            <input type="file" id="photo_upload" name="photo" accept="image/*" class="hidden">
-                            <label for="photo_upload"
-                                class="size-8 flex justify-center items-center absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <i class="ri-camera-line text-indigo-600 dark:text-indigo-300"></i>
-                            </label>
-                        </div>
-                    </div>
+                    <x-photos.upload name="photo"/>
                 </div>
 
                 <!-- Profile Body -->

@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class DynamicTable extends Component
 {
-  public $headers,
+  public $headers, $tdclass,
     $items,
     $emptyMessage,
     $actions,
@@ -17,6 +17,7 @@ class DynamicTable extends Component
     $actionItems;
   public function __construct(
     array $headers,
+    $tdclass = null,
     $items = [],
     string $emptyMessage = 'No records found',
     bool $checkbox = true,
@@ -24,6 +25,7 @@ class DynamicTable extends Component
     $endpoint = '',
   ) {
     $this->headers = $headers;
+    $this->tdclass = $tdclass;
     $this->items = $items;
     $this->emptyMessage = $emptyMessage;
     $this->checkbox = $checkbox;

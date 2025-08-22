@@ -1,17 +1,23 @@
 @extends('layouts.admin')
 @section('title', 'Guardians')
 @section('content')
-    <div class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div
+        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
             </svg>
             Guardians
         </h3>
-        <div class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button id="openCreateModal" class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+        <div
+            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+            <button id="openCreateModal"
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd" />
                 </svg>
                 Add New Guardian
             </button>
@@ -26,7 +32,8 @@
                     class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
                     <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
                 </button>
-                <div class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
+                <div
+                    class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
                     <button id="listViewBtn"
                         class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
                         <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
@@ -62,6 +69,7 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Core Configuration
@@ -73,6 +81,7 @@
 
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
+            const perPageSelect = $('#perPageSelect');
             const searchInput = $('#searchInput');
             const resetSearch = $('#resetSearch');
             const listViewBtn = $('#listViewBtn');
@@ -90,13 +99,17 @@
             // View Management
             function setView(viewType) {
                 if (viewType === 'list') {
-                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass('bg-gray-100 dark:bg-gray-700');
-                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass('bg-indigo-100 dark:bg-indigo-700');
+                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
+                        'bg-gray-100 dark:bg-gray-700');
+                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
+                        'bg-indigo-100 dark:bg-indigo-700');
                     tableContainer.removeClass('hidden');
                     cardContainer.addClass('hidden');
                 } else {
-                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass('bg-gray-100 dark:bg-gray-700');
-                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass('bg-indigo-100 dark:bg-indigo-700');
+                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
+                        'bg-gray-100 dark:bg-gray-700');
+                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
+                        'bg-indigo-100 dark:bg-indigo-700');
                     tableContainer.addClass('hidden');
                     cardContainer.removeClass('hidden');
                 }
@@ -106,12 +119,14 @@
             // Search and Pagination
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewguardian') || 'table';
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
                     url: "{{ route('admin.guardians.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        view: currentView
+                        view: currentView,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -151,7 +166,7 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshGuardianContent();
+                            refreshContent();
                             form.trigger('reset');
                         } else {
                             ShowTaskMessage('error', response.message || 'Error creating guardian');
@@ -172,23 +187,22 @@
                 e.preventDefault();
                 const editBtn = $(this);
                 const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
+                editBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 editBtn.prop('disabled', true);
-
-                const guardianId = $(this).data('id');
-
-                $.get(`/guardians/${guardianId}/edit`)
+                const Id = $(this).data('id');
+                $.get(`/admin/guardians/${Id}`)
                     .done(function(response) {
                         if (response) {
-                            $('#edit_name').val(response.name);
-                            $('#edit_phone').val(response.phone);
-                            $('#edit_email').val(response.email);
-                            $('#edit_address').val(response.address);
-                            $('#edit_occupation').val(response.occupation);
-                            $('#edit_company').val(response.company);
-                            $('#edit_relation').val(response.relation);
-
-                            $('#Formedit').attr('action', `/guardians/${guardianId}`);
+                            $('#edit_name').val(response.data.name);
+                            $('#edit_phone').val(response.data.phone);
+                            $('#edit_email').val(response.data.email);
+                            $('#edit_address').val(response.data.address);
+                            $('#edit_occupation').val(response.data.occupation);
+                            $('#edit_company').val(response.data.company);
+                            $('#edit_relation').val(response.data.relation);
+                            
+                            $('#Formedit').attr('action', `/guardians/${Id}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', 'Failed to load guardian data');
@@ -223,7 +237,7 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            refreshGuardianContent();
+                            refreshContent();
                         } else {
                             ShowTaskMessage('error', response.message || 'Error updating guardian');
                         }
@@ -264,13 +278,14 @@
                         if (response.success) {
                             closeModal('Modaldelete');
                             ShowTaskMessage('success', response.message);
-                            refreshGuardianContent();
+                            refreshContent();
                         } else {
                             ShowTaskMessage('error', response.message || 'Error deleting guardian');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting guardian');
+                        ShowTaskMessage('error', xhr.responseJSON?.message ||
+                            'Error deleting guardian');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -282,7 +297,8 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
+                detailBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
                 detailBtn.prop('disabled', true);
 
                 const guardianId = $(this).data('id');
@@ -307,12 +323,14 @@
                             if (response.students && response.students.length > 0) {
                                 let studentsHtml = '<ul class="list-disc pl-5">';
                                 response.students.forEach(student => {
-                                    studentsHtml += `<li>${student.name} (${student.pivot.relation_to_student})</li>`;
+                                    studentsHtml +=
+                                        `<li>${student.name} (${student.pivot.relation_to_student})</li>`;
                                 });
                                 studentsHtml += '</ul>';
                                 $('#detail_students').html(studentsHtml);
                             } else {
-                                $('#detail_students').html('<p class="text-gray-500">No associated students</p>');
+                                $('#detail_students').html(
+                                    '<p class="text-gray-500">No associated students</p>');
                             }
 
                             showModal('Modaldetail');
@@ -380,13 +398,15 @@
                             if (response.success) {
                                 closeModal('bulkDeleteToastModal');
                                 ShowTaskMessage('success', response.message);
-                                refreshGuardianContent();
+                                refreshContent();
                             } else {
-                                ShowTaskMessage('error', response.message || 'Error deleting guardians');
+                                ShowTaskMessage('error', response.message ||
+                                    'Error deleting guardians');
                             }
                         },
                         error: function(xhr) {
-                            ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting guardians');
+                            ShowTaskMessage('error', xhr.responseJSON?.message ||
+                                'Error deleting guardians');
                         },
                         complete: function() {
                             deleteBtn.disabled = false;
@@ -581,7 +601,7 @@
                         if (response.success) {
                             closeModal('bulkEditModal');
                             ShowTaskMessage('success', response.message);
-                            refreshGuardianContent();
+                            refreshContent();
                         } else {
                             let errorMessage = response.message || 'Error updating guardians';
                             if (response.errors) {
@@ -605,41 +625,18 @@
                 });
             }
 
-            // Modal Management
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
             // Utility Functions
-            function refreshGuardianContent() {
+            function refreshContent() {
                 const currentView = localStorage.getItem('viewguardian') || 'table';
                 const searchTerm = searchInput.val() || '';
-
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
                     url: "{{ route('admin.guardians.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        view: currentView
+                        view: currentView,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {

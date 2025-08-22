@@ -13,12 +13,7 @@
                 </svg>
                 Edit Teacher Profile
             </h3>
-            <button id="closeEditModal"
-                class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+            <x-button.btnclose id="closeEditModal"/>
         </div>
 
         <!-- Form Content -->
@@ -30,7 +25,7 @@
                 <!-- Profile Header -->
                 <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                     <!-- Circular Avatar -->
-                    <x-photos.upload :edit="true" name="photo"/>
+                    <x-photos.upload :edit="true" name="photo" />
                 </div>
 
                 <!-- Profile Body -->
@@ -241,17 +236,15 @@
 
             <!-- Form Actions -->
             <div class="flex justify-end space-x-3 p-4 border-t border-gray-200 dark:border-gray-700">
-                <button type="button" id="cancelEditModal"
-                    class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2 transition-colors">
+                <x-button btn-type="cancel" id="cancelEditModal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                             clip-rule="evenodd" />
                     </svg>
                     Cancel
-                </button>
-                <button type="submit" id="saveEditBtn"
-                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
+                </x-button>
+                <x-button btn-type="save" id="saveEditBtn" type="submit">
                     <span class="btn-content flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -261,7 +254,7 @@
                         </svg>
                         Save Changes
                     </span>
-                </button>
+                </x-button>
             </div>
         </form>
     </div>

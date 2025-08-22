@@ -8,8 +8,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Users Found</h3>
-        <p class="mt-2 text-sm text-red-500 dark:text-red-500">Create your first user to get started
+        <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No data Found</h3>
+        <p class="mt-2 text-sm text-red-500 dark:text-red-500">Create your first data to get started
         </p>
       </div>
     </div>

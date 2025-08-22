@@ -53,55 +53,78 @@ class GuardianController extends Controller
         return view('admin.guardians.index', compact('guardians', 'users'));
     }
 
-
-    public function create()
-    {
-        return view('admin.guardians.create');
-    }
-
-    // public function store(StoreGuardianRequest $request)
-    // {
-    //     $guardian = Guardian::create($request->validated());
-    //     $guardian->load('students');
-    //     return redirect()->route('guardians.index')->with('success', 'Guardian added successfully!');
-    // }
-  
     public function store(StoreGuardianRequest $request)
-{
-    $validated = $request->validated();
-    
-    // Handle photo upload
-    if ($request->hasFile('photo')) {
-        $validated['photo'] = $request->file('photo')->store('guardian_photos', 'public');
-    }
-    
-    $guardian = Guardian::create($validated);
-    
-    return response()->json([
-        'success' => true,
-        'message' => 'Guardian created successfully',
-        'data' => $guardian
-    ]);
-}
+    {
+        try {
+            $validated = $request->validated();
+            $studentPhotoPath = public_path('photos/guardians');
 
+            if (!file_exists($studentPhotoPath)) {
+                mkdir($studentPhotoPath, 0755, true);
+            }
+
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
+                $photo->move($studentPhotoPath, $photoName);
+                $validated['photo'] = 'photos/guardians/' . $photoName;
+            }
+
+            $guardian = Guardian::create($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Guardian created successfully!',
+                'data' => $guardian
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating guardian: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     public function show(Guardian $guardian)
     {
         $guardian->load('students');
-        return view('admin.guardians.show', compact('guardian'));
-    }
-
-    public function edit(Guardian $guardian)
-    {
-        $guardian->load('students');
-        return view('admin.guardians.edit', compact('guardian'));
+        return response()->json([
+            'success' => true,
+            'data' => $guardian
+        ]);
     }
 
     public function update(UpdateGuardianRequest $request, Guardian $guardian)
     {
-        $guardian->update($request->validated());
-        $guardian->load('students');
-        return redirect()->route('admin.guardians.show', $guardian)->with('success', 'Guardian updated successfully!');
+        try {
+            $data = $request->validated();
+            // Handle photo upload
+            if ($request->hasFile('photo')) {
+                // Delete old photo if exists
+                if ($guardian->photo && file_exists(public_path($guardian->photo))) {
+                    unlink(public_path($guardian->photo));
+                }
+
+                $photo = $request->file('photo');
+                $photoName = time()  . '-' . date('d-m-Y') . '_ed' . $photo->getClientOriginalName();
+                $photoPath = public_path('photos/guardians');
+                $photo->move($photoPath, $photoName);
+                $data['photo'] = 'photos/guardians/' . $photoName;
+            }
+
+            $guardian->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Guardian updated successfully',
+                'data' => $guardian->fresh('students')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating teacher: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy(Guardian $guardian)

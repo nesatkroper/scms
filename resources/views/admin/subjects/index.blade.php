@@ -57,9 +57,7 @@
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.subjects.partials.cardlist', ['subjects' => $subjects])
         </div>
-        {{-- pagination --}}
-        @include('admin.subjects.partials.pagination')
-
+        <x-table.pagination :paginator="$subjects" />
     </div>
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
