@@ -327,7 +327,6 @@
                 $('.edit-btn').off('click').on('click', handleEditClick);
                 $('.delete-btn').off('click').on('click', handleDeleteClick);
             }
-
             // Debounce function for search input
             function debounce(func, wait) {
                 let timeout;
@@ -352,11 +351,9 @@
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-
                 // Attach initial event handlers
                 attachRowEventHandlers();
             }
-
             // Start the application
             initialize();
         });

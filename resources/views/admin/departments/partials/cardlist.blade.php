@@ -1,5 +1,5 @@
-@if (count($categories) > 0)
-    @foreach ($categories as $categorie)
+@if (count($departments) > 0)
+    @foreach ($departments as $department)
         <div
             class="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <!-- Card Header -->
@@ -7,12 +7,12 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100 truncate">
-                            {{ Str::limit($categorie->name, 20??'No description available' ) }}</h3>
+                            {{ Str::limit($department->name, 20??'No description available' ) }}</h3>
                     </div>
                     <div class="flex items-center space-x-1">
                         <button
                             class="btn detail-btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-900 transition-colors"
-                            data-id="{{ $categorie->id }}">
+                            data-id="{{ $department->id }}">
                             <span class="btn-content">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -37,7 +37,7 @@
                         </div>
                         <div>
                             <p class="font-medium text-gray-700 dark:text-gray-200">
-                                {{ $categorie->books?->count() ?? 0 }} books
+                                {{ $department->books?->count() ?? 0 }} books
                             </p>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Description</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
-                            {{ $categorie->description ?? 'No description available' }}
+                            {{ $department->description ?? 'No description available' }}
                         </p>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                 class="px-4 py-3 bg-gray-50 dark:bg-slate-700 border-t border-gray-200 dark:border-gray-600 flex justify-end space-x-2">
                 <button
                     class="btn edit-btn cursor-pointer px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors"
-                    data-id="{{ $categorie->id }}">
+                    data-id="{{ $department->id }}">
                     <span class="btn-content flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -68,7 +68,7 @@
                 </button>
                 <button
                     class="delete-btn cursor-pointer px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors flex items-center"
-                    data-id="{{ $categorie->id }}">
+                    data-id="{{ $department->id }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -80,5 +80,5 @@
         </div>
     @endforeach
 @else
-   <x-not-found-data title="category" />
+    <x-not-found-data title="department"/>
 @endif

@@ -15,7 +15,7 @@
     @include('admin.teachers.partials.create')
     @include('admin.teachers.partials.edit')
     @include('admin.teachers.partials.detail')
-    <x-modal.confirmdelete title="Teacher" />
+    <x-modal.confirmdelete title="Teacher"/>
     @include('admin.teachers.partials.bulkedit')
     @include('admin.teachers.partials.bulkdelete')
 
@@ -33,7 +33,6 @@
                     // 'Accept': 'application/json'
                 }
             });
-
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');
@@ -50,12 +49,9 @@
             const bulkEditBtn = $('#bulkEditBtn');
             const bulkDeleteBtn = $('#bulkDeleteBtn');
 
-            const openCreateBtn = document.getElementById('openCreateModal');
-            if (openCreateBtn) {
-                openCreateBtn.addEventListener('click', function() {
-                    showModal('Modalcreate');
-                });
-            }
+            $('#openCreateModal').on('click', function() {
+                showModal('Modalcreate');
+            });
 
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
@@ -97,7 +93,6 @@
                             cardContainer.html(response.html.cards);
                             $('.pagination').html(response.html.pagination);
                             attachRowEventHandlers();
-                            updateBulkActionsBar();
                         } else {
                             ShowTaskMessage('error', 'Failed to load data');
                         }
@@ -121,7 +116,6 @@
                 }
                 // Create FormData object for file uploads
                 const formData = new FormData(form[0]);
-
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
@@ -384,7 +378,6 @@
                             if (teach.cv) {
                                 const cvPath = teach.cv.startsWith('http') ? teach.cv : `/${teach.cv}`;
                                 const fileName = teach.cv.split('/').pop();
-
                                 $('#cv_preview_container').removeClass('hidden');
                                 $('#no_cv_message').addClass('hidden');
                                 $('#cv_filename').text(fileName);
@@ -413,373 +406,13 @@
                     });
             }
 
-            // Bulk Actions
-            function getSelectedIds() {
-                const selectedIds = [];
-                document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
-                    selectedIds.push(checkbox.value);
-                });
-                return selectedIds;
-            }
-
-            function updateBulkActionsBar() {
-                const selectedCountValue = $('.row-checkbox:checked').length;
-                selectedCount.text(selectedCountValue);
-
-                if (selectedCountValue > 0) {
-                    bulkActionsBar.removeClass('hidden');
-                    selectAllCheckbox.prop('checked', selectedCountValue === $('.row-checkbox').length);
-                } else {
-                    bulkActionsBar.addClass('hidden');
-                    selectAllCheckbox.prop('checked', false);
-                }
-            }
-
-            function handleBulkDelete() {
-                const selectedIds = getSelectedIds();
-                if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one teacher to delete');
-                    return;
-                }
-
-                const modal = document.getElementById('bulkDeleteToastModal');
-                document.getElementById('selectedCountText').textContent = selectedIds.length;
-
-                showModal('bulkDeleteToastModal');
-
-                document.getElementById('confirmBulkDeleteBtn').onclick = function() {
-                    const deleteBtn = document.getElementById('confirmBulkDeleteBtn');
-                    const originalBtnHtml = deleteBtn.innerHTML;
-                    deleteBtn.disabled = true;
-                    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
-
-                    $.ajax({
-                        url: "{{ route('admin.teachers.bulkDelete') }}",
-                        method: 'POST',
-                        data: {
-                            ids: selectedIds
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                closeModal('bulkDeleteToastModal');
-                                ShowTaskMessage('success', response.message);
-                                refreshContent();
-                            } else {
-                                ShowTaskMessage('error', response.message ||
-                                    'Error deleting teachers');
-                            }
-                        },
-                        error: function(xhr) {
-                            ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting teachers');
-                        },
-                        complete: function() {
-                            deleteBtn.disabled = false;
-                            deleteBtn.innerHTML = originalBtnHtml;
-                        }
-                    });
-                };
-            }
-
-            function handleBulkEdit() {
-                const selectedIds = getSelectedIds();
-                if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one teacher to edit');
-                    return;
-                }
-
-                const bulkEditBtn = document.getElementById('bulkEditBtn');
-                const originalBtnText = bulkEditBtn.innerHTML;
-                bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-                bulkEditBtn.disabled = true;
-
-                $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
-                if (selectedIds.length > 1) {
-                    $('#bulkEditContainer').removeClass('md:h-auto')
-                    $('#bulkEditContainer').addClass('h-[70vh]')
-                }
-                if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 teachers at a time');
-                    bulkEditBtn.innerHTML = originalBtnText;
-                    bulkEditBtn.disabled = false;
-                    return;
-                }
-
-                document.getElementById('bulkEditCount').textContent = selectedIds.length;
-
-                $.ajax({
-                    url: "{{ route('admin.teachers.getBulkData') }}",
-                    method: 'POST',
-                    data: {
-                        ids: selectedIds
-                    },
-                    success: function(response) {
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-
-                        if (!response.success) {
-                            ShowTaskMessage('error', response.message || 'Error loading data');
-                            return;
-                        }
-
-                        const container = document.getElementById('bulkEditContainer');
-                        container.innerHTML = '';
-
-                        response.data.forEach((teacher, index) => {
-                            const fieldHtml = `
-                <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <input type="hidden" name="teachers[${index}][id]" value="${teacher.id}">
-                    <div class="flex justify-between items-center mb-2">
-                        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Teacher #${index + 1}</h4>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Name -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Full Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="teachers[${index}][name]" name="teachers[${index}][name]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.name}"
-                                placeholder="Enter full name" required>
-                        </div>
-
-                        <!-- Gender -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][gender]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Gender <span class="text-red-500">*</span>
-                            </label>
-                            <select id="teachers[${index}][gender]" name="teachers[${index}][gender]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400" required>
-                                <option value="male" ${teacher.gender === 'male' ? 'selected' : ''}>Male</option>
-                                <option value="female" ${teacher.gender === 'female' ? 'selected' : ''}>Female</option>
-                                <option value="other" ${teacher.gender === 'other' ? 'selected' : ''}>Other</option>
-                            </select>
-                        </div>
-
-                        <!-- Date of Birth -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][dob]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Date of Birth <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="teachers[${index}][dob]" name="teachers[${index}][dob]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.dob}"
-                                required>
-                        </div>
-
-                        <!-- Department -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][department_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Department <span class="text-red-500">*</span>
-                            </label>
-                            <select id="teachers[${index}][department_id]" name="teachers[${index}][department_id]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400" required>
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}" ${teacher.department_id == {{ $department->id }} ? 'selected' : ''}>
-                                        {{ $department->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Joining Date -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][joining_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Joining Date <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="teachers[${index}][joining_date]" name="teachers[${index}][joining_date]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.joining_date}"
-                                required>
-                        </div>
-
-                        <!-- Qualification -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][qualification]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Qualification <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="teachers[${index}][qualification]" name="teachers[${index}][qualification]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.qualification}"
-                                placeholder="Enter qualification" required>
-                        </div>
-
-                        <!-- Experience -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][experience]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Experience
-                            </label>
-                            <input type="text" id="teachers[${index}][experience]" name="teachers[${index}][experience]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.experience || ''}"
-                                placeholder="Enter experience">
-                        </div>
-
-                        <!-- Phone -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][phone]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Phone
-                            </label>
-                            <input type="text" id="teachers[${index}][phone]" name="teachers[${index}][phone]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.phone || ''}"
-                                placeholder="Enter phone number">
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][email]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Email
-                            </label>
-                            <input type="email" id="teachers[${index}][email]" name="teachers[${index}][email]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.email || ''}"
-                                placeholder="Enter email">
-                        </div>
-
-                        <!-- Address -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][address]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Address
-                            </label>
-                            <textarea id="teachers[${index}][address]" name="teachers[${index}][address]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                placeholder="Enter address">${teacher.address || ''}</textarea>
-                        </div>
-
-                        <!-- Specialization -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][specialization]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Specialization
-                            </label>
-                            <input type="text" id="teachers[${index}][specialization]" name="teachers[${index}][specialization]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.specialization || ''}"
-                                placeholder="Enter specialization">
-                        </div>
-
-                        <!-- Salary -->
-                        <div class="mb-4">
-                            <label for="teachers[${index}][salary]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Salary
-                            </label>
-                            <input type="number" step="0.01" id="teachers[${index}][salary]" name="teachers[${index}][salary]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${teacher.salary || ''}"
-                                placeholder="Enter salary">
-                        </div>
-                    </div>
-                </div>
-                `;
-
-                            container.insertAdjacentHTML('beforeend', fieldHtml);
-                        });
-
-                        showModal('bulkEditModal');
-                    },
-                    error: function(xhr) {
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-                        ShowTaskMessage('error', 'Error loading data');
-                    }
-                });
-            }
-
-            function handleBulkEditSubmit(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('bulkEditSubmitBtn');
-                const originalBtnHtml = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-
-                const dataform = [];
-                $('.sub-field').each(function(index) {
-                    const data = {
-                        id: $(this).find('input[type="hidden"]').val(),
-                        teacher_id: $(this).find('input[name$="[teacher_id]"]').val(),
-                        name: $(this).find('input[name$="[name]"]').val(),
-                        gender: $(this).find('select[name$="[gender]"]').val(),
-                        dob: $(this).find('input[name$="[dob]"]').val(),
-                        department_id: $(this).find('select[name$="[department_id]"]').val(),
-                        joining_date: $(this).find('input[name$="[joining_date]"]').val(),
-                        qualification: $(this).find('input[name$="[qualification]"]').val(),
-                        experience: $(this).find('input[name$="[experience]"]').val(),
-                        phone: $(this).find('input[name$="[phone]"]').val(),
-                        email: $(this).find('input[name$="[email]"]').val(),
-                        address: $(this).find('textarea[name$="[address]"]').val(),
-                        specialization: $(this).find('input[name$="[specialization]"]').val(),
-                        salary: $(this).find('input[name$="[salary]"]').val()
-                    };
-                    dataform.push(data);
-                });
-
-                $.ajax({
-                    url: "{{ route('admin.teachers.bulkUpdate') }}",
-                    method: 'POST',
-                    data: {
-                        teachers: dataform
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('bulkEditModal');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                        } else {
-                            let errorMessage = response.message || 'Error updating teachers';
-                            if (response.errors) {
-                                errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
-                            }
-                            ShowTaskMessage('error', errorMessage);
-                        }
-                    },
-                    error: function(xhr) {
-                        let errorMessage = 'An error occurred while updating';
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON?.errors || {};
-                            errorMessage = Object.values(errors).flat().join('\n');
-                        }
-                        ShowTaskMessage('error', errorMessage);
-                    },
-                    complete: function() {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalBtnHtml;
-                    }
-                });
-            }
-
             // Utility Functions
             function refreshContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
 
                 $.ajax({
-                    url: "{{ route('admin.teachers.index') }}",
+                    url: "{{ route('admin.guardians.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
@@ -791,7 +424,6 @@
                             cardContainer.html(response.html.cards);
                             $('.pagination').html(response.html.pagination);
                             attachRowEventHandlers();
-                            updateBulkActionsBar();
                         } else {
                             ShowTaskMessage('error', 'Failed to refresh data');
                         }
@@ -807,7 +439,6 @@
                 $('.edit-btn').off('click').on('click', handleEditClick);
                 $('.delete-btn').off('click').on('click', handleDeleteClick);
                 $('.detail-btn').off('click').on('click', handleDetailClick);
-                $('.row-checkbox').off('change').on('change', updateBulkActionsBar);
             }
 
             function debounce(func, wait) {
@@ -819,49 +450,27 @@
                     timeout = setTimeout(() => func.apply(context, args), wait);
                 };
             }
-
             // Event Listeners
             function initialize() {
                 // Set initial view
                 const savedView = localStorage.getItem('viewitem') || 'list';
                 setView(savedView);
-
                 // View toggle
                 listViewBtn.on('click', () => setView('list'));
                 cardViewBtn.on('click', () => setView('card'));
-
                 // Search
                 searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
                 resetSearch.on('click', () => {
                     searchInput.val('');
                     searchData('');
                 });
-
-                // Bulk actions
-                selectAllCheckbox.on('change', function() {
-                    $('.row-checkbox').prop('checked', this.checked);
-                    updateBulkActionsBar();
-                });
-
-                deselectAllBtn.on('click', function() {
-                    $('.row-checkbox').prop('checked', false);
-                    selectAllCheckbox.prop('checked', false);
-                    updateBulkActionsBar();
-                });
-
-                bulkEditBtn.on('click', handleBulkEdit);
-                bulkDeleteBtn.on('click', handleBulkDelete);
-
                 // Form submissions
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-                $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
                 // Attach initial event handlers
                 attachRowEventHandlers();
-                updateBulkActionsBar();
             }
-
             // Start the application
             initialize();
         });

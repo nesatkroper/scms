@@ -46,16 +46,11 @@
             </x-table.tr>
         @endforeach
     @else
-        <x-table.no-data :colspan="count([
-            'Teacher',
-            'Gender',
-            'Experience',
-            'Department',
-            'Salary',
-            'Qualification',
-            'Specialization',
-            'Joining Date',
-        ]) + 1" />
+        <tr>
+            <td colspan="12" class="p-4 text-center">
+                <x-not-found-data title="teachers" />
+            </td>
+        </tr>
     @endif
 </x-table.table>
 <x-bulkactions />

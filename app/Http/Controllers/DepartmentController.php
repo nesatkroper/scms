@@ -16,6 +16,7 @@ class DepartmentController extends Controller
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
+        $viewType = $request->input('view', 'table');
         $departments = Department::with(['head', 'teachers', 'subjects'])
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
@@ -25,12 +26,21 @@ class DepartmentController extends Controller
             ->paginate($perPage)
             ->appends([
                 'search' => $search,
-                'per_page' => $perPage
+                'per_page' => $perPage,
+                'view' => $viewType
             ]);
 
         if ($request->ajax()) {
+            $html = [
+                'html' => view('admin.departments.partials.table', compact('departments'))->render(),
+                'cards' => view('admin.departments.partials.cardlist', compact('departments'))->render(),
+                'pagination' => $departments->links()->toHtml()
+            ];
+
             return response()->json([
-                'html' => view('admin.departments.partials.table', compact('departments'))->render()
+                'success' => true,
+                'html' => $html,
+                'view' => $viewType
             ]);
         }
 
@@ -39,39 +49,19 @@ class DepartmentController extends Controller
 
     public function store(StoreDepartmentRequest $request)
     {
-        $department = Department::create($request->validated());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Department created successfully',
-            'department' => $department
-        ]);
-    }
-
-    public function storeMultiple(Request $request)
-    {
-        $validated = $request->validate([
-            'departments' => 'required|array|max:5',
-            'departments.*.name' => 'required|string|max:255|unique:departments,name',
-            'departments.*.description' => 'nullable|string',
-        ]);
-
-        $createdCount = 0;
-
-        foreach ($validated['departments'] as $departmentData) {
-            try {
-                Department::create($departmentData);
-                $createdCount++;
-            } catch (\Exception $e) {
-                // Log error and continue with next department
-                Log::error("Error creating department: " . $e->getMessage());
-            }
+        try {
+            $department = Department::create($request->validated());
+            return response()->json([
+                'success' => true,
+                'message' => 'Department created successfully!',
+                'data' => $department
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating department: ' . $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'message' => "Successfully created $createdCount departments",
-            'redirect' => route('admin.departments.index')
-        ]);
     }
 
     public function show(Department $department)
@@ -79,31 +69,44 @@ class DepartmentController extends Controller
         $department->load(['head', 'teachers', 'subjects']);
 
         return response()->json([
-            'department' => $department,
-            'created_at' => $department->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $department->updated_at->format('Y-m-d H:i:s')
+            'success' => true,
+            'data' => $department,
         ]);
     }
 
-    public function update(UpdateDepartmentRequest $request, Department $department)
+    public function update(UpdateDepartmentRequest $request, $id)
     {
-        $department->update($request->validated());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Department updated successfully',
-            'department' => $department
-        ]);
+        try {
+            $department = Department::findOrFail($id);
+            $department->update($request->validated());
+            return response()->json([
+                'success' => true,
+                'message' => 'Department updated successfully',
+                'data' => $department->fresh('head', 'teachers', 'subjects')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating department: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function destroy(Department $department)
+    public function destroy($id)
     {
-        $department->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Department deleted successfully'
-        ]);
+        try {
+            $category = Department::findOrFail($id);
+            $category->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Department deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting department: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function bulkDelete(Request $request)
