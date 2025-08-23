@@ -94,3 +94,32 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            var $searchInput = $('#searchInput');
+            var $resetBtn = $('#resetSearch');
+            var $permissionItems = $('[id^="permission-"]');
+            // Filter permissions while typing
+            $searchInput.on('keyup', function() {
+                var keyword = $(this).val().toLowerCase().trim();
+
+                $permissionItems.each(function() {
+                    var label = $(this).next('label').text().toLowerCase();
+                    if (label.includes(keyword)) {
+                        $(this).closest('div').show();
+                    } else {
+                        $(this).closest('div').hide();
+                    }
+                });
+            });
+            // Reset search input
+            $resetBtn.on('click', function(e) {
+                e.preventDefault();
+                $searchInput.val('');
+                $permissionItems.closest('div').show();
+            });
+        });
+    </script>
+@endpush

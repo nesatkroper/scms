@@ -4,6 +4,7 @@
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <h2 class="text-2xl font-bold mb-2">Create New Role</h2>
+
         <form action="{{ route('admin.roles.store') }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
             @csrf
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -19,9 +20,10 @@
                         <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <div class="flex items-center mt-3 md:mt-0 gap-2">
                     <div class="relative w-full">
-                        <input type="search" id="searchInput" placeholder="Search permissions ..."
+                        <input type="search" name="search" id="searchInput" placeholder="Search permissions ..."
                             class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
                         <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -86,3 +88,31 @@
     </div>
 
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            var $searchInput = $('#searchInput');
+            var $resetBtn = $('#resetSearch');
+            var $permissionItems = $('[id^="permission-"]');
+            // Filter permissions while typing
+            $searchInput.on('keyup', function() {
+                var keyword = $(this).val().toLowerCase().trim();
+
+                $permissionItems.each(function() {
+                    var label = $(this).next('label').text().toLowerCase();
+                    if (label.includes(keyword)) {
+                        $(this).closest('div').show();
+                    } else {
+                        $(this).closest('div').hide();
+                    }
+                });
+            });
+            // Reset search input
+            $resetBtn.on('click', function(e) {
+                e.preventDefault();
+                $searchInput.val('');
+                $permissionItems.closest('div').show();
+            });
+        });
+    </script>
+@endpush
