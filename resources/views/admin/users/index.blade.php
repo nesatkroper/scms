@@ -100,10 +100,6 @@
                             // Reset photo preview
                             $('#photoPreview').addClass('hidden');
                             $('#dropArea').removeClass('hidden');
-                            // Reset CV preview
-                            $('#cvFileName').addClass('hidden');
-                            $('#removeCv').addClass('hidden');
-                            $('#cvDropArea').removeClass('hidden');
                         } else {
                             ShowTaskMessage('error', response.message || 'Error creating user');
                         }
@@ -166,7 +162,6 @@
                                     .removeClass('hidden');
                                 $('#edit_initials').addClass('hidden');
                             } else {
-                                $('#edit_avatar').addClass('hidden');
                                 let initials = '?';
                                 if (user.name) {
                                     initials = user.name.split(' ')

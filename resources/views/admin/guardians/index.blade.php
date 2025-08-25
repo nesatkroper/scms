@@ -166,6 +166,28 @@
                             $('#edit_occupation').val(response.data.occupation);
                             $('#edit_company').val(response.data.company);
                             $('#edit_relation').val(response.data.relation);
+                            if (response.data.photo) {
+                                $('#edit_photo').attr('src', window.location.origin + '/' + response.data.photo)
+                                    .removeClass('hidden');
+                            } else {
+                                let initials = '?';
+                                if (response.data.name) {
+                                    initials = response.data.name.split(' ')
+                                        .filter(n => n.length > 0)
+                                        .map(n => n[0])
+                                        .join('')
+                                        .toUpperCase()
+                                        .substring(0, 2);
+                                }
+                                if (response.data.photo) {
+                                    $('#edit_photo').attr('src', '/' + response.data.photo).removeClass('hidden');
+                                } else {
+                                    const initials = response.data.name.split(' ').map(n => n[0]).join('')
+                                        .toUpperCase();
+                                    $('#edit_initials').removeClass('hidden').find('span').text(initials);
+                                }
+                            }
+
                             $('#Formedit').attr('action', `/guardians/${Id}`);
                             showModal('Modaledit');
                         } else {
