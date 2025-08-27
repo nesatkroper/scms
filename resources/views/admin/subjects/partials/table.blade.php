@@ -22,7 +22,11 @@
             </x-table.tr>
         @endforeach
     @else
-        <x-table.no-data :colspan="count(['Id', 'Name', 'Code', 'Credit hours', 'Department', 'Description', 'Date']) + 1" />
+         <tr>
+            <td colspan="12" class="p-4 text-center">
+                <x-not-found-data title="subjects" />
+            </td>
+        </tr>
     @endif
 </x-table.table>
 <x-bulkactions />

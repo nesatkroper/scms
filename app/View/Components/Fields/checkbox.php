@@ -20,7 +20,7 @@ class checkbox extends Component
     public function __construct(
         $id = null,
         $name,
-        $class = null,
+        $class = '',
         $detail = false,
         $value = null,
         $required = false,
