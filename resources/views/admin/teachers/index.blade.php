@@ -140,7 +140,7 @@
                         }
                     },
                     error: function(xhr) {
-                        if (xhr.status === 422) {
+                        if (xhr.status === 422|| xhr.status === 500) {
                             const errors = xhr.responseJSON.errors;
                             for (const field in errors) {
                                 if (errors.hasOwnProperty(field)) {

@@ -14,7 +14,9 @@
                 <x-table.td class="whitespace-nowrap text-gray-900 dark:text-white">
                     <div class="flex items-center">
                         <img class="detail-btn size-10 rounded-full object-cover cursor-pointer"
-                            src="{{ $teacher->photo ? asset($teacher->photo) : 'https://placehold.co/40x40/6366F1/FFFFFF?text=' . substr($teacher->user->name, 0, 1) }}"
+                            src="{{ $teacher->photo
+                                ? asset($teacher->photo)
+                                : 'https://placehold.co/40x40/6366F1/FFFFFF?text=' . substr($teacher->user?->name ?? 'U', 0, 1) }}"
                             alt="{{ $teacher->name }} image" data-id="{{ $teacher->id }}">
 
                         <div class="pl-3">
@@ -29,7 +31,7 @@
                 </x-table.td>
                 <x-table.td>{{ $teacher->gender ?? 'N/A' }}</x-table.td>
                 <x-table.td>{{ Str::limit($teacher->experience ?? 'N/A', 20) }} Years</x-table.td>
-                <x-table.td>{{ Str::limit($teacher->department->name ?? 'N/A', 20) }}</x-table.td>
+                <x-table.td>{{ Str::limit($teacher->department?->name ?? 'N/A', 20) }}</x-table.td>
                 <x-table.td>${{ $teacher->salary }}</x-table.td>
                 <x-table.td>{{ Str::limit($teacher->qualification, 20) }}</x-table.td>
                 <x-table.td>{{ Str::limit($teacher->specialization, 20) }}</x-table.td>

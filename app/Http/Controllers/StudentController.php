@@ -83,7 +83,7 @@ class StudentController extends Controller
                 'avatar' => $validated['photo'] ?? null,
             ]);
             $validated['user_id'] = $user->id;
-
+            $user->assignRole('student');
             $student = Student::create($validated);
 
             return response()->json([

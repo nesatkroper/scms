@@ -22,7 +22,7 @@ class StoreTeacherRequest extends FormRequest
       'department_id' => ['required', 'exists:departments,id'],
       'joining_date' => ['required', 'date'],
       'qualification' => ['required', 'string', 'max:255'],
-      'experience' => ['required', 'string', 'max:255'],  // Consider 'integer' if just years
+      'experience' => ['required', 'integer', 'min:0'],  // Consider 'integer' if just years
       'phone' => ['required', 'string', 'max:20'],
       'email' => [
         'required',

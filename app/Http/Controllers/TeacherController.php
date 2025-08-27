@@ -84,17 +84,15 @@ class TeacherController extends Controller
                 $cv->move($cvPath, $cvName);
                 $validated['cv'] = 'photos/cv/' . $cvName;
             }
-
+            $teacher = Teacher::create($validated);
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make('password'),
                 'avatar' => $validated['photo'] ?? null,
             ]);
-
             $validated['user_id'] = $user->id;
-
-            $teacher = Teacher::create($validated);
+            $user->assignRole('teacher');
 
             return response()->json([
                 'success' => true,
