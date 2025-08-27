@@ -38,7 +38,10 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 R::get('/', function () {
-  return view('welcome');
+  if (Auth::check())
+    return redirect('/admin/profile');
+
+  return redirect('/login');
 });
 
 R::prefix('/admin')
