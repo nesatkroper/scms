@@ -15,17 +15,16 @@
 
 <div class="flex items-center">
     @if (!empty($item->avatar))
-        <img class="w-10 h-10 rounded-full object-cover cursor-grab" src="{{ asset($item->avatar) }}"
-            alt="{{ $item->name }} image">
+        <img class="w-10 h-10 rounded-full object-cover cursor-grab detail-btn" src="{{ asset($item->avatar) }}"
+            alt="{{ $item->name }} image" data-id="{{ $item->id }}">
     @elseif (!empty($item->photo))
-        <img class="w-10 h-10 rounded-full object-cover cursor-grab" src="{{ asset($item->photo) }}"
-            alt="{{ $item->name }} image">
+        <img class="w-10 h-10 rounded-full object-cover cursor-grab detail-btn" src="{{ asset($item->photo) }}"
+            alt="{{ $item->name }} image" data-id="{{ $item->id }}">
     @elseif (!empty($item->cover_image))
-        <img class="w-10 h-10 rounded-full object-cover cursor-grab" src="{{ asset($item->cover_image) }}"
-            alt="{{ $item->name }} image">
+        <img class="w-10 h-10 rounded-full object-cover cursor-grab detail-btn" src="{{ asset($item->cover_image) }}"
+            alt="{{ $item->name }} image" data-id="{{ $item->id }}">
     @else
-        <div
-            class="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-600 text-white font-bold cursor-default select-none">
+        <div data-id="{{ $item->id }}" class="detail-btn w-10 h-10 rounded-full flex items-center justify-center bg-indigo-600 text-white font-bold cursor-default select-none">
             {{ strtoupper(substr($item->name, 0, 1)) }}
         </div>
     @endif

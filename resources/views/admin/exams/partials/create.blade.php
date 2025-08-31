@@ -1,171 +1,26 @@
 <!-- Create Modal -->
-<div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div
-        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
-        <!-- Header -->
-        <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                    viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                Create New Exam
-            </h3>
-            <button id="closeCreateModal"
-                class="text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 cursor-pointer rounded-full p-1 hover:text-red-500">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+<x-modal.modal id="Modalcreate" title="Create New exams" class="rounded-xl w-full max-w-2xl"
+    svgPath="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z">
+    <form action="{{ route('admin.exams.store') }}" method="POST" class="p-4 needs-validation" novalidate>
+        @csrf
+        <div class="h-[65vh] md:h-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-2">
+                <!-- Name Field -->
+                <x-fields.input label="Name" name="name" placeholder="Enter name" :required="true" />
+                <x-fields.select name="subject_id" label="Subjects" :options="$subjects" :required="true" :value="old('subject_id')"
+                    :searchable="true" />
+                <x-fields.input type="number" label="Total Marks" name="total_marks" placeholder="Enter total marks"
+                    min="1" :required="true" />
+                <x-fields.input type="number" label="Passing Marks" name="passing_marks"
+                    placeholder="Enter passing marks" min="0" :required="true" />
+                <x-fields.input type="date" label="Date" name="date" placeholder="Enter date"
+                    :required="true" />
+                <!-- Description Field -->
+                <x-fields.textarea label="Description" name="description" placeholder="Enter subject description"
+                    rows="1" />
+            </div>
         </div>
-
-        <!-- Form Content -->
-        {{-- <form action="{{ route('admin.exams.store') }}" method="POST" class="py-4 needs-validation" novalidate> --}}
-        <form action="{{ route('admin.exams.store') }}" method="POST" class="py-4">
-            @csrf
-
-            <div class="h-[65vh] md:h-auto px-4 overflow-y-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-                    <!-- Name Field -->
-                    <div class="mb-2">
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Name <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}"
-                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                              border-slate-300"
-                            placeholder="Enter name" required>
-                        <p class="invalid-feedback error-name mt-1 text-sm text-red-600"></p>
-                    </div>
-                    <!-- sub Field -->
-                    <div class="mb-2">
-                        <label for="subject_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Subjects <span class="text-red-500">*</span>
-                        </label>
-
-                        <div data-name="subject_id"
-                            class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('code') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter code" required>
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value">
-                                    {{ old('subjects_name', 'Select subjects') }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search subjects...">
-                                </div>
-                                <div class="options-container">
-                                    @foreach ($subjects as $subject)
-                                        <div class=" {{ old('subject_id') == $subject->id ? 'selected' : '' }} 
-                                            select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                            data-value="{{ $subject->id }}">
-                                            {{ $subject->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                                    found</div>
-                            </div>
-                        </div>
-
-                        <!-- Hidden input for form submission -->
-                        <input type="hidden" name="subject_id" id="subject_id" value="{{ old('subject_id') }}">
-                        <p class="error-subject mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <!-- total_marks Field -->
-                    <div class="mb-2">
-                        <label for="total_marks"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Total Marks <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" min="1" id="total_marks" name="total_marks"
-                            value="{{ old('total_marks') }}"
-                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                              border-slate-300"
-                            placeholder="Enter total marks" required>
-                        <p class="invalid-feedback error-total_marks mt-1 text-sm text-red-600"></p>
-                    </div>
-                    <div class="mb-2">
-                        <label for="passing_marks"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Passing Marks <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" min="0" id="passing_marks" name="passing_marks"
-                            value="{{ old('passing_marks') }}"
-                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                            placeholder="Enter total marks" required>
-                        <p class="invalid-feedback error-passing_marks mt-1 text-sm text-red-600"></p>
-                    </div>
-
-                    <!-- Date Field -->
-                    <div class="mb-2">
-                        <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Date <span class="text-red-500">*</span>
-                        </label>
-                        <input type="date" id="date" name="date" value="{{ old('date') }}"
-                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                        @error('date') border-red-500 @else border-gray-400 @enderror"
-                            placeholder="Enter date" required>
-                        <p class="invalid-feedback error-date mt-1 text-sm text-red-600"></p>
-
-                    </div>
-                    <!-- Description Field (full width) -->
-                    <div class="mb-2">
-                        <label for="description"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Description
-                        </label>
-                        <textarea id="description" name="description" rows="1"
-                            class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                            placeholder="Enter subject description">{{ old('description') }}</textarea>
-                    </div>
-                </div>
-            </div>
-            <!-- Form Actions -->
-            <div class="flex justify-end space-x-3 pt-4 px-4 border-t border-gray-200 dark:border-gray-700">
-                <button type="button" id="cancelCreateModal"
-                    class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Cancel
-                </button>
-                <button type="submit" id="createSubmitBtn"
-                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Create
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+        <!-- Form Actions -->
+        <x-modal.footer-actions :create="true" class="pb-0 px-0" />
+    </form>
+</x-modal.modal>

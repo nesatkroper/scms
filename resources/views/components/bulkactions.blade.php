@@ -35,3 +35,67 @@
         </button>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectAll = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+
+            function updateSelectedCount() {
+                const count = document.querySelectorAll('.row-checkbox:checked').length;
+                const bulkBar = document.getElementById('bulkActionsBar');
+                if (bulkBar) bulkBar.classList.toggle('hidden', count === 0);
+                const selectedCount = document.getElementById('selectedCount');
+                if (selectedCount) selectedCount.textContent = count;
+            }
+
+            // Select all toggle
+            selectAll?.addEventListener('change', () => {
+                checkboxes.forEach(cb => cb.checked = selectAll.checked);
+                updateSelectedCount();
+            });
+
+            // Row checkbox change
+            checkboxes.forEach(cb => cb.addEventListener('change', updateSelectedCount));
+
+            // Deselect all button
+            document.getElementById('deselectAll')?.addEventListener('click', () => {
+                checkboxes.forEach(cb => cb.checked = false);
+                selectAll.checked = false;
+                updateSelectedCount();
+            });
+
+            // Row actions
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    const id = btn.dataset.id;
+                    console.log('Edit expense:', id);
+                    // Open edit modal and populate data here
+                });
+            });
+
+            document.querySelectorAll('.detail-btn').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    const id = btn.dataset.id;
+                    console.log('View details for expense:', id);
+                    // Open detail modal and populate data here
+                });
+            });
+
+            document.getElementById('bulkEditBtn')?.addEventListener('click', () => {
+                const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb =>
+                    cb.value);
+                console.log('Bulk edit:', selectedIds);
+            });
+
+            document.getElementById('bulkDeleteBtn')?.addEventListener('click', () => {
+                const selectedIds = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb =>
+                    cb.value);
+                console.log('Bulk delete:', selectedIds);
+            });
+        });
+    </script>
+@endpush

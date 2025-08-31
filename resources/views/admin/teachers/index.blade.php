@@ -15,9 +15,9 @@
     @include('admin.teachers.partials.create')
     @include('admin.teachers.partials.edit')
     @include('admin.teachers.partials.detail')
-    <x-modal.confirmdelete title="Teacher" />
     @include('admin.teachers.partials.bulkedit')
     @include('admin.teachers.partials.bulkdelete')
+    <x-modal.confirmdelete title="Teacher" />
 
 @endsection
 
@@ -135,12 +135,13 @@
                             $('#cvFileName').addClass('hidden');
                             $('#removeCv').addClass('hidden');
                             $('#cvDropArea').removeClass('hidden');
+                            $('#cvPreview').removeClass('hidden');
                         } else {
                             ShowTaskMessage('error', response.message || 'Error creating teacher');
                         }
                     },
                     error: function(xhr) {
-                        if (xhr.status === 422|| xhr.status === 500) {
+                        if (xhr.status === 422 || xhr.status === 500) {
                             const errors = xhr.responseJSON.errors;
                             for (const field in errors) {
                                 if (errors.hasOwnProperty(field)) {
@@ -165,9 +166,9 @@
                 editBtn.html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>')
                     .prop('disabled', true);
 
-                const teacherId = $(this).data('id');
+                const Id = $(this).data('id');
 
-                $.get(`/admin/teachers/${teacherId}`)
+                $.get(`/admin/teachers/${Id}`)
                     .done(function(response) {
                         if (response.success && response.teacher) {
                             const teacher = response.teacher;
@@ -210,7 +211,7 @@
                             }
 
                             // Set form action
-                            $('#Formedit').attr('action', `/teachers/${teacherId}`);
+                            $('#Formedit').attr('action', `/teachers/${Id}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', response.message || 'Failed to load teacher data');
@@ -236,6 +237,7 @@
                     return;
                 }
                 const formData = new FormData(form[0]);
+                formData.append('_method', 'PUT');
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
                 $.ajax({
                     url: '/admin' + form.attr('action'),
@@ -286,8 +288,8 @@
 
             function handleDeleteClick(e) {
                 e.preventDefault();
-                const teacherId = $(this).data('id');
-                $('#Formdelete').attr('action', `/teachers/${teacherId}`);
+                const Id = $(this).data('id');
+                $('#Formdelete').attr('action', `/teachers/${Id}`);
                 showModal('Modaldelete');
             }
 

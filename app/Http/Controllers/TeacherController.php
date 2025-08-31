@@ -238,48 +238,6 @@ class TeacherController extends Controller
                 'message' => 'Error deleting teachers: ' . $e->getMessage()
             ], 500);
         }
-
-
-
-        // $ids = $request->input('ids');
-
-        // if (empty($ids)) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'No teachers selected'
-        //     ], 400);
-        // }
-
-        // try {
-        //     $teachers = Teacher::whereIn('id', $ids)->get();
-
-        //     foreach ($teachers as $teacher) {
-        //         // Delete associated files
-        //         if ($teacher->photo) {
-        //             $photoPath = public_path($teacher->photo);
-        //             if (file_exists($photoPath)) {
-        //                 unlink($photoPath);
-        //             }
-        //         }
-        //         if ($teacher->cv) {
-        //             $cvPath = public_path($teacher->cv);
-        //             if (file_exists($cvPath)) {
-        //                 unlink($cvPath);
-        //             }
-        //         }
-        //         $teacher->delete();
-        //     }
-
-        //     return response()->json([
-        //         'success' => true,
-        //         'message' => count($teachers) . ' teachers deleted successfully'
-        //     ]);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Error deleting teachers: ' . $e->getMessage()
-        //     ], 500);
-        // }
     }
 
     public function getBulkData(Request $request)

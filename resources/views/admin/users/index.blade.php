@@ -7,7 +7,6 @@
             @include('admin.users.partials.table', ['users' => $users])
         </div>
     </x-page.index>
-
     @include('admin.users.partials.create')
     @include('admin.users.partials.edit')
     <x-modal.confirmdelete title="User" />
@@ -64,7 +63,7 @@
                         }
                     },
                     error: function(xhr) {
-                        console.error('Search failed:', xhr.responseText);
+                        // console.error('Search failed:', xhr.responseText);
                         ShowTaskMessage('error', 'Failed to load data');
                     }
                 });
@@ -191,7 +190,7 @@
                         }
                     })
                     .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
+                        // console.error('Error:', xhr.responseText);
                         ShowTaskMessage('error', xhr.responseJSON?.message || 'Failed to load user data');
                     })
                     .always(function() {
@@ -311,7 +310,7 @@
                         }
                     },
                     error: function(xhr) {
-                        console.error('Refresh failed:', xhr.responseText);
+                        // console.error('Refresh failed:', xhr.responseText);
                         ShowTaskMessage('error', 'Failed to refresh data');
                     }
                 });
