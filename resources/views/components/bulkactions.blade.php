@@ -6,13 +6,11 @@
         <div class="text-sm text-gray-700 dark:text-gray-300">
             <span id="selectedCount">0</span> students selected
         </div>
-
         <!-- Deselect All -->
         <button id="deselectAll"
             class="px-2 p-1 w-full rounded-md cursor-pointer text-start text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-gray-700 text-sm transition">
             Deselect all
         </button>
-
         <!-- Edit Button -->
         <button id="bulkEditBtn"
             class="px-2 p-1 w-full rounded-md cursor-pointer text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-700 text-sm flex items-center gap-1 transition">
@@ -22,7 +20,6 @@
             </svg>
             Edit
         </button>
-
         <!-- Delete Button -->
         <button id="bulkDeleteBtn"
             class="px-2 p-1 w-full rounded-md cursor-pointer text-red-600 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 text-sm flex items-center gap-1 transition">

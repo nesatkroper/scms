@@ -91,8 +91,28 @@
     </div>
     <p class="error-photo mt-1 text-sm text-red-600"></p>
 </div>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/cropperjs1.5.12.min.css') }}">
+    <style>
+        /* Cropper.js overrides */
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 50%;
+        }
 
+        /* Drop area styling */
+        #dropArea.hidden {
+            display: none;
+        }
+
+        /* Prevent body scrolling when modal is open */
+        body.overflow-hidden {
+            overflow: hidden;
+        }
+    </style>
+@endpush
 @push('scripts')
+<script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // =============================================
@@ -143,7 +163,7 @@
             function handleFile(file) {
                 // Check if the file is an image
                 if (!file.type.match('image.*')) {
-                    ShowTaskMessage('error','Please select an image file (JPG, PNG)');
+                    ShowTaskMessage('error', 'Please select an image file (JPG, PNG)');
                     return;
                 }
 
@@ -323,22 +343,3 @@
     </script>
 @endpush
 
-@push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-    <style>
-        /* Cropper.js overrides */
-        .cropper-view-box,
-        .cropper-face {
-            border-radius: 50%;
-        }
-
-        /* Drop area styling */
-        #dropArea.hidden {
-            display: none;
-        }
-        /* Prevent body scrolling when modal is open */
-        body.overflow-hidden {
-            overflow: hidden;
-        }
-    </style>
-@endpush

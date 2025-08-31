@@ -326,7 +326,7 @@
                                 const initials = std.name.split(' ').map(n => n[0]).join('').toUpperCase();
                                 $('#edit_initials').removeClass('hidden').find('span').text(initials);
                             }
-                            
+
                             // Set form action
                             $('#Formedit').attr('action', `/students/${Id}`);
                             showModal('Modaledit');

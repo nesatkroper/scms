@@ -76,16 +76,18 @@ class StudentController extends Controller
                 $photo->move($studentPhotoPath, $photoName);
                 $validated['photo'] = 'photos/student/' . $photoName;
             }
+            $student = Student::create($validated);
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'gender' => $validated['gender'],
+                'date_of_birth' => $validated['dob'],
                 'password' => Hash::make('password'),
                 'avatar' => $validated['photo'] ?? null,
             ]);
             $validated['user_id'] = $user->id;
             $user->assignRole('student');
-            $student = Student::create($validated);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully!',
@@ -102,6 +104,7 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $student->load('gradeLevel', 'user', 'guardians');
+         $student->age = \Carbon\Carbon::parse($student->dob)->age;
         return response()->json([
             'success' => true,
             'student' => $student
@@ -157,9 +160,11 @@ class StudentController extends Controller
                     unlink($photoPath);
                 }
             }
-
             $student->delete();
-
+            if ($student->user) {
+                $student->user->delete();
+            }
+            $student->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'Student deleted successfully'
@@ -195,6 +200,9 @@ class StudentController extends Controller
                     }
                 }
                 $student->delete();
+                if ($student->user) {
+                    $student->user->delete();
+                }
             }
 
             return response()->json([

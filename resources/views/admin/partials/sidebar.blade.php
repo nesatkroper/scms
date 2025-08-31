@@ -1,5 +1,5 @@
 <aside id="sidebar"
-  class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-72  md:translate-x-0 -translate-x-full">
+  class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-02  md:translate-x-0 -translate-x-full">
   <!-- Sidebar header -->
   <div class="flex items-center justify-between p-4 border-b border-indigo-700 dark:border-gray-700">
     <div class="flex items-center space-x-2">
@@ -25,7 +25,7 @@
         <a href="{{ route('admin.home') }}"
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
           <div class="wr-icon flex items-center">
-            <i class="fas fa-tachometer-alt w-6 text-center"></i>
+            <i class="fas fa-tachometer-alt text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
           </div>
           <span class="menu-tooltip">Dashboard</span>
@@ -67,7 +67,7 @@
         <div
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
           <div class="wr-icon flex items-center">
-            <i class="fas fa-book w-6 text-center"></i>
+            <i class="fas fa-book text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Academics</span>
           </div>
           <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
@@ -172,7 +172,7 @@
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer
                              transition-all duration-200 js-submenu-toggle">
           <div class="wr-icon flex items-center">
-            <i class="fas fa-book-open w-6 text-center"></i>
+            <i class="fas fa-book-open text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Library</span>
           </div>
           <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
@@ -238,7 +238,7 @@
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg
                             mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
           <div class="wr-icon flex items-center">
-            <i class="fas fa-money-bill-wave w-6 text-center"></i>
+            <i class="fas fa-money-bill-wave text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Finance</span>
           </div>
           <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>

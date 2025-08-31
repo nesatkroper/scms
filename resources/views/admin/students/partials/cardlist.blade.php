@@ -14,7 +14,7 @@
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
                                 <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">
-                                    {{ substr($student->name, 0, 2) }}
+                                    {{ substr($student->name, 0, 1) }}
                                 </span>
                             </div>
                         @endif

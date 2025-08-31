@@ -188,7 +188,9 @@ class TeacherController extends Controller
                     unlink($cvPath);
                 }
             }
-
+            if ($teacher->user) {
+                $teacher->user->delete();
+            }
             $teacher->delete();
 
             return response()->json([
@@ -226,6 +228,9 @@ class TeacherController extends Controller
                     Storage::disk('public')->delete($teacher->cv);
                 }
                 $teacher->delete();
+                if ($teacher->user) {
+                    $teacher->user->delete();
+                }
             }
 
             return response()->json([

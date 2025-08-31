@@ -30,7 +30,9 @@
             </div>
 
             <div class="md:w-64 flex flex-col gap-3">
-                <div class="preview-container overflow-hidden w-[200px] h-[200px] rounded-full mx-auto border border-gray-200"></div>
+                <div
+                    class="preview-container overflow-hidden w-[200px] h-[200px] rounded-full mx-auto border border-gray-200">
+                </div>
                 <div class="flex gap-2 mt-2 justify-center">
                     <button type="button" id="editRotateLeft"
                         class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
@@ -65,7 +67,12 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/cropperjs1.5.12.min.css') }}">
+@endpush
 @push('scripts')
+    <script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Edit Modal Photo Upload with Cropper.js

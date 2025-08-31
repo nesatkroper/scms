@@ -61,8 +61,25 @@
         </div>
     </div>
 </div>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/cropperjs1.5.12.min.css') }}">
+    <style>
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 50%;
+        }
 
+        #dropArea {
+            transition: all 0.3s ease;
+        }
+
+        .cropper-modal {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+@endpush
 @push('scripts')
+<script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
@@ -228,22 +245,4 @@
             });
         });
     </script>
-@endpush
-
-@push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-    <style>
-        .cropper-view-box,
-        .cropper-face {
-            border-radius: 50%;
-        }
-
-        #dropArea {
-            transition: all 0.3s ease;
-        }
-
-        .cropper-modal {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
 @endpush
