@@ -19,7 +19,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 12);
         $viewType = $request->input('view', 'table');
         $users = User::all();
         $gradeLevels = GradeLevel::all();
@@ -75,8 +75,10 @@ class StudentController extends Controller
                 $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
                 $photo->move($studentPhotoPath, $photoName);
                 $validated['photo'] = 'photos/student/' . $photoName;
+                $photoPath = 'photos/student/' . $photoName;
+                $validated['photo'] = $photoPath;
             }
-            $student = Student::create($validated);
+
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -86,12 +88,13 @@ class StudentController extends Controller
                 'password' => Hash::make('password'),
                 'avatar' => $validated['photo'] ?? null,
             ]);
-            $validated['user_id'] = $user->id;
             $user->assignRole('student');
+            $validated['user_id'] = $user->id;
+            $student = Student::create($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully!',
-                'student' => $student
+                'data' => $student
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -104,10 +107,10 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $student->load('gradeLevel', 'user', 'guardians');
-         $student->age = \Carbon\Carbon::parse($student->dob)->age;
+        $student->age = \Carbon\Carbon::parse($student->dob)->age;
         return response()->json([
             'success' => true,
-            'student' => $student
+            'data' => $student
         ]);
     }
 
@@ -128,19 +131,23 @@ class StudentController extends Controller
                 $photo->move($photoPath, $photoName);
                 $data['photo'] = 'photos/student/' . $photoName;
             }
+            
+            $student->update($data);
             if ($student->user) {
                 $student->user->update([
-                    'name'   => $data['name'] ?? $student->name,
-                    'email'  => $data['email'] ?? $student->email,
+                    'name' => $data['name'] ?? $student->name,
+                    'email' => $data['email'] ?? $student->email,
+                    'phone' => $data['phone'] ?? $student->phone,
+                    'gender' => $data['gender'] ?? $student->gender,
+                    'date_of_birth' => $data['dob'] ?? $student->dob,
                     'avatar' => $data['photo'] ?? $student->photo,
                 ]);
             }
-            $student->update($data);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Student updated successfully',
-                'student' => $student->fresh('gradeLevel')
+                'data' => $student->fresh('gradeLevel')
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -164,7 +171,6 @@ class StudentController extends Controller
             if ($student->user) {
                 $student->user->delete();
             }
-            $student->delete();
             return response()->json([
                 'success' => true,
                 'message' => 'Student deleted successfully'

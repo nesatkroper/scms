@@ -5,7 +5,7 @@
         <button id="toggle-sidebar"
             class="rounded-full cursor-pointer size-9 flex justify-center items-center text-gray-600 dark:text-gray-300
                         hover:text-indigo-600 hover:bg-indigo-100 dark:hover:bg-indigo-900 dark:hover:text-indigo-400 focus:outline-none">
-            <i class="fas fa-bars text-xl"></i>
+            <i class="fas fa-bars text-lg"></i>
         </button>
     </div>
 

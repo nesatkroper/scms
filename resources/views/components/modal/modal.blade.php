@@ -10,7 +10,7 @@
                         d="{{$svgPath}}"
                         clip-rule="evenodd" />
                 </svg>
-                {{$title}}
+                {{$title}} <span class="title"></span>
             </h3>
             <x-button.btnclose id="close{{$id}}"/>
         </div>

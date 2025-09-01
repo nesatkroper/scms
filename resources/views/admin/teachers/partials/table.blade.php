@@ -13,12 +13,16 @@
             <x-table.tr>
                 <x-table.td class="whitespace-nowrap text-gray-900 dark:text-white">
                     <div class="flex items-center">
-                        <img class="detail-btn size-10 rounded-full object-cover cursor-pointer"
-                            src="{{ $teacher->photo
-                                ? asset($teacher->photo)
-                                : 'https://placehold.co/40x40/6366F1/FFFFFF?text=' . substr($teacher->user?->name ?? 'U', 0, 1) }}"
-                            alt="{{ $teacher->name }} image" data-id="{{ $teacher->id }}">
-
+                        @if ($teacher->photo)
+                            <img class="detail-btn size-10 rounded-full object-cover cursor-pointer"
+                                src="{{asset($teacher->photo)}}"
+                                alt="{{ $teacher->name }} image" data-id="{{ $teacher->id }}">
+                        @else
+                            <div data-id="{{ $teacher->id }}"
+                                class="detail-btn w-10 h-10 rounded-full flex items-center justify-center bg-indigo-600 text-white font-bold cursor-default select-none">
+                                {{ strtoupper(substr($teacher->name, 0, 1)) }}
+                            </div>
+                        @endif
                         <div class="pl-3">
                             <div class="text-base font-semibold">
                                 {{ $teacher->name }}

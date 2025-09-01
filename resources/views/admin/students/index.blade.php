@@ -1,55 +1,8 @@
 @extends('layouts.admin')
 @section('title', 'Students')
 @section('content')
-    <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-        <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
-            </svg>
-            Students List
-        </h3>
-        <div
-            class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-            <button data-tooltip-target="tooltip" data-tooltip-placement="top" id="openCreateModal"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                Create New
-                <div id="tooltip" role="tooltip" class="text-sm font-medium">
-                    placement tooltip t
-                </div>
-            </button>
-
-            <div class="flex items-center mt-3 md:mt-0 gap-2">
-                <div class="relative w-full">
-                    <input type="search" id="searchInput" placeholder="Search student..."
-                        class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                    <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-                </div>
-                <button id="resetSearch"
-                    class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                    <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-                </button>
-                <div
-                    class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
-                    <button id="listViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                        <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                    <button id="cardViewBtn"
-                        class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
-                        <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <x-page.index btn-text="Create New Student" :showReset="true" :showViewToggle="true" title="Student"
+        iconSvgPath="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z">
 
         {{-- <button data-tooltip-target="tooltip-t" data-tooltip-placement="top" class="tooltip-btn">
             tooltip-t
@@ -83,10 +36,7 @@
             @include('admin.students.partials.cardlist', ['students' => $students])
         </div>
         <x-table.pagination :paginator="$students" />
-    </div>
-
-    <!-- Modal Backdrop -->
-    <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
+    </x-page.index>
 
     @include('admin.students.partials.create')
     @include('admin.students.partials.edit')
@@ -94,6 +44,7 @@
     <x-modal.confirmdelete title="students" />
     @include('admin.students.partials.bulkedit')
     @include('admin.students.partials.bulkdelete')
+
 @endsection
 
 @push('scripts')
@@ -103,70 +54,9 @@
             // Core Configuration
             $.ajaxSetup({
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
-            selectfields();
-
-            function selectfields() {
-                document.querySelectorAll('.custom-select').forEach(select => {
-                    const header = select.querySelector('.select-header');
-                    const optionsBox = select.querySelector('.select-options');
-                    const searchInput = select.querySelector('.search-input');
-                    const optionsContainer = select.querySelector('.options-container');
-                    const selectedValue = select.querySelector('.selected-value');
-                    const noResults = select.querySelector('.no-results');
-                    const options = Array.from(select.querySelectorAll('.select-option'));
-                    const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-                    // Toggle dropdown
-                    header.addEventListener('click', function() {
-                        select.classList.toggle('open');
-                        if (select.classList.contains('open')) {
-                            searchInput.focus();
-                        }
-                    });
-
-                    // Filter options
-                    searchInput.addEventListener('input', function() {
-                        const term = this.value.toLowerCase().trim();
-                        let hasMatch = false;
-
-                        options.forEach(option => {
-                            if (option.textContent.toLowerCase().includes(term)) {
-                                option.style.display = 'block';
-                                hasMatch = true;
-                            } else {
-                                option.style.display = 'none';
-                            }
-                        });
-
-                        noResults.style.display = hasMatch ? 'none' : 'block';
-                    });
-
-                    // Select option
-                    options.forEach(option => {
-                        option.addEventListener('click', function() {
-                            options.forEach(opt => opt.classList.remove('selected'));
-                            this.classList.add('selected');
-                            selectedValue.textContent = this.textContent;
-                            hiddenInput.value = this.dataset.value;
-                            select.classList.remove('open');
-                            console.log('Selected grade_level_id:', this.dataset.value);
-                        });
-                    });
-
-                    // Close when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!select.contains(e.target)) {
-                            select.classList.remove('open');
-                        }
-                    });
-                });
-            }
-
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
             const searchInput = $('#searchInput');
@@ -298,11 +188,10 @@
 
                 $.get(`/admin/students/${Id}`)
                     .done(function(response) {
-                        if (response.success && response.student) {
-                            const std = response.student;
+                        if (response.success && response.data) {
+                            const std = response.data;
                             const date = std.admission_date ? std.admission_date.substring(0, 10) : '';
                             const datedob = std.dob ? std.dob.substring(0, 10) : '';
-                            // const age = datedob - Date().Now();
                             // Set form values
                             $('#edit_name').val(std.name);
                             $('#edit_user').val(std.user_id);
@@ -316,17 +205,29 @@
                             $('#edit_blood_group').val(std.blood_group);
                             $('#edit_nationality').val(std.nationality);
                             $('#edit_religion').val(std.religion);
-                            // $('#edit_age').val(age);
                             // Handle photo display
                             if (std.photo) {
-                                $('#edit_photo').attr('src', '/' + std.photo).removeClass('hidden');
-                                $('#edit_initials').addClass('hidden');
+                                $('#edit_photo').attr('src', window.location.origin + '/' + std.photo)
+                                    .removeClass('hidden');
                             } else {
-                                $('#edit_photo').addClass('hidden');
-                                const initials = std.name.split(' ').map(n => n[0]).join('').toUpperCase();
-                                $('#edit_initials').removeClass('hidden').find('span').text(initials);
+                                let initials = '?';
+                                if (std.name) {
+                                    initials = std.name.split(' ')
+                                        .filter(n => n.length > 0)
+                                        .map(n => n[0])
+                                        .join('')
+                                        .toUpperCase()
+                                        .substring(0, 2);
+                                }
+                                if (std.photo) {
+                                    $('#edit_photo').attr('src', '/' + std.photo).removeClass('hidden');
+                                    alert("ccc")
+                                } else {
+                                    const initials = std.name.split(' ').map(n => n[0]).join('')
+                                        .toUpperCase();
+                                    $('#edit_initials').removeClass('hidden').find('span').text(initials);
+                                }
                             }
-
                             // Set form action
                             $('#Formedit').attr('action', `/students/${Id}`);
                             showModal('Modaledit');
@@ -348,8 +249,9 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-                if (!this.checkValidity()) {
-                    $(this).addClass('was-validated');
+                if (!form[0].checkValidity()) {
+                    form.addClass('was-validated');
+                    submitBtn.prop('disabled', false).html(originalBtnHtml);
                     return;
                 }
                 const formData = new FormData(form[0]);
@@ -387,19 +289,6 @@
                     }
                 });
             }
-
-            // Preview photo before upload
-            $('#upload_photo').change(function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#edit_photo').attr('src', e.target.result).removeClass('hidden');
-                        $('#edit_initials').addClass('hidden');
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
 
             function handleDeleteClick(e) {
                 e.preventDefault();
@@ -452,43 +341,58 @@
                 $.get(`/admin/students/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const student = response.student;
-                            const gradeLevelName = student.grade_level?.name ?? "Unknown";
-                            const updatedAt = student.updated_at ? student.updated_at.substring(0, 10) : '';
-
-                            // Set basic info
+                            const student = response.data;
+                            // Format dates
+                            const admissionDate = student.admission_date ?
+                                new Date(student.admission_date).toLocaleDateString() :
+                                '';
+                            const dob = student.dob ?
+                                new Date(student.dob).toLocaleDateString() :
+                                '';
+                            // Basic info
                             $('#detail_name').text(student.name ?? '');
-                            $('.title').text(student.name ?? '');
-                            $('#detail_user').val(student.user_id);
-                            $('#detail_gender').val(student.gender);
-                            $('#detail_grade_level').text(gradeLevelName).toggleClass('hidden', !
-                                gradeLevelName);
+                            $('#detail_age').text(student.age ?? '');
+                            $('#detail_gender').text(student.gender ?? '');
                             $('#detail_blood_group').text(student.blood_group ?? '');
-                            $('#detail_nationality').text(student.nationality ?? '');
                             $('#detail_religion').text(student.religion ?? '');
-                            $('#detail_admission_date').text(student.admission_date ? new Date(student
-                                .admission_date).toLocaleDateString() : '');
-                            $('#detail_email').text(student.email ?? '');
+                            $('#detail_nationality').text(student.nationality ?? '');
+                            $('#detail_grade').text(student.grade_level?.name ?? 'Unknown');
+                            $('#detail_code').text(student.grade_level?.code ?? 'Unknown');
+                            $('#detail_description').text(student.grade_level?.description ?? 'Unknown');
+                            $('.title').text(student.name ?? '');
+                            $('#detail_specialization').text(student.specialization ?? '');
+                            $('#detail_department')
+                                .text(student.department ?? '')
+                                .toggleClass('hidden', !student.department);
+
+                            // Stats
+                            $('#detail_experience').text(student.experience ?? '0');
+                            $('#detail_qualification').text(student.qualification ?? '');
+                            $('#detail_admission_date').text(admissionDate);
+
+                            // Contact info
+                            $('#detail_email').text(student.email ?? 'Not provided');
                             $('#detail_phone').text(student.phone ?? 'Not provided');
-                            $('#detail_dob').text(student.dob ? new Date(student.dob).toLocaleDateString() :
-                                '');
+                            $('#detail_dob').text(dob);
                             $('#detail_address').text(student.address ?? '');
 
-                            // Handle photo display
+                            // Avatar / Initials
                             const photoContainer = $('#detail_photo');
                             const initialsContainer = $('#detail_initials');
                             const initialsSpan = initialsContainer.find('span');
 
                             if (student.photo) {
-                                photoContainer.attr('src', `${window.location.origin}/${student.photo}`)
+                                photoContainer
+                                    .attr('src', `${window.location.origin}/${student.photo}`)
                                     .removeClass('hidden');
                                 initialsContainer.addClass('hidden');
                             } else {
-                                // Display initials if no photo
                                 photoContainer.addClass('hidden');
                                 initialsContainer.removeClass('hidden');
-                                const nameParts = student.name.split(' ');
-                                const initials = nameParts.map(part => part[0]).join('').toUpperCase();
+                                const nameParts = (student.name ?? '')
+                                    .split(' ')
+                                    .filter(Boolean);
+                                const initials = nameParts.map((part) => part[0]).join('').toUpperCase();
                                 initialsSpan.text(initials);
                             }
 
@@ -506,7 +410,6 @@
                         detailBtn.prop('disabled', false);
                     });
             }
-
             // Bulk Actions
             function getSelectedIds() {
                 const selectedIds = [];
@@ -903,7 +806,6 @@
                 // Set initial view
                 const savedView = localStorage.getItem('viewitem') || 'list';
                 setView(savedView);
-
                 // View toggle
                 listViewBtn.on('click', () => setView('list'));
                 cardViewBtn.on('click', () => setView('card'));

@@ -43,7 +43,7 @@
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 text-xs">Age</p>
                         <p class="font-bold text-gray-700 dark:text-gray-200">
-                            <span class="text-xs font-normal"> yrs</span>
+                            <span class="text-xs font-normal">{{ $student->age ?? 'N/A' }} yrs</span>
                         </p>
                     </div>
                     <div>

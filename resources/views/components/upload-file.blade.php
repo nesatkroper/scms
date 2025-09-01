@@ -49,8 +49,9 @@
                         </div>
 
                         <div class="md:w-64 flex flex-col gap-3">
-                            <div class="preview-container overflow-hidden w-[200px] h-[200px] rounded-full mx-auto border border-gray-200"
-                                style="width: 200px; height: 200px;">
+                            <div
+                                class="preview-container overflow-hidden w-[160px] h-[160px] md:w-[200px] md:h-[200px] rounded-full mx-auto
+                             border border-gray-200">
                             </div>
 
                             <div class="flex gap-2 justify-center mt-2">
@@ -112,7 +113,7 @@
     </style>
 @endpush
 @push('scripts')
-<script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
+    <script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // =============================================
@@ -342,4 +343,3 @@
         });
     </script>
 @endpush
-

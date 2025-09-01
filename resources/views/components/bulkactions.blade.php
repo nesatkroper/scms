@@ -68,7 +68,7 @@
                 btn.addEventListener('click', e => {
                     e.preventDefault();
                     const id = btn.dataset.id;
-                    console.log('Edit expense:', id);
+                    console.log('Edit :', id);
                     // Open edit modal and populate data here
                 });
             });
@@ -77,7 +77,7 @@
                 btn.addEventListener('click', e => {
                     e.preventDefault();
                     const id = btn.dataset.id;
-                    console.log('View details for expense:', id);
+                    console.log('View details for:', id);
                     // Open detail modal and populate data here
                 });
             });
