@@ -20,6 +20,7 @@ module.exports = {
         base: ['14px', { lineHeight: '20px' }],
       },
       colors: {
+
         primary: {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -35,7 +36,12 @@ module.exports = {
         dark: {
           800: '#1e293b',
           900: '#0f172a',
-        }
+        },
+        secondary: '#6b7280',
+        success: '#10b981',
+        warning: '#f59e0b',
+        danger: '#ef4444',
+        info: '#3b82f6'
       }
     },
   },

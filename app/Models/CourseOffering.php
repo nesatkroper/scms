@@ -38,11 +38,6 @@ class CourseOffering extends Model
     return $this->belongsTo(Classroom::class);
   }
 
-  public function section()
-  {
-    return $this->belongsTo(Section::class);
-  }
-
   public function timetableSlots()
   {
     return $this->hasMany(TimetableSlot::class);

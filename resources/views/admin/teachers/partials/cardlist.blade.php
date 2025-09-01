@@ -62,25 +62,9 @@
 
                 <!-- Contact Info -->
                 <div class="space-y-2 text-sm">
-                    <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                        <div class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                            <i class="ri-mail-line"></i>
-                        </div>
-                        <span class="truncate">{{ $teacher->email }}</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                        <div class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                            <i class="ri-phone-line"></i>
-                        </div>
-                        <span>{{ $teacher->phone ?? 'Not provided' }}</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                        <div class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
-                            <i class="ri-money-dollar-circle-line"></i>
-                        </div>
-                        <span>${{ $teacher->salary }}</span>
-                    </div>
-
+                    <x-info.item label="Email" icon="ri-mail-line" name="{{ $teacher->email ?? 'Not provided' }}" />
+                    <x-info.item label="Phone" icon="ri-phone-line" name="{{ $teacher->phone ?? 'Not provided' }}" />
+                    <x-info.item label="Salary" icon="ri-money-dollar-circle-line" name="${{ $teacher->salary }}" />
                 </div>
             </div>
 
@@ -109,5 +93,5 @@
         </div>
     @endforeach
 @else
-   <x-not-found-data title="teachers" />
+    <x-not-found-data title="teachers" />
 @endif

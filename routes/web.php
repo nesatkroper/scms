@@ -82,6 +82,9 @@ R::prefix('/admin')
 
     ]);
 
+    R::get('/students/profile/{student}', [StudentController::class, 'profile'])
+      ->name('students.profile');
+
     $bulkRoutes = [
       'expenses' => ExpenseController::class,
       'sections' => SectionController::class,
@@ -107,12 +110,4 @@ R::prefix('/admin')
         });
     }
 
-    R::prefix('/students/{student}/guardians')
-      ->as('student_guardians.')
-      ->middleware('auth')
-      ->group(function () {
-        R::get('/attach', [StudentGuardianController::class, 'create'])->name('create');
-        R::post('/', [StudentGuardianController::class, 'store'])->name('store');
-        R::delete('/{guardian}', [StudentGuardianController::class, 'destroy'])->name('destroy');
-      });
   });

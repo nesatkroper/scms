@@ -131,7 +131,7 @@ class StudentController extends Controller
                 $photo->move($photoPath, $photoName);
                 $data['photo'] = 'photos/student/' . $photoName;
             }
-            
+
             $student->update($data);
             if ($student->user) {
                 $student->user->update([
@@ -300,5 +300,111 @@ class StudentController extends Controller
             'message' => "Successfully updated $updatedCount students",
             'redirect' => route('admin.students.index')
         ]);
+    }
+
+    // ========
+
+    public function profile(Student $student)
+    {
+        // Eager load all relationships with necessary fields
+        $student->load([
+            'user:id,name,email,phone,gender,date_of_birth,avatar',
+            'gradeLevel:id,name',
+            'guardians:id,name,phone,email,occupation,address',
+            // 'courseOfferings:id,name',
+            // 'bookIssues:id,book_title,issued_at,due_date,returned_at,status',
+            // 'attendances:id,date,status,remarks',
+            // 'grades:id,subject,score',
+            // 'studentFees:id,fee_type,amount,paid_at,status'
+        ]);
+
+        // Calculate age
+        $student->age = $student->dob ? \Carbon\Carbon::parse($student->dob)->age : null;
+
+        // Calculate academic statistics
+        $academicStats = $this->calculateAcademicStats($student);
+
+        // Format data for the view
+        $formattedData = $this->formatStudentData($student, $academicStats);
+
+        return view('admin.students.profile', $formattedData);
+    }
+
+    /**
+     * Calculate academic statistics for the student
+     */
+    private function calculateAcademicStats($student)
+    {
+        // Calculate overall GPA (example logic)
+        $totalGrades = $student->grades->count();
+        $sumGrades = $student->grades->sum('score');
+        $gpa = $totalGrades > 0 ? $sumGrades / $totalGrades : 0;
+        $gpaPercentage = ($gpa / 100) * 4; // Convert to 4.0 scale
+
+        // Calculate attendance rate
+        $totalAttendance = $student->attendances->count();
+        $presentAttendance = $student->attendances->where('status', 'present')->count();
+        $attendanceRate = $totalAttendance > 0 ? ($presentAttendance / $totalAttendance) * 100 : 0;
+
+        // Calculate fee payment progress
+        $totalFees = $student->studentFees->sum('amount');
+        $paidFees = $student->studentFees->where('status', 'paid')->sum('amount');
+        $feeProgress = $totalFees > 0 ? ($paidFees / $totalFees) * 100 : 0;
+
+        return [
+            'gpa' => number_format($gpaPercentage, 1),
+            'gpa_percentage' => number_format($gpa, 1),
+            'attendance_rate' => number_format($attendanceRate, 0),
+            'fee_progress' => number_format($feeProgress, 0),
+            'present_days' => $presentAttendance,
+            'absent_days' => $totalAttendance - $presentAttendance,
+            'total_fees' => $totalFees,
+            'paid_fees' => $paidFees,
+            'due_fees' => $totalFees - $paidFees,
+        ];
+    }
+
+    /**
+     * Format student data for the view
+     */
+    private function formatStudentData($student, $academicStats)
+    {
+        // Get recent activities (last 5 of each type)
+        $recentBookIssues = $student->bookIssues->sortByDesc('issued_at')->take(5);
+        $recentFees = $student->studentFees->sortByDesc('paid_at')->take(5);
+        $recentAttendances = $student->attendances->sortByDesc('date')->take(10);
+
+        // Get course grades with calculated letter grades
+        $courseGrades = $student->courseOfferings->map(function ($course) use ($student) {
+            $grade = $student->grades->where('subject', $course->name)->first();
+            return [
+                'name' => $course->name,
+                'grade' => $grade ? $this->calculateLetterGrade($grade->score) : 'N/A',
+                'score' => $grade ? $grade->score : 0,
+                'progress' => $grade ? $grade->score : 0,
+            ];
+        });
+
+        return [
+            'student' => $student,
+            'academicStats' => $academicStats,
+            'recentBookIssues' => $recentBookIssues,
+            'recentFees' => $recentFees,
+            'recentAttendances' => $recentAttendances,
+            'courseGrades' => $courseGrades,
+            'guardians' => $student->guardians,
+        ];
+    }
+
+    /**
+     * Calculate letter grade based on score
+     */
+    private function calculateLetterGrade($score)
+    {
+        if ($score >= 90) return 'A';
+        if ($score >= 80) return 'B';
+        if ($score >= 70) return 'C';
+        if ($score >= 60) return 'D';
+        return 'F';
     }
 }

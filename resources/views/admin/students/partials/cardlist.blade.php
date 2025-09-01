@@ -107,15 +107,5 @@
         </div>
     @endforeach
 @else
-    <div class="col-span-full py-16 text-center">
-        <div
-            class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-            <div
-                class="mx-auto h-20 w-20 rounded-full bg-gradient-to-r from-red-100 to-pink-100 dark:from-slate-700 dark:to-slate-600 flex items-center justify-center mb-4">
-                <i class="ri-user-search-line text-3xl text-red-400 dark:text-red-500"></i>
-            </div>
-            <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200 mb-2">No Students Found</h3>
-            <p class="text-gray-500 dark:text-gray-400 mb-4">Add your first student to get started</p>
-        </div>
-    </div>
+    <x-not-found-data title="students" />
 @endif
