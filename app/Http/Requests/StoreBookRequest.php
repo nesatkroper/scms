@@ -22,7 +22,7 @@ class StoreBookRequest extends FormRequest
       'publisher' => ['required', 'string', 'max:255'],
       'quantity' => ['required', 'integer', 'min:0'],
       'description' => ['nullable', 'string'],
-      'cover_image' => ['nullable', 'string'],
+      'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
     ];
   }
 }

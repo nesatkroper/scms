@@ -349,19 +349,19 @@ return new class extends Migration {
       $table->foreign('village_id')->references('id')->on('villages')->onDelete('cascade');
     });
 
-    // Schema::create('scores', function (Blueprint $table) {
-    //   $table->id();
-    //   $table->foreignId('student_id')->constrained()->onDelete('cascade');
-    //   $table->foreignId('exam_id')->constrained()->onDelete('cascade');
-    //   $table->string('semester');
-    //   $table->integer('score');
-    //   $table->string('grade')->nullable();
-    //   $table->text('remarks')->nullable();
-    //   $table->timestamps();
-    //   $table->softDeletes();
-
-    //   $table->unique(['student_id', 'exam_id', 'semester']);
-    // });
+    Schema::create('scores', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('student_id')->constrained()->onDelete('cascade');
+      $table->foreignId('exam_id')->constrained()->onDelete('cascade');
+      $table->foreignId('subject_id')->constrained()->onDelete('cascade');
+      $table->string('semester');
+      $table->integer('score');
+      $table->string('grade')->nullable();
+      $table->text('remarks')->nullable();
+      $table->timestamps();
+      $table->softDeletes();
+      $table->unique(['student_id', 'exam_id', 'subject_id', 'semester']);
+    });
   }
 
   public function down(): void

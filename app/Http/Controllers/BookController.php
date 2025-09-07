@@ -72,7 +72,7 @@ class BookController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Book added successfully!',
-                    'book' => $book
+                    'data' => $book
                 ]);
             }
 
@@ -94,16 +94,10 @@ class BookController extends Controller
         if (request()->ajax()) {
             return response()->json([
                 'success' => true,
-                'book' => $book
+                'data' => $book
             ]);
         }
-
         return view('admin.books.show', compact('book'));
-    }
-
-    public function edit(Book $book)
-    {
-        return view('admin.books.edit', compact('book'));
     }
 
     public function update(UpdateBookRequest $request, Book $book)

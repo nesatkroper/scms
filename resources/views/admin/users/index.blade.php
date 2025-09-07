@@ -73,17 +73,14 @@
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
-                const submitBtn = $('#createSubmitBtn');
-                const originalBtnHtml = submitBtn.html();
-
                 if (!this.checkValidity()) {
                     $(this).addClass('was-validated');
                     return;
                 }
-
+                const submitBtn = $('#createSubmitBtn');
+                const originalBtnHtml = submitBtn.html();
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
                 const formData = new FormData(form[0]);
-
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
@@ -204,12 +201,10 @@
                 const form = $(this);
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 if (!this.checkValidity()) {
                     $(this).addClass('was-validated');
                     return;
                 }
-
                 const formData = new FormData(form[0]);
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
 

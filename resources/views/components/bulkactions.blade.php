@@ -4,7 +4,7 @@
     <div class="flex flex-col items-start gap-1">
         <!-- Count Display -->
         <div class="text-sm text-gray-700 dark:text-gray-300">
-            <span id="selectedCount">0</span> students selected
+            <span id="selectedCount">0</span> selected
         </div>
         <!-- Deselect All -->
         <button id="deselectAll"
@@ -69,16 +69,7 @@
                     e.preventDefault();
                     const id = btn.dataset.id;
                     console.log('Edit :', id);
-                    // Open edit modal and populate data here
-                });
-            });
-
-            document.querySelectorAll('.detail-btn').forEach(btn => {
-                btn.addEventListener('click', e => {
-                    e.preventDefault();
-                    const id = btn.dataset.id;
-                    console.log('View details for:', id);
-                    // Open detail modal and populate data here
+                    //alert('View details for:', id)
                 });
             });
 

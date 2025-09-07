@@ -11,6 +11,7 @@ use App\Http\Controllers\{
   EventController,
   ExamController,
   ExpenseController,
+  ExpenseCategoryController,
   FeeStructureController,
   GradeController,
   GradeLevelController,
@@ -31,6 +32,7 @@ use App\Http\Controllers\{
   ScoreController,
   UserController,
   RoleController,
+
 };
 
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +66,7 @@ R::prefix('/admin')
       'events' => EventController::class,
       'exams' => ExamController::class,
       'expenses' => ExpenseController::class,
+      'expensecategory' => ExpenseCategoryController::class,
       'feestructures' => FeeStructureController::class,
       'grades' => GradeController::class,
       'gradelevels' => GradeLevelController::class,

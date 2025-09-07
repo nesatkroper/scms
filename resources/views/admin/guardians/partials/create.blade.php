@@ -9,7 +9,7 @@
             <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                 <!-- Circular Avatar -->
                 <div class="absolute -bottom-12">
-                    <x-upload name="photo" size="xl" />
+                    <x-photos.upload2 name="photo" size="xl" />
                 </div>
             </div>
             <!-- Profile Body -->

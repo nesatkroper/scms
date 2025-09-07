@@ -4,14 +4,14 @@
         id="photoUploadContainer">
         <!-- Image Preview -->
         <div id="photoPreviewContainer" class="w-full h-full hidden">
-            <img id="photoPreview" src="" alt="Preview" class="w-full h-full object-cover rounded-full">
+            <img id="photoPreview" src="" alt="Preview" class="w-full h-full object-cover {{$rounded}}">
         </div>
 
         <!-- Initials Display (shown when no image) -->
         <div id="photoInitials"
-            class="absolute inset-0 rounded-full w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
+            class="absolute inset-0 {{$rounded}} w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
             <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">
-                <i class="ri-account-circle-fill text-8xl"></i>
+                <i class="{{$icon}} text-8xl"></i>
             </span>
         </div>
 
@@ -79,7 +79,7 @@
     </style>
 @endpush
 @push('scripts')
-<script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
+    <script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
@@ -94,7 +94,6 @@
             const closeCropModal = document.getElementById('closeCropModal');
             const cancelCrop = document.getElementById('cancelCrop');
             const cropImageBtn = document.getElementById('cropImageBtn');
-
             let cropper;
             let currentFile;
 

@@ -1,24 +1,22 @@
 @extends('layouts.admin')
-@section('title', 'Teachers')
+@section('title', 'Expense Categories')
 @section('content')
-    <x-page.index btn-text="Create New Teacher" :showReset="true" :showViewToggle="true" title="Teacher"
-        iconSvgPath="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z">
-        <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
-            @include('admin.teachers.partials.table', ['teachers' => $teachers])
+    <x-page.index :showReset="true" :showViewToggle="true" title="Expense Categories" btn-text="Create New Category"
+        iconSvgPath="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
+        btn-icon-svg-path="">
+        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
+            @include('admin.expensecategory.partials.table', ['categories' => $categories])
         </div>
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('admin.teachers.partials.cardlist', ['teachers' => $teachers])
+            @include('admin.expensecategory.partials.cardlist', ['categories' => $categories])
         </div>
-        <x-table.pagination :paginator="$teachers" />
+        <x-table.pagination :paginator="$categories" />
     </x-page.index>
 
-    @include('admin.teachers.partials.create')
-    @include('admin.teachers.partials.edit')
-    @include('admin.teachers.partials.detail')
-    @include('admin.teachers.partials.bulkedit')
-    @include('admin.teachers.partials.bulkdelete')
-    <x-modal.confirmdelete title="Teacher" />
-
+    @include('admin.expensecategory.partials.create')
+    @include('admin.expensecategory.partials.edit')
+    @include('admin.expensecategory.partials.detail')
+    <x-modal.confirmdelete title="Category" />
 @endsection
 
 @push('scripts')
@@ -28,13 +26,13 @@
             // Core Configuration
             $.ajaxSetup({
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    // 'Accept': 'application/json'
                 }
             });
+
             // DOM Elements
             const backdrop = document.getElementById('modalBackdrop');
+            const perPageSelect = $('#perPageSelect');
             const searchInput = $('#searchInput');
             const resetSearch = $('#resetSearch');
             const listViewBtn = $('#listViewBtn');
@@ -42,12 +40,8 @@
             const tableContainer = $('#TableContainer');
             const cardContainer = $('#CardContainer');
 
-            $('#openCreateModal').on('click', function() {
+            $('#openCreateModal').off('click').on('click', function() {
                 showModal('Modalcreate');
-            });
-
-            $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
-                closeModal('bulkEditModal');
             });
 
             // View Management
@@ -69,16 +63,17 @@
                 }
                 localStorage.setItem('viewitem', viewType);
             }
-
             // Search and Pagination
             function searchData(searchTerm) {
                 const currentView = localStorage.getItem('viewitem') || 'table';
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
-                    url: "{{ route('admin.teachers.index') }}",
+                    url: "{{ route('admin.expensecategory.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        view: currentView
+                        view: currentView,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -100,13 +95,14 @@
             function refreshContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
-                
+                const perPage = perPageSelect.val() || '';
                 $.ajax({
-                    url: "{{ route('admin.teachers.index') }}",
+                    url: "{{ route('admin.expensecategory.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        view: currentView
+                        view: currentView,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -125,6 +121,7 @@
                 });
             }
 
+            // CRUD Operations
             function handleCreateSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
@@ -135,34 +132,23 @@
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-                // Create FormData object for file uploads
-                const formData = new FormData(form[0]);
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
-                    processData: false,
-                    contentType: false,
-                    data: formData,
+                    data: form.serialize(),
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
                             refreshContent();
                             form.trigger('reset');
-                            // Reset photo preview
-                            $('#photoPreview').addClass('hidden');
-                            $('#dropArea').removeClass('hidden');
-                            // Reset CV preview
-                            $('#cvFileName').addClass('hidden');
-                            $('#removeCv').addClass('hidden');
-                            $('#cvDropArea').removeClass('hidden');
-                            $('#cvPreview').addClass('hidden');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error creating teacher');
+                            ShowTaskMessage('error', response.message ||
+                                'Error creating expense category');
                         }
                     },
                     error: function(xhr) {
-                        if (xhr.status === 422 || xhr.status === 500) {
+                        if (xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
                             for (const field in errors) {
                                 if (errors.hasOwnProperty(field)) {
@@ -173,7 +159,6 @@
                             ShowTaskMessage('error', `Invalid field something was wrong!`);
                         }
                     },
-
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
                     }
@@ -183,65 +168,29 @@
             function handleEditClick(e) {
                 e.preventDefault();
                 const editBtn = $(this);
-                const originalContent = editBtn.html();
-                editBtn.html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>')
-                    .prop('disabled', true);
-
+                const originalContent = editBtn.find('.btn-content').html();
+                editBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">loading...</span>');
+                editBtn.prop('disabled', true);
                 const Id = $(this).data('id');
-
-                $.get(`/admin/teachers/${Id}`)
+                $.get(`/admin/expensecategory/${Id}`)
                     .done(function(response) {
-                        if (response.success && response.teacher) {
-                            const teacher = response.teacher;
-                            const date = teacher.joining_date ? teacher.joining_date.substring(0, 10) : '';
-                            const datedob = teacher.dob ? teacher.dob.substring(0, 10) : '';
-                            // Set form values
-                            console.log(teacher)
-                            $('#edit_name').val(teacher.name);
-                            $('#edit_user').val(teacher.user_id);
-                            $('#edit_phone').val(teacher.phone);
-                            $('#edit_email').val(teacher.email);
-                            $('#edit_gender').val(teacher.gender);
-                            $('#edit_dob').val(datedob);
-                            $('#edit_teacher_id').val(teacher.teacher_id);
-                            $('#edit_depid').val(teacher.department_id);
-                            $('#edit_joining_date').val(date);
-                            $('#edit_qualification').val(teacher.qualification);
-                            $('#edit_specialization').val(teacher.specialization);
-                            $('#edit_salary').val(teacher.salary);
-                            $('#edit_address').val(teacher.address);
-                            $('#edit_experience').val(teacher.experience);
-                            // Handle photo display
-                            if (teacher.photo) {
-                                $('#edit_photo').attr('src', '/' + teacher.photo).removeClass('hidden');
-                                $('#edit_initials').addClass('hidden');
-                            } else {
-                                $('#edit_photo').addClass('hidden');
-                                const initials = teacher.name.split(' ').map(n => n[0]).join('').toUpperCase();
-                                $('#edit_initials').removeClass('hidden').find('span').text(initials);
-                                $('#edit_photo').removeClass('hidden');
-                            }
-                            // Handle CV display
-                            if (teacher.cv) {
-                                $('#current_cv').removeClass('hidden');
-                                $('#cv_link').attr('href', '/storage/' + teacher.cv).text(teacher.cv.split('/')
-                                    .pop());
-                            } else {
-                                $('#current_cv').addClass('hidden');
-                            }
-                            // Set form action
-                            $('#Formedit').attr('action', `/teachers/${Id}`);
+                        if (response.success) {
+                            $('#edit_name').val(response.data.name);
+                            $('#edit_description').val(response.data.description);
+                            $('#Formedit').attr('action', `expensecategory/${Id}`);
                             showModal('Modaledit');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load teacher data');
+                            ShowTaskMessage('error', response.message || 'Failed to load data');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load teacher data');
+                        ShowTaskMessage('error', 'Failed to load data');
                     })
                     .always(function() {
-                        editBtn.html(originalContent).prop('disabled', false);
+                        editBtn.find('.btn-content').html(originalContent);
+                        editBtn.prop('disabled', false);
                     });
             }
 
@@ -254,23 +203,21 @@
                     $(this).addClass('was-validated');
                     return;
                 }
-                const formData = new FormData(form[0]);
-                formData.append('_method', 'PUT');
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
                 $.ajax({
-                    url: '/admin' + form.attr('action'),
+                    url: form.attr('action'),
                     method: 'POST',
-                    data: formData,
-                    processData: false, // Important for file uploads
-                    contentType: false, // Important for file uploads
+                    data: form.serialize() + '&_method=PUT',
+
                     success: function(response) {
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            form.trigger('reset');
                             refreshContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error updating teacher');
+                            ShowTaskMessage('error', response.message ||
+                                'Error updating expense category');
                         }
                     },
                     error: function(xhr) {
@@ -283,7 +230,8 @@
                                 }
                             }
                             let errorMessages = Object.values(errors).flat().join('\n');
-                            ShowTaskMessage('error', errorMessages || 'Error updating teacher');
+                            ShowTaskMessage('error', errorMessages ||
+                                'Error updating expense category');
                         }
                     },
                     complete: function() {
@@ -295,7 +243,7 @@
             function handleDeleteClick(e) {
                 e.preventDefault();
                 const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/teachers/${Id}`);
+                $('#Formdelete').attr('action', `/admin/expensecategory/${Id}`);
                 showModal('Modaldelete');
             }
 
@@ -308,7 +256,7 @@
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
 
                 $.ajax({
-                    url: '/admin' + form.attr('action'),
+                    url: form.attr('action'),
                     method: 'POST',
                     data: {
                         _method: 'DELETE'
@@ -319,11 +267,13 @@
                             ShowTaskMessage('success', response.message);
                             refreshContent();
                         } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting teacher');
+                            ShowTaskMessage('error', response.message ||
+                                'Error deleting expense category');
                         }
                     },
                     error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting teacher');
+                        ShowTaskMessage('error', xhr.responseJSON?.message ||
+                            'Error deleting expense category');
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
@@ -335,78 +285,29 @@
                 e.preventDefault();
                 const detailBtn = $(this);
                 const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
+                detailBtn.find('.btn-content').html(
+                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
                 detailBtn.prop('disabled', true);
-
                 const Id = $(this).data('id');
-
-                $.get(`/admin/teachers/${Id}`)
+                $.get(`/admin/expensecategory/${Id}`)
                     .done(function(response) {
                         if (response.success) {
-                            const teach = response.teacher;
-                            const departmentName = teach.department?.name ?? "Unknown";
-                            const updatedAt = teach.updated_at ? teach.updated_at.substring(0, 10) : '';
-                            // Set basic info
-                            $('#detail_name').text(teach.name ?? '');
-                            $('.title').text(teach.name ?? '');
-                            $('#detail_user').val(teach.user_id);
-                            $('#detail_gender').val(teach.gender);
-                            $('#detail_salary').text(teach.salary);
-                            $('#detail_department').text(departmentName).toggleClass('hidden', !departmentName);
-                            $('#detail_specialization').text(teach.specialization ?? '');
-                            $('#detail_experience').text(teach.experience ?? '0');
-                            $('#detail_qualification').text(teach.qualification ?? '');
-                            $('#detail_joining_date').text(teach.joining_date ? new Date(teach.joining_date)
-                                .toLocaleDateString() : '');
-                            $('#detail_email').text(teach.email ?? '');
-                            $('#detail_phone').text(teach.phone ?? 'Not provided');
-                            $('#detail_dob').text(teach.dob ? new Date(teach.dob).toLocaleDateString() :
-                                '');
-                            $('#detail_address').text(teach.address ?? '');
-
-                            // Handle photo display
-                            const photoContainer = $('#detail_photo');
-                            const initialsContainer = $('#detail_initials');
-                            const initialsSpan = initialsContainer.find('span');
-
-                            if (teach.photo) {
-                                photoContainer.attr('src', `${window.location.origin}/${teach.photo}`)
-                                    .removeClass('hidden');
-                                initialsContainer.addClass('hidden');
-                            } else {
-                                // Display initials if no photo
-                                photoContainer.addClass('hidden');
-                                initialsContainer.removeClass('hidden');
-                                const nameParts = teach.name.split(' ');
-                                const initials = nameParts.map(part => part[0]).join('').toUpperCase();
-                                initialsSpan.text(initials);
-                            }
-
-                            // Handle CV preview
-                            if (teach.cv) {
-                                const cvPath = teach.cv.startsWith('http') ? teach.cv : `/${teach.cv}`;
-                                const fileName = teach.cv.split('/').pop();
-                                $('#cv_preview_container').removeClass('hidden');
-                                $('#no_cv_message').addClass('hidden');
-                                $('#cv_filename').text(fileName);
-                                $('#cv_download_btn').attr('href', cvPath);
-
-                                // Make the whole container clickable to view
-                                $('#cv_preview_container').off('click').on('click', function() {
-                                    window.open(cvPath, '_blank');
-                                });
-                            } else {
-                                $('#cv_preview_container').addClass('hidden');
-                                $('#no_cv_message').removeClass('hidden');
-                            }
+                            const cate = response.data;
+                            const createdAt = cate.created_at ? cate.created_at.substring(0, 10) : '';
+                            const updatedAt = cate.updated_at ? cate.updated_at.substring(0, 10) : '';
+                            $('#detail_name').val(cate.name ?? '');
+                            $('#detail_description').val(cate.description ?? '');
+                            $('#detail_created_at').val(createdAt);
+                            $('#detail_updated_at').val(updatedAt);
                             showModal('Modaldetail');
                         } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load teacher details');
+                            ShowTaskMessage('error', response.message ||
+                                'Failed to load expense category details');
                         }
                     })
                     .fail(function(xhr) {
                         console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load teacher details');
+                        ShowTaskMessage('error', 'Failed to load expense category details');
                     })
                     .always(function() {
                         detailBtn.find('.btn-content').html(originalContent);
@@ -429,6 +330,7 @@
                     timeout = setTimeout(() => func.apply(context, args), wait);
                 };
             }
+
             // Event Listeners
             function initialize() {
                 // Set initial view
@@ -447,7 +349,6 @@
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);
                 $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-                // Attach initial event handlers
                 attachRowEventHandlers();
             }
             // Start the application

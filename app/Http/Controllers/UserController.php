@@ -176,7 +176,24 @@ class UserController extends Controller
 
       $user->update($data);
       $user->syncRoles($validatedData['type']);
-
+      // =========
+      if ($user->studen && ($validatedData['type'] === 'student')) {
+        $user->student->update([
+          'name' => $user->name,
+          'email' => $user->email,
+          'phone' => $user->phone,
+          'gender' => $user->gender,
+          'dob' => $user->date_of_birth,
+          'photo' => $user->avatar,
+        ]);
+        if (isset($data['avatar'])) {
+          $studentData['photo'] = $data['avatar'];
+        }
+        if ($user->student) {
+          $user->student->update($studentData);
+        }
+      }
+      // =========
       return response()->json([
         'success' => true,
         'message' => 'User updated successfully!',
