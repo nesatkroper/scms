@@ -4,8 +4,8 @@
             <x-table.td>{{ $exam->id }}</x-table.td>
             <x-table.td>{{ $exam->name }}</x-table.td>
             <x-table.td>{{ Str::limit($exam->subject?->name ?? 'N/A', 20) }}</x-table.td>
-            <x-table.td>{{ $exam->total_marks }}</x-table.td>
-            <x-table.td>{{ $exam->passing_marks }}</x-table.td>
+            <x-table.td>{{ $exam->total_marks }} pt</x-table.td>
+            <x-table.td>{{ $exam->passing_marks }} pt</x-table.td>
             <x-table.td>{{ Str::limit($exam->description, 40) }}</x-table.td>
             <x-table.td>{{ $exam->date->format('Y-m-d') }}</x-table.td>
             <x-table.td class="text-right">

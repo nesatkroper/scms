@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends Controller
 {
+
+    // protected function ModelPermissionName(): string
+    // {
+    //     return 'teacher';
+    // }
+
     public function index(Request $request)
     {
         $search = $request->input('search');
