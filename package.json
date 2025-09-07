@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "git": "git add . && git commit -m 'add' && git push",
     "build": "vite build",
     "dev": "vite",
     "rl": "php artisan route:list",
