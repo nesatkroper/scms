@@ -32,7 +32,6 @@ use App\Http\Controllers\{
   ScoreController,
   UserController,
   RoleController,
-
 };
 
 use Illuminate\Support\Facades\Auth;
@@ -55,8 +54,6 @@ R::prefix('/admin')
       'users' => UserController::class,
       'roles' => RoleController::class,
       'permissions' => PermissionController::class,
-
-
       'attendances' => AttendanceController::class,
       'bookcategory' => BookCategoryController::class,
       'books' => BookController::class,
@@ -112,5 +109,4 @@ R::prefix('/admin')
           R::post('/bulk-update', [$controller, 'bulkUpdate'])->name('bulkUpdate');
         });
     }
-
   });
