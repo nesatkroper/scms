@@ -36,7 +36,7 @@
                 <div
                     class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
                     <div class="wr-icon flex items-center">
-                        <i class="fas fa-book text-center"></i>
+                        <i class="ri-graduation-cap-fill text-lg"></i>
                         <span class="ml-3 sidebar-text text-hidden">Academics</span>
                     </div>
                     <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>

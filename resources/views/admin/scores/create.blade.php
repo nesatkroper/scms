@@ -153,29 +153,31 @@
             </div>
         </div>
 
-        <div id="TableContainer" class="table-responsive overflow-x-auto">
-            @include('admin.scores.table', ['scores' => $scores])
-        </div>
-        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <a href="{{ route('admin.scores.index') }}" id="cancelCreateModal"
-                class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd" />
-                </svg>
-                Cancel
-            </a>
-            <button type="submit"
-                class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                </svg>
-                Save Scores
-            </button>
-        </div>
+        <form action="{{ route('admin.scores.create') }}" method="post">
+            <div id="TableContainer" class="table-responsive overflow-x-auto">
+                @include('admin.scores.table', ['scores' => $scores])
+            </div>
+            <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <a href="{{ route('admin.scores.index') }}" id="cancelCreateModal"
+                    class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Save Scores
+                </button>
+            </div>
+        </form>
         <!-- Pagination -->
         <div class="pagination-container">
             {{ $scores->links() }}
@@ -195,7 +197,6 @@
             });
 
             const studentData = {};
-
             // Initialize student data
             $('[data-student-id]').each(function() {
                 const studentId = $(this).data('student-id');
@@ -208,33 +209,62 @@
                     };
                 }
             });
-
-            // Update calculations when scores change
+            // Prevent invalid keys
+            $('.score-input').on('keydown', function(e) {
+                if (["e", "E", "+", "-"].includes(e.key)) {
+                    e.preventDefault();
+                    ShowTaskMessage('error', 'Symbols (+, -, e) are not allowed.');
+                }
+            });
             $('.score-input').on('input', function() {
                 const $input = $(this);
                 const studentId = $input.data('student-id');
                 const subjectId = $input.data('subject-id');
-                const score = parseFloat($input.val()) || 0;
+                // const score = parseFloat($input.val()) || 0;
+                let value = $input.val().trim();
 
+                // Allow only digits
+                if (!/^\d*$/.test(value)) {
+                    ShowTaskMessage('error', 'Only numbers (0-100) are allowed.');
+                    $input.val('');
+                    return;
+                }
+
+                let score = parseFloat(value);
+                if (isNaN(score)) score = 0;
+                // Range validation
+                if (score < 0) {
+                    ShowTaskMessage('error', 'Score cannot be less than 0.');
+                    $input.val(0);
+                    score = 0;
+                } else if (score > 100) {
+                    ShowTaskMessage('error', 'Score cannot be greater than 100.');
+                    $input.val(100);
+                    score = 100;
+                }
                 // Update student data
                 studentData[studentId].scores[subjectId] = score;
 
                 studentData[studentId].total = Object.values(studentData[studentId].scores)
                     .reduce((sum, val) => sum + (val || 0), 0);
 
-                studentData[studentId].subjectCount = Object.keys(studentData[studentId].scores)
-                    .filter(k => studentData[studentId].scores[k] > 0).length;
+                studentData[studentId].subjectCount = Object.keys(studentData[studentId].scores).length;
+                // studentData[studentId].subjectCount = Object.keys(studentData[studentId].scores)
+                //     .filter(k => studentData[studentId].scores[k] > 0).length;
 
                 studentData[studentId].average = studentData[studentId].subjectCount > 0 ?
                     (studentData[studentId].total / studentData[studentId].subjectCount).toFixed(2) :
                     0;
+                studentData[studentId].average = (studentData[studentId].total / Math.max(studentData[
+                    studentId].subjectCount, 1)).toFixed(2);
+                const grade = calculateGrade(studentData[studentId].average);
+                const gpa = calculateGPA(grade);
 
                 // Update UI
                 $(`.total[data-student-id="${studentId}"]`).text(studentData[studentId].total);
                 $(`.average[data-student-id="${studentId}"]`).text(studentData[studentId].average);
-                $(`.grade[data-student-id="${studentId}"]`).text(
-                    calculateGrade(studentData[studentId].average)
-                );
+                $(`.grade[data-student-id="${studentId}"]`).text(grade);
+                $(`.pga[data-student-id="${studentId}"]`).text(gpa.toFixed(2)); // Update GPA column
 
                 // Update ranks
                 updateRanks();
@@ -249,7 +279,21 @@
                 if (average >= 60) return 'D';
                 return 'F';
             }
-
+            // Calculate GPA based on grade
+            function calculateGPA(grade) {
+                switch (grade) {
+                    case 'A':
+                        return 4.0;
+                    case 'B':
+                        return 3.0;
+                    case 'C':
+                        return 2.0;
+                    case 'D':
+                        return 1.0;
+                    default:
+                        return 0.0; // F or others
+                }
+            }
             // Update ranks based on averages
             function updateRanks() {
                 const students = Object.keys(studentData).map(id => ({
@@ -267,6 +311,25 @@
                     $(`.rank[data-student-id="${student.id}"]`).text(currentRank);
                 });
             }
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             selectfields();
 

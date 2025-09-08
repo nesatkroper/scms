@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Score;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\GradeLevel;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +19,7 @@ class ScoreController extends Controller
     $perPage = $request->input('per_page', 10);
     $viewType = $request->input('view', 'table');
     $semester = now()->month <= 6 ? 1 : 2;
-    $query = Score::with(['student', 'exam', 'subject']);
+    $query = Score::with(['student', 'exam', 'subject','GradeLevel']);
 
     // Apply filters
     if ($request->filled('student_id')) {

@@ -23,7 +23,7 @@
                 </svg>
                 Add Score
             </button> --}}
-            <a href="{{route('admin.scores.create')}}"
+            <a href="{{ route('admin.scores.create') }}"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -83,7 +83,7 @@
                                     @foreach ($students as $student)
                                         <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('student_id') == $student->id ? 'selected' : '' }}"
                                             data-value="{{ $student->id }}">
-                                            {{ $student->name }}
+                                            {{ $student->name }} ({{ $student->gradeLevel->name }})
                                         </div>
                                     @endforeach
                                 </div>
@@ -164,6 +164,46 @@
                                     @endforeach
                                 </div>
                                 <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="subject_id" id="subject_id" value="{{ request('subject_id') }}">
+                    </div>
+
+
+                    <div>
+                        <label for="gradelevels"
+                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subjects</label>
+                        <div data-name="exam_id"
+                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
+                            <div class="select-header cursor-pointer flex justify-between items-center">
+                                <span class="selected-value truncate">
+                                    {{ request('gradelevel_id') ? $exams->firstWhere('id', request('subject_id'))?->name : 'Select subjects' }}
+                                </span>
+                                <span class="arrow transition-transform duration-300">▼</span>
+                            </div>
+                            <div
+                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
+                                    <input type="search"
+                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
+                                        placeholder="Search exam...">
+                                </div>
+                                <div class="options-container">
+                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
+                                        data-value="">
+                                        All Exams
+                                    </div>
+                                    @foreach ($subjects as $subject)
+                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b
+                                         border-slate-200 dark:border-slate-600 {{ request('subject_id') == $subject->id ? 'selected' : '' }}"
+                                            data-value="{{ $subject->id }}">
+                                            {{ $subject->name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
+                                    found
                                 </div>
                             </div>
                         </div>
@@ -263,12 +303,10 @@
         <div id="TableContainer" class="table-responsive overflow-x-auto h-[60vh]">
             @include('admin.scores.partials.table', ['scores' => $scores])
         </div>
-
         <!-- Card View (hidden by default) -->
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.scores.partials.cardlist', ['scores' => $scores])
         </div>
-
         <!-- Pagination -->
         <div class="pagination-container">
             {{ $scores->links() }}
@@ -278,15 +316,8 @@
     <!-- Modal Backdrop -->
     <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
 
-
     @include('admin.scores.partials.create')
-    {{-- @include('admin.scores.partials.edit')
-    @include('admin.scores.partials.detail')
-    @include('admin.scores.partials.delete')
-    @include('admin.scores.partials.bulkedit')
-    @include('admin.scores.partials.bulkdelete') --}}
 @endsection
-
 
 
 @push('scripts')
@@ -358,337 +389,7 @@
                 });
             }
 
-            // DOM Elements
-            const backdrop = document.getElementById('modalBackdrop');
-            const searchInput = $('#searchInput');
-            const resetSearch = $('#resetSearch');
-            const listViewBtn = $('#listViewBtn');
-            const cardViewBtn = $('#cardViewBtn');
-            const tableContainer = $('#TableContainer');
-            const cardContainer = $('#CardContainer');
-            const applyFilters = $('#applyFilters');
-            const resetFilters = $('#resetFilters');
-            const filterForm = $('#filterForm');
-
-            // View Management
-            function setView(viewType) {
-                if (viewType === 'list') {
-                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.removeClass('hidden');
-                    cardContainer.addClass('hidden');
-                } else {
-                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.addClass('hidden');
-                    cardContainer.removeClass('hidden');
-                }
-                localStorage.setItem('viewitem', viewType);
-            }
-
-            // Search and Filter
-            function loadData(search = '', filters = {}) {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-
-                $.ajax({
-                    url: "{{ route('admin.scores.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: search,
-                        view: currentView,
-                        ...filters
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination-container').html(response.html.pagination);
-                            attachRowEventHandlers();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to load data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load data');
-                    }
-                });
-            }
-
-            // Apply Filters
-            applyFilters.on('click', function() {
-                const formData = filterForm.serializeArray();
-                const filters = {};
-
-                formData.forEach(item => {
-                    if (item.value) {
-                        filters[item.name] = item.value;
-                    }
-                });
-
-                loadData(searchInput.val(), filters);
-            });
-
-            // Reset Filters
-            resetFilters.on('click', function() {
-                filterForm.trigger('reset');
-                loadData(searchInput.val(), {});
-            });
-
-            // Search with debounce
-            function debounce(func, wait) {
-                let timeout;
-                return function() {
-                    const context = this,
-                        args = arguments;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(context, args), wait);
-                };
-            }
-
-            searchInput.on('input', debounce(function() {
-                const formData = filterForm.serializeArray();
-                const filters = {};
-
-                formData.forEach(item => {
-                    if (item.value) {
-                        filters[item.name] = item.value;
-                    }
-                });
-
-                loadData($(this).val(), filters);
-            }, 500));
-
-            resetSearch.on('click', function() {
-                searchInput.val('');
-                const formData = filterForm.serializeArray();
-                const filters = {};
-
-                formData.forEach(item => {
-                    if (item.value) {
-                        filters[item.name] = item.value;
-                    }
-                });
-
-                loadData('', filters);
-            });
-
-            // View toggle
-            listViewBtn.on('click', () => setView('list'));
-            cardViewBtn.on('click', () => setView('card'));
-
-            // Initialize
-            function initialize() {
-                // Set initial view
-                const savedView = localStorage.getItem('viewitem') || 'list';
-                setView(savedView);
-                // Attach initial event handlers
-                attachRowEventHandlers();
-            }
-
-            $('#createnew').off('click').on('click', function() {
-                showModal('Modalcreate');
-            });
-
-            // Modal close buttons
-            $('[id^="close"], [id^="cancel"]').on('click', function() {
-                const modalId = $(this).closest('[id^="Modal"]').attr('id') ||
-                    $(this).closest('[id$="Modal"]').attr('id');
-                if (modalId) closeModal(modalId);
-            });
-
-            $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
-
-            // Utility Functions
-            function refreshSubjectContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const searchTerm = searchInput.val() || '';
-
-                $.ajax({
-                    url: "{{ route('admin.scores.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                            updateBulkActionsBar();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to refresh data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Refresh failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to refresh data');
-                    }
-                });
-            }
-
-            function attachRowEventHandlers() {
-                // $('.edit-btn').off('click').on('click', handleEditClick);
-                // $('.delete-btn').off('click').on('click', handleDeleteClick);
-                // $('.detail-btn').off('click').on('click', handleDetailClick);
-                // $('.row-checkbox').off('change').on('change', updateBulkActionsBar);
-            }
-            // ============ CRUD Operations ====================
-            // Create
-            function handleCreateSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#createSubmitBtn');
-                const originalBtnHtml = submitBtn.html();
-
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modalcreate');
-                            ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
-                            form.trigger('reset');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error creating subject');
-                        }
-                    },
-                    error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error creating subject');
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-            // Edit
-            function handleEditClick(e) {
-                e.preventDefault();
-                const editBtn = $(this);
-                const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
-                editBtn.prop('disabled', true);
-
-                const Id = $(this).data('id');
-
-                $.get(`/admin/subjects/${Id}`)
-                    .done(function(response) {
-                        if (response.success) {
-                            $('#edit_name').val(response.subject.name);
-                            $('#edit_code').val(response.subject.code);
-                            $('#edit_depid').val(response.subject.department_id);
-                            $('#edit_credit_hours').val(response.subject.credit_hours);
-                            $('#edit_description').val(response.subject.description);
-                            $('#Formedit').attr('action', `subjects/${Id}`);
-                            showModal('Modaledit');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject datas');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject data');
-                    })
-                    .always(function() {
-                        editBtn.find('.btn-content').html(originalContent);
-                        editBtn.prop('disabled', false);
-                    });
-            }
-            // Edit Submit
-            function handleEditSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#saveEditBtn');
-                const originalBtnHtml = submitBtn.html();
-
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize() + '&_method=PUT',
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaledit');
-                            ShowTaskMessage('success', response.message);
-                            refreshSubjectContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error updating subject');
-                        }
-                    },
-                    error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        ShowTaskMessage('error', errorMessages || 'Error updating subject');
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            // Start the application
-            initialize();
-
-            // Modal Management
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-                // console.log(modal);
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
         });
 
-        // Global notification function
-        function ShowTaskMessage(type, message) {
-            const TasksmsContainer = document.createElement('div');
-            TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
-            TasksmsContainer.innerHTML = `
-            <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-                border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
-                <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
-                </svg>
-                <div class="flex-1 text-sm sm:text-base">${message}</div>
-                <button onclick="this.parentElement.parentElement.remove()" class="text-gray-600 rounded-full dark:text-gray-400 hover:bg-gray-100/30 dark:hover:bg-gray-50/10 focus:outline-none">
-                    <svg class="w-5 h-5 rounded-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        `;
-            document.body.appendChild(TasksmsContainer);
-            setTimeout(() => TasksmsContainer.remove(), 3000);
-        }
     </script>
 @endpush
