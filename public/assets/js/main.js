@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebarBackdrop?.classList?.toggle('opacity-0');
         } else {
             sidebarCollapsed = !sidebarCollapsed;
+            localStorage.setItem('sidebar-collapsed', sidebarCollapsed);
             updateDesktopSidebar();
         }
     };
@@ -289,6 +290,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INITIALIZATION ---
+    const savedSidebarState = localStorage.getItem('sidebar-collapsed');
+    if (savedSidebarState !== null) {
+        sidebarCollapsed = savedSidebarState === 'true'; // convert string to boolean
+    }
     const prefersDark = localStorage.getItem('dark-mode') === 'true' ||
         (!localStorage.getItem('dark-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     applyDarkMode(prefersDark);

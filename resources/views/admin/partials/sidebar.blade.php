@@ -31,36 +31,6 @@
                 </a>
             </li>
             <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
-
-            {{-- Help Me Name It --}}
-            <li class="menu-item relative">
-                <div
-                    class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
-                    <div class="wr-icon flex items-center">
-                        <i class="fa-solid fa-lock"></i>
-                        <span class="ml-3 sidebar-text text-hidden">Help Me Name It</span>
-                    </div>
-                    <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-                    <span class="menu-tooltip">Help Me Name It</span>
-                </div>
-                <div class="submenu">
-                    <ul class="pl-4 pr-4">
-                        <li><a href="{{ route('admin.exams.index') }}"
-                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">exams</a>
-                        </li>
-                        <li><a href="{{ route('admin.scores.index') }}"
-                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">scores</a>
-                        </li>
-                        <li><a href="{{ route('admin.gradelevels.index') }}"
-                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">gradelevels</a>
-                        </li>
-                        <li><a href="{{ route('admin.subjects.index') }}"
-                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">subjects</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
             <!-- Academics -->
             <li class="menu-item relative">
                 <div
@@ -74,6 +44,15 @@
                 </div>
                 <div class="submenu">
                     <ul class="pl-4 pr-4">
+                        <li><a href="{{ route('admin.exams.index') }}"
+                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">exams</a>
+                        </li>
+                        <li><a href="{{ route('admin.scores.index') }}"
+                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">scores</a>
+                        </li>
+                        <li><a href="{{ route('admin.gradelevels.index') }}"
+                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">gradelevels</a>
+                        </li>
                         <li>
                             <a href="{{ route('admin.subjects.index') }}"
                                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
@@ -82,52 +61,13 @@
                                     class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
                             </a>
                         </li>
-                        <li class="relative">
-                            <div
-                                class="px-4 flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-gray-300 transition-all duration-200 js-submenu-toggle">
+                        <li>
+                            <a href="{{ route('admin.subjects.index') }}"
+                                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
                                 <span>Classes</span>
-                                <i class="fas fa-chevron-right menu-icon text-xs"></i>
-                            </div>
-                            <div class="submenu">
-                                <ul class="pl-4">
-                                    <li><a href="#"
-                                            class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">All
-                                            Classes</a></li>
-                                    <li><a href="#"
-                                            class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Class
-                                            Sections</a></li>
-                                    <li><a href="#"
-                                            class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Class
-                                            Teachers</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        
-                        <li class="relative">
-                            <div
-                                class="px-4 flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-gray-300 transition-all duration-200 js-submenu-toggle">
-                                <span>Timetable</span>
-                                <i class="fas fa-chevron-right menu-icon text-xs"></i>
-                            </div>
-                            <div class="submenu">
-                                <ul class="pl-4">
-                                    <li><a href="#"
-                                            class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Class
-                                            Timetable</a></li>
-                                    <li><a href="#"
-                                            class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Teacher
-                                            Timetable</a></li>
-                                    <li><a href="#"
-                                            class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Generate
-                                            Timetable</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a href="#"
-                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Syllabus</a>
-                        </li>
-                        <li><a href="#"
-                                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300">Examinations</a>
+                                <span
+                                    class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -178,7 +118,7 @@
                                     class="bg-violet-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
                             </a>
                         </li>
-                         
+
                     </ul>
                 </div>
             </li>
@@ -186,7 +126,7 @@
             <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
             </li>
             <!-- Library -->
-            <li class="menu-item relative">
+            {{-- <li class="menu-item relative">
                 <div
                     class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer
                              transition-all duration-200 js-submenu-toggle">
@@ -252,7 +192,7 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> --}}
             <!-- Finance -->
 
             <li class="menu-item relative">
