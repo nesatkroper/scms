@@ -8,21 +8,25 @@ use Illuminate\View\Component;
 
 class upload2 extends Component
 {
-    public $class, $name, $icon,  $rounded;
+  public $class;
+  public $name;
+  public $icon;
+  public $rounded;
 
-    public function __construct(
-        String $name = "",
-        String $class = "",
-        $rounded = 'rounded-full',
-        $icon = 'ri-account-circle-fill',
-    ) {
-        $this->name = $name;
-        $this->class = $class;
-        $this->rounded = $rounded;
-        $this->icon = $icon;
-    }
-    public function render(): View|Closure|string
-    {
-        return view('components.photos.upload2');
-    }
+  public function __construct(
+    string $name = "",
+    string $class = "",
+    string $icon = 'ri-account-circle-fill',
+    string $rounded = 'rounded-full'
+  ) {
+    $this->name = $name;
+    $this->class = $class;
+    $this->icon = $icon;
+    $this->rounded = $rounded;
+  }
+
+  public function render(): View|Closure|string
+  {
+    return view('components.photos.upload2');
+  }
 }
