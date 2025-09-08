@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "git": "git add . && git commit -m 'add' && git push",
     "build": "vite build",
     "dev": "vite",
     "rl": "php artisan route:list",
@@ -12,8 +11,8 @@
     "ld": "composer dump-autoload",
     "ts": "composer test",
     "ud": "composer update",
-    "pr": "git stash && git pull && composer update && npm i --force && npm run build && sudo chown -R www-data:www-data && sudo chmod -R 775 storage bootstrap/cache && nginx -t && systemctl restart nginx && systemctl restart php8.3-fpm",
-    "all": "concurrently --kill-others-on-fail -n \"BACKEND,FRONTEND,QUEUE\" -c \"blue,green,magenta\" \"php artisan serve --host=0.0.0.0 --port=8456\" \"npm run dev\" \"bash -c 'while true; do php artisan queue:work --tries=3 --sleep=1; done'\""
+    "git": "git add . && git commit -m 'add' && git push",
+    "all": "concurrently --kill-others-on-fail -n \"B,F,Q\" -c \"blue,green,magenta\" \"php artisan serve --port=8456\" \"npm run dev\" \"bash -c 'while true; do php artisan queue:work --tries=3 --sleep=1; done'\""
   },
   "devDependencies": {
     "@popperjs/core": "^2.11.6",
