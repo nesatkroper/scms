@@ -7,6 +7,7 @@
     "dev": "vite",
     "rl": "php artisan route:list",
     "mi": "php artisan migrate",
+    "re": "php artisan migrate && php artisan permissions:generate && php artisan db:seed",
     "cl": "php artisan optimize:clear",
     "ld": "composer dump-autoload",
     "ts": "composer test",
