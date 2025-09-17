@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <form id="filterForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+                <form id="filterForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4">
                     <!-- Department Filter -->
                     <x-fields.select labelclass="text-xs" class="py-1.5" label="Department" name="department_id"
                         :options="$departments" :value="request('department_id')" :searchable="true" />

@@ -29,7 +29,7 @@
 
                 <x-table.td>
                     <button
-                        class="btn edit-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                        class="btn edit-btn p-2 rounded-full flex justify-center items-center size-6 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                         data-id="{{ $student->id }}" title="Edit">
                         <span class="btn-content flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
