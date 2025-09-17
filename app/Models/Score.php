@@ -14,6 +14,7 @@ class Score extends Model
     'student_id',
     'exam_id',
     'subject_id',
+    'grade_id',
     'semester',
     'score',
     'grade',
@@ -33,5 +34,10 @@ class Score extends Model
   public function subject()
   {
     return $this->belongsTo(Subject::class);
+  }
+
+  public function gradeLevel()
+  {
+    return $this->belongsTo(GradeLevel::class, 'grade_id');
   }
 }

@@ -19,17 +19,23 @@ class Student extends Model
     'dob',
     'gender',
     'grade_level_id',
+    'department_id',
     'user_id',
     'blood_group',
     'nationality',
     'religion',
     'admission_date',
+    
   ];
 
   protected $casts = [
     'dob' => 'date',
     'admission_date' => 'date',
   ];
+  public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 
   public function gradeLevel()
   {

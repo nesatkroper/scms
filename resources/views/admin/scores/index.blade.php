@@ -14,7 +14,7 @@
                 Scores Management
             </h3>
 
-            {{-- <button id="createnew"
+            <button id="createnew"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -22,8 +22,8 @@
                         clip-rule="evenodd" />
                 </svg>
                 Add Score
-            </button> --}}
-            <a href="{{ route('admin.scores.create') }}"
+            </button>
+            {{-- <a href="{{ route('admin.scores.create') }}"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -31,7 +31,7 @@
                         clip-rule="evenodd" />
                 </svg>
                 Add Score
-            </a>
+            </a> --}}
 
         </div>
         <div
@@ -56,206 +56,31 @@
                 </div>
 
                 <form id="filterForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+                    <!-- Department Filter -->
+                    <x-fields.select labelclass="text-xs" class="py-1.5" label="Department" name="department_id"
+                        :options="$departments" :value="request('department_id')" :searchable="true" />
+                    <!-- Grade Level Filter -->
+                    <x-fields.select labelclass="text-xs" class="py-1.5" label="Grade Level" name="gradelevel_id"
+                        :options="$gradeLevels" :value="request('gradelevel_id')" :searchable="true" />
                     <!-- Student Filter -->
-                    <div>
-                        <label for="studentFilter"
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Student</label>
-                        <div data-name="student_id"
-                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value truncate">
-                                    {{ request('student_id') ? $students->firstWhere('id', request('student_id'))?->name : 'Select student' }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search student...">
-                                </div>
-                                <div class="options-container">
-                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                        data-value="">
-                                        All Students
-                                    </div>
-                                    @foreach ($students as $student)
-                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('student_id') == $student->id ? 'selected' : '' }}"
-                                            data-value="{{ $student->id }}">
-                                            {{ $student->name }} ({{ $student->gradeLevel->name }})
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="student_id" id="studentFilter" value="{{ request('student_id') }}">
-                    </div>
-
+                    <x-fields.select labelclass="text-xs" class="py-1.5" label="Student" name="student_id"
+                        :options="$students" :value="request('student_id')" :searchable="true" />
                     <!-- Exam Filter -->
-                    <div>
-                        <label for="examFilter"
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Exam</label>
-                        <div data-name="exam_id"
-                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value truncate">
-                                    {{ request('exam_id') ? $exams->firstWhere('id', request('exam_id'))?->name : 'Select exam' }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search exam...">
-                                </div>
-                                <div class="options-container">
-                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                        data-value="">
-                                        All Exams
-                                    </div>
-                                    @foreach ($exams as $exam)
-                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('exam_id') == $exam->id ? 'selected' : '' }}"
-                                            data-value="{{ $exam->id }}">
-                                            {{ $exam->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="exam_id" id="examFilter" value="{{ request('exam_id') }}">
-                    </div>
-
-                    <div>
-                        <label for="subject_id"
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subjects</label>
-                        <div data-name="exam_id"
-                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value truncate">
-                                    {{ request('subject_id') ? $exams->firstWhere('id', request('subject_id'))?->name : 'Select subjects' }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search exam...">
-                                </div>
-                                <div class="options-container">
-                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                        data-value="">
-                                        All Exams
-                                    </div>
-                                    @foreach ($subjects as $subject)
-                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b
-                                         border-slate-200 dark:border-slate-600 {{ request('subject_id') == $subject->id ? 'selected' : '' }}"
-                                            data-value="{{ $subject->id }}">
-                                            {{ $subject->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="subject_id" id="subject_id" value="{{ request('subject_id') }}">
-                    </div>
-
-
-                    <div>
-                        <label for="gradelevels"
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subjects</label>
-                        <div data-name="exam_id"
-                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value truncate">
-                                    {{ request('gradelevel_id') ? $exams->firstWhere('id', request('subject_id'))?->name : 'Select subjects' }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search exam...">
-                                </div>
-                                <div class="options-container">
-                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                        data-value="">
-                                        All Exams
-                                    </div>
-                                    @foreach ($subjects as $subject)
-                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b
-                                         border-slate-200 dark:border-slate-600 {{ request('subject_id') == $subject->id ? 'selected' : '' }}"
-                                            data-value="{{ $subject->id }}">
-                                            {{ $subject->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                                    found
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="subject_id" id="subject_id" value="{{ request('subject_id') }}">
-                    </div>
-
+                    <x-fields.select labelclass="text-xs" class="py-1.5" label="Exam" name="exam_id" :options="$exams"
+                        :value="request('exam_id')" :searchable="true" />
+                    <!-- Subject Filter -->
+                    <x-fields.select labelclass="text-xs" class="py-1.5" label="Subject" name="subject_id"
+                        :options="$subjects" :value="request('subject_id')" :searchable="true" />
+                    <x-fields.select id="semester" labelclass="text-xs" class="py-1.5" name="semester" label="Semester"
+                        :options="['semester1' => '1', 'semester2' => '2']" :value="old('semester1', '1')" />
                     <!-- Grade Filter -->
                     <div>
                         <label for="gradeFilter"
                             class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Grade</label>
                         <input type="text" id="gradeFilter" name="grade" placeholder="Enter grade"
                             value="{{ request('grade') }}"
-                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
+                            class="w-full px-3 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
                     </div>
-                    <!-- grade Filter -->
-                    {{-- <div>
-                        <label for="gradeFilter"
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Grade</label>
-                        <div data-name="grade_id"
-                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value truncate">
-                                    {{ request('grade_id') ? $grades->firstWhere('id', request('grade_id'))?->name : 'Select grade' }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search grade...">
-                                </div>
-                                <div class="options-container">
-                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                        data-value="">
-                                        All grade
-                                    </div>
-                                    @foreach ($grades as $grade)
-                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('exam_id') == $exam->id ? 'selected' : '' }}"
-                                            data-value="{{ $grade->id }}">
-                                            {{ $grade->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                                    found
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="grade_id" id="gradeFilter" value="{{ request('grade_id') }}">
-                    </div> --}}
 
                     <!-- Score Range Filter -->
                     <div class="grid grid-cols-2 gap-2">
@@ -264,14 +89,14 @@
                                 class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Min Score</label>
                             <input type="number" id="minScoreFilter" name="min_score" placeholder="Min"
                                 value="{{ request('min_score') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
+                                class="w-full px-3 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
                         </div>
                         <div>
                             <label for="maxScoreFilter"
                                 class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Max Score</label>
                             <input type="number" id="maxScoreFilter" name="max_score" placeholder="Max"
                                 value="{{ request('max_score') }}"
-                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
+                                class="w-full px-3 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
                         </div>
                     </div>
 
@@ -296,21 +121,18 @@
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
         <!-- Table View -->
         <div id="TableContainer" class="table-responsive overflow-x-auto h-[60vh]">
-            @include('admin.scores.partials.table', ['scores' => $scores])
+            @include('admin.scores.table', ['scores' => $scores])
         </div>
         <!-- Card View (hidden by default) -->
         <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @include('admin.scores.partials.cardlist', ['scores' => $scores])
         </div>
         <!-- Pagination -->
-        <div class="pagination-container">
-            {{ $scores->links() }}
-        </div>
+        <x-table.pagination :paginator="$scores" />
     </div>
 
     <!-- Modal Backdrop -->
@@ -319,8 +141,8 @@
     @include('admin.scores.partials.create')
 @endsection
 
-
 @push('scripts')
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Core Configuration
@@ -328,6 +150,9 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+            $('#createnew').off('click').on('click', function() {
+                showModal('Modalcreate');
             });
 
             selectfields();
@@ -391,5 +216,64 @@
 
         });
 
+        // function handleEditClick(e) {
+        //     e.preventDefault();
+        //     const editBtn = $(this);
+        //     const originalContent = editBtn.html();
+        //     editBtn.html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>')
+        //         .prop('disabled', true);
+        //     const Id = $(this).data('id');
+        //     $.get(`/admin/scores/${Id}`)
+        //         .done(function(response) {
+        //             if (response.success && response.user) {
+
+        //                 $('#Formedit').attr('action', `/users/${Id}`);
+        //                 showModal('Modaledit');
+        //             } else {
+        //                 ShowTaskMessage('error', response.message || 'Failed to load user data: Invalid response');
+        //             }
+        //         })
+        //         .fail(function(xhr) {
+        //             ShowTaskMessage('error', xhr.responseJSON?.message || 'Failed to load user data');
+        //         })
+        //         .always(function() {
+        //             editBtn.html(originalContent).prop('disabled', false);
+        //         });
+        // }
+
+        // $('.edit-btn').off('click').on('click', handleEditClick);
+        // Handle view button click with AJAX
+
+        $(document).on('click', '.edit-btn', function(e) {
+            e.preventDefault();
+            var Id = $(this).data('id');
+
+            $.ajax({
+                url: '/admin/scores/' + Id,
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+                    // Show loading spinner
+                    $('#scoreModal .modal-content').html(
+                        '<div class="modal-body text-center"><i class="fas fa-spinner fa-spin fa-2x"></i></div>'
+                    );
+                    $('#scoreModal').modal('show');
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#scoreModal .modal-content').html(response.html);
+                    } else {
+                        $('#scoreModal .modal-content').html(
+                            '<div class="modal-body"><div class="alert alert-danger">Error loading score details</div></div>'
+                        );
+                    }
+                },
+                error: function() {
+                    $('#scoreModal .modal-content').html(
+                        '<div class="modal-body"><div class="alert alert-danger">Error loading score details</div></div>'
+                    );
+                }
+            });
+        });
     </script>
 @endpush

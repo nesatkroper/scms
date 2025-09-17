@@ -313,15 +313,6 @@
             }
 
 
-            
-
-
-
-
-
-
-
-
 
 
 
@@ -675,7 +666,7 @@
             TasksmsContainer.className = `fixed top-5 right-4 z-50 animate-fade-in-out`;
             TasksmsContainer.innerHTML = `
             <div class="flex items-start gap-3 ${type === 'success' ? 'bg-green-200/80 dark:bg-green-900/60 border-green-400 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-red-200/80 dark:bg-red-900/60 border-red-400 dark:border-red-600 text-red-700 dark:text-red-300'} 
-                border backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg">
+                border backdrop-blur-sm px-4 py-3 rounded-lg ">
                 <svg class="w-6 h-6 flex-shrink-0 ${type === 'success' ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'} mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}" />
                 </svg>

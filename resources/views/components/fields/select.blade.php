@@ -1,6 +1,6 @@
 <div class="mb-2">
     <label for="{{ $edit ? "edit_$name" : $name }}"
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        class="block font-medium text-gray-700 dark:text-gray-300 mb-1 {{ $labelclass }}">
         {{ $label }}
         @if ($required)
             <span class="text-red-500">*</span>
@@ -9,10 +9,10 @@
 
     @if (!$searchable)
         <select id="{{ $edit ? "edit_$name" : $name }}" name="{{ $name }}"
-            class="form-control form-select w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="form-control form-select w-full px-3 border rounded-md focus:outline focus:outline-white
                 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                border-slate-300"
+                border-slate-300 {{ $class }}"
             @if ($required) required @endif>
             <option value="">{{ $placeholder }}</option>
             @foreach ($options as $key => $text)
@@ -24,7 +24,7 @@
     @else
         {{-- Searchable select --}}
         <div data-name="{{ $name }}"
-            class="form-control custom-select relative w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="form-control custom-select relative w-full px-3 {{ $class }} border rounded-md focus:outline focus:outline-white
                 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
 
@@ -47,19 +47,23 @@
                 </div>
 
                 <div class="options-container">
-                    @if ($options instanceof \Illuminate\Support\Collection)
+                    @if (
+                        $options instanceof \Illuminate\Support\Collection &&
+                            $options->first() instanceof \Illuminate\Database\Eloquent\Model)
+                        {{-- Collection of Eloquent models --}}
                         @foreach ($options as $option)
                             <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600
-                                {{ old($name, $value) == $option->id ? 'selected' : '' }}"
+                {{ old($name, $value) == $option->id ? 'selected' : '' }}"
                                 data-value="{{ $option->name }}" data-id="{{ $option->id }}">
                                 {{ ucfirst($option->name) }}
                             </div>
                         @endforeach
                     @elseif (is_array($options))
+                        {{-- Array from pluck() or plain array --}}
                         @foreach ($options as $key => $text)
                             <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600
-                                {{ old($name, $value) == $key ? 'selected' : '' }}"
-                                data-value="{{ $text }} " data-id="{{ $key }}">
+                {{ old($name, $value) == $key ? 'selected' : '' }}"
+                                data-value="{{ $text }}" data-id="{{ $key }}">
                                 {{ $text }}
                             </div>
                         @endforeach
@@ -79,4 +83,3 @@
         Field {{ $label }} is required.
     </div>
 </div>
-

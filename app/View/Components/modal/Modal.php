@@ -8,20 +8,22 @@ use Illuminate\View\Component;
 
 class Modal extends Component
 {
-    public $id, $class, $title, $svgPath, $fill, $viewBox, $svgClass,$stroke;
+    public $id, $spacing, $class, $title, $svgPath, $fill, $viewBox, $svgClass, $stroke;
 
     public function __construct(
         $id,
         String $title = "",
+        String $spacing = "p-4",
         $svgPath = "",
         String $class = "",
         $fill = 'currentColor',
         $viewBox = '0 0 20 20',
         $svgClass = 'rounded-full',
         $stroke = null,
-        
+
     ) {
         $this->title = $title;
+        $this->spacing = $spacing;
         $this->svgPath = $svgPath;
         $this->fill = $fill;
         $this->viewBox = $viewBox;

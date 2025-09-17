@@ -2,11 +2,13 @@
     <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
         <tr class="text-nowrap">
             @foreach ($headers as $header)
-                <th scope="col" class="px-4 py-4">{{ $header }}</th>
+                <th scope="col" class="px-2 py-4">{{ $header }}</th>
             @endforeach
-            <th scope="col" class="px-4 py-4">Actions</th>
+            @if ($action)
+                <th scope="col" class="px-2 py-4">Actions</th>
+            @endif
             @if ($checkbox)
-                <th scope="col" class="px-4 py-4 w-20 flex gap-1.5 items-center">
+                <th scope="col" class="px-2 py-4 w-20 flex gap-1.5 items-center">
                     <x-fields.checkbox id="selectAllCheckbox" name="" class="" value="" />
                     <span>All</span>
                 </th>

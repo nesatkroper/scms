@@ -1,4 +1,4 @@
-<div id="{{ $id }}" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+<div id="{{ $id }}" class="fixed inset-0 z-50 flex items-center justify-center hidden {{$spacing}}">
     <div {{ $attributes->merge(['class' => 'relative bg-white dark:bg-gray-800 shadow-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600 ' . $class]) }}>
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">

@@ -8,8 +8,7 @@ use Illuminate\View\Component;
 use Illuminate\Support\Collection;
 class Select extends Component
 {
-
-    public $name, $label, $options, $value, $required, $searchable, $id, $placeholder, $edit;
+    public $name, $class,$labelclass, $label, $options, $value, $required, $searchable, $id, $placeholder, $edit;
     public function __construct(
         $name,
         $label = null,
@@ -20,8 +19,12 @@ class Select extends Component
         $id = null,
         $placeholder = 'Select...',
         $edit = false,
+        string $class = 'py-2',
+        string $labelclass = 'text-sm'
     ) {
         $this->name = $name;
+        $this->class = $class;
+        $this->labelclass = $labelclass;
         $this->edit = $edit;
         $this->label = $label ?? ucfirst($name);
         $this->options = $options;
