@@ -85,6 +85,7 @@ R::prefix('/admin')
     ]);
 
     R::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    R::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     R::get('/students/profile/{student}', [StudentController::class, 'profile'])
       ->name('students.profile');
