@@ -54,7 +54,6 @@ return new class extends Migration {
       $table->string('experience')->nullable();
       $table->text('specialization')->nullable();
       $table->decimal('salary', 10, 2)->nullable();
-      $table->string('photo')->nullable();
       $table->string('cv')->nullable();
       // part for student
       $table->string('blood_group')->nullable();

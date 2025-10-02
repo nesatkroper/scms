@@ -46,7 +46,6 @@ class UserSeeder extends Seeder
         'experience' => $faker->randomElement(['3 years', '5 years', '10 years']),
         'specialization' => $faker->randomElement(['Science', 'Mathematics', 'Literature']),
         'salary' => $faker->randomFloat(2, 40000, 80000),
-        'photo' => $faker->imageUrl(),
         'created_at' => now(),
         'updated_at' => now(),
       ];
@@ -67,7 +66,7 @@ class UserSeeder extends Seeder
         'nationality' => $faker->country,
         'religion' => $faker->randomElement(['Christianity', 'Islam', 'Hinduism', 'Buddhism']),
         'admission_date' => $faker->date(),
-        'avatar' => $faker->imageUrl(640, 480, 'people', true, 'avatar'),
+        'avatar' => null,
         'created_at' => now(),
         'updated_at' => now(),
       ];
