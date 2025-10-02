@@ -43,7 +43,6 @@ return new class extends Migration {
       $table->string('email')->unique();
       $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
-      // part for teacher
       $table->string('phone')->nullable();
       $table->text('address')->nullable();
       $table->date('date_of_birth')->nullable();
@@ -55,12 +54,10 @@ return new class extends Migration {
       $table->text('specialization')->nullable();
       $table->decimal('salary', 10, 2)->nullable();
       $table->string('cv')->nullable();
-      // part for student
       $table->string('blood_group')->nullable();
       $table->string('nationality')->nullable();
       $table->string('religion')->nullable();
       $table->date('admission_date')->nullable();
-      // part for guardians
       $table->string('occupation')->nullable();
       $table->string('company')->nullable();
       $table->string('avatar')->nullable();

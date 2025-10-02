@@ -23,6 +23,19 @@ class User extends Authenticatable
     'date_of_birth',
     'gender',
     'avatar',
+    'department_id',
+    'joining_date',
+    'qualification',
+    'experience',
+    'specialization',
+    'salary',
+    'cv',
+    'blood_group',
+    'nationality',
+    'religion',
+    'admission_date',
+    'occupation',
+    'company',
   ];
 
   protected $hidden = [
@@ -35,7 +48,9 @@ class User extends Authenticatable
     return [
       'email_verified_at' => 'datetime',
       'password' => 'hashed',
+      'date_of_birth' => 'date',
+      'joining_date' => 'date',
+      'admission_date' => 'date',
     ];
   }
-  
 }

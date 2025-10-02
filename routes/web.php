@@ -32,6 +32,7 @@ use App\Http\Controllers\{
   ScoreController,
   UserController,
   RoleController,
+  ProfileController
 };
 
 use Illuminate\Support\Facades\Auth;
@@ -79,9 +80,11 @@ R::prefix('/admin')
       'teachers' => TeacherController::class,
       'timetables' => TimetableController::class,
       'timetable_entries' => TimetableEntryController::class,
-      'scores' => ScoreController::class
-
+      'scores' => ScoreController::class,
+      // 'profile' => ProfileController::class
     ]);
+
+    R::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
     R::get('/students/profile/{student}', [StudentController::class, 'profile'])
       ->name('students.profile');
