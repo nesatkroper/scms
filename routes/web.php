@@ -47,6 +47,7 @@ R::get('/', function () {
 
 R::prefix('/admin')
   ->as('admin.')
+  ->middleware('auth')
   ->group(function () {
     R::get('/', [HomeController::class, 'index'])->name('home');
 
