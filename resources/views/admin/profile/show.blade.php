@@ -48,9 +48,9 @@
 
           <div>
             <label for="gender"
-              class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Gender</label>
+              class="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 p-2">Gender</label>
             <select id="gender" name="gender"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 p-2">
               <option value="male" @selected(old('gender', $user->gender) == 'male')>Male</option>
               <option value="female" @selected(old('gender', $user->gender) == 'female')>Female</option>
             </select>
