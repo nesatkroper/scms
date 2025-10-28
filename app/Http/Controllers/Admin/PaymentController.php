@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
-use App\Models\StudentFee; 
-use App\Models\User;       
+use App\Models\StudentFee;
+use App\Models\User;
 
 class PaymentController extends Controller
 {
@@ -19,7 +20,7 @@ class PaymentController extends Controller
     public function create()
     {
         $studentFees = StudentFee::all();
-        $receivers = User::all(); 
+        $receivers = User::all();
         return view('payments.create', compact('studentFees', 'receivers'));
     }
 

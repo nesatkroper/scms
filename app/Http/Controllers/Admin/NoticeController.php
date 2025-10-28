@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNoticeRequest;
 use App\Http\Requests\UpdateNoticeRequest;
 use App\Models\Notice;
-use App\Models\User; 
+use App\Models\User;
 
 class NoticeController extends Controller
 {
@@ -17,7 +18,7 @@ class NoticeController extends Controller
 
     public function create()
     {
-        $creators = User::all(); 
+        $creators = User::all();
         return view('notices.create', compact('creators'));
     }
 
@@ -36,7 +37,7 @@ class NoticeController extends Controller
     public function edit(Notice $notice)
     {
         $notice->load('creator');
-        $creators = User::all(); 
+        $creators = User::all();
         return view('notices.edit', compact('notice', 'creators'));
     }
 

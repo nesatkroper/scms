@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGradeLevelRequest;
 use App\Http\Requests\UpdateGradeLevelRequest;
 use App\Models\GradeLevel;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookCategoryRequest;
 use App\Http\Requests\UpdateBookCategoryRequest;
 use App\Models\BookCategory;
@@ -17,7 +18,7 @@ class BookCategoryController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        
+
         $categories = BookCategory::with('books')
             ->when($search, function ($query) use ($search) {
                 return $query->where('id', 'like', "%{$search}%")

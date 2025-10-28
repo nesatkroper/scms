@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTimetableEntryRequest;
 use App\Http\Requests\UpdateTimetableEntryRequest;
 use App\Models\TimetableEntry;
-use App\Models\Timetable; 
-use App\Models\ClassSubject; 
-use App\Models\Teacher; 
+use App\Models\Timetable;
+use App\Models\ClassSubject;
+use App\Models\Teacher;
 
 class TimetableEntryController extends Controller
 {
@@ -20,7 +21,7 @@ class TimetableEntryController extends Controller
     public function create()
     {
         $timetables = Timetable::all();
-        $classSubjects = ClassSubject::all(); 
+        $classSubjects = ClassSubject::all();
         return view('timetable_entries.create', compact('timetables', 'classSubjects'));
     }
 

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFeeStructureRequest;
 use App\Http\Requests\UpdateFeeStructureRequest;
 use App\Models\FeeStructure;

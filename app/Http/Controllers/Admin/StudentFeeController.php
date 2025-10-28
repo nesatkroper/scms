@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStudentFeeRequest;
 use App\Http\Requests\UpdateStudentFeeRequest;
 use App\Models\StudentFee;
-use App\Models\Student;    
-use App\Models\FeeStructure; 
+use App\Models\Student;
+use App\Models\FeeStructure;
 
 class StudentFeeController extends Controller
 {

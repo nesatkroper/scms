@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseCategoryRequest;
 use App\Http\Requests\UpdateExpenseCategoryRequest;
 use App\Models\ExpenseCategory;
@@ -17,7 +18,7 @@ class ExpenseCategoryController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 12);
         $viewType = $request->input('view', 'table');
-        
+
         $categories = ExpenseCategory::with('expense')
             ->when($search, function ($query) use ($search) {
                 return $query->where('id', 'like', "%{$search}%")
