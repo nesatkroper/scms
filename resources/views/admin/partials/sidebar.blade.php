@@ -262,7 +262,7 @@
             <ul class="pl-4 pr-4">
               <li><a href="{{ route('admin.users.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Users</a>
-              </li>
+              </li>z
               <li><a href="{{ route('admin.roles.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">roles</a>
               </li>
