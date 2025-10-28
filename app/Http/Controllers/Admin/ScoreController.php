@@ -72,7 +72,12 @@ class ScoreController extends Controller
                 'grade' => $request->grade,
             ]);
 
-        $students = User::role('student')->orderBy('name')->get();
+        $students = User::role('student')
+            ->orderBy('name')
+            ->get();
+
+        // dd($students);
+
         $exams = Exam::orderBy('name')->get();
         $subjects = Subject::orderBy('name')->get();
 

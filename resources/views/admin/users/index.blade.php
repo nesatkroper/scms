@@ -15,7 +15,7 @@
 @push('scripts')
   <script src="{{ asset('assets/js/modal.js') }}"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -32,13 +32,13 @@
       // Initialize modal for create button
       const openCreateBtn = document.getElementById('openCreateModal');
       if (openCreateBtn) {
-        openCreateBtn.addEventListener('click', function () {
+        openCreateBtn.addEventListener('click', function() {
           showModal('Modalcreate');
         });
       }
 
       // Handle per page selection change
-      perPageSelect.off('change').on('change', function () {
+      perPageSelect.off('change').on('change', function() {
         const perPage = $(this).val();
         refreshContent();
       });
@@ -53,7 +53,7 @@
             search: searchTerm,
             per_page: perPage
           },
-          success: function (response) {
+          success: function(response) {
             if (response.success) {
               tableContainer.html(response.html.table);
               $('.pagination').html(response.html.pagination);
@@ -62,7 +62,7 @@
               ShowTaskMessage('error', 'Failed to load data');
             }
           },
-          error: function (xhr) {
+          error: function(xhr) {
             // console.error('Search failed:', xhr.responseText);
             ShowTaskMessage('error', 'Failed to load data');
           }
@@ -87,7 +87,7 @@
           processData: false,
           contentType: false,
           data: formData,
-          success: function (response) {
+          success: function(response) {
             if (response.success) {
               closeModal('Modalcreate');
               ShowTaskMessage('success', response.message);
@@ -100,7 +100,7 @@
               ShowTaskMessage('error', response.message || 'Error creating user');
             }
           },
-          error: function (xhr) {
+          error: function(xhr) {
             if (xhr.status === 422) {
               const errors = xhr.responseJSON.errors;
               for (const field in errors) {
@@ -112,7 +112,7 @@
               ShowTaskMessage('error', `Invalid field something was wrong!`);
             }
           },
-          complete: function () {
+          complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
           }
         });
@@ -129,7 +129,7 @@
         const Id = $(this).data('id');
 
         $.get(`/admin/users/${Id}`)
-          .done(function (response) {
+          .done(function(response) {
             if (response.success && response.user) {
               const user = response.user;
               // Format date of birth
@@ -186,11 +186,11 @@
                 'Failed to load user data: Invalid response');
             }
           })
-          .fail(function (xhr) {
+          .fail(function(xhr) {
             // console.error('Error:', xhr.responseText);
             ShowTaskMessage('error', xhr.responseJSON?.message || 'Failed to load user data');
           })
-          .always(function () {
+          .always(function() {
             editBtn.html(originalContent).prop('disabled', false);
           });
       }
@@ -214,7 +214,7 @@
           data: formData,
           processData: false,
           contentType: false,
-          success: function (response) {
+          success: function(response) {
             if (response.success) {
               closeModal('Modaledit');
               ShowTaskMessage('success', response.message);
@@ -223,7 +223,7 @@
               ShowTaskMessage('error', response.message || 'Error updating users');
             }
           },
-          error: function (xhr) {
+          error: function(xhr) {
             if (xhr.status === 422) {
               const errors = xhr.responseJSON.errors;
               for (const field in errors) {
@@ -236,7 +236,7 @@
               ShowTaskMessage('error', errorMessages || 'Error updating users');
             }
           },
-          complete: function () {
+          complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
           }
         });
@@ -265,7 +265,7 @@
           data: {
             _method: 'DELETE'
           },
-          success: function (response) {
+          success: function(response) {
             if (response.success) {
               closeModal('Modaldelete');
               ShowTaskMessage('success', response.message);
@@ -274,10 +274,10 @@
               ShowTaskMessage('error', response.message || 'Error deleting user');
             }
           },
-          error: function (xhr) {
+          error: function(xhr) {
             ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting user');
           },
-          complete: function () {
+          complete: function() {
             submitBtn.prop('disabled', false).html(originalBtnHtml);
           }
         });
@@ -295,7 +295,7 @@
             search: searchTerm,
             per_page: perPage
           },
-          success: function (response) {
+          success: function(response) {
             if (response.success) {
               tableContainer.html(response.html.table);
               $('.pagination').html(response.html.pagination);
@@ -304,7 +304,7 @@
               ShowTaskMessage('error', 'Failed to refresh data');
             }
           },
-          error: function (xhr) {
+          error: function(xhr) {
             // console.error('Refresh failed:', xhr.responseText);
             ShowTaskMessage('error', 'Failed to refresh data');
           }
@@ -319,7 +319,7 @@
       // Debounce function for search input
       function debounce(func, wait) {
         let timeout;
-        return function () {
+        return function() {
           const context = this,
             args = arguments;
           clearTimeout(timeout);

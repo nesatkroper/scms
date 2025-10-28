@@ -49,7 +49,7 @@
           <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">Rows per page:</span>
           <select id="perPageSelect" name="per_page"
             class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
-            <option value="10" {{ $paginator->perPage() == 10 ? 'selected' : '' }}>10</option>
+            <option value="8" {{ $paginator->perPage() == 8 ? 'selected' : '' }}>8</option>
             <option value="15" {{ $paginator->perPage() == 15 ? 'selected' : '' }}>15</option>
             <option value="20" {{ $paginator->perPage() == 20 ? 'selected' : '' }}>20</option>
             <option value="25" {{ $paginator->perPage() == 25 ? 'selected' : '' }}>25</option>
