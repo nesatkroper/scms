@@ -28,7 +28,8 @@
     <!-- Mobile search button -->
     <div class="lg:hidden">
       <search>
-        <button id="searchall" class="rounded-full size-9 cursor-pointer flex justify-center items-center border border-indigo-100 dark:border-indigo-900
+        <button id="searchall"
+          class="rounded-full size-9 cursor-pointer flex justify-center items-center border border-indigo-100 dark:border-indigo-900
                 dark:text-gray-300 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 focus:outline-none ">
           <i class="ri-search-line text-xl"></i>
         </button>
@@ -54,7 +55,8 @@
 
     <!-- Notifications -->
     <div class="relative">
-      <button class="rounded-full size-9 cursor-pointer border border-indigo-100 text-indigo-600 dark:text-indigo-300 dark:border-indigo-900 dark:hover:bg-gray-700
+      <button
+        class="rounded-full size-9 cursor-pointer border border-indigo-100 text-indigo-600 dark:text-indigo-300 dark:border-indigo-900 dark:hover:bg-gray-700
                              hover:bg-indigo-50 dark:indigo-gray-300 focus:outline-none">
         <i class="fas fa-bell text-xl"></i>
         <span class="notification-dot absolute bg-red-500 rounded-full w-2 h-2"></span>
@@ -68,7 +70,7 @@
           <img src="{{ asset(auth()->user()->avatar) }}" alt="User"
             class="size-9 rounded-full border-2 border-indigo-500 dark:border-white">
         @else
-          <img src="{{ asset('images/user.png') }}" alt="User"
+          <img src="{{ asset('assets/images/cambodia.png') }}" alt="User"
             class="size-9 rounded-full border-2 border-indigo-500 dark:border-white">
         @endif
       </button>
@@ -116,65 +118,65 @@
 </header>
 @push('scripts')
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const searchInput = document.getElementById('search-input');
       const searchResults = document.getElementById('search-results');
       let searchTimeout;
 
       // Sample data - replace with real data from your Laravel backend
       const sampleData = [{
-        id: 1,
-        title: 'Home',
-        type: 'Page',
-        icon: 'fas fa-tachometer-alt',
-        url: 'admin/home'
-      },
+          id: 1,
+          title: 'Home',
+          type: 'Page',
+          icon: 'fas fa-tachometer-alt',
+          url: 'admin/home'
+        },
 
-      {
-        id: 2,
-        title: 'User Settings',
-        type: 'Page',
-        icon: 'fas fa-cog',
-        url: 'admin/settings'
-      },
-      {
-        id: 3,
-        title: 'Project Report',
-        type: 'Document',
-        icon: 'fas fa-file-alt',
-        url: 'admin/reports'
-      },
-      {
-        id: 4,
-        title: 'Team Meeting',
-        type: 'Event',
-        icon: 'fas fa-calendar',
-        url: '/calendar'
-      },
-      {
-        id: 5,
-        title: 'Subjects',
-        type: 'Page',
-        icon: 'fas fa-tachometer-alt',
-        url: 'admin/subjects'
-      },
-      {
-        id: 5,
-        title: 'Students',
-        type: 'Page',
-        icon: 'fas fa-user-graduate',
-        url: 'admin/students'
-      },
-      {
-        id: 5,
-        title: 'Teachers',
-        type: 'Page',
-        icon: 'fas fa-chalkboard-teacher',
-        url: 'admin/teachers'
-      },
+        {
+          id: 2,
+          title: 'User Settings',
+          type: 'Page',
+          icon: 'fas fa-cog',
+          url: 'admin/settings'
+        },
+        {
+          id: 3,
+          title: 'Project Report',
+          type: 'Document',
+          icon: 'fas fa-file-alt',
+          url: 'admin/reports'
+        },
+        {
+          id: 4,
+          title: 'Team Meeting',
+          type: 'Event',
+          icon: 'fas fa-calendar',
+          url: '/calendar'
+        },
+        {
+          id: 5,
+          title: 'Subjects',
+          type: 'Page',
+          icon: 'fas fa-tachometer-alt',
+          url: 'admin/subjects'
+        },
+        {
+          id: 5,
+          title: 'Students',
+          type: 'Page',
+          icon: 'fas fa-user-graduate',
+          url: 'admin/students'
+        },
+        {
+          id: 5,
+          title: 'Teachers',
+          type: 'Page',
+          icon: 'fas fa-chalkboard-teacher',
+          url: 'admin/teachers'
+        },
       ];
 
-      searchInput.addEventListener('input', function (e) {
+      searchInput.addEventListener('input', function(e) {
         clearTimeout(searchTimeout);
         const query = e.target.value.trim();
 
@@ -196,7 +198,7 @@
       });
 
       // Click outside to close
-      document.addEventListener('click', function (e) {
+      document.addEventListener('click', function(e) {
         if (!e.target.closest('#search-container')) {
           hideResults();
         }
@@ -229,19 +231,6 @@
       function hideResults() {
         searchResults.classList.add('hidden');
       }
-
-      // For a real implementation, you would make an AJAX call like this:
-      /*
-      function fetchSearchResults(query) {
-          fetch(`/api/search?q=${encodeURIComponent(query)}`)
-              .then(response => response.json())
-              .then(data => displayResults(data, query))
-              .catch(error => {
-                  console.error('Search error:', error);
-                  hideResults();
-              });
-      }
-      */
     });
   </script>
 @endpush
