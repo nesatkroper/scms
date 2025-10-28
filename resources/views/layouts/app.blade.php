@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/mainjq.css') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-  @PwaHead
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
@@ -574,7 +573,6 @@
   <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
   @stack('scripts')
   @stack('script')
-  @RegisterServiceWorkerScript
 </body>
 
 </html>

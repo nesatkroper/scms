@@ -9,7 +9,7 @@
         <!-- Left Column - Login Form -->
         <div class="px-8 py-6">
           <div class="flex justify-center pt-2">
-            <img src="{{ asset('/images/scms.png') }}" alt="School Logo" class="h-40">
+            <img src="{{ asset('assets/images/cambodia.png') }}" alt="School Logo" class="h-40">
           </div>
 
           <div class="text-center mt-2">
@@ -105,10 +105,6 @@
                   <label for="remember" class="text-sm text-gray-600 dark:text-gray-300 cursor-pointer">Remember
                     me</label>
                 </div>
-                <a href="{{ route('password.request') }}"
-                  class="text-sm text-gray-600 dark:text-gray-500 hover:underline">
-                  Forgot your password?
-                </a>
               </div>
 
               <button type="submit"
@@ -123,17 +119,6 @@
               </button>
             </div>
 
-            <div class="flex items-center gap-4">
-              <div class="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
-              <span class="text-gray-400 text-sm">Or continue with</span>
-              <div class="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
-            </div>
-
-            <div class="text-center">
-              <p class="text-gray-600 dark:text-gray-500 text-sm">Don't have an account?
-                <a href="{{ route('register') }}" class="text-indigo-600 hover:underline">Sign up</a>
-              </p>
-            </div>
           </form>
         </div>
 

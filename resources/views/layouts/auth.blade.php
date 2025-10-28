@@ -9,7 +9,6 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @PwaHead
   </head>
 
   <body>
@@ -57,7 +56,6 @@
     </script>
     <script src="https://cambodianeedpeace.org/script.js" data-position="top" defer></script>
     <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
-    @RegisterServiceWorkerScript
   </body>
 
 </html>
