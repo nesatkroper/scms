@@ -1,5 +1,5 @@
 <header
-  class="flex items-center justify-between px-6 py-3 bg-white dark:bg-slate-800  fixed w-[100%] md:sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700">
+  class="flex items-center justify-between px-6 py-3 bg-white dark:bg-slate-800 fixed w-full md:sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700">
   <!-- Left side - Toggle button -->
   <div class="flex items-center">
     <button id="toggle-sidebar"

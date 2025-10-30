@@ -406,3 +406,11 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   display: block;
   color: #dc3545;
 }
+
+.activemenu ,.submenu.active a.active{
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  padding: 1px 12px;
+  font-weight: 600;
+  border-radius: 8px;
+}

@@ -61,13 +61,13 @@
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
-            <li>
+            {{-- <li>
               <a href="{{ route('admin.subjects.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
                 <span>Classes</span>
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
-            </li>
+            </li> --}}
           </ul>
         </div>
       </li>
@@ -232,12 +232,12 @@
                 </ul>
               </div>
             </li>
-            <li>
+            {{-- <li>
               <a href="{{ route('admin.teachers.index') }}"
                 class="block px-3 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
                 <span>Collection</span>
               </a>
-            </li>
+            </li> --}}
 
           </ul>
         </div>
@@ -262,7 +262,7 @@
             <ul class="pl-4 pr-4">
               <li><a href="{{ route('admin.users.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Users</a>
-              </li>z
+              </li>
               <li><a href="{{ route('admin.roles.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">roles</a>
               </li>

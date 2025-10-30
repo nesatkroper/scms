@@ -11,9 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const userDropdown = document.getElementById('user-dropdown');
   const darkModeToggle = document.getElementById('dark-mode-toggle');
   const attendanceChart = document.getElementById('attendanceChart');
-
-  // If none of the sidebar elements exist, exit early (not a page with sidebar)
+  const submenuLinks = document.querySelectorAll('.menu-item a');
+  const currentPath = window.location.pathname;
   if (!sidebar || !toggleSidebarBtn) return;
+
+  submenuLinks.forEach(link => {
+  link.addEventListener('click', function() {
+    localStorage.setItem('activeLink', this.href);
+  });
+});
+
+const activeLink = localStorage.getItem('activeLink');
+if (activeLink) {
+  document.querySelectorAll('.submenu a').forEach(link => {
+    if (link.href === activeLink) {
+      link.classList.add('active');
+      const submenu = link.closest('.submenu');
+      if (submenu) submenu.classList.add('active');
+    }
+  });
+}
 
   // --- STATE ---
   let sidebarCollapsed = false; // Start with expanded sidebar (w-64)
@@ -113,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarFooterDropdown.classList.remove('show');
     footerDropdownActive = false;
   };
-
   // Dark Mode
   const applyDarkMode = (isDark) => {
     if (isDark) {
