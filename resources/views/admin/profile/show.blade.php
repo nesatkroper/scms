@@ -18,7 +18,7 @@
 
       <div>
         <h1 class="text-3xl font-extrabold text-gray-900 dark:text-gray-100">{{ $user->name }}</h1>
-        <p class="text-lg text-indigo-600 dark:text-indigo-400 font-medium">{{ $user->occupation ?? 'Unspecified Role' }}
+        <p class="text-lg text-indigo-600 dark:text-indigo-400 font-medium">{{ $user->role?->name ?? 'Unspecified Role' }}
         </p>
         <p class="text-gray-500 dark:text-gray-400">{{ $user->email }}</p>
       </div>
