@@ -17,7 +17,7 @@ git:
 	@echo "-------------------------------------------------"
 	@echo "--- 1. Adding all changed and untracked files (git add .)..."
 	git add .
-	@echo "--- 2. Committing changes with message 'modified nun'..."
+	@echo "--- 2. Committing changes with message 'modified'..."
 	git commit -m 'modified nun'
 	@echo "--- 3. Pushing committed changes to remote repository (git push)..."
 	git push

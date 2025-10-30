@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,7 @@ class ProfileController extends Controller
   public function show(Request $request)
   {
     return view('admin.profile.show', [
-      'user' => Auth::user(),
+      'user' => $user = User::with('roles')->find(Auth::id())
     ]);
   }
 

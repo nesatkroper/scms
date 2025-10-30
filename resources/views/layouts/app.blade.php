@@ -42,8 +42,6 @@
     <script src="{{ asset('assets/js/mainjq.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    <script src="https://cambodianeedpeace.org/script.js" data-position="top" defer></script>
-    <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
     @stack('scripts')
     @stack('script')
   </body>
