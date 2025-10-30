@@ -64,7 +64,7 @@ class UserController extends Controller
     ]);
 
     try {
-      $avatarPath = public_path('photos/avatars');
+      $avatarPath = public_path('upload/avatars');
       if (!file_exists($avatarPath)) {
         mkdir($avatarPath, 0755, true);
       }
@@ -79,7 +79,7 @@ class UserController extends Controller
         $image->resize(640, 640);
         $image->save($avatarPath . '/' . $avatarName);
 
-        $validatedData['avatar'] = 'photos/avatars/' . $avatarName;
+        $validatedData['avatar'] = 'upload/avatars/' . $avatarName;
       }
 
       $user = User::create([
@@ -151,7 +151,7 @@ class UserController extends Controller
 
         $avatar = $request->file('avatar');
         $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
-        $avatarPath = public_path('photos/avatars');
+        $avatarPath = public_path('upload/avatars');
 
         if (!file_exists($avatarPath)) {
           mkdir($avatarPath, 0755, true);
@@ -163,7 +163,7 @@ class UserController extends Controller
         $image->resize(640, 640);
         $image->save($avatarPath . '/' . $avatarName);
 
-        $data['avatar'] = 'photos/avatars/' . $avatarName;
+        $data['avatar'] = 'upload/avatars/' . $avatarName;
       } elseif ($request->input('clear_avatar')) {
         if ($user->avatar && file_exists(public_path($user->avatar))) {
           unlink(public_path($user->avatar));
