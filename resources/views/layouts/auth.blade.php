@@ -55,8 +55,6 @@
         (!localStorage.getItem('dark-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
       applyDarkMode(prefersDark);
     </script>
-    <script src="https://cambodianeedpeace.org/script.js" data-position="top" defer></script>
-    <script src="{{ asset('js/dontthaitome.js') }}" data-position="top"></script>
   </body>
 
 </html>
