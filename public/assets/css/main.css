@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
+:root{
+  --spacing: 0.25rem;
+}
 body {
   font-family: "Poppins", sans-serif;
 }
@@ -406,11 +408,11 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   display: block;
   color: #dc3545;
 }
-
+.js-submenu-toggle{
+  margin-top: calc(var(--spacing) * 1);
+}
 .activemenu ,.submenu.active a.active{
-  background-color: #e0e7ff;
-  color: #4f46e5;
-  padding: 1px 12px;
+  padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
   font-weight: 600;
   border-radius: 8px;
 }

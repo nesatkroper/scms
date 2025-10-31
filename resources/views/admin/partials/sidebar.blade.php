@@ -5,7 +5,7 @@
     <div class="flex items-center space-x-2">
       <img
         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='24' height='24'%3E%3Cpath d='M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z'/%3E%3C/svg%3E"
-        alt="Logo" class="w-8 h-8">
+        alt="Logo" class="hidden md:block w-8 h-8">
       <h1 class="text-lg font-bold sidebar-text text-hidden">EduManager</h1>
     </div>
     <button id="close-sidebar"
@@ -18,7 +18,6 @@
   </div>
   <!-- Sidebar menu -->
   <nav class="pt-4 flex-grow overflow-y-auto">
-    <ul id="menu-container"></ul>
     <ul>
       <!-- Dashboard -->
       <li class="menu-item relative">

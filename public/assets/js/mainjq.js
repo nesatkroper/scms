@@ -20,7 +20,7 @@ $(document).ready(function () {
   });
 
   if (targetLink && targetLink.length) {
-    targetLink.addClass('bg-indigo-700 dark:bg-gray-700 text-white rounded-lg');
+    targetLink.addClass('bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1');
 
     // Open submenu if it exists
     const submenu = targetLink.closest('.submenu');
