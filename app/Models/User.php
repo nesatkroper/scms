@@ -53,4 +53,22 @@ class User extends Authenticatable
       'admission_date' => 'date',
     ];
   }
+
+  public function department()
+  {
+    return $this->belongsTo(Department::class);
+  }
+
+  public function gradeLevel()
+  {
+    return $this->belongsTo(GradeLevel::class);
+  }
+
+  public function students()
+  {
+    return $this
+      ->belongsToMany(Student::class, 'student_guardian')
+      ->withPivot('relation_to_student')
+      ->withTimestamps();
+  }
 }

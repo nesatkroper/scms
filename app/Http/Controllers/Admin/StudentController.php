@@ -25,7 +25,7 @@ class StudentController extends Controller
         $users = User::all();
         $gradeLevels = GradeLevel::all();
 
-        $students = Student::with('gradeLevel')
+        $students = User::with('gradeLevel')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
@@ -91,7 +91,7 @@ class StudentController extends Controller
             ]);
             $user->assignRole('student');
             $validated['user_id'] = $user->id;
-            $student = Student::create($validated);
+            $student = User::create($validated);
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully!',
@@ -196,7 +196,7 @@ class StudentController extends Controller
         }
 
         try {
-            $students = Student::whereIn('id', $ids)->get();
+            $students = User::whereIn('id', $ids)->get();
 
             foreach ($students as $student) {
                 // Delete associated files
@@ -243,7 +243,7 @@ class StudentController extends Controller
         }
 
         try {
-            $students = Student::whereIn('id', $ids)->get();
+            $students = User::whereIn('id', $ids)->get();
             return response()->json([
                 'success' => true,
                 'data' => $students
@@ -288,7 +288,7 @@ class StudentController extends Controller
             }
 
             try {
-                $student = Student::findOrFail($studentData['id']);
+                $student = User::findOrFail($studentData['id']);
                 $student->update($validator->validated());
                 $updatedCount++;
             } catch (\Exception $e) {

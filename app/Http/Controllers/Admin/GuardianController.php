@@ -19,7 +19,7 @@ class GuardianController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        $guardians = Guardian::with('students')
+        $guardians = User::with('students')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
@@ -71,7 +71,7 @@ class GuardianController extends Controller
                 $validated['photo'] = 'photos/guardians/' . $photoName;
             }
 
-            $guardian = Guardian::create($validated);
+            $guardian = User::create($validated);
 
             return response()->json([
                 'success' => true,

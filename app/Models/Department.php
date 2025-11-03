@@ -17,7 +17,7 @@ class Department extends Model
 
   public function teachers()
   {
-    return $this->hasMany(Teacher::class);
+    return $this->hasMany(User::class);
   }
 
   public function subjects()
@@ -28,5 +28,5 @@ class Department extends Model
   {
     return $this->belongsTo(User::class, 'head_id'); // Assuming 'head_id' is the foreign key
   }
-  
+
 }

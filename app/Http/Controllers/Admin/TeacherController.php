@@ -30,7 +30,7 @@ class TeacherController extends Controller
         $viewType = $request->input('view', 'table');
         $users = User::all();
         $departments = Department::all();
-        $teachers = Teacher::with('department')
+        $teachers = User::with('department')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('qualification', 'like', "%{$search}%")
@@ -91,7 +91,7 @@ class TeacherController extends Controller
                 $cv->move($cvPath, $cvName);
                 $validated['cv'] = 'photos/cv/' . $cvName;
             }
-            $teacher = Teacher::create($validated);
+            $teacher = User::create($validated);
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -224,7 +224,7 @@ class TeacherController extends Controller
         }
 
         try {
-            $teachers = Teacher::whereIn('id', $ids)->get();
+            $teachers = User::whereIn('id', $ids)->get();
 
             foreach ($teachers as $teacher) {
                 // Delete associated files
@@ -271,7 +271,7 @@ class TeacherController extends Controller
         }
 
         try {
-            $teachers = Teacher::whereIn('id', $ids)->get();
+            $teachers = User::whereIn('id', $ids)->get();
             return response()->json([
                 'success' => true,
                 'data' => $teachers
@@ -309,7 +309,7 @@ class TeacherController extends Controller
     //         }
 
     //         try {
-    //             $teacher = Teacher::findOrFail($teacherData['id']);
+    //             $teacher = User::findOrFail($teacherData['id']);
     //             $teacher->update($validator->validated());
     //             $updatedCount++;
     //         } catch (\Exception $e) {
@@ -357,7 +357,7 @@ class TeacherController extends Controller
             }
 
             try {
-                $teacher = Teacher::findOrFail($teacherData['id']);
+                $teacher = User::findOrFail($teacherData['id']);
                 $teacher->update($validator->validated());
                 $updatedCount++;
             } catch (\Exception $e) {

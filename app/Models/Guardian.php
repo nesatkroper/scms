@@ -21,11 +21,5 @@ class Guardian extends Model
     'photo',
   ];
 
-  public function students()
-  {
-    return $this
-      ->belongsToMany(Student::class, 'student_guardian')
-      ->withPivot('relation_to_student')
-      ->withTimestamps();
-  }
+
 }

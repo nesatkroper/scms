@@ -31,10 +31,7 @@ class Student extends Model
     'admission_date' => 'date',
   ];
 
-  public function gradeLevel()
-  {
-    return $this->belongsTo(GradeLevel::class);
-  }
+
 
   public function user()
   {
