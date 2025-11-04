@@ -265,9 +265,9 @@
               <li><a href="{{ route('admin.roles.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">roles</a>
               </li>
-              <li><a href="{{ route('admin.permissions.index') }}"
+              {{-- <li><a href="{{ route('admin.permissions.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Permission</a>
-              </li>
+              </li> --}}
             </ul>
           </div>
         </li>
