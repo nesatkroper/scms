@@ -1,3 +1,7 @@
+@php
+
+@endphp
+
 <aside id="sidebar"
   class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-64 md:translate-x-0 -translate-x-full">
   <!-- Sidebar header -->
