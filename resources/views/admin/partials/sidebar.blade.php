@@ -60,13 +60,6 @@
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
-            {{-- <li>
-              <a href="{{ route('admin.subjects.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
-                <span>Classes</span>
-                <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
-              </a>
-            </li> --}}
           </ul>
         </div>
       </li>
@@ -95,13 +88,6 @@
               <a href="{{ route('admin.students.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
                 <span class="ml-2">Students</span>
-                <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.guardians.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
-                <span class="ml-2">guardians</span>
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
@@ -231,13 +217,6 @@
                 </ul>
               </div>
             </li>
-            {{-- <li>
-              <a href="{{ route('admin.teachers.index') }}"
-                class="block px-3 py-2 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-md">
-                <span>Collection</span>
-              </a>
-            </li> --}}
-
           </ul>
         </div>
       </li>
@@ -245,7 +224,6 @@
       <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
       </li>
 
-      {{-- Admin --}}
       @if (Auth::user()->hasRole('admin'))
         <li class="menu-item relative">
           <div
@@ -265,10 +243,6 @@
               <li><a href="{{ route('admin.roles.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">roles</a>
               </li>
-              {{-- <li><a href="{{ route('admin.permissions.index') }}"
-                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Permission</a>
-              </li> --}}
-            </ul>
           </div>
         </li>
       @endif

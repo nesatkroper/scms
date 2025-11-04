@@ -64,11 +64,44 @@ class User extends Authenticatable
     return $this->belongsTo(GradeLevel::class);
   }
 
+  public function courseOfferings()
+  {
+    return $this->hasMany(CourseOffering::class);
+  }
+
+  public function bookIssues()
+  {
+    return $this->hasMany(BookIssue::class);
+  }
+
   public function students()
   {
     return $this
       ->belongsToMany(Student::class, 'student_guardian')
       ->withPivot('relation_to_student')
       ->withTimestamps();
+  }
+
+  public function guardians()
+  {
+    return $this
+      ->belongsToMany(Guardian::class, 'student_guardian')
+      ->withPivot('relation_to_student')
+      ->withTimestamps();
+  }
+
+  public function attendances()
+  {
+    return $this->hasMany(Attendance::class);
+  }
+
+  public function grades()
+  {
+    return $this->hasMany(Grade::class);
+  }
+
+  public function studentFees()
+  {
+    return $this->hasMany(StudentFee::class);
   }
 }
