@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2025 at 05:50 AM
+-- Generation Time: Nov 04, 2025 at 08:46 AM
 -- Server version: 8.0.43-0ubuntu0.24.04.2
 -- PHP Version: 8.3.6
 
@@ -37,30 +37,6 @@ CREATE TABLE `attendances` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cache`
---
-
-CREATE TABLE `cache` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cache_locks`
---
-
-CREATE TABLE `cache_locks` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -237,22 +213,6 @@ INSERT INTO `expense_categories` (`id`, `name`, `description`, `created_at`, `up
 -- --------------------------------------------------------
 
 --
--- Table structure for table `failed_jobs`
---
-
-CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `fee_structures`
 --
 
@@ -316,41 +276,6 @@ INSERT INTO `grade_levels` (`id`, `name`, `code`, `description`, `created_at`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jobs`
---
-
-CREATE TABLE `jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attempts` tinyint UNSIGNED NOT NULL,
-  `reserved_at` int UNSIGNED DEFAULT NULL,
-  `available_at` int UNSIGNED NOT NULL,
-  `created_at` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `job_batches`
---
-
-CREATE TABLE `job_batches` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `total_jobs` int NOT NULL,
-  `pending_jobs` int NOT NULL,
-  `failed_jobs` int NOT NULL,
-  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci,
-  `cancelled_at` int DEFAULT NULL,
-  `created_at` int NOT NULL,
-  `finished_at` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `migrations`
 --
 
@@ -370,7 +295,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '3_create_jobs_table', 1),
 (4, '4_create_personal_access_tokens_table', 1),
 (5, '5_create_permission_tables', 1),
-(8, '2025_10_28_054230_remove-phto-user', 2);
+(8, '2025_10_28_054230_remove-phto-user', 2),
+(9, '2025_11_04_084607_drop_unused_tables', 3);
 
 -- --------------------------------------------------------
 
@@ -775,8 +701,11 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('0hlkL81STLB3hXqYyhNdtfehMJ6sgP9loja9kXfD', 106, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSEFWSVdHYkh6OUR5RlRtUXBRY0pKMkRPWFhzZTR3ZkZ4VmdBNXdRQiI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbiI7czo1OiJyb3V0ZSI7czoxMDoiYWRtaW4uaG9tZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjEwNjtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjE4MjkxMzg7fX0=', 1762246000),
 ('6AAV5FrM1VykDE81l7B1zVvuFpA4OnxG0QnrYWMT', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRXA0cVNwUTNKOFJ0R1h0cGxuNHlremRsMUhmOXllQVhBeGIwREo2YyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1761625288),
-('TpZ6OeKL7VTiEGht8s6kwADhSfo9r2i4mIWoJCVX', 106, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTzhYMXhQeVpQYlpNM1BUQmdsNlpYQ2J0TkpGWkJMcWJiZlpoa0dVeCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9zY29yZXMiO3M6NToicm91dGUiO3M6MTg6ImFkbWluLnNjb3Jlcy5pbmRleCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjEwNjtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjE2MjU0MDU7fX0=', 1761630513);
+('cQZVSAqfBQOrg5ygLXPHock4uOtIXqkPs5ekMhCq', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUjJ1MzdzbEYwMUNJRE5mbHUxdkdLZWdGM1ZpV0NabElUTXJNNTdxMyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9leGFtcyI7czo1OiJyb3V0ZSI7czoxNzoiYWRtaW4uZXhhbXMuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1761644128),
+('EGuPT6grMPBxCSNUHWTnmg0I1gR8Ck8Sd83kdccM', 106, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiazA2SUZUZ3FtQjRocnhCakZNQUNraTYxbWYzM3lLRktITnVXR3dzYyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9leGFtcyI7czo1OiJyb3V0ZSI7czoxNzoiYWRtaW4uZXhhbXMuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDY7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzYxNjU1NTgwO319', 1761655616),
+('TpZ6OeKL7VTiEGht8s6kwADhSfo9r2i4mIWoJCVX', 106, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTzhYMXhQeVpQYlpNM1BUQmdsNlpYQ2J0TkpGWkJMcWJiZlpoa0dVeCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9leGFtcyI7czo1OiJyb3V0ZSI7czoxNzoiYWRtaW4uZXhhbXMuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDY7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzYxNjI1NDA1O319', 1761631029);
 
 -- --------------------------------------------------------
 
@@ -917,20 +846,6 @@ CREATE TABLE `student_fees` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `student_guardian`
---
-
-CREATE TABLE `student_guardian` (
-  `student_id` bigint UNSIGNED NOT NULL,
-  `guardian_id` bigint UNSIGNED NOT NULL,
-  `relation_to_student` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1107,7 +1022,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ph
 (103, 'Dr. Valentina Rodriguez PhD', 'student97@example.com', '2025-10-27 05:18:00', '$2y$12$ln5u14ThYQBGE9eOefHZU.dxqklDuc9N/n/6p8PsYsIWkLl7wLtze', NULL, NULL, NULL, 'female', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'B+', 'Saudi Arabia', 'Christianity', '1983-08-30', NULL, NULL, NULL, NULL, '2025-10-27 05:18:00', '2025-10-27 05:18:00', NULL),
 (104, 'Jerrold Johnston', 'student98@example.com', '2025-10-27 05:18:00', '$2y$12$atk8PKAvQ6P8yxRahZYgc.W3.4LS.QI6Bly32mftIw1D04V65.y5a', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'A+', 'Namibia', 'Hinduism', '2003-09-11', NULL, NULL, NULL, NULL, '2025-10-27 05:18:00', '2025-10-27 05:18:00', NULL),
 (105, 'Dr. Dana Bailey', 'student99@example.com', '2025-10-27 05:18:00', '$2y$12$6Qb.O2/ACEFVE/nbiqnZcOiH2vBfLhN8RwylkbiKz9sfoIWef1eVm', NULL, NULL, NULL, 'female', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AB+', 'Jamaica', 'Buddhism', '2012-07-30', NULL, NULL, NULL, NULL, '2025-10-27 05:18:00', '2025-10-27 05:18:00', NULL),
-(106, 'Admin User', 'admin@example.com', '2025-10-27 05:18:01', '$2y$12$wXkZt6Xn9FPz/7IBeZMdGu2MSosHLVgz6C1l8BZNkzlt2tUIGlhgy', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-10-27 05:18:01', '2025-10-27 05:18:01', NULL);
+(106, 'Admin User', 'admin@example.com', '2025-10-27 05:18:01', '$2y$12$wXkZt6Xn9FPz/7IBeZMdGu2MSosHLVgz6C1l8BZNkzlt2tUIGlhgy', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'upload/avatars/1761830497-30-10-2025_user_avatar.jpg', NULL, '2025-10-27 05:18:01', '2025-10-30 06:21:37', NULL);
 
 --
 -- Indexes for dumped tables
@@ -1120,18 +1035,6 @@ ALTER TABLE `attendances`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `attendances_student_id_course_offering_id_date_unique` (`student_id`,`course_offering_id`,`date`),
   ADD KEY `attendances_course_offering_id_foreign` (`course_offering_id`);
-
---
--- Indexes for table `cache`
---
-ALTER TABLE `cache`
-  ADD PRIMARY KEY (`key`);
-
---
--- Indexes for table `cache_locks`
---
-ALTER TABLE `cache_locks`
-  ADD PRIMARY KEY (`key`);
 
 --
 -- Indexes for table `classrooms`
@@ -1179,13 +1082,6 @@ ALTER TABLE `expense_categories`
   ADD UNIQUE KEY `expense_categories_name_unique` (`name`);
 
 --
--- Indexes for table `failed_jobs`
---
-ALTER TABLE `failed_jobs`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
-
---
 -- Indexes for table `fee_structures`
 --
 ALTER TABLE `fee_structures`
@@ -1206,19 +1102,6 @@ ALTER TABLE `grades`
 ALTER TABLE `grade_levels`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `grade_levels_code_unique` (`code`);
-
---
--- Indexes for table `jobs`
---
-ALTER TABLE `jobs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `jobs_queue_index` (`queue`);
-
---
--- Indexes for table `job_batches`
---
-ALTER TABLE `job_batches`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `migrations`
@@ -1316,13 +1199,6 @@ ALTER TABLE `student_fees`
   ADD KEY `student_fees_fee_structure_id_foreign` (`fee_structure_id`);
 
 --
--- Indexes for table `student_guardian`
---
-ALTER TABLE `student_guardian`
-  ADD PRIMARY KEY (`student_id`,`guardian_id`),
-  ADD KEY `student_guardian_guardian_id_foreign` (`guardian_id`);
-
---
 -- Indexes for table `subjects`
 --
 ALTER TABLE `subjects`
@@ -1384,12 +1260,6 @@ ALTER TABLE `expense_categories`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `failed_jobs`
---
-ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `fee_structures`
 --
 ALTER TABLE `fee_structures`
@@ -1408,16 +1278,10 @@ ALTER TABLE `grade_levels`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `jobs`
---
-ALTER TABLE `jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -1559,13 +1423,6 @@ ALTER TABLE `student_course`
 ALTER TABLE `student_fees`
   ADD CONSTRAINT `student_fees_fee_structure_id_foreign` FOREIGN KEY (`fee_structure_id`) REFERENCES `fee_structures` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `student_fees_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `student_guardian`
---
-ALTER TABLE `student_guardian`
-  ADD CONSTRAINT `student_guardian_guardian_id_foreign` FOREIGN KEY (`guardian_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `student_guardian_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `users`
