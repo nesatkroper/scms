@@ -178,7 +178,7 @@ class UserController extends Controller
       $user->update($data);
       $user->syncRoles($validatedData['type']);
       // =========
-      if ($user->studen && ($validatedData['type'] === 'student')) {
+      if ($user->student && ($validatedData['type'] === 'student')) {
         $user->student->update([
           'name' => $user->name,
           'email' => $user->email,

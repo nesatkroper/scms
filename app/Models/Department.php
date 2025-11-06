@@ -19,9 +19,22 @@ class Department extends Model
   {
     return $this->hasMany(User::class);
   }
-  public function teachers(): HasMany
+  public function teachers()
   {
-    return $this->hasMany(User::class)->where('role', 'teacher'); // Adjust based on your role system
+    // return $this->hasMany(User::class)->where('role', 'teacher'); // Adjust based on your role system
+    // return $this->hasMany(User::class)->where('role', 'teacher');
+    // return $this->hasMany(User::class);
+    return $this->hasMany(User::class)
+      ->whereHas('roles', function ($query) {
+        $query->where('name', 'teacher');
+      });
+  }
+  public function students()
+  {
+    return $this->hasMany(User::class)
+      ->whereHas('roles', function ($query) {
+        $query->where('name', 'student');
+      });
   }
   public function subjects(): HasMany
   {
