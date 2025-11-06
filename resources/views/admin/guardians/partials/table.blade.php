@@ -5,7 +5,7 @@
     'company' => ['label' => 'Company'],
     'address' => ['label' => 'Address'],
     'occupation' => ['label' => 'Occupation'],
-    'relation' => ['label' => 'Relation'],
+    'religion' => ['label' => 'Religion'],
     'created_at' => ['label' => 'Date'],
 ]" :items="$guardians" empty-message="Create your first users to get started"
     :checkbox="false" :actions="['edit', 'delete']" />

@@ -9,7 +9,7 @@
             <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                 <!-- Circular Avatar -->
                 <div class="absolute -bottom-12">
-                    <x-photos.upload2 name="photo" size="xl" />
+                    <x-photos.upload2 name="avatar" size="xl" />
                 </div>
             </div>
             <!-- Profile Body -->
@@ -23,7 +23,7 @@
                     <!-- Phone Number Field -->
                     <x-fields.input type="tel" label="Phone number" name="phone" max="20"
                         placeholder="Enter phone number" required />
-                    <x-fields.input label="Relation" name="relation" placeholder="Enter relation name" max="255"
+                    <x-fields.input label="Religion" name="religion" placeholder="Enter religion name" max="255"
                         required />
                     <x-fields.input label="Company" name="company" placeholder="Enter company name" max="255" />
                     <x-fields.input label="Occupation" name="occupation" placeholder="Enter occupation"

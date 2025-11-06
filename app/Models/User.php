@@ -71,6 +71,7 @@ class User extends Authenticatable
   {
     return $this->hasMany(User::class, 'guardian_id')->where('role', 'student');
   }
+  
   public function gradeLevel()
   {
     return $this->belongsTo(GradeLevel::class);

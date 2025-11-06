@@ -52,77 +52,40 @@ class GuardianController extends Controller
         return view('admin.guardians.index', compact('guardians'));
     }
 
-    // public function store(StoreGuardianRequest $request)
-    // {
-    //     try {
-
-    //         $validated = $request->validated();
-    //         $studentPhotoPath = public_path('photos/guardians');
-
-    //         if (!file_exists($studentPhotoPath)) {
-    //             mkdir($studentPhotoPath, 0755, true);
-    //         }
-
-    //         if ($request->hasFile('photo')) {
-    //             $photo = $request->file('photo');
-    //             $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
-    //             $photo->move($studentPhotoPath, $photoName);
-    //             $validated['photo'] = 'photos/guardians/' . $photoName;
-    //         }
-
-    //         $guardian = User::create($validated);
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Guardian created successfully!',
-    //             'data' => $guardian
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Error creating guardian: ' . $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
-
-    public function store(StoreGuardianRequest $request)
+        public function store(StoreGuardianRequest $request)
     {
-        $validated = $request->validated();
-
         try {
-            // Handle photo upload
-            if ($request->hasFile('photo')) {
-                $photoPath = public_path('uploads/guardians');
-                if (!file_exists($photoPath)) {
-                    mkdir($photoPath, 0755, true);
-                }
-
-                $photo = $request->file('photo');
-                $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
-                $photo->move($photoPath, $photoName);
-                $validated['avatar'] = 'uploads/guardians/' . $photoName; // map photo to avatar column
+            $validated = $request->validated();
+            
+            // Create uploads directory if it doesn't exist
+            $uploadPath = public_path('uploads/guardians');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
             }
 
-            // Create guardian user
-            $guardian = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'address' => $validated['address'],
-                'occupation' => $validated['occupation'] ?? null,
-                'company' => $validated['company'] ?? null,
-                'avatar' => $validated['avatar'] ?? null,
-            ]);
+            // Handle avatar upload
+            if ($request->hasFile('avatar')) {
+                $avatar = $request->file('avatar');
+                $avatarName = time() . '-' . date('d-m-Y') . '_add_avatar.' . $avatar->getClientOriginalExtension();
+                $avatar->move($uploadPath, $avatarName);
+                $validated['avatar'] = 'uploads/guardians/' . $avatarName;
+            }
 
-            // Assign guardian role (Spatie)
+            // Add password and create user
+            $validated['password'] = bcrypt('password123'); // Default password
+
+            $guardian = User::create($validated);
+            
+            // Assign guardian role
             $guardian->assignRole('guardian');
 
             return response()->json([
                 'success' => true,
                 'message' => 'Guardian created successfully!',
-                'user' => $guardian
+                'data' => $guardian
             ]);
         } catch (\Exception $e) {
+            Log::error('Error creating guardian: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error creating guardian: ' . $e->getMessage()
@@ -130,10 +93,9 @@ class GuardianController extends Controller
         }
     }
 
-
     public function show(User $guardian)
     {
-        $guardian->load('students');
+        // $guardian->load('students');
         return response()->json([
             'success' => true,
             'data' => $guardian
@@ -145,16 +107,16 @@ class GuardianController extends Controller
         try {
             $data = $request->validated();
             // Handle photo upload
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('avatar')) {
                 // Delete old photo if exists
-                if ($guardian->photo && file_exists(public_path($guardian->photo))) {
-                    unlink(public_path($guardian->photo));
+                if ($guardian->avatar && file_exists(public_path($guardian->avatar))) {
+                    unlink(public_path($guardian->avatar));
                 }
-                $photo = $request->file('photo');
-                $photoName = time()  . '-' . date('d-m-Y') . '_ed' . $photo->getClientOriginalName();
+                $avatar = $request->file('avatar');
+                $photoName = time()  . '-' . date('d-m-Y') . '_ed_photo.' . $avatar->getClientOriginalExtension();
                 $photoPath = public_path('uploads/guardians');
-                $photo->move($photoPath, $photoName);
-                $data['photo'] = 'uploads/guardians/' . $photoName;
+                $avatar->move($photoPath, $photoName);
+                $data['avatar'] = 'uploads/guardians/' . $photoName;
             }
 
             $guardian->update($data);
@@ -175,10 +137,12 @@ class GuardianController extends Controller
     {
         try {
             // Delete avatar if exists
-            if ($guardian->photo && file_exists(public_path($guardian->photo))) {
-                unlink(public_path($guardian->photo));
+            if ($guardian->avatar && file_exists(public_path($guardian->avatar))) {
+                unlink(public_path($guardian->avatar));
             }
+            
             $guardian->delete();
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Guardian deleted successfully!'

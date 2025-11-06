@@ -165,9 +165,10 @@
                             $('#edit_address').val(response.data.address);
                             $('#edit_occupation').val(response.data.occupation);
                             $('#edit_company').val(response.data.company);
-                            $('#edit_relation').val(response.data.relation);
-                            if (response.data.photo) {
-                                $('#edit_photo').attr('src', window.location.origin + '/' + response.data.photo)
+                            $('#edit_religion').val(response.data.religion);
+                            
+                            if (response.data.avatar) {
+                                $('#edit_avatar').attr('src', window.location.origin + '/' + response.data.avatar)
                                     .removeClass('hidden');
                             } else {
                                 let initials = '?';
@@ -179,8 +180,8 @@
                                         .toUpperCase()
                                         .substring(0, 2);
                                 }
-                                if (response.data.photo) {
-                                    $('#edit_photo').attr('src', '/' + response.data.photo).removeClass('hidden');
+                                if (response.data.avatar) {
+                                    $('#edit_avatar').attr('src', '/' + response.data.avatar).removeClass('hidden');
                                 } else {
                                     const initials = response.data.name.split(' ').map(n => n[0]).join('')
                                         .toUpperCase();

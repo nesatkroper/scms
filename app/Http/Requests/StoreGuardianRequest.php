@@ -17,12 +17,11 @@ class StoreGuardianRequest extends FormRequest
       'name' => ['required', 'string', 'max:255'],
       'phone' => ['required', 'string', 'max:20'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-      'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
       'address' => ['required', 'string'],
       'occupation' => ['nullable', 'string', 'max:255'],
       'company' => ['nullable', 'string', 'max:255'],
-      'relation' => ['required', 'string', 'max:255'],
-      'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+      'religion' => ['required', 'string', 'max:255'],
+      'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ];
 
     

@@ -14,25 +14,31 @@ class UpdateGuardianRequest extends FormRequest
 
   public function rules(): array
   {
+    $guardianId = $this->route('guardian');
     return [
-      'name' => ['sometimes', 'string', 'max:255'],
-      'phone' => ['sometimes', 'string', 'max:20'],
+      'name' => ['required', 'string', 'max:255'],
+      'phone' => ['required', 'string', 'max:20'],
       'email' => [
         'sometimes',
         'string',
         'email',
         'max:255',
-        Rule::unique('guardians')->ignore($this->route('guardian')),
+        Rule::unique('users')->ignore($guardianId), // Changed 'guardians' to 'users'
       ],
-      'address' => ['sometimes', 'string'],
+      'address' => ['required', 'string'],
       'occupation' => ['sometimes', 'nullable', 'string', 'max:255'],
       'company' => ['sometimes', 'nullable', 'string', 'max:255'],
-      'relation' => ['sometimes', 'string', 'max:255'],
-      'photo' => ['sometimes', 'nullable', 'string'],
-      // For pivot table student_guardian (if updating relationships)
-      'students' => ['nullable', 'array'],
-      'students.*.student_id' => ['required_with:students', 'exists:students,id'],
-      'students.*.relation_to_guardian' => ['nullable', 'string', 'max:255'],
+      'religion' => ['sometimes', 'string', 'max:255'],
+      'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+    ];
+  }
+  public function messages(): array
+  {
+    return [
+      'email.unique' => 'This email is already taken by another user.',
+      'avatar.image' => 'The avatar must be a valid image file.',
+      'avatar.mimes' => 'The avatar must be a file of type: jpeg, png, jpg, gif, svg.',
+      'avatar.max' => 'The avatar may not be greater than 2MB.',
     ];
   }
 }

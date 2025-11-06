@@ -10,7 +10,7 @@
             <!-- Profile Header -->
             <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                 <!-- Circular Avatar -->
-                <x-photos.upload :edit="true" name="photo" />
+                <x-photos.upload :edit="true" name="avatar" />
             </div>
 
             <!-- Profile Body -->
@@ -25,7 +25,7 @@
                     <!-- Phone Number Field -->
                     <x-fields.input :edit="true" type="tel" label="Phone number" name="phone" max="20"
                         placeholder="Enter phone number" required />
-                    <x-fields.input :edit="true" label="Relation" name="relation" placeholder="Enter relation name"
+                    <x-fields.input :edit="true" label="Religion" name="religion" placeholder="Enter religion name"
                         max="255" required />
                     <x-fields.input :edit="true" label="Company" name="company" placeholder="Enter company name"
                         max="255" />

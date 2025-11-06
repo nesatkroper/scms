@@ -4,9 +4,9 @@
             class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg">
             <!-- Profile Image -->
             <div class="h-48 flex justify-center items-center">
-                @if ($guardian->photo)
+                @if ($guardian->avatar)
                     <a title="{{ $guardian->name }}" class="detail-btn cursor-grab" data-id="{{ $guardian->id }}">
-                        <img src="{{ asset($guardian->photo) }}" alt="{{ $guardian->name }}"
+                        <img src="{{ asset($guardian->avatar) }}" alt="{{ $guardian->name }}"
                             class="w-[160px] h-[160px] m-auto object-cover rounded-full border-4 border-slate-100 dark:border-slate-600">
                     </a>
                 @else
