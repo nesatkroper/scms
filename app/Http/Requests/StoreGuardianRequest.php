@@ -21,7 +21,9 @@ class StoreGuardianRequest extends FormRequest
       'occupation' => ['nullable', 'string', 'max:255'],
       'company' => ['nullable', 'string', 'max:255'],
       'relation' => ['required', 'string', 'max:255'],
-      'photo' => 'nullable | image | mimes:jpeg, png, jpg, gif,svg | max:2048',
+      'avatar' => 'nullable | image | mimes:jpeg, png, jpg, gif,svg | max:2048',
     ];
   }
 }
+
+

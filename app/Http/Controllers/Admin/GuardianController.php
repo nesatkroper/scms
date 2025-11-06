@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGuardianRequest;
 use App\Http\Requests\UpdateGuardianRequest;
-use App\Models\Guardian;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,15 +18,14 @@ class GuardianController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        $guardians = User::with('students')
+        $guardians = User::role('guardian')
             ->when($search, function ($query) use ($search) {
-                return $query->where('name', 'like', "%{$search}%")
+                $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%")
                     ->orWhere('occupation', 'like', "%{$search}%")
-                    ->orWhere('company', 'like', "%{$search}%")
-                    ->orWhere('relation', 'like', "%{$search}%");
+                    ->orWhere('company', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
@@ -54,29 +52,75 @@ class GuardianController extends Controller
         return view('admin.guardians.index', compact('guardians'));
     }
 
+    // public function store(StoreGuardianRequest $request)
+    // {
+    //     try {
+
+    //         $validated = $request->validated();
+    //         $studentPhotoPath = public_path('photos/guardians');
+
+    //         if (!file_exists($studentPhotoPath)) {
+    //             mkdir($studentPhotoPath, 0755, true);
+    //         }
+
+    //         if ($request->hasFile('photo')) {
+    //             $photo = $request->file('photo');
+    //             $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
+    //             $photo->move($studentPhotoPath, $photoName);
+    //             $validated['photo'] = 'photos/guardians/' . $photoName;
+    //         }
+
+    //         $guardian = User::create($validated);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Guardian created successfully!',
+    //             'data' => $guardian
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Error creating guardian: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
     public function store(StoreGuardianRequest $request)
     {
+        $validated = $request->validated();
+
         try {
-            $validated = $request->validated();
-            $studentPhotoPath = public_path('photos/guardians');
-
-            if (!file_exists($studentPhotoPath)) {
-                mkdir($studentPhotoPath, 0755, true);
-            }
-
+            // Handle photo upload
             if ($request->hasFile('photo')) {
+                $photoPath = public_path('photos/guardians');
+                if (!file_exists($photoPath)) {
+                    mkdir($photoPath, 0755, true);
+                }
+
                 $photo = $request->file('photo');
                 $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
-                $photo->move($studentPhotoPath, $photoName);
-                $validated['photo'] = 'photos/guardians/' . $photoName;
+                $photo->move($photoPath, $photoName);
+                $validated['avatar'] = 'photos/guardians/' . $photoName; // map photo to avatar column
             }
 
-            $guardian = User::create($validated);
+            // Create guardian user
+            $guardian = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'occupation' => $validated['occupation'] ?? null,
+                'company' => $validated['company'] ?? null,
+                'avatar' => $validated['avatar'] ?? null,
+            ]);
+
+            // Assign guardian role (Spatie)
+            $guardian->assignRole('guardian');
 
             return response()->json([
                 'success' => true,
                 'message' => 'Guardian created successfully!',
-                'data' => $guardian
+                'user' => $guardian
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -86,7 +130,8 @@ class GuardianController extends Controller
         }
     }
 
-    public function show(Guardian $guardian)
+
+    public function show(User $guardian)
     {
         $guardian->load('students');
         return response()->json([
@@ -95,7 +140,7 @@ class GuardianController extends Controller
         ]);
     }
 
-    public function update(UpdateGuardianRequest $request, Guardian $guardian)
+    public function update(UpdateGuardianRequest $request, User $guardian)
     {
         try {
             $data = $request->validated();
@@ -126,7 +171,7 @@ class GuardianController extends Controller
         }
     }
 
-    public function destroy(Guardian $guardian)
+    public function destroy(User $guardian)
     {
         try {
             // Delete avatar if exists

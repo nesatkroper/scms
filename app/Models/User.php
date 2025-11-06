@@ -58,6 +58,19 @@ class User extends Authenticatable
     return $this->belongsTo(Department::class);
   }
 
+  public function teacher()
+  {
+    return $this->belongsTo(User::class, 'teacher_id')->where('role', 'teacher');
+  }
+  public function guardians()
+  {
+    return $this->hasMany(User::class, 'student_id')->where('role', 'guardian');
+  }
+
+  public function students()
+  {
+    return $this->hasMany(User::class, 'guardian_id')->where('role', 'student');
+  }
   public function gradeLevel()
   {
     return $this->belongsTo(GradeLevel::class);
@@ -72,22 +85,6 @@ class User extends Authenticatable
   {
     return $this->hasMany(BookIssue::class);
   }
-
-  // public function students()
-  // {
-  //   return $this
-  //     ->belongsToMany(Student::class, 'student_guardian')
-  //     ->withPivot('relation_to_student')
-  //     ->withTimestamps();
-  // }
-
-  // public function guardians()
-  // {
-  //   return $this
-  //     ->belongsToMany(Guardian::class, 'student_guardian')
-  //     ->withPivot('relation_to_student')
-  //     ->withTimestamps();
-  // }
 
   public function attendances()
   {
