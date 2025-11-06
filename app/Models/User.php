@@ -53,18 +53,11 @@ class User extends Authenticatable
       'admission_date' => 'date',
     ];
   }
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
   public function department()
   {
     return $this->belongsTo(Department::class);
   }
 
-<<<<<<< HEAD
-=======
   public function gradeLevel()
   {
     return $this->belongsTo(GradeLevel::class);
@@ -80,21 +73,21 @@ class User extends Authenticatable
     return $this->hasMany(BookIssue::class);
   }
 
-  public function students()
-  {
-    return $this
-      ->belongsToMany(Student::class, 'student_guardian')
-      ->withPivot('relation_to_student')
-      ->withTimestamps();
-  }
+  // public function students()
+  // {
+  //   return $this
+  //     ->belongsToMany(Student::class, 'student_guardian')
+  //     ->withPivot('relation_to_student')
+  //     ->withTimestamps();
+  // }
 
-  public function guardians()
-  {
-    return $this
-      ->belongsToMany(Guardian::class, 'student_guardian')
-      ->withPivot('relation_to_student')
-      ->withTimestamps();
-  }
+  // public function guardians()
+  // {
+  //   return $this
+  //     ->belongsToMany(Guardian::class, 'student_guardian')
+  //     ->withPivot('relation_to_student')
+  //     ->withTimestamps();
+  // }
 
   public function attendances()
   {
@@ -110,5 +103,4 @@ class User extends Authenticatable
   {
     return $this->hasMany(StudentFee::class);
   }
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
 }

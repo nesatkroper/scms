@@ -31,8 +31,4 @@ class Department extends Model
   {
     return $this->belongsTo(User::class, 'head_id'); // Assuming 'head_id' is the foreign key
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
 }
