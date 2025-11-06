@@ -29,7 +29,7 @@
         <x-table.td>{{ $student->gradeLevel?->name ?? 'N/A' }}</x-table.td>
         <x-table.td>{{ $student->blood_group ?? 'N/A' }}</x-table.td>
         <x-table.td>
-          {{ $student->admission_date->format('Y-m-d') }}
+          {{ $student?->admission_date?->format('Y-m-d') }}
         </x-table.td>
         {{-- <x-table.td>
                     {{ $student->created_at->format('Y-m-d') }}

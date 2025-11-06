@@ -26,12 +26,12 @@ class StudentFee extends Model
     'discount' => 'decimal:2',
     'paid_amount' => 'decimal:2',
     'due_date' => 'date',
-    'status' => \App\Enums\PaymentStatusEnum::class,  // Assuming you might create an Enum for payment status
+    'status' => \App\Enums\PaymentStatusEnum::class,
   ];
 
   public function student()
   {
-    return $this->belongsTo(Student::class);
+    return $this->belongsTo(User::class);
   }
 
   public function feeStructure()
