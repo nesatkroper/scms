@@ -62,8 +62,8 @@
                     <!-- Joining Date Field -->
                     <x-fields.input :edit="true" type="date" label="Joining Date" name="joining_date" required
                         value="{{ old('joining_date') }}" />
-                    <x-fields.input :edit="true" type="date" label="Date of Birth" name="dob" required
-                        value="{{ old('dob') }}" />
+                    <x-fields.input :edit="true" type="date" label="Date of Birth" name="date_of_birth" required
+                        value="{{ old('date_of_birth') }}" />
                     <!-- Contact Information -->
                     <x-fields.input :edit="true" type="email" label="Email" name="email"
                         placeholder="Enter email address" required />

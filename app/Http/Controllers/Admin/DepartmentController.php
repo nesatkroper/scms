@@ -6,19 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 
 class DepartmentController extends Controller
 {
+    // 🟢 List all departments with users (only from users table)
     public function index(Request $request)
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        $departments = Department::with(['head', 'teachers', 'subjects'])
+
+        $departments = Department::with('users')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -48,6 +49,7 @@ class DepartmentController extends Controller
         return view('admin.departments.index', compact('departments'));
     }
 
+    // 🟢 Store department
     public function store(StoreDepartmentRequest $request)
     {
         try {
@@ -65,9 +67,10 @@ class DepartmentController extends Controller
         }
     }
 
+    // 🟢 Show department with users only
     public function show(Department $department)
     {
-        $department->load(['head', 'teachers', 'subjects']);
+        $department->load('users');
 
         return response()->json([
             'success' => true,
@@ -75,15 +78,17 @@ class DepartmentController extends Controller
         ]);
     }
 
+    // 🟢 Update department
     public function update(UpdateDepartmentRequest $request, $id)
     {
         try {
             $department = Department::findOrFail($id);
             $department->update($request->validated());
+
             return response()->json([
                 'success' => true,
                 'message' => 'Department updated successfully',
-                'data' => $department->fresh('head', 'teachers', 'subjects')
+                'data' => $department->fresh('users')
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -93,11 +98,13 @@ class DepartmentController extends Controller
         }
     }
 
+    // 🟢 Delete department
     public function destroy($id)
     {
         try {
-            $category = Department::findOrFail($id);
-            $category->delete();
+            $department = Department::findOrFail($id);
+            $department->delete();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Department deleted successfully'
@@ -110,6 +117,7 @@ class DepartmentController extends Controller
         }
     }
 
+    // 🟢 Bulk delete
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids');
@@ -129,11 +137,11 @@ class DepartmentController extends Controller
         ]);
     }
 
+    // 🟢 Get multiple departments for bulk editing
     public function getBulkData(Request $request)
     {
         $ids = $request->input('ids');
 
-        // Validate maximum 5 departments
         if (count($ids) > 5) {
             return response()->json([
                 'success' => false,
@@ -149,6 +157,7 @@ class DepartmentController extends Controller
         ]);
     }
 
+    // 🟢 Bulk update
     public function bulkUpdate(Request $request)
     {
         $validated = $request->validate([

@@ -1,6 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  //test
   // --- ELEMENTS ---
   const sidebar = document.getElementById('sidebar');
   const sidebarBackdrop = document.getElementById('sidebar-backdrop');

@@ -13,7 +13,7 @@
         </div>
 
         {{-- Pagination --}}
-        <x-table.pagination :paginator="$exams" />
+        <x-table.pagination :paginator="$exams"/>
 
     </x-page.index>
 
@@ -190,7 +190,6 @@
             function handleEditClick(e) {
                 e.preventDefault();
                 const editBtn = $(this);
-                if (!this.checkValidity()) return $(this).addClass('was-validated');
                 const originalContent = editBtn.find('.btn-content').html();
                 editBtn.find('.btn-content').html(
                     '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
@@ -237,11 +236,10 @@
             function handleEditSubmit(e) {
                 e.preventDefault();
                 const form = $(this);
+                if (!this.checkValidity()) return $(this).addClass('was-validated');
                 const submitBtn = $('#saveEditBtn');
                 const originalBtnHtml = submitBtn.html();
-
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',

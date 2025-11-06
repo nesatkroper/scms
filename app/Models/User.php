@@ -53,4 +53,10 @@ class User extends Authenticatable
       'admission_date' => 'date',
     ];
   }
+  
+  public function department()
+  {
+    return $this->belongsTo(Department::class);
+  }
+
 }

@@ -16,7 +16,7 @@
                 <x-fields.select name="gender" label="Gender" :required="true" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']"
                     :value="old('gender', 'male')" />
 
-                <x-fields.input type="date" label="Date of Birth" name="dob"
+                <x-fields.input type="date" label="Date of Birth" name="date_of_birth"
                     placeholder="Enter Date of Birth" :required="true" />
                 <!-- Email Field -->
                 <x-fields.input type="email" label="Email" name="email" placeholder="Enter email"

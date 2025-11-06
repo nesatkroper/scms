@@ -194,7 +194,7 @@
                         if (response.success && response.teacher) {
                             const teacher = response.teacher;
                             const date = teacher.joining_date ? teacher.joining_date.substring(0, 10) : '';
-                            const datedob = teacher.dob ? teacher.dob.substring(0, 10) : '';
+                            const datedob = teacher.date_of_birth ? teacher.date_of_birth.substring(0, 10) : '';
                             // Set form values
                             console.log(teacher)
                             $('#edit_name').val(teacher.name);
@@ -202,7 +202,7 @@
                             $('#edit_phone').val(teacher.phone);
                             $('#edit_email').val(teacher.email);
                             $('#edit_gender').val(teacher.gender);
-                            $('#edit_dob').val(datedob);
+                            $('#edit_date_of_birth').val(datedob);
                             $('#edit_teacher_id').val(teacher.teacher_id);
                             $('#edit_depid').val(teacher.department_id);
                             $('#edit_joining_date').val(date);
@@ -360,7 +360,7 @@
                                 .toLocaleDateString() : '');
                             $('#detail_email').text(teach.email ?? '');
                             $('#detail_phone').text(teach.phone ?? 'Not provided');
-                            $('#detail_dob').text(teach.dob ? new Date(teach.dob).toLocaleDateString() :
+                            $('#detail_date_of_birth').text(teach.date_of_birth ? new Date(teach.date_of_birth).toLocaleDateString() :
                                 '');
                             $('#detail_address').text(teach.address ?? '');
 

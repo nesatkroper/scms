@@ -93,7 +93,7 @@
                                 class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400">
                                 <i class="ri-calendar-line"></i>
                             </div>
-                            <span id="detail_dob"></span>
+                            <span id="detail_date_of_birth"></span>
                         </div>
                         <div class="flex items-center gap-3 text-gray-600 dark:text-gray-300">
                             <div
