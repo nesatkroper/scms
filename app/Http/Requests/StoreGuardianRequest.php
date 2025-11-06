@@ -16,13 +16,15 @@ class StoreGuardianRequest extends FormRequest
     return [
       'name' => ['required', 'string', 'max:255'],
       'phone' => ['required', 'string', 'max:20'],
-      'email' => ['required', 'string', 'email', 'max:255', 'unique:guardians,email'],
+      'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
       'address' => ['required', 'string'],
       'occupation' => ['nullable', 'string', 'max:255'],
       'company' => ['nullable', 'string', 'max:255'],
       'relation' => ['required', 'string', 'max:255'],
-      'avatar' => 'nullable | image | mimes:jpeg, png, jpg, gif,svg | max:2048',
+      'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ];
+
+    
   }
 }
 

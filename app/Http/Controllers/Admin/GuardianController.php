@@ -92,7 +92,7 @@ class GuardianController extends Controller
         try {
             // Handle photo upload
             if ($request->hasFile('photo')) {
-                $photoPath = public_path('photos/guardians');
+                $photoPath = public_path('uploads/guardians');
                 if (!file_exists($photoPath)) {
                     mkdir($photoPath, 0755, true);
                 }
@@ -100,7 +100,7 @@ class GuardianController extends Controller
                 $photo = $request->file('photo');
                 $photoName = time() . '-' . date('d-m-Y') . '_add' . $photo->getClientOriginalName();
                 $photo->move($photoPath, $photoName);
-                $validated['avatar'] = 'photos/guardians/' . $photoName; // map photo to avatar column
+                $validated['avatar'] = 'uploads/guardians/' . $photoName; // map photo to avatar column
             }
 
             // Create guardian user
@@ -152,9 +152,9 @@ class GuardianController extends Controller
                 }
                 $photo = $request->file('photo');
                 $photoName = time()  . '-' . date('d-m-Y') . '_ed' . $photo->getClientOriginalName();
-                $photoPath = public_path('photos/guardians');
+                $photoPath = public_path('uploads/guardians');
                 $photo->move($photoPath, $photoName);
-                $data['photo'] = 'photos/guardians/' . $photoName;
+                $data['photo'] = 'uploads/guardians/' . $photoName;
             }
 
             $guardian->update($data);
