@@ -25,13 +25,9 @@ class TeacherController extends Controller
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
         $departments = Department::all();
-<<<<<<< HEAD
         
         $teachers = User::role('teacher')
             ->with('department')
-=======
-        $teachers = User::with('department')
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -102,7 +98,6 @@ class TeacherController extends Controller
                 $cv->move($cvPath, $cvName);
                 $validated['cv'] = 'photos/cv/' . $cvName;
             }
-<<<<<<< HEAD
 
             // Set default password if not provided
             if (!isset($validated['password']) || empty($validated['password'])) {
@@ -113,17 +108,6 @@ class TeacherController extends Controller
             // Create user
             $teacher = User::create($validated);
             $teacher->assignRole('teacher');
-=======
-            $teacher = User::create($validated);
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make('password'),
-                'avatar' => $validated['photo'] ?? null,
-            ]);
-            $validated['user_id'] = $user->id;
-            $user->assignRole('teacher');
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
 
             return response()->json([
                 'success' => true,
@@ -272,11 +256,7 @@ class TeacherController extends Controller
         }
 
         try {
-<<<<<<< HEAD
             $teachers = User::role('teacher')->whereIn('id', $ids)->get();
-=======
-            $teachers = User::whereIn('id', $ids)->get();
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
 
             foreach ($teachers as $teacher) {
                 // Delete associated files
@@ -326,11 +306,7 @@ class TeacherController extends Controller
         }
 
         try {
-<<<<<<< HEAD
             $teachers = User::role('teacher')->whereIn('id', $ids)->get();
-=======
-            $teachers = User::whereIn('id', $ids)->get();
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
             return response()->json([
                 'success' => true,
                 'data' => $teachers
@@ -343,49 +319,6 @@ class TeacherController extends Controller
         }
     }
 
-<<<<<<< HEAD
-=======
-    // public function bulkUpdate(Request $request)
-    // {
-    //     $request->validate([
-    //         'teachers' => 'required|array',
-    //         'teachers.*.id' => 'required|exists:teachers,id',
-    //     ]);
-
-    //     $updatedCount = 0;
-
-    //     foreach ($request->input('teachers') as $teacherData) {
-    //         $validator = Validator::make($teacherData, [
-    //             'id' => 'required|exists:teachers,id',
-    //             'department_id' => 'nullable|exists:departments,id',
-    //             'joining_date' => 'required|date',
-    //             'qualification' => 'required|string|max:255',
-    //             'specialization' => 'nullable|string',
-    //             'salary' => 'nullable|numeric|min:0',
-    //         ]);
-
-    //         if ($validator->fails()) {
-    //             Log::error("Validation failed for teacher ID {$teacherData['id']}: " . json_encode($validator->errors()));
-    //             continue; // Skip invalid
-    //         }
-
-    //         try {
-    //             $teacher = User::findOrFail($teacherData['id']);
-    //             $teacher->update($validator->validated());
-    //             $updatedCount++;
-    //         } catch (\Exception $e) {
-    //             Log::error("Error updating teacher: " . $e->getMessage());
-    //         }
-    //     }
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => "Successfully updated $updatedCount teachers",
-    //         'redirect' => route('admin.teachers.index')
-    //     ]);
-    // }
-
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
     public function bulkUpdate(Request $request)
     {
         $request->validate([
@@ -422,16 +355,11 @@ class TeacherController extends Controller
 
             try {
                 $teacher = User::findOrFail($teacherData['id']);
-<<<<<<< HEAD
                 // Ensure we're only updating teachers
                 if ($teacher->hasRole('teacher')) {
                     $teacher->update($validator->validated());
                     $updatedCount++;
                 }
-=======
-                $teacher->update($validator->validated());
-                $updatedCount++;
->>>>>>> a1dacf9ae07cb648cbaa8dc5e4f5684a79de9010
             } catch (\Exception $e) {
                 Log::error("Error updating teacher: " . $e->getMessage());
             }
