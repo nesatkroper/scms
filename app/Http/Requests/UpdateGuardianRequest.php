@@ -19,7 +19,7 @@ class UpdateGuardianRequest extends FormRequest
       'name' => ['required', 'string', 'max:255'],
       'phone' => ['required', 'string', 'max:20'],
       'email' => [
-        'sometimes',
+        'required',
         'string',
         'email',
         'max:255',
