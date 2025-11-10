@@ -8,7 +8,7 @@
 
         <div>
             <!-- Profile Header -->
-            <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
+            <div class="relative bg-linear-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
                 <!-- Circular Avatar -->
                 <x-photos.upload :edit="true" name="avatar" />
             </div>
