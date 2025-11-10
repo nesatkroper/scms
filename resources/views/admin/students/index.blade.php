@@ -191,14 +191,14 @@
                         if (response.success && response.data) {
                             const std = response.data;
                             const date = std.admission_date ? std.admission_date.substring(0, 10) : '';
-                            const datedob = std.dob ? std.dob.substring(0, 10) : '';
+                            const datedob = std.date_of_birth ? std.date_of_birth.substring(0, 10) : '';
                             // Set form values
                             $('#edit_name').val(std.name);
                             $('#edit_user').val(std.user_id);
                             $('#edit_phone').val(std.phone);
                             $('#edit_email').val(std.email);
                             $('#edit_gender').val(std.gender);
-                            $('#edit_dob').val(datedob);
+                            $('#edit_date_of_birth').val(datedob);
                             $('#edit_admission_date').val(date);
                             $('#edit_grade_level_id').val(std.grade_level_id);
                             $('#edit_address').val(std.address);
@@ -206,8 +206,8 @@
                             $('#edit_nationality').val(std.nationality);
                             $('#edit_religion').val(std.religion);
                             // Handle photo display
-                            if (std.photo) {
-                                $('#edit_photo').attr('src', window.location.origin + '/' + std.photo)
+                            if (std.avatar) {
+                                $('#edit_avatar').attr('src', window.location.origin + '/' + std.avatar)
                                     .removeClass('hidden');
                             } else {
                                 let initials = '?';
@@ -219,8 +219,8 @@
                                         .toUpperCase()
                                         .substring(0, 2);
                                 }
-                                if (std.photo) {
-                                    $('#edit_photo').attr('src', '/' + std.photo).removeClass('hidden');
+                                if (std.avatar) {
+                                    $('#edit_avatar').attr('src', '/' + std.avatar).removeClass('hidden');
                                     alert("ccc")
                                 } else {
                                     const initials = std.name.split(' ').map(n => n[0]).join('')
@@ -346,8 +346,8 @@
                             const admissionDate = student.admission_date ?
                                 new Date(student.admission_date).toLocaleDateString() :
                                 '';
-                            const dob = student.dob ?
-                                new Date(student.dob).toLocaleDateString() :
+                            const date_of_birth = student.date_of_birth ?
+                                new Date(student.date_of_birth).toLocaleDateString() :
                                 '';
                             // Basic info
                             $('#detail_name').text(student.name ?? '');
@@ -373,17 +373,17 @@
                             // Contact info
                             $('#detail_email').text(student.email ?? 'Not provided');
                             $('#detail_phone').text(student.phone ?? 'Not provided');
-                            $('#detail_dob').text(dob);
+                            $('#detail_date_of_birth').text(date_of_birth);
                             $('#detail_address').text(student.address ?? '');
 
                             // Avatar / Initials
-                            const photoContainer = $('#detail_photo');
+                            const photoContainer = $('#detail_avatar');
                             const initialsContainer = $('#detail_initials');
                             const initialsSpan = initialsContainer.find('span');
 
-                            if (student.photo) {
+                            if (student.avatar) {
                                 photoContainer
-                                    .attr('src', `${window.location.origin}/${student.photo}`)
+                                    .attr('src', `${window.location.origin}/${student.avatar}`)
                                     .removeClass('hidden');
                                 initialsContainer.addClass('hidden');
                             } else {

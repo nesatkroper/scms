@@ -7,7 +7,7 @@
         @method('PUT')
         <!-- Profile Header -->
         <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
-            <x-photos.upload :edit="true" name="photo" />
+            <x-photos.upload :edit="true" name="avatar"/>
         </div>
         <!-- Profile Body -->
         <div class="pt-16 pb-4 px-4">
@@ -22,7 +22,7 @@
                 <x-fields.input :edit="true" label="Phone" name="phone" placeholder="Enter phone number"
                     :required="true" />
 
-                <x-fields.input :edit="true" type="date" label="Date of Birth" name="dob"
+                <x-fields.input :edit="true" type="date" label="Date of Birth" name="date_of_birth"
                     :required="true" />
 
                 <x-fields.select :edit="true" label="Gender" name="gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']"

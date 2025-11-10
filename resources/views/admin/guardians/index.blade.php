@@ -160,6 +160,7 @@
                     .done(function(response) {
                         if (response) {
                             $('#edit_name').val(response.data.name);
+                            $('#edit_gender').val(response.data.gender);
                             $('#edit_phone').val(response.data.phone);
                             $('#edit_email').val(response.data.email);
                             $('#edit_address').val(response.data.address);

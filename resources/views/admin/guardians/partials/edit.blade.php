@@ -19,6 +19,7 @@
                     <!-- Name Field -->
                     <x-fields.input :edit="true" label="Name" name="name" placeholder="Enter name"
                         :required="true" />
+                    <x-fields.select :edit="true" name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
                     <!-- Email Field -->
                     <x-fields.input :edit="true" type="email" label="Email" name="email"
                         placeholder="Enter email" :required="true" max="255" />

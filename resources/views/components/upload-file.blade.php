@@ -30,7 +30,7 @@
                 </p>
                 <p class="text-gray-500 dark:text-gray-400">JPG, PNG (MAX. 2MB)</p>
             </div>
-            <input type="file" id="photo" name="photo" class="hidden" accept="image/*">
+            <input type="file" id="avatar" name="avatar" class="hidden" accept="image/*">
 
             <!-- Cropper Modal -->
             <div id="cropModal"
@@ -90,7 +90,7 @@
             </div>
         </div>
     </div>
-    <p class="error-photo mt-1 text-sm text-red-600"></p>
+    <p class="error-avatar mt-1 text-sm text-red-600"></p>
 </div>
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/cropperjs1.5.12.min.css') }}">
@@ -120,7 +120,7 @@
             // Photo Upload with Cropper.js Functionality
             // =============================================
             // Elements
-            const photoInput = document.getElementById('photo');
+            const photoInput = document.getElementById('avatar');
             const dropArea = document.getElementById('dropArea');
             const photoPreview = document.getElementById('photoPreview');
             const photoPreviewImage = document.getElementById('photoPreviewImage');

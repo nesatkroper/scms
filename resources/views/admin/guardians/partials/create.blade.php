@@ -17,6 +17,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
                     <!-- Name Field -->
                     <x-fields.input label="Name" name="name" placeholder="Enter name" :required="true" />
+                    <x-fields.select name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
                     <!-- Email Field -->
                     <x-fields.input type="email" label="Email" name="email" placeholder="Enter email"
                         :required="true" max="255" />

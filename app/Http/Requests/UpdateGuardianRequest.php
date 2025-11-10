@@ -17,6 +17,7 @@ class UpdateGuardianRequest extends FormRequest
     $guardianId = $this->route('guardian');
     return [
       'name' => ['required', 'string', 'max:255'],
+      'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
       'phone' => ['required', 'string', 'max:20'],
       'email' => [
         'required',

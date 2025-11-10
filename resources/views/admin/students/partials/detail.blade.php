@@ -3,12 +3,12 @@
     <!-- Content -->
     <div class="overflow-y-auto max-h-[80vh]">
         <!-- Profile Header -->
-        <div class="relative bg-gradient-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
+        <div class="sticky top-0 bg-linear-to-r from-indigo-500 to-purple-600 h-28 flex items-end justify-center">
             <!-- Circular Avatar -->
             <div class="absolute -bottom-12">
                 <div
                     class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
-                    <img id="detail_photo" src="" alt="Student Photo" class="w-full h-full object-cover">
+                    <img id="detail_avatar" src="" alt="Student Photo" class="w-full h-full object-cover">
                     <div id="detail_initials"
                         class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
                         <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
@@ -30,7 +30,7 @@
             <div class="grid grid-cols-4 gap-4 text-center border-y border-gray-100 dark:border-slate-700 py-3 mb-4">
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-xs">Date of Birth</p>
-                    <p class="font-bold text-gray-700 dark:text-gray-200 text-sm" id="detail_dob"></p>
+                    <p class="font-bold text-gray-700 dark:text-gray-200 text-sm" id="detail_date_of_birth"></p>
                 </div>
                 <div>
                     <p class="text-gray-500 dark:text-gray-400 text-xs">Age</p>
