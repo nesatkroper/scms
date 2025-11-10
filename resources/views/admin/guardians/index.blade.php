@@ -189,7 +189,7 @@
                                 }
                             }
 
-                            $('#Formedit').attr('action', `/guardians/${Id}`);
+                            $('#Formedit').attr('action', `/admin/guardians/${Id}`);
                             showModal('Modaledit');
                         } else {
                             ShowTaskMessage('error', 'Failed to load guardian data');

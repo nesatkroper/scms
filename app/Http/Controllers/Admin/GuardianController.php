@@ -52,11 +52,11 @@ class GuardianController extends Controller
         return view('admin.guardians.index', compact('guardians'));
     }
 
-        public function store(StoreGuardianRequest $request)
+    public function store(StoreGuardianRequest $request)
     {
         try {
             $validated = $request->validated();
-            
+
             // Create uploads directory if it doesn't exist
             $uploadPath = public_path('uploads/guardians');
             if (!file_exists($uploadPath)) {
@@ -75,7 +75,7 @@ class GuardianController extends Controller
             $validated['password'] = bcrypt('password123'); // Default password
 
             $guardian = User::create($validated);
-            
+
             // Assign guardian role
             $guardian->assignRole('guardian');
 
@@ -95,7 +95,6 @@ class GuardianController extends Controller
 
     public function show(User $guardian)
     {
-        // $guardian->load('students');
         return response()->json([
             'success' => true,
             'data' => $guardian
@@ -106,29 +105,35 @@ class GuardianController extends Controller
     {
         try {
             $data = $request->validated();
-            // Handle photo upload
+
+            $uploadPath = public_path('uploads/guardians');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
             if ($request->hasFile('avatar')) {
-                // Delete old photo if exists
                 if ($guardian->avatar && file_exists(public_path($guardian->avatar))) {
-                    unlink(public_path($guardian->avatar));
+                    @unlink(public_path($guardian->avatar));
                 }
+
                 $avatar = $request->file('avatar');
-                $photoName = time()  . '-' . date('d-m-Y') . '_ed_photo.' . $avatar->getClientOriginalExtension();
-                $photoPath = public_path('uploads/guardians');
-                $avatar->move($photoPath, $photoName);
-                $data['avatar'] = 'uploads/guardians/' . $photoName;
+                $avatarName = time() . '-' . date('d-m-Y') . '_ed_avatar.' . $avatar->getClientOriginalExtension();
+                $avatar->move($uploadPath, $avatarName);
+                $data['avatar'] = 'uploads/guardians/' . $avatarName;
             }
 
             $guardian->update($data);
+
             return response()->json([
                 'success' => true,
-                'message' => 'Guardian updated successfully',
-                'data' => $guardian->fresh('students')
+                'message' => 'Guardian updated successfully!',
+                'data' => $guardian->fresh()
             ]);
         } catch (\Exception $e) {
+            Log::error('Error updating guardian: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error updating teacher: ' . $e->getMessage()
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -140,9 +145,9 @@ class GuardianController extends Controller
             if ($guardian->avatar && file_exists(public_path($guardian->avatar))) {
                 unlink(public_path($guardian->avatar));
             }
-            
+
             $guardian->delete();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Guardian deleted successfully!'
