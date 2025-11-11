@@ -1,6 +1,6 @@
 @php
     // Set base classes
-    $containerClasses = 'flex gap-3 text-gray-600 dark:text-gray-300';
+    $containerClasses = 'flex gap-3 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-slate-700 pb-2';
     $iconWrapperClasses =
         'p-1 rounded-md border border-gray-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-400';
     $textWrapperClasses = 'flex flex-col';

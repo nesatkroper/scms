@@ -1,5 +1,6 @@
 <x-table.dynamic-table :headers="[
     'name' => ['label' => 'Name', 'component' => 'table.cell'],
+    'gender' => ['label' => 'Gender'],
     'phone' => ['label' => 'Phone'],
     'email' => ['label' => 'Email'],
     'company' => ['label' => 'Company'],
