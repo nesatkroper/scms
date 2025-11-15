@@ -54,7 +54,7 @@
                 <ul class="space-y-4">
                     <li>
                         <a href="#home"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-chevron-right text-blue-400 dark:text-slate-100 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
                             Home
@@ -62,7 +62,7 @@
                     </li>
                     <li>
                         <a href="#about"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-chevron-right text-blue-400 dark:text-slate-100 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
                             About Us
@@ -70,7 +70,7 @@
                     </li>
                     <li>
                         <a href="#gallery"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-chevron-right text-blue-400 dark:text-slate-100 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
                             Gallery
@@ -78,7 +78,7 @@
                     </li>
                     <li>
                         <a href="#contact"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-chevron-right text-blue-400 dark:text-slate-100 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
                             Contact
@@ -97,7 +97,7 @@
                 <ul class="space-y-4">
                     <li>
                         <a href="#"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-book-open text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             Primary Education
@@ -105,7 +105,7 @@
                     </li>
                     <li>
                         <a href="#"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-book text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             Secondary Education
@@ -113,7 +113,7 @@
                     </li>
                     <li>
                         <a href="#"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-language text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             Language Courses
@@ -121,7 +121,7 @@
                     </li>
                     <li>
                         <a href="#"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-palette text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             Extracurricular Activities
@@ -140,7 +140,7 @@
                 <ul class="space-y-4">
                     <li>
                         <a href="https://maps.google.com/?q=Wat+Damnak,Siem+Reap,Cambodia"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-map-marker-alt text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             Wat Damnak, Siem Reap<br>Cambodia
@@ -148,7 +148,7 @@
                     </li>
                     <li>
                         <a href="tel:+85512345678"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-phone text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             +855 (0) 12 345 678
@@ -156,7 +156,7 @@
                     </li>
                     <li>
                         <a href="tel:+85512345679"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white hover:text-blue-600 dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-phone text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             +855 (0) 12 345 679
@@ -164,7 +164,7 @@
                     </li>
                     <li>
                         <a href="mailto:info@watdamnak.edu.kh"
-                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-blue-50 transition-all duration-300 flex items-center group">
+                            class="text-blue-100 dark:text-slate-200 hover:text-white dark:hover:text-orange-500 transition-all duration-300 flex items-center group">
                             <i
                                 class="fas fa-envelope text-blue-400 dark:text-slate-100 mr-3 text-sm group-hover:scale-110 transition-transform"></i>
                             info@watdamnak.edu.kh

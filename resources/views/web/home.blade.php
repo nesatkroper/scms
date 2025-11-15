@@ -51,8 +51,6 @@
 
             <!-- pagination / navigation -->
             <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
         </div>
     </section>
 
@@ -246,6 +244,8 @@
                     </div>
                 </div>
                 <div class="swiper-pagination mt-6"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
         </div>
     </section>

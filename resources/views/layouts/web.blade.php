@@ -83,6 +83,9 @@
             background-clip: text;
             color: transparent;
         }
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+        }
     </style>
     @include('layouts.partials.metatag')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -110,44 +113,24 @@
                     <ul class="flex gap-2 items-center">
                         <li class="group relative">
                             <a href="{{ route('web.home') }}"
-                                class="px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Home</a>
+                                class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">Home</a>
                         </li>
                         <li class="group relative">
-                            <button
-                                class="px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 submenu-toggle no-select transition-colors duration-200">
-                                Who i am
-                                <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180"
-                                    viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                            <!-- Submenu -->
-                            <ul
-                                class="submenu absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2 border border-gray-200 dark:border-gray-700">
-                                <li>
-                                    <a href="{{ route('web.about') }}"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Our
-                                        History</a>
-                                </li>
-                                <li>
-                                    <a href="#team"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Mission
-                                        &
-                                        Vision</a>
-                                </li>
-                            </ul>
+                            <a href="{{ route('web.about') }}"
+                                class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 
+                                transition-colors duration-200">Who i am</a>
                         </li>
+                        
                         <li class="group relative">
-                            <a href="{{ route('web.home') }}"
-                                class="px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">What
-                                we do</a>
+                            <a href="{{ route('web.whatwedo') }}"
+                                class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">
+                                What we do
+                            </a>
                         </li>
 
                         <li class="group relative">
                             <button
-                                class="px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 submenu-toggle no-select transition-colors duration-200">Activity
+                                class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 flex items-center gap-2 submenu-toggle no-select transition-colors duration-200">Activity
                                 <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180"
                                     viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd"
@@ -170,15 +153,17 @@
 
                         <li>
                             <a href="{{ route('web.contact') }}"
-                                class="px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">Contact
-                                Us</a>
+                                class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">
+                                Contact Us
+                            </a>
                         </li>
                     </ul>
                 </nav>
                 <div class="relative">
                     <a href="{{ route('web.home') }}"
                         class="px-3 py-2 border border-orange-500 rounded-md bg-orange-500 hover:bg-transparent dark:hover:bg-gray-7 hover:text-orange-500 text-slate-100 transition-colors duration-200 cursor-pointer">
-                        <i class="fas fa-hand-holding-heart w-5 group-hover:text-blue-500 transition-colors duration-200"></i>
+                        <i
+                            class="fas fa-hand-holding-heart w-5 group-hover:text-blue-500 transition-colors duration-200"></i>
                         Donations
                     </a>
                 </div>
@@ -229,31 +214,13 @@
                             class="fas fa-home w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
                         <span>Home</span>
                     </a>
+                    <a href="{{ route('web.about') }}"
+                        class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
+                        <i class="fas fa-home w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
+                        <span>Who I Am</span>
+                    </a>
 
-                    <!-- Who I Am Section -->
-                    <div class="mobile-menu-section">
-                        <button
-                            class="mobile-menu-toggle w-full flex items-center justify-between px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
-                            <div class="flex items-center gap-3">
-                                <i
-                                    class="fas fa-user w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
-                                <span>Who I Am</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform duration-200"></i>
-                        </button>
-                        <div class="mobile-submenu pl-8 hidden">
-                            <a href="{{ route('web.about') }}"
-                                class="block py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                Our History
-                            </a>
-                            <a href="#team"
-                                class="block py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                Mission & Vision
-                            </a>
-                        </div>
-                    </div>
-
-                    <a href="{{ route('web.home') }}"
+                    <a href="{{ route('web.whatwedo') }}"
                         class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
                         <i
                             class="fas fa-tasks w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
@@ -401,10 +368,7 @@
                 el: '.swiper-pagination',
                 clickable: true
             },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev'
-            },
+
             effect: 'slide'
         });
 
@@ -419,6 +383,10 @@
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
             },
             breakpoints: {
                 640: {
@@ -441,6 +409,10 @@
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
             },
             breakpoints: {
                 640: {
@@ -485,9 +457,6 @@
                 const isDark = $('html').hasClass('dark');
                 setDark(!isDark);
             });
-
-            // Footer year
-            $('#year').text(new Date().getFullYear());
         });
 
         Fancybox.bind("[data-fancybox]", {

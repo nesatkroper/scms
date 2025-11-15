@@ -52,6 +52,9 @@ R::get('/about-us', function () {
 R::get('/contact', function () {
   return view('web.contact');
 })->name('web.contact');
+R::get('/what-we-do', function () {
+  return view('web.whatwedo');
+})->name('web.whatwedo');
 R::get('/', function () {
   return redirect('/home');   // 👈 redirect main domain to website home
 });
