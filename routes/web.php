@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route as R;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{
   AttendanceController,
   BookController,
@@ -35,21 +36,51 @@ use App\Http\Controllers\Admin\{
   ProfileController
 };
 
-use Illuminate\Support\Facades\Auth;
+/*
+|--------------------------------------------------------------------------
+| FRONTEND WEBSITE ROUTES (No Login Required)
+|--------------------------------------------------------------------------
+*/
 
+R::get('/home', function () {
+  return view('web.home');
+})->name('web.home');
+
+R::get('/about-us', function () {
+  return view('web.about');
+})->name('web.about');
+R::get('/contact', function () {
+  return view('web.contact');
+})->name('web.contact');
+R::get('/', function () {
+  return redirect('/home');   // 👈 redirect main domain to website home
+});
+
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
 Auth::routes();
 
 R::get('/', function () {
+
   if (Auth::check())
     return redirect('/admin/profile');
 
   return redirect('/login');
 });
+/*
+|--------------------------------------------------------------------------
+| ADMIN PANEL ROUTES (Login Required)
+|--------------------------------------------------------------------------
+*/
 
-R::prefix('/admin')
+R::prefix('admin')
   ->as('admin.')
   ->middleware('auth')
   ->group(function () {
+
     R::get('/', [HomeController::class, 'index'])->name('home');
 
     R::resources([
@@ -81,7 +112,6 @@ R::prefix('/admin')
       'timetables' => TimetableController::class,
       'timetable_entries' => TimetableEntryController::class,
       'scores' => ScoreController::class,
-      // 'profile' => ProfileController::class
     ]);
 
     R::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -89,6 +119,13 @@ R::prefix('/admin')
 
     R::get('/students/profile/{student}', [StudentController::class, 'profile'])
       ->name('students.profile');
+
+
+    /*
+      |--------------------------------------------------------------------------
+      | BULK ACTIONS
+      |--------------------------------------------------------------------------
+      */
 
     $bulkRoutes = [
       'expenses' => ExpenseController::class,

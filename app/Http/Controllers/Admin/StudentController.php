@@ -78,7 +78,7 @@ class StudentController extends Controller
 
             // Create user with student role
             $user = User::create($validated + [
-                'password' => Hash::make('password123'), // Set a default password or generate one
+                'password' => Hash::make('password123'),
             ]);
 
             $user->assignRole('student');
@@ -86,7 +86,7 @@ class StudentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully!',
-                'data' => $user
+                'data' => $user->load('gradeLevel')
             ]);
         } catch (\Exception $e) {
             Log::error('Error creating student: ' . $e->getMessage());
@@ -99,9 +99,17 @@ class StudentController extends Controller
 
     public function show(User $student)
     {
+        // Ensure the user is a student
+        if (!$student->hasRole('student')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Student not found'
+            ], 404);
+        }
+
         $student->load('gradeLevel');
         $student->age = $student->date_of_birth ? \Carbon\Carbon::parse($student->date_of_birth)->age : null;
-        
+
         return response()->json([
             'success' => true,
             'data' => $student
@@ -111,6 +119,14 @@ class StudentController extends Controller
     public function update(UpdateStudentRequest $request, User $student)
     {
         try {
+            // Ensure the user is a student
+            if (!$student->hasRole('student')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Student not found'
+                ], 404);
+            }
+
             $data = $request->validated();
 
             // Handle avatar upload
@@ -125,11 +141,6 @@ class StudentController extends Controller
                 $photoPath = public_path('uploads/students');
                 $avatar->move($photoPath, $photoName);
                 $data['avatar'] = 'uploads/students/' . $photoName;
-            }
-
-            // Update date_of_birth from dob field
-            if (isset($data['dob'])) {
-                $data['date_of_birth'] = $data['dob'];
             }
 
             $student->update($data);
@@ -151,6 +162,14 @@ class StudentController extends Controller
     public function destroy(User $student)
     {
         try {
+            // Ensure the user is a student
+            if (!$student->hasRole('student')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Student not found'
+                ], 404);
+            }
+
             // Delete avatar if exists
             if ($student->avatar && file_exists(public_path($student->avatar))) {
                 unlink(public_path($student->avatar));
@@ -170,6 +189,7 @@ class StudentController extends Controller
             ], 500);
         }
     }
+
 
     public function bulkDelete(Request $request)
     {
@@ -272,11 +292,11 @@ class StudentController extends Controller
             try {
                 $student = User::findOrFail($studentData['id']);
                 $validatedData = $validator->validated();
-                
+
                 // Map dob to date_of_birth
                 $validatedData['date_of_birth'] = $validatedData['dob'];
                 unset($validatedData['dob']);
-                
+
                 $student->update($validatedData);
                 $updatedCount++;
             } catch (\Exception $e) {
@@ -323,7 +343,7 @@ class StudentController extends Controller
     {
         // You can implement your actual logic here based on your application's needs
         // For now, returning placeholder data
-        
+
         return [
             'gpa' => '3.8',
             'gpa_percentage' => '95.0',

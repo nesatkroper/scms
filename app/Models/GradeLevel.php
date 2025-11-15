@@ -16,9 +16,9 @@ class GradeLevel extends Model
     'description',
   ];
 
-  public function students()
+  public function users()
   {
-    return $this->hasMany(Student::class);
+    return $this->hasMany(User::class);
   }
 
   public function feeStructures()

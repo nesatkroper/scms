@@ -193,6 +193,7 @@
                             const date = std.admission_date ? std.admission_date.substring(0, 10) : '';
                             const datedob = std.date_of_birth ? std.date_of_birth.substring(0, 10) : '';
                             // Set form values
+                             console.log(std);
                             $('#edit_name').val(std.name);
                             $('#edit_user').val(std.user_id);
                             $('#edit_phone').val(std.phone);

@@ -7,41 +7,28 @@ use Illuminate\Validation\Rule;
 
 class UpdateStudentRequest extends FormRequest
 {
-  public function authorize(): bool
+  public function authorize()
   {
     return true;
   }
 
-  public function rules(): array
+  public function rules()
   {
+    $studentId = $this->route('student')->id;
+
     return [
-      'name' => ['sometimes', 'string', 'max:255'],
-      'phone' => ['sometimes', 'string', 'max:20'],
-      'email' => [
-        'sometimes',
-        'string',
-        'email',
-        'max:255',
-        Rule::unique('students')->ignore($this->route('student')),
-      ],
-      'address' => ['sometimes', 'string'],
-      'photo' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
-      'date_of_birth' => ['required', 'date', 'before_or_equal:today'],
-      'gender' => ['required', 'in:male,female,other'],
-      'grade_level_id' => ['sometimes', 'nullable', 'exists:grade_levels,id'],
-      'user_id' => ['sometimes', 'nullable', 'exists:users,id'],
-      'blood_group' => ['sometimes', 'nullable', 'string', 'max:5'],
-      'nationality' => ['sometimes', 'nullable', 'string', 'max:255'],
-      'religion' => ['sometimes', 'nullable', 'string', 'max:255'],
-      'admission_date' => ['sometimes', 'date'],
-      // For pivot table student_guardian (if updating relationships)
-      'guardians' => ['nullable', 'array'],
-      'guardians.*.guardian_id' => ['required_with:guardians', 'exists:guardians,id'],
-      'guardians.*.relation_to_student' => ['nullable', 'string', 'max:255'],
-      // For pivot table student_course (if updating enrollments/grades)
-      'course_offerings' => ['nullable', 'array'],
-      'course_offerings.*.course_offering_id' => ['required_with:course_offerings', 'exists:course_offerings,id'],
-      'course_offerings.*.grade_final' => ['nullable', 'numeric', 'min:0', 'max:100'],
+      'name' => 'required|string|max:255',
+      'email' => ['required', 'email', Rule::unique('users')->ignore($studentId)],
+      'phone' => 'required|string|max:20',
+      'gender' => 'required|in:male,female,other',
+      'date_of_birth' => 'required|date',
+      'grade_level_id' => 'required|exists:grade_levels,id',
+      'address' => 'nullable|string',
+      'blood_group' => 'nullable|string|max:10',
+      'nationality' => 'nullable|string|max:100',
+      'religion' => 'nullable|string|max:100',
+      'admission_date' => 'required|date',
+      'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ];
   }
 }
