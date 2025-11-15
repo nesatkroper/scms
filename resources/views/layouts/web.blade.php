@@ -98,7 +98,7 @@
                 <div class="flex items-center gap-4">
                     <a href="#" class="flex items-center gap-3">
                         <img src="assets{{ '/images/scms.png' }}" alt="logo" class="size-14 rounded-full border" />
-                        <div>
+                        <div class="hidden sm:block">
                             <div class="font-semibold text-lg">Wat Damnak</div>
                             <div class="text-xs text-gray-500 dark:text-gray-400">Learning Centre</div>
                         </div>
