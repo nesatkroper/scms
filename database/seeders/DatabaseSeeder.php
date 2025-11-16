@@ -13,9 +13,6 @@ class DatabaseSeeder extends Seeder
       UserSeeder::class,
       ClassroomSeeder::class,
       SubjectSeeder::class,
-      GradeLevelSeeder::class,
-      ExpenseCategorySeeder::class,
-      CourseOfferingSeeder::class,
       StudentCourseSeeder::class,
     ]);
   }
