@@ -28,8 +28,13 @@ clear:
 	@echo "================================================="
 	@echo "🚀 Clearing Laravel logs, cache, and fixing permissions..."
 	@echo "-------------------------------------------------"
-	@echo "--- 1. Running 'php artisan optimize:clear'..."
-	@php artisan optimize:clear
+	@echo "--- 1. Running individual cache clear commands..."
+	@php artisan config:clear
+	@php artisan cache:clear
+	@php artisan route:clear
+	@php artisan view:clear
+	@php artisan event:clear
+	@php artisan auth:clear-resets
 	@echo "--- 2. Removing old log files..."
 	@sudo rm -f storage/logs/*.log
 	@echo "--- 3. Removing bootstrap cache files..."
@@ -40,6 +45,8 @@ clear:
 	@sudo chmod -R 775 storage bootstrap/cache
 	@echo "================================================="
 	@echo "✅ Clear and Permissions Fix Complete."
+
+
 
 migrate:
 	@echo "================================================="
