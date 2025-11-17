@@ -25,14 +25,14 @@
     <ul>
       <!-- Dashboard -->
       <li class="menu-item relative">
-        <a href="{{ route('admin.home') }}"
+        {{-- <a href="{{ route('admin.home') }}"
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
           <div class="wr-icon flex items-center">
             <i class="fas fa-tachometer-alt text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
           </div>
           <span class="menu-tooltip">Dashboard</span>
-        </a>
+        </a> --}}
       </li>
       <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
       <!-- Academics -->
@@ -81,20 +81,20 @@
         </div>
         <div class="submenu">
           <ul class="pl-4 pr-4">
-            <li>
+            {{-- <li>
               <a href="{{ route('admin.teachers.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
                 <span class="ml-2">teachers</span>
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
-            </li>
-            <li>
+            </li> --}}
+            {{-- <li>
               <a href="{{ route('admin.students.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
                 <span class="ml-2">Students</span>
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
-            </li>
+            </li> --}}
           </ul>
         </div>
       </li>
@@ -236,9 +236,9 @@
               <li><a href="{{ route('admin.users.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Users</a>
               </li>
-              <li><a href="{{ route('admin.roles.index') }}"
+              {{-- <li><a href="{{ route('admin.roles.index') }}"
                   class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">roles</a>
-              </li>
+              </li> --}}
           </div>
         </li>
       @endif
@@ -309,7 +309,7 @@
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                 </path>
               </svg>
-              {{ __('Logout') }}
+              {{-- {{ __('Logout') }} --}}
             </button>
           </form>
         </li>
