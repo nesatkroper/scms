@@ -315,37 +315,5 @@
         </li>
       </ul>
     </div>
-
-    <!-- User profile section -->
-    <div id="sidebar-footer-profile" class="p-4 bg-indigo-900/50 dark:bg-gray-900/50 cursor-pointer">
-      <div class="flex items-center">
-        @if (auth()->user()->avatar)
-          <img src="{{ asset(auth()->user()->avatar) }}" alt="User"
-            class="w-10 h-10 rounded-full border-2 border-indigo-500 dark:border-white">
-        @else
-          <img src="{{ asset('images/user.png') }}" alt="User"
-            class="w-10 h-10 rounded-full border-2 border-indigo-500 dark:border-white">
-        @endif
-        <div class="ml-3 sidebar-text text-hidden">
-          <p class="font-medium text-white">{{ auth()->user()->name }}</p>
-          <p class="text-xs text-indigo-300 dark:text-gray-400">{{ auth()->user()->email }}</p>
-        </div>
-        <i class="fas fa-chevron-up ml-auto text-xs sidebar-text text-hidden"></i>
-      </div>
-    </div>
-    <!-- Collapsed sidebar footer -->
-    <div id="sidebar-footer-collapsed" class="p-4 bg-indigo-900/50 dark:bg-gray-900/50 cursor-pointer hidden ">
-      <div class="flex justify-center">
-        @if (auth()->user()->avatar)
-          <img src="{{ asset(auth()->user()->avatar) }}" alt="User"
-            class="size-8 rounded-full border-2 border-indigo-500">
-          <span class="footer-tooltip">{{ auth()->user()->name }}<br>{{ auth()->user()->email }}</span>
-        @else
-          <img src="{{ asset('images/user.png') }}" alt="User"
-            class="size-8 rounded-full border-2 border-indigo-500">
-          <span class="footer-tooltip">{{ auth()->user()->name }}<br>{{ auth()->user()->email }}</span>
-        @endif
-      </div>
-    </div>
   </div>
 </aside>
