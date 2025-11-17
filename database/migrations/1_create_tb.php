@@ -90,6 +90,27 @@ return new class extends Migration {
       $table->timestamps();
     });
 
+    Schema::create('expense_categories', function (Blueprint $table) {
+      $table->id();
+      $table->string('name')->unique();
+      $table->text('description')->nullable();
+      $table->timestamps();
+      $table->softDeletes();
+    });
+
+    //
+    Schema::create('expenses', function (Blueprint $table) {
+      $table->id();
+      $table->string('title');
+      $table->text('description');
+      $table->decimal('amount', 10, 2);
+      $table->date('date');
+      $table->foreignId('expense_category_id')->nullable()->constrained('expense_categories')->onDelete('set null');
+      $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null');
+      $table->timestamps();
+      $table->softDeletes();
+    });
+
     Schema::create('attendances', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
