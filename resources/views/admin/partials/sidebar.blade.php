@@ -95,13 +95,6 @@
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
-            <li>
-              <a href="{{ route('admin.guardians.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
-                <span class="ml-2">Guardians</span>
-                <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
-              </a>
-            </li>
           </ul>
         </div>
       </li>

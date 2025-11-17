@@ -21,16 +21,12 @@ class StudentController extends Controller
         $viewType = $request->input('view', 'table');
 
         $students = User::role('student')
-            ->with('gradeLevel')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%")
-                    ->orWhere('admission_date', 'like', "%{$search}%")
-                    ->orWhereHas('gradeLevel', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+                    ->orWhere('admission_date', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
@@ -54,7 +50,7 @@ class StudentController extends Controller
             ]);
         }
 
-        return view('admin.students.index', compact('students', 'gradeLevels'));
+        return view('admin.students.index', compact('students'));
     }
 
     public function store(UserRequest $request)
