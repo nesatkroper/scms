@@ -3,49 +3,46 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AttendanceRequest;
 use App\Models\Attendance;
+use App\Http\Requests\StoreAttendanceRequest;
+use App\Http\Requests\UpdateAttendanceRequest;
 
 class AttendanceController extends Controller
 {
     public function index()
     {
-        $attendances = Attendance::with(['student', 'classSubject'])->paginate(10);
-        return view('attendances.index', compact('attendances'));
+        $attendances = Attendance::all();
+        return view('admin.attendances.index', compact('attendances'));
     }
 
     public function create()
     {
-        return view('attendances.create');
+        return view('admin.attendances.create');
     }
 
-    public function store(AttendanceRequest $request)
+    public function store(StoreAttendanceRequest $request)
     {
         Attendance::create($request->validated());
-        return redirect()->route('attendances.index')->with('success', 'Attendance recorded successfully!');
+        return redirect()->route('admin.attendances.index')->with('success', 'Attendance created successfully');
     }
 
-    public function show(Attendance $attendance)
+    public function edit($id)
     {
-        $attendance->load(['student', 'classSubject']);
-        return view('attendances.show', compact('attendance'));
+        $attendance = Attendance::findOrFail($id);
+        return view('admin.attendances.edit', compact('attendance'));
     }
 
-    public function edit(Attendance $attendance)
+    public function update(UpdateAttendanceRequest $request, $id)
     {
-        $attendance->load(['student', 'classSubject']);
-        return view('attendances.edit', compact('attendance'));
+        $attendance = Attendance::findOrFail($id);
+        $($request->validated());
+        return redirect()->route('admin.attendances.index')->with('success', 'Attendance updated successfully');
     }
 
-    public function update(AttendanceRequest $request, Attendance $attendance)
+    public function destroy($id)
     {
-        $attendance->update($request->validated());
-        return redirect()->route('attendances.show', $attendance)->with('success', 'Attendance updated successfully!');
-    }
-
-    public function destroy(Attendance $attendance)
-    {
-        $attendance->delete();
-        return redirect()->route('attendances.index')->with('success', 'Attendance deleted successfully!');
+        $attendance = Attendance::findOrFail($id);
+        $();
+        return redirect()->route('admin.attendances.index')->with('success', 'Attendance deleted successfully');
     }
 }

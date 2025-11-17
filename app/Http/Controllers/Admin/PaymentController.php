@@ -3,58 +3,46 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PaymentRequest;
+use App\Models\Payment;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
-use App\Models\Fee;
-use App\Models\Payment;
-use App\Models\StudentFee;
-use App\Models\User;
 
 class PaymentController extends Controller
 {
     public function index()
     {
-        $payments = Payment::with(['studentFee', 'receiver'])->paginate(10);
-        return view('payments.index', compact('payments'));
+        $payments = Payment::all();
+        return view('admin.payments.index', compact('payments'));
     }
 
     public function create()
     {
-        $studentFees = Fee::all();
-        $receivers = User::all();
-        return view('payments.create', compact('studentFees', 'receivers'));
+        return view('admin.payments.create');
     }
 
-    public function store(PaymentRequest $request)
+    public function store(StorePaymentRequest $request)
     {
-        $payment = Payment::create($request->validated());
-        return redirect()->route('payments.index')->with('success', 'Payment recorded successfully!');
+        Payment::create($request->validated());
+        return redirect()->route('admin.payments.index')->with('success', 'Payment created successfully');
     }
 
-    public function show(Payment $payment)
+    public function edit($id)
     {
-        $payment->load(['studentFee', 'receiver']);
-        return view('payments.show', compact('payment'));
+        $payment = Payment::findOrFail($id);
+        return view('admin.payments.edit', compact('payment'));
     }
 
-    public function edit(Payment $payment)
+    public function update(UpdatePaymentRequest $request, $id)
     {
-        $payment->load(['studentFee', 'receiver']);
-        $studentFees = Fee::all();
-        $receivers = User::all();
-        return view('payments.edit', compact('payment', 'studentFees', 'receivers'));
+        $payment = Payment::findOrFail($id);
+        $($request->validated());
+        return redirect()->route('admin.payments.index')->with('success', 'Payment updated successfully');
     }
 
-    public function update(PaymentRequest $request, Payment $payment)
+    public function destroy($id)
     {
-        $payment->update($request->validated());
-        return redirect()->route('payments.show', $payment)->with('success', 'Payment updated successfully!');
-    }
-
-    public function destroy(Payment $payment)
-    {
-        $payment->delete();
-        return redirect()->route('payments.index')->with('success', 'Payment deleted successfully!');
+        $payment = Payment::findOrFail($id);
+        $();
+        return redirect()->route('admin.payments.index')->with('success', 'Payment deleted successfully');
     }
 }
