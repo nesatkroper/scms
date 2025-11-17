@@ -139,7 +139,25 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
+    Schema::create('fee_types', function (Blueprint $table) {
+      $table->id();
+      $table->string('name')->unique();
+      $table->text('description')->nullable();
+      $table->timestamps();
+      $table->softDeletes();
+    });
 
+    Schema::create('fees', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
+      $table->foreignId('fee_type_id')->constrained('fee_types')->onDelete('cascade');
+      $table->decimal('amount', 10, 2);
+      $table->date('due_date')->nullable();
+      $table->enum('status', ['unpaid', 'partially_paid', 'paid'])->default('unpaid');
+      $table->text('remarks')->nullable();
+      $table->timestamps();
+      $table->softDeletes();
+    });
 
     Schema::create('payments', function (Blueprint $table) {
       $table->id();
@@ -187,25 +205,7 @@ return new class extends Migration {
       $table->timestamps();
     });
 
-    Schema::create('fee_types', function (Blueprint $table) {
-      $table->id();
-      $table->string('name')->unique();
-      $table->text('description')->nullable();
-      $table->timestamps();
-      $table->softDeletes();
-    });
 
-    Schema::create('fees', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-      $table->foreignId('fee_type_id')->constrained('fee_types')->onDelete('cascade');
-      $table->decimal('amount', 10, 2);
-      $table->date('due_date')->nullable();
-      $table->enum('status', ['unpaid', 'partially_paid', 'paid'])->default('unpaid');
-      $table->text('remarks')->nullable();
-      $table->timestamps();
-      $table->softDeletes();
-    });
 
   }
 
