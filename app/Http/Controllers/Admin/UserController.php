@@ -15,23 +15,69 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+  // public function index(Request $request)
+  // {
+  //   $search = $request->input('search');
+  //   $perPage = $request->input('per_page', 8);
+  //   $roles = Role::all();
+
+  //   $users = User::with('roles')
+  //     ->when($search, function ($query) use ($search) {
+  //       return $query->where('name', 'like', "%{$search}%")
+  //         ->orWhere('email', 'like', "%{$search}%")
+  //         ->orWhere('phone', 'like', "%{$search}%");
+  //     })
+  //     ->orderBy('created_at', 'desc')
+  //     ->paginate($perPage)
+  //     ->appends([
+  //       'search' => $search,
+  //       'per_page' => $perPage
+  //     ]);
+
+  //   if ($request->ajax()) {
+  //     $html = [
+  //       'table' => view('admin.users.table', compact('users'))->render(),
+  //       'pagination' => $users->links()->toHtml()
+  //     ];
+
+  //     return response()->json([
+  //       'success' => true,
+  //       'html' => $html
+  //     ]);
+  //   }
+
+  //   return view('admin.users.index', compact('users', 'roles'));
+  // }
+
   public function index(Request $request)
   {
     $search = $request->input('search');
     $perPage = $request->input('per_page', 8);
+    // 💡 Added role filter input
+    $roleFilter = $request->input('role_filter');
+
+    // Roles are needed for the filter dropdown in the view
     $roles = Role::all();
 
-    $users = User::with('roles')
+    // $users = User::with('roles')
+    $users = User::with(['roles', 'department'])
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('email', 'like', "%{$search}%")
           ->orWhere('phone', 'like', "%{$search}%");
       })
+      // 💡 Ensure the role filter logic is exactly this:
+      ->when($roleFilter, function ($query) use ($roleFilter) {
+        // Spatie's role() method filters by role name or ID
+        return $query->role($roleFilter);
+      })
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
       ->appends([
         'search' => $search,
-        'per_page' => $perPage
+        'per_page' => $perPage,
+        // 💡 Append the new filter to the pagination links
+        'role_filter' => $roleFilter,
       ]);
 
     if ($request->ajax()) {
@@ -46,7 +92,8 @@ class UserController extends Controller
       ]);
     }
 
-    return view('admin.users.index', compact('users', 'roles'));
+    // Pass the active filter to the view
+    return view('admin.users.index', compact('users', 'roles', 'roleFilter'));
   }
 
   public function store(Request $request)
