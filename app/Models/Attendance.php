@@ -2,34 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attendance extends Model
 {
-  use HasFactory, SoftDeletes;
+  use SoftDeletes;
 
   protected $fillable = [
     'student_id',
-    'course_offering_id',
+    'classroom_id',
+    'subject_id',
     'date',
     'status',
-    'remarks',
-  ];
-
-  protected $casts = [
-    'date' => 'date',
-    'status' => \App\Enums\AttendanceStatusEnum::class,
+    'remarks'
   ];
 
   public function student()
   {
-    return $this->belongsTo(Student::class);
+    return $this->belongsTo(User::class, 'student_id');
   }
 
-  public function courseOffering()
+  public function classroom()
   {
-    return $this->belongsTo(CourseOffering::class);
+    return $this->belongsTo(Classroom::class);
+  }
+
+  public function subject()
+  {
+    return $this->belongsTo(Subject::class);
   }
 }

@@ -22,7 +22,6 @@ class User extends Authenticatable
     'address',
     'date_of_birth',
     'gender',
-    'avatar',
     'department_id',
     'joining_date',
     'qualification',
@@ -36,7 +35,9 @@ class User extends Authenticatable
     'admission_date',
     'occupation',
     'company',
+    'avatar'
   ];
+
 
   protected $hidden = [
     'password',
@@ -53,10 +54,63 @@ class User extends Authenticatable
       'admission_date' => 'date',
     ];
   }
+
   public function department()
   {
     return $this->belongsTo(Department::class);
   }
+
+  // STUDENT Relationships
+  public function fees()
+  {
+    return $this->hasMany(Fee::class, 'student_id');
+  }
+
+  public function payments()
+  {
+    return $this->hasMany(Payment::class, 'student_id');
+  }
+
+  public function attendances()
+  {
+    return $this->hasMany(Attendance::class, 'student_id');
+  }
+
+  public function scores()
+  {
+    return $this->hasMany(Score::class, 'student_id');
+  }
+
+  public function courses()
+  {
+    return $this->belongsToMany(Subject::class, 'student_course')
+      ->withPivot('grade_final')
+      ->withTimestamps();
+  }
+
+  // TEACHER Relationships
+  public function teachingSubjects()
+  {
+    return $this->belongsToMany(Subject::class, 'teacher_subject');
+  }
+
+  public function schedules()
+  {
+    return $this->hasMany(Schedule::class, 'teacher_id');
+  }
+
+  // Admin who approves expenses
+  public function approvedExpenses()
+  {
+    return $this->hasMany(Expense::class, 'approved_by');
+  }
+
+  // User who received payment
+  public function receivedPayments()
+  {
+    return $this->hasMany(Payment::class, 'received_by');
+  }
+
 
   public function teacher()
   {
@@ -71,34 +125,9 @@ class User extends Authenticatable
   {
     return $this->hasMany(User::class, 'guardian_id')->where('role', 'student');
   }
-  
-  public function gradeLevel()
-  {
-    return $this->belongsTo(GradeLevel::class);
-  }
 
   public function courseOfferings()
   {
     return $this->hasMany(CourseOffering::class);
-  }
-
-  public function bookIssues()
-  {
-    return $this->hasMany(BookIssue::class);
-  }
-
-  public function attendances()
-  {
-    return $this->hasMany(Attendance::class);
-  }
-
-  public function grades()
-  {
-    return $this->hasMany(Grade::class);
-  }
-
-  public function studentFees()
-  {
-    return $this->hasMany(StudentFee::class);
   }
 }

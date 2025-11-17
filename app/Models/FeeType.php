@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ExpenseCategory extends Model
+class FeeType extends Model
 {
   use SoftDeletes;
 
   protected $fillable = ['name', 'description'];
 
-  public function expenses()
+  public function fees()
   {
-    return $this->hasMany(Expense::class);
+    return $this->hasMany(Fee::class);
   }
 }

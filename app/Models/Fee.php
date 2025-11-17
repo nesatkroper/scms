@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Score extends Model
+class Fee extends Model
 {
   use SoftDeletes;
 
   protected $fillable = [
     'student_id',
-    'exam_id',
-    'subject_id',
-    'semester',
-    'score',
-    'grade',
+    'fee_type_id',
+    'amount',
+    'due_date',
+    'status',
     'remarks'
   ];
 
@@ -24,13 +23,13 @@ class Score extends Model
     return $this->belongsTo(User::class, 'student_id');
   }
 
-  public function exam()
+  public function feeType()
   {
-    return $this->belongsTo(Exam::class);
+    return $this->belongsTo(FeeType::class);
   }
 
-  public function subject()
+  public function payments()
   {
-    return $this->belongsTo(Subject::class);
+    return $this->hasMany(Payment::class);
   }
 }

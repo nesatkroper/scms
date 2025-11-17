@@ -2,36 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
-  use HasFactory, SoftDeletes;
+  use SoftDeletes;
 
   protected $fillable = [
-    'student_fee_id',
     'amount',
     'payment_date',
     'payment_method',
     'transaction_id',
     'remarks',
     'received_by',
+    'student_id',
+    'fee_id'
   ];
 
-  protected $casts = [
-    'amount' => 'decimal:2',
-    'payment_date' => 'date',
-  ];
-
-  public function studentFee()
-  {
-    return $this->belongsTo(StudentFee::class);
-  }
-
-  public function receivedBy()
+  public function receiver()
   {
     return $this->belongsTo(User::class, 'received_by');
+  }
+
+  public function student()
+  {
+    return $this->belongsTo(User::class, 'student_id');
+  }
+
+  public function fee()
+  {
+    return $this->belongsTo(Fee::class);
   }
 }

@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Classroom extends Model
 {
-  use HasFactory, SoftDeletes;
+  use SoftDeletes;
 
-  protected $fillable = [
-    'name',
-    'room_number',
-    'capacity',
-  ];
+  protected $fillable = ['name', 'room_number', 'capacity'];
 
-  protected $casts = [
-    'capacity' => 'integer',
-  ];
-
-  public function courseOfferings()
+  public function attendances()
   {
-    return $this->hasMany(CourseOffering::class);
+    return $this->hasMany(Attendance::class);
+  }
+
+  public function schedules()
+  {
+    return $this->hasMany(Schedule::class);
   }
 }
