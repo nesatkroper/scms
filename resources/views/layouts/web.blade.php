@@ -22,7 +22,9 @@
         body {
             font-family: sans-serif;
         }
-
+        .swiper-slide {
+            width: auto;
+        }
         /* Offcanvas transitions */
         .offcanvas {
             transform: translateX(-100%);
@@ -83,6 +85,7 @@
             background-clip: text;
             color: transparent;
         }
+
         .hero-gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
         }
@@ -99,7 +102,7 @@
             class="bg-white/90 dark:bg-gray-800/60 backdrop-blur sticky top-0 z-40 shadow-sm border-b border-slate-300 dark:border-slate-600">
             <div class="max-w-7xl xl:max-w-[96rem] mx-auto px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <a href="#" class="flex items-center gap-3">
+                    <a href="{{route('web.home')}}" class="flex items-center gap-3">
                         <img src="assets{{ '/images/scms.png' }}" alt="logo" class="size-14 rounded-full border" />
                         <div class="hidden sm:block">
                             <div class="font-semibold text-lg">Wat Damnak</div>
@@ -118,9 +121,10 @@
                         <li class="group relative">
                             <a href="{{ route('web.about') }}"
                                 class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 
-                                transition-colors duration-200">Who i am</a>
+                                transition-colors duration-200">Who
+                                i am</a>
                         </li>
-                        
+
                         <li class="group relative">
                             <a href="{{ route('web.whatwedo') }}"
                                 class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">
@@ -160,16 +164,16 @@
                     </ul>
                 </nav>
                 <div class="relative">
-                    <a href="{{ route('web.home') }}"
+                    <a href="{{ route('web.donation') }}"
                         class="px-3 py-2 border border-orange-500 rounded-md bg-orange-500 hover:bg-transparent dark:hover:bg-gray-7 hover:text-orange-500 text-slate-100 transition-colors duration-200 cursor-pointer">
                         <i
                             class="fas fa-hand-holding-heart w-5 group-hover:text-blue-500 transition-colors duration-200"></i>
-                        Donations
+                        Donation
                     </a>
                 </div>
                 <!-- Desktop Theme Toggle -->
                 <button id="darkToggle"
-                    class="size-9 hidden lg:flex items-center justify-center rounded-full cursor-pointer p-2 border border-slate-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                    class="darkToggle size-9 hidden lg:flex items-center justify-center rounded-full cursor-pointer p-2 border border-slate-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                     title="Toggle dark mode">
                     <i class="fas fa-moon"></i>
                 </button>
@@ -200,7 +204,8 @@
                     </div>
                 </div>
                 <button id="mobileClose"
-                    class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                    class="size-8 flex justify-center items-center cursor-pointer dark:text-red-500
+                     hover:bg-red-500 hover:text-slate-200 dark:hover:text-red-500 text-red-500 p-2 rounded-md dark:hover:bg-gray-700 transition-colors duration-200">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
@@ -216,7 +221,8 @@
                     </a>
                     <a href="{{ route('web.about') }}"
                         class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
-                        <i class="fas fa-home w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
+                        <i
+                            class="fas fa-home w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
                         <span>Who I Am</span>
                     </a>
 
@@ -229,7 +235,7 @@
 
                     <!-- Activity Section -->
                     <div class="mobile-menu-section">
-                        <button
+                        {{-- <button
                             class="mobile-menu-toggle w-full flex items-center justify-between px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
                             <div class="flex items-center gap-3">
                                 <i
@@ -237,7 +243,21 @@
                                 <span>Activity</span>
                             </div>
                             <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform duration-200"></i>
-                        </button>
+                        </button> --}}
+
+                        <div
+                            class="w-full flex items-center justify-between px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
+                            <a href="" class="w-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-calendar-alt w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200"></i>
+                                    <span>Activity</span>
+                                </div>
+                            </a>
+                            <button class="mobile-menu-toggle group cursor-pointer size-6 flex justify-center items-center border border-slate-200 dark:border-slate-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform duration-200"></i>
+                            </button>
+                        </div>
+
                         <div class="mobile-submenu pl-8 hidden">
                             <a href="#events"
                                 class="block py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
@@ -261,7 +281,7 @@
 
                 <div class="mt-6 flex justify-center">
                     <button id="darkToggle"
-                        class="size-9 flex items-center justify-center rounded-full cursor-pointer p-2 border border-slate-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                        class="darkToggle size-9 flex items-center justify-center rounded-full cursor-pointer p-2 border border-slate-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                         title="Toggle dark mode">
                         <i class="fas fa-moon"></i>
                     </button>
@@ -299,168 +319,151 @@
         @include('web.partials.footer')
     </div>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
-    <script src="{{ asset('assets/js/mainjq.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
     @stack('scripts')
     @stack('script')
     <script>
-        // Init AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100
-        });
+        $(document).ready(function() {
 
-        // Offcanvas functionality
-        function openOffcanvas() {
-            document.getElementById('offcanvasMenu').classList.add('open');
-            document.getElementById('offcanvasBackdrop').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeOffcanvas() {
-            document.getElementById('offcanvasMenu').classList.remove('open');
-            document.getElementById('offcanvasBackdrop').classList.remove('open');
-            document.body.style.overflow = '';
-            // Close all mobile submenus
-            document.querySelectorAll('.mobile-submenu').forEach(menu => {
-                menu.classList.add('hidden');
+            /* -------------------------------
+               AOS
+            -------------------------------- */
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
             });
-        }
 
-        // Event listeners
-        document.getElementById('mobileOpen').addEventListener('click', openOffcanvas);
-        document.getElementById('mobileClose').addEventListener('click', closeOffcanvas);
-        document.getElementById('offcanvasBackdrop').addEventListener('click', closeOffcanvas);
-
-        // Mobile submenu toggle
-        document.querySelectorAll('.mobile-menu-toggle').forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const submenu = this.parentElement.querySelector('.mobile-submenu');
-                const icon = this.querySelector('.fa-chevron-down');
-
-                submenu.classList.toggle('hidden');
-                icon.classList.toggle('rotate-180');
+            /* -------------------------------
+               Offcanvas Open / Close (Mobile)
+            -------------------------------- */
+            $('#mobileOpen').on('click', function() {
+                $('#offcanvasMenu').addClass('open');
+                $('#offcanvasBackdrop').addClass('open');
+                $('body').css('overflow', 'hidden');
             });
-        });
 
-        // Close offcanvas when clicking on links (optional)
-        document.querySelectorAll('#offcanvasMenu a').forEach(link => {
-            link.addEventListener('click', closeOffcanvas);
-        });
-
-        // Keyboard support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeOffcanvas();
+            function closeOffcanvas() {
+                $('#offcanvasMenu').removeClass('open');
+                $('#offcanvasBackdrop').removeClass('open');
+                $('body').css('overflow', '');
+                $('.mobile-submenu').addClass('hidden');
             }
-        });
 
-        // Swiper initialization
-        const swiper = new Swiper('.mySwiper', {
-            loop: true,
-            autoplay: {
-                delay: 4500,
-                disableOnInteraction: false
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true
-            },
+            $('#mobileClose, #offcanvasBackdrop, #offcanvasMenu a').on('click', closeOffcanvas);
 
-            effect: 'slide'
-        });
+            /* -------------------------------
+               Mobile Submenu Toggle
+            -------------------------------- */
+            $('.mobile-menu-toggle').on('click', function() {
+                let submenu = $(this).closest('.mobile-menu-section').find('.mobile-submenu');
+                let icon = $(this).find('.fa-chevron-down');
 
-        // Initialize Staff Swiper
-        const staffSwiper = new Swiper('.staffSwiper', {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev'
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 2,
-                },
-                1024: {
-                    slidesPerView: 3,
-                },
-            },
-        });
-
-        // Initialize Student Swiper
-        const studentSwiper = new Swiper('.studentSwiper', {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            loop: true,
-            autoplay: {
-                delay: 3500,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev'
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 2,
-                },
-                1024: {
-                    slidesPerView: 3,
-                },
-            },
-        });
-
-        // Submenu hover + jQuery toggle
-        $(function() {
-            // Desktop submenu: show on hover with small delay
-            $('.group').hover(function() {
-                $(this).find('.submenu').stop(true, true).delay(80).fadeIn(180);
-            }, function() {
-                $(this).find('.submenu').stop(true, true).delay(80).fadeOut(120);
+                submenu.toggleClass('hidden');
+                icon.toggleClass('rotate-180');
             });
 
-            // Toggle submenu icon rotation
-            $('.submenu-toggle').on('click', function(e) {
-                // prevent on small screens where this is used by mobile
-                e.preventDefault();
-                $(this).next('.submenu').slideToggle(180);
-            });
+            /* -------------------------------
+               Desktop Menu Hover Submenu
+            -------------------------------- */
+            $('.group').hover(
+                function() {
+                    $(this).find('.submenu').stop(true, true).fadeIn(150);
+                },
+                function() {
+                    $(this).find('.submenu').stop(true, true).fadeOut(120);
+                }
+            );
 
-            // Dark mode persistence
-            function setDark(dark) {
-                if (dark) $('html').addClass('dark');
-                else $('html').removeClass('dark');
-                localStorage.setItem('watdamnak_dark', dark ? '1' : '0');
+            /* -------------------------------
+               Dark Mode
+            -------------------------------- */
+            function setDarkMode(isDark) {
+                $('html').toggleClass('dark', isDark);
+                localStorage.setItem('watdamnak_dark', isDark ? '1' : '0');
             }
-            // read saved pref or system
-            const saved = localStorage.getItem('watdamnak_dark');
-            if (saved === null) {
-                const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                setDark(prefers);
-            } else setDark(saved === '1');
 
-            $('#darkToggle, #darkToggleMd').on('click', function() {
-                const isDark = $('html').hasClass('dark');
-                setDark(!isDark);
+            let savedMode = localStorage.getItem('watdamnak_dark');
+            if (savedMode === null) {
+                setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+            } else {
+                setDarkMode(savedMode === '1');
+            }
+
+            $('.darkToggle').on('click', function() {
+                setDarkMode(!$('html').hasClass('dark'));
             });
-        });
 
-        Fancybox.bind("[data-fancybox]", {
-            // Your custom options
+            /* -------------------------------
+               Escape key closes menu
+            -------------------------------- */
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape') closeOffcanvas();
+            });
+
+            /* -------------------------------
+               Swiper
+            -------------------------------- */
+            new Swiper('.mySwiper', {
+                loop: true,
+                autoplay: {
+                    delay: 4500
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                },
+            });
+
+            new Swiper('.staffSwiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                     disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                },
+                navigation: false,
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2
+                    },
+                    1024: {
+                        slidesPerView: 3
+                    }
+                },
+            });
+
+            new Swiper('.studentSwiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 3500
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                },
+                navigation: false,
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2
+                    },
+                    1024: {
+                        slidesPerView: 3
+                    }
+                },
+            });
+
+            /* -------------------------------
+               Fancybox
+            -------------------------------- */
+            Fancybox.bind("[data-fancybox]", {});
         });
     </script>
 </body>
