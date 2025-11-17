@@ -156,7 +156,7 @@ class ScoreController extends Controller
                 'grade' => $request->grade,
             ]);
 
-        $students = Student::orderBy('name')->get();
+        $students = User::orderBy('name')->get();
         $exams = Exam::orderBy('name')->get();
         $subjects = Subject::orderBy('name')->get();
 
@@ -296,7 +296,7 @@ class ScoreController extends Controller
 
     public function edit(Score $score)
     {
-        $students = Student::orderBy('name')->get();
+        $students = User::orderBy('name')->get();
         $exams = Exam::orderBy('name')->get();
 
         return response()->json([
@@ -416,7 +416,7 @@ class ScoreController extends Controller
                 ->whereIn('id', $ids)
                 ->get();
 
-            $students = Student::orderBy('name')->get();
+            $students = User::orderBy('name')->get();
             $exams = Exam::orderBy('name')->get();
 
             return response()->json([

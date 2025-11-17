@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAttendanceRequest;
-use App\Http\Requests\UpdateAttendanceRequest;
+use App\Http\Requests\AttendanceRequest;
 use App\Models\Attendance;
 
 class AttendanceController extends Controller
@@ -20,7 +19,7 @@ class AttendanceController extends Controller
         return view('attendances.create');
     }
 
-    public function store(StoreAttendanceRequest $request)
+    public function store(AttendanceRequest $request)
     {
         Attendance::create($request->validated());
         return redirect()->route('attendances.index')->with('success', 'Attendance recorded successfully!');
@@ -38,7 +37,7 @@ class AttendanceController extends Controller
         return view('attendances.edit', compact('attendance'));
     }
 
-    public function update(UpdateAttendanceRequest $request, Attendance $attendance)
+    public function update(AttendanceRequest $request, Attendance $attendance)
     {
         $attendance->update($request->validated());
         return redirect()->route('attendances.show', $attendance)->with('success', 'Attendance updated successfully!');

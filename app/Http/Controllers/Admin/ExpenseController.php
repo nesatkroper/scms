@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreExpenseRequest;
-use App\Http\Requests\UpdateExpenseRequest;
+use App\Http\Requests\ExpenseRequest;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ExpenseController extends Controller
 {
@@ -57,7 +53,7 @@ class ExpenseController extends Controller
         return view('admin.expenses.index', compact('expenses', 'users'));
     }
 
-    public function store(StoreExpenseRequest $request)
+    public function store(ExpenseRequest $request)
     {
         try {
             $expense = Expense::create($request->validated());
@@ -90,7 +86,7 @@ class ExpenseController extends Controller
         return view('admin.expenses.edit', compact('expense'));
     }
 
-    public function update(UpdateExpenseRequest $request, $id)
+    public function update(ExpenseRequest $request, $id)
     {
         try {
             $expense = Expense::findOrFail($id);

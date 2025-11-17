@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentRequest;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
+use App\Models\Fee;
 use App\Models\Payment;
 use App\Models\StudentFee;
 use App\Models\User;
@@ -19,12 +21,12 @@ class PaymentController extends Controller
 
     public function create()
     {
-        $studentFees = StudentFee::all();
+        $studentFees = Fee::all();
         $receivers = User::all();
         return view('payments.create', compact('studentFees', 'receivers'));
     }
 
-    public function store(StorePaymentRequest $request)
+    public function store(PaymentRequest $request)
     {
         $payment = Payment::create($request->validated());
         return redirect()->route('payments.index')->with('success', 'Payment recorded successfully!');
@@ -39,12 +41,12 @@ class PaymentController extends Controller
     public function edit(Payment $payment)
     {
         $payment->load(['studentFee', 'receiver']);
-        $studentFees = StudentFee::all();
+        $studentFees = Fee::all();
         $receivers = User::all();
         return view('payments.edit', compact('payment', 'studentFees', 'receivers'));
     }
 
-    public function update(UpdatePaymentRequest $request, Payment $payment)
+    public function update(PaymentRequest $request, Payment $payment)
     {
         $payment->update($request->validated());
         return redirect()->route('payments.show', $payment)->with('success', 'Payment updated successfully!');

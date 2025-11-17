@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DepartmentRequest;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use Illuminate\Support\Facades\Log;
@@ -50,7 +51,7 @@ class DepartmentController extends Controller
     }
 
     // 🟢 Store department
-    public function store(StoreDepartmentRequest $request)
+    public function store(DepartmentRequest $request)
     {
         try {
             $department = Department::create($request->validated());
@@ -79,7 +80,7 @@ class DepartmentController extends Controller
     }
 
     // 🟢 Update department
-    public function update(UpdateDepartmentRequest $request, $id)
+    public function update(DepartmentRequest $request, $id)
     {
         try {
             $department = Department::findOrFail($id);

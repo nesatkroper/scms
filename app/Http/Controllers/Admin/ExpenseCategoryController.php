@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ExpenseCategoryRequest;
 use App\Http\Requests\StoreExpenseCategoryRequest;
 use App\Http\Requests\UpdateExpenseCategoryRequest;
 use App\Models\ExpenseCategory;
@@ -50,7 +51,7 @@ class ExpenseCategoryController extends Controller
         return view('admin.expensecategory.index', compact('categories'));
     }
 
-    public function store(StoreExpenseCategoryRequest $request)
+    public function store(ExpenseCategoryRequest $request)
     {
         try {
             $category = ExpenseCategory::create($request->validated());
@@ -76,7 +77,7 @@ class ExpenseCategoryController extends Controller
         ]);
     }
 
-    public function update(UpdateExpenseCategoryRequest $request, $id)
+    public function update(ExpenseCategoryRequest $request, $id)
     {
         try {
             $category = ExpenseCategory::findOrFail($id);
