@@ -1,55 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Route as R;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Support\Facades\Route ;
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Api\{
-  AuthController,
-  AttendanceController,
-  BookController,
-  BookIssueController,
-  ClassroomController,
-  DepartmentController,
-  EventController,
-  ExamController,
-  ExpenseController,
-  FeeStructureController,
-  GradeController,
-  GuardianController,
-  NoticeController,
-  PaymentController,
-  SectionController,
-  StudentController,
-  StudentFeeController,
-  SubjectController,
-  TeacherController,
-  TimetableController,
-};
 
-R::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthenticatedSessionController::class, 'login']);
 
-R::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
 });
 
-R::apiResources([
-  'classrooms' => ClassroomController::class,
-  'books' => BookController::class,
-  'events' => EventController::class,
-  'departments' => DepartmentController::class,
-  'teachers' => TeacherController::class,
-  'subjects' => SubjectController::class,
-  'sections' => SectionController::class,
-  'guardians' => GuardianController::class,
-  'book-issues' => BookIssueController::class,
-  'notices' => NoticeController::class,
-  'expenses' => ExpenseController::class,
-  'fee-structures' => FeeStructureController::class,
-  'timetables' => TimetableController::class,
-  'attendances' => AttendanceController::class,
-  'exams' => ExamController::class,
-  'grades' => GradeController::class,
-  'student-fees' => StudentFeeController::class,
-  'payments' => PaymentController::class,
-  'students' => StudentController::class,
-]);
+Route::apiResource('classrooms', App\Http\Controllers\Api\ClassroomController::class);
+Route::apiResource('departments', App\Http\Controllers\Api\DepartmentController::class);
+Route::apiResource('users', App\Http\Controllers\Api\UserController::class);
+Route::apiResource('password-reset-tokens', App\Http\Controllers\Api\PasswordResetTokenController::class);
+Route::apiResource('sessions', App\Http\Controllers\Api\SessionController::class);
+Route::apiResource('subjects', App\Http\Controllers\Api\SubjectController::class);
+Route::apiResource('student-courses', App\Http\Controllers\Api\StudentCourseController::class);
+Route::apiResource('expense-categories', App\Http\Controllers\Api\ExpenseCategoryController::class);
+Route::apiResource('expenses', App\Http\Controllers\Api\ExpenseController::class);
+Route::apiResource('attendances', App\Http\Controllers\Api\AttendanceController::class);
+Route::apiResource('exams', App\Http\Controllers\Api\ExamController::class);
+Route::apiResource('fee-types', App\Http\Controllers\Api\FeeTypeController::class);
+Route::apiResource('fees', App\Http\Controllers\Api\FeeController::class);
+Route::apiResource('payments', App\Http\Controllers\Api\PaymentController::class);
+Route::apiResource('scores', App\Http\Controllers\Api\ScoreController::class);
+Route::apiResource('teacher-subjects', App\Http\Controllers\Api\TeacherSubjectController::class);
+Route::apiResource('schedules', App\Http\Controllers\Api\ScheduleController::class);
