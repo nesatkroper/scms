@@ -3,13 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class StudentCourseSeeder extends Seeder
 {
   public function run(): void
   {
-    $studentIds = DB::table('users')->role('student')->pluck('id')->toArray();
+    $studentIds = User::role('student')->pluck('id')->toArray();
     $subjectIds = DB::table('subjects')->pluck('id')->toArray();
     $enrollments = [];
 
@@ -25,6 +26,7 @@ class StudentCourseSeeder extends Seeder
         ];
       }
     }
+
     DB::table('student_course')->upsert($enrollments, ['student_id', 'subject_id']);
   }
 }

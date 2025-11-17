@@ -3,13 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleSeeder extends Seeder
 {
   public function run(): void
   {
-    $teacherIds = DB::table('users')->role('teacher')->pluck('id')->toArray();
+    $teacherIds = User::role('teacher')->pluck('id')->toArray();
     $subjectIds = DB::table('subjects')->pluck('id')->toArray();
     $classroomIds = DB::table('classrooms')->pluck('id')->toArray();
     $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];

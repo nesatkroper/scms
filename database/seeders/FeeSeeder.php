@@ -3,13 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class FeeSeeder extends Seeder
 {
   public function run(): void
   {
-    $students = DB::table('users')->role('student')->pluck('id')->toArray();
+    $students = User::role('student')->pluck('id')->toArray();
     $feeTypeIds = DB::table('fee_types')->pluck('id')->toArray();
     $fees = [];
 
