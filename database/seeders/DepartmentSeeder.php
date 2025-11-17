@@ -42,6 +42,10 @@ class DepartmentSeeder extends Seeder
       ],
     ];
 
-    DB::table('departments')->insert($departments);
+    // DB::table('departments')->insert($departments);
+    foreach ($departments as $department) {
+      DB::table('departments')->updateOrInsert(['name' => $department['name']], $department);
+    }
+
   }
 }

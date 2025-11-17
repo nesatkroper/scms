@@ -52,6 +52,11 @@ class SubjectSeeder extends Seeder
       ],
     ];
 
+    $departmentIds = DB::table('departments')->pluck('id')->toArray();
+    $subject['department_id'] = $departmentIds[array_rand($departmentIds)];
+
     DB::table('subjects')->insert($subjects);
+
+
   }
 }
