@@ -87,7 +87,7 @@
       function refreshContent(searchTerm = searchInput.val()) {
         const perPage = perPageSelect.val() || '';
         const roleFilter = roleFilterSelect.val() ||
-        ''; // 💡 Check if this is correctly defined and capturing the value
+          ''; // 💡 Check if this is correctly defined and capturing the value
 
         $.ajax({
           url: "{{ route('admin.users.index') }}",
