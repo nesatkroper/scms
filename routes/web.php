@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route ;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{
   AttendanceController,
@@ -82,9 +82,21 @@ Route::prefix('admin')
       'students' => StudentController::class,
       'subjects' => SubjectController::class,
       'teachers' => TeacherController::class,
-      'scores' => ScoreController::class,
+      // 'scores' => ScoreController::class,
       'course_offerings' => CourseOfferingController::class,
     ]);
+
+    Route::group(['prefix' => 'scores', 'as' => 'scores.'], function () {
+      Route::get('/', [ScoreController::class, 'index'])->name('index');
+      Route::get('/create', [ScoreController::class, 'create'])->name('create');
+
+      Route::get('/filter', [ScoreController::class, 'filterStudents'])->name('filterStudents');
+
+      Route::post('/', [ScoreController::class, 'store'])->name('store');
+      Route::get('/{score}/edit', [ScoreController::class, 'edit'])->name('edit');
+      Route::put('/{score}', [ScoreController::class, 'update'])->name('update');
+      Route::delete('/{score}', [ScoreController::class, 'destroy'])->name('destroy');
+    });
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -1,386 +1,106 @@
 @extends('layouts.admin')
-
+@section('title', 'Exam Scores Management')
 @section('content')
-  <div
-    class="px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    <div class="md:flex gap-2 justify-between items-center mb-3">
-      <h3 class="mb-3 sm:mb-sm-0 text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-        <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+
+  <div class="box px-4 py-6 md:p-8 bg-white dark:bg-gray-800 sm:rounded-lg shadow-sm">
+    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-3">
+        {{-- Icon for Scores (Trophy/Certificate) --}}
+        <svg class="size-9 rounded-full p-1 bg-green-50 text-green-600 dark:text-green-50 dark:bg-green-900"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
           <path fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+            d="M11.54 22.351A2.433 2.433 0 0012 22.5c.376 0 .741-.096 1.06-.289l7.632-4.572a1.425 1.425 0 00.865-1.284V8.428a1.425 1.425 0 00-.865-1.284L13.06 2.404A2.433 2.433 0 0012 2.25c-.376 0-.741.096-1.06.289L3.308 7.144A1.425 1.425 0 002.443 8.428v7.615c0 .54.27 1.047.728 1.343l8.286 5.524zM12 21.085l-7.23-4.338V8.752l7.23 4.338v7.995zM12 12.352L4.77 7.954l7.23-4.338 7.23 4.338-7.23 4.398z"
             clip-rule="evenodd" />
         </svg>
-        Scores Management
+        Exam Scores
       </h3>
       <a href="{{ route('admin.scores.create') }}"
-        class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+        class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
-            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
             clip-rule="evenodd" />
         </svg>
-        Add Score
+        Record New Score
       </a>
-
     </div>
-    <div
-      class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200
-             dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-      <div class="mt-3 md:mt-0 gap-2">
-        <div class="mb-2 flex items-center justify-between gap-4">
-          <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Filters</h4>
-          <!-- View Toggle -->
-          <div
-            class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
-            <button id="listViewBtn"
-              class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
-              <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
-            </button>
-            <button id="cardViewBtn"
-              class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
-              <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
-            </button>
-          </div>
-        </div>
-
-        <form id="filterForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
-          <!-- Student Filter -->
-          <div>
-            <label for="studentFilter"
-              class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Student</label>
-            <div data-name="student_id"
-              class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-              <div class="select-header cursor-pointer flex justify-between items-center">
-                <span class="selected-value truncate">
-                  {{ request('student_id') ? $students->firstWhere('id', request('student_id'))?->name : 'Select student' }}
-                </span>
-                <span class="arrow transition-transform duration-300">▼</span>
-              </div>
-              <div
-                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                  <input type="search"
-                    class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                    placeholder="Search student...">
-                </div>
-                <div class="options-container">
-                  <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                    data-value="">
-                    All Students
-                  </div>
-                  @foreach ($students as $student)
-                    <div
-                      class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('student_id') == $student->id ? 'selected' : '' }}"
-                      data-value="{{ $student->id }}">
-                      {{ $student->name ?? '' }} ({{ $student?->gradeLevel?->name ?? '' }})
-                    </div>
-                  @endforeach
-                </div>
-                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
-                </div>
-              </div>
-            </div>
-            <input type="hidden" name="student_id" id="studentFilter" value="{{ request('student_id') }}">
-          </div>
-
-          <!-- Exam Filter -->
-          <div>
-            <label for="examFilter" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Exam</label>
-            <div data-name="exam_id"
-              class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-              <div class="select-header cursor-pointer flex justify-between items-center">
-                <span class="selected-value truncate">
-                  {{ request('exam_id') ? $exams->firstWhere('id', request('exam_id'))?->name : 'Select exam' }}
-                </span>
-                <span class="arrow transition-transform duration-300">▼</span>
-              </div>
-              <div
-                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                  <input type="search"
-                    class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                    placeholder="Search exam...">
-                </div>
-                <div class="options-container">
-                  <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                    data-value="">
-                    All Exams
-                  </div>
-                  @foreach ($exams as $exam)
-                    <div
-                      class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('exam_id') == $exam->id ? 'selected' : '' }}"
-                      data-value="{{ $exam->id }}">
-                      {{ $exam->name }}
-                    </div>
-                  @endforeach
-                </div>
-                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
-                </div>
-              </div>
-            </div>
-            <input type="hidden" name="exam_id" id="examFilter" value="{{ request('exam_id') }}">
-          </div>
-
-          <div>
-            <label for="subject_id"
-              class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subjects</label>
-            <div data-name="exam_id"
-              class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-              <div class="select-header cursor-pointer flex justify-between items-center">
-                <span class="selected-value truncate">
-                  {{ request('subject_id') ? $exams->firstWhere('id', request('subject_id'))?->name : 'Select subjects' }}
-                </span>
-                <span class="arrow transition-transform duration-300">▼</span>
-              </div>
-              <div
-                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                  <input type="search"
-                    class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                    placeholder="Search exam...">
-                </div>
-                <div class="options-container">
-                  <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                    data-value="">
-                    All Exams
-                  </div>
-                  @foreach ($subjects as $subject)
-                    <div
-                      class="select-option px-[10px] py-2 cursor-pointer border-b
-                                         border-slate-200 dark:border-slate-600 {{ request('subject_id') == $subject->id ? 'selected' : '' }}"
-                      data-value="{{ $subject->id }}">
-                      {{ $subject->name }}
-                    </div>
-                  @endforeach
-                </div>
-                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results found
-                </div>
-              </div>
-            </div>
-            <input type="hidden" name="subject_id" id="subject_id" value="{{ request('subject_id') }}">
-          </div>
-
-          <div>
-            <label for="gradelevels"
-              class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subjects</label>
-            <div data-name="exam_id"
-              class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-              <div class="select-header cursor-pointer flex justify-between items-center">
-                <span class="selected-value truncate">
-                  {{ request('gradelevel_id') ? $exams->firstWhere('id', request('subject_id'))?->name : 'Select subjects' }}
-                </span>
-                <span class="arrow transition-transform duration-300">▼</span>
-              </div>
-              <div
-                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                  <input type="search"
-                    class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                    placeholder="Search exam...">
-                </div>
-                <div class="options-container">
-                  <div
-                    class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                    data-value="">
-                    All Exams
-                  </div>
-                  @foreach ($subjects as $subject)
-                    <div
-                      class="select-option px-[10px] py-2 cursor-pointer border-b
-                                         border-slate-200 dark:border-slate-600 {{ request('subject_id') == $subject->id ? 'selected' : '' }}"
-                      data-value="{{ $subject->id }}">
-                      {{ $subject->name }}
-                    </div>
-                  @endforeach
-                </div>
-                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                  found
-                </div>
-              </div>
-            </div>
-            <input type="hidden" name="subject_id" id="subject_id" value="{{ request('subject_id') }}">
-          </div>
-
-          <!-- Grade Filter -->
-          <div>
-            <label for="gradeFilter"
-              class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Grade</label>
-            <input type="text" id="gradeFilter" name="grade" placeholder="Enter grade"
-              value="{{ request('grade') }}"
-              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
-          </div>
-          <!-- grade Filter -->
-          {{-- <div>
-                        <label for="gradeFilter"
-                            class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Grade</label>
-                        <div data-name="grade_id"
-                            class="custom-select relative w-full text-sm px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
-                            <div class="select-header cursor-pointer flex justify-between items-center">
-                                <span class="selected-value truncate">
-                                    {{ request('grade_id') ? $grades->firstWhere('id', request('grade_id'))?->name : 'Select grade' }}
-                                </span>
-                                <span class="arrow transition-transform duration-300">▼</span>
-                            </div>
-                            <div
-                                class="select-options absolute z-10 top-full left-0 right-0 max-h-[250px] overflow-y-auto hidden shadow-md rounded-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
-                                <div class="search-container p-2 sticky top-0 z-1 bg-white dark:bg-slate-700">
-                                    <input type="search"
-                                        class="search-input text-sm w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
-                                        placeholder="Search grade...">
-                                </div>
-                                <div class="options-container">
-                                    <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600"
-                                        data-value="">
-                                        All grade
-                                    </div>
-                                    @foreach ($grades as $grade)
-                                        <div class="select-option px-[10px] py-2 cursor-pointer border-b border-slate-200 dark:border-slate-600 {{ request('exam_id') == $exam->id ? 'selected' : '' }}"
-                                            data-value="{{ $grade->id }}">
-                                            {{ $grade->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <div class="no-results p-2 text-center text-red-500" style="display: none;">No results
-                                    found
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="grade_id" id="gradeFilter" value="{{ request('grade_id') }}">
-                    </div> --}}
-
-          <!-- Score Range Filter -->
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label for="minScoreFilter" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Min
-                Score</label>
-              <input type="number" id="minScoreFilter" name="min_score" placeholder="Min"
-                value="{{ request('min_score') }}"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
-            </div>
-            <div>
-              <label for="maxScoreFilter" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Max
-                Score</label>
-              <input type="number" id="maxScoreFilter" name="max_score" placeholder="Max"
-                value="{{ request('max_score') }}"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 text-sm">
-            </div>
-          </div>
-
-          <div class="md:col-span-2 lg:col-span-4 flex justify-end gap-2">
-            <!-- Search Input -->
-            <div class="relative w-full">
-              <input type="search" id="searchInput" placeholder="Search scores..."
-                class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-              <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-            </div>
-            <button id="resetSearch"
-              class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-              <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-            </button>
-            <button type="button" id="applyFilters"
-              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm cursor-pointer">
-              Filters</button>
-            <button type="button" id="resetFilters"
-              class="px-4 py-2 cursor-pointer bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200
-                             rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 text-sm">
-              Reset
-            </button>
-          </div>
-        </form>
-
+    @if (session('success'))
+      <div class="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
+        role="alert">
+        {{ session('success') }}
       </div>
+    @endif
+
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">Student</th>
+            <th scope="col" class="px-6 py-3">Exam</th>
+            <th scope="col" class="px-6 py-3">Course / Subject</th>
+            <th scope="col" class="px-6 py-3 text-center">Semester</th>
+            <th scope="col" class="px-6 py-3 text-center">Score</th>
+            <th scope="col" class="px-6 py-3 text-center">Grade</th>
+            <th scope="col" class="px-6 py-3">Remarks</th>
+            <th scope="col" class="px-6 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse ($scores as $score)
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {{ $score->student->name ?? 'N/A' }}
+              </th>
+              <td class="px-6 py-4">
+                {{ $score->exam->name ?? 'Deleted Exam' }}
+              </td>
+              <td class="px-6 py-4">
+                {{ $score->courseOffering->subject->name ?? 'Deleted Course' }}
+              </td>
+              <td class="px-6 py-4 text-center">
+                {{ $score->semester }}
+              </td>
+              <td class="px-6 py-4 text-center font-semibold text-base">
+                {{ $score->score }}
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span
+                  class="font-bold px-2 py-0.5 rounded-full text-xs {{ $score->grade === 'A' ? 'bg-indigo-100 text-indigo-800' : ($score->grade === 'B' ? 'bg-blue-100 text-blue-800' : ($score->grade === 'F' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800')) }}">
+                  {{ $score->grade ?? '-' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-xs max-w-[150px] truncate">
+                {{ $score->remarks ?? 'No remarks' }}
+              </td>
+              <td class="px-6 py-4 text-center whitespace-nowrap">
+                <a href="{{ route('admin.scores.edit', $score->id) }}"
+                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">Edit</a>
+
+                <form action="{{ route('admin.scores.destroy', $score->id) }}" method="POST" class="inline delete-form"
+                  onsubmit="return confirm('Are you sure you want to delete this score record?');">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                    class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                </form>
+              </td>
+            </tr>
+          @empty
+            <tr class="bg-white dark:bg-gray-800">
+              <td colspan="8" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                No scores have been recorded yet.
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
     </div>
-    <!-- Table View -->
-    <div id="TableContainer" class="table-responsive overflow-x-auto h-[60vh]">
-      @include('admin.scores.partials.table', ['scores' => $scores])
-    </div>
-    <!-- Card View (hidden by default) -->
-    <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      @include('admin.scores.partials.cardlist', ['scores' => $scores])
-    </div>
-    <!-- Pagination -->
-    <div class="pagination-container">
+
+    {{-- Pagination links --}}
+    <div class="mt-6">
       {{ $scores->links() }}
     </div>
   </div>
 
-  <!-- Modal Backdrop -->
-  <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm"></div>
-
-  @include('admin.scores.partials.create')
 @endsection
-
-@push('scripts')
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Core Configuration
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
-      selectfields();
-
-      function selectfields() {
-        document.querySelectorAll('.custom-select').forEach(select => {
-          const header = select.querySelector('.select-header');
-          const optionsBox = select.querySelector('.select-options');
-          const searchInput = select.querySelector('.search-input');
-          const optionsContainer = select.querySelector('.options-container');
-          const selectedValue = select.querySelector('.selected-value');
-          const noResults = select.querySelector('.no-results');
-          const options = Array.from(select.querySelectorAll('.select-option'));
-          const hiddenInput = document.querySelector(`input[name="${select.dataset.name}"]`);
-
-          // Toggle dropdown
-          header.addEventListener('click', function() {
-            select.classList.toggle('open');
-            if (select.classList.contains('open')) {
-              searchInput.focus();
-            }
-          });
-
-          // Filter options
-          searchInput.addEventListener('input', function() {
-            const term = this.value.toLowerCase().trim();
-            let hasMatch = false;
-
-            options.forEach(option => {
-              if (option.textContent.toLowerCase().includes(term)) {
-                option.style.display = 'block';
-                hasMatch = true;
-              } else {
-                option.style.display = 'none';
-              }
-            });
-
-            noResults.style.display = hasMatch ? 'none' : 'block';
-          });
-
-          // Select option
-          options.forEach(option => {
-            option.addEventListener('click', function() {
-              options.forEach(opt => opt.classList.remove('selected'));
-              this.classList.add('selected');
-              selectedValue.textContent = this.textContent;
-              hiddenInput.value = this.dataset.value;
-              select.classList.remove('open');
-              console.log('Selected id:', this.dataset.value);
-            });
-          });
-
-          // Close when clicking outside
-          document.addEventListener('click', function(e) {
-            if (!select.contains(e.target)) {
-              select.classList.remove('open');
-            }
-          });
-        });
-      }
-
-    });
-  </script>
-@endpush

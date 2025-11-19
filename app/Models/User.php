@@ -137,7 +137,9 @@ class User extends Authenticatable
 
   public function courseOfferings()
   {
-    return $this->hasMany(CourseOffering::class, 'teacher_id');
+    return $this->belongsToMany(CourseOffering::class, 'student_course', 'student_id', 'course_offering_id')
+      ->using(StudentCourse::class)
+      ->as('enrollment')
+      ->withPivot('grade_final');
   }
-
 }

@@ -41,4 +41,12 @@ class CourseOffering extends Model
   {
     return $this->hasMany(Exam::class, 'course_offering_id');
   }
+
+  public function students()
+  {
+    return $this->belongsToMany(User::class, 'student_course', 'course_offering_id', 'student_id')
+      ->using(StudentCourse::class)
+      ->as('enrollment')
+      ->withPivot('grade_final');
+  }
 }
