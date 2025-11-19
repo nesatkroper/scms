@@ -60,7 +60,6 @@ class User extends Authenticatable
     return $this->belongsTo(Department::class);
   }
 
-  // STUDENT Relationships
   public function fees()
   {
     return $this->hasMany(Fee::class, 'student_id');
@@ -88,10 +87,22 @@ class User extends Authenticatable
       ->withTimestamps();
   }
 
-  // TEACHER Relationships
   public function teachingSubjects()
   {
     return $this->belongsToMany(Subject::class, 'teacher_subject');
+  }
+
+  public function subjects()
+  {
+    return $this->belongsToMany(Subject::class, 'teacher_subject', 'teacher_id', 'subject_id')
+      ->using(TeacherSubject::class)
+      ->withPivot('time_slot')
+      ->withTimestamps();
+  }
+
+  public function subjectAssignments()
+  {
+    return $this->hasMany(TeacherSubject::class, 'teacher_id');
   }
 
   public function schedules()
@@ -99,13 +110,11 @@ class User extends Authenticatable
     return $this->hasMany(Schedule::class, 'teacher_id');
   }
 
-  // Admin who approves expenses
   public function approvedExpenses()
   {
     return $this->hasMany(Expense::class, 'approved_by');
   }
 
-  // User who received payment
   public function receivedPayments()
   {
     return $this->hasMany(Payment::class, 'received_by');

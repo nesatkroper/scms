@@ -4,30 +4,16 @@ use Illuminate\Support\Facades\Route as R;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{
   AttendanceController,
-  BookController,
-  BookCategoryController,
-  BookIssueController,
   ClassroomController,
   DepartmentController,
-  EventController,
   ExamController,
   ExpenseController,
   ExpenseCategoryController,
-  FeeStructureController,
-  GradeController,
-  GradeLevelController,
-  GuardianController,
-  NoticeController,
   PaymentController,
   SectionController,
-  SettingController,
   StudentController,
-  StudentFeeController,
-  StudentGuardianController,
   SubjectController,
   TeacherController,
-  TimetableController,
-  TimetableEntryController,
   HomeController,
   PermissionController,
   ScoreController,
@@ -35,6 +21,8 @@ use App\Http\Controllers\Admin\{
   RoleController,
   ProfileController
 };
+
+R::resource('admin/assignments', App\Http\Controllers\Admin\TeacherSubjectController::class)->names('admin.assignments');
 
 
 R::get('/home', function () {
