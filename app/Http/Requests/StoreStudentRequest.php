@@ -24,19 +24,15 @@ class StoreStudentRequest extends FormRequest
             'admission_date' => ['required', 'date'],
             
             // Contact Information
-            'address' => ['required', 'string'],
+            'address' => ['required', 'string', 'max:500'],
             'nationality' => ['nullable', 'string', 'max:100'],
             'religion' => ['nullable', 'string', 'max:100'],
             
             // Medical Information
-            'blood_group' => ['nullable', 'string', 'max:10'],
+            'blood_group' => ['nullable', 'string', 'max:5'],
             
             // Profile Image
             'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
-            
-            // Optional Fields (if needed for students)
-            'occupation' => ['nullable', 'string', 'max:255'],
-            'company' => ['nullable', 'string', 'max:255'],
         ];
     }
 
@@ -45,13 +41,16 @@ class StoreStudentRequest extends FormRequest
         return [
             'name.required' => 'The student name is required.',
             'email.required' => 'Email address is required.',
+            'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'This email is already registered.',
             'phone.required' => 'Phone number is required.',
+            'phone.regex' => 'Please enter a valid phone number.',
             'gender.required' => 'Please select gender.',
             'date_of_birth.required' => 'Date of birth is required.',
             'date_of_birth.before_or_equal' => 'Date of birth cannot be in the future.',
             'admission_date.required' => 'Admission date is required.',
             'address.required' => 'Address is required.',
+            'blood_group.regex' => 'Please enter a valid blood group (e.g., A+, B-, O+).',
             'avatar.image' => 'The avatar must be a valid image.',
             'avatar.mimes' => 'The avatar must be a JPEG, PNG, JPG, GIF, or WEBP image.',
             'avatar.max' => 'The avatar must not exceed 2MB.',
