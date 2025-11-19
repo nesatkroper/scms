@@ -66,7 +66,7 @@ class TeacherController extends Controller
         return view('admin.teachers.index', compact('teachers', 'departments'));
     }
 
-    public function store(UserRequest $request)
+    public function store(StoreTeacherRequest $request)
     {
         try {
             Log::info('Store Teacher Request Data:', $request->all());
@@ -75,20 +75,19 @@ class TeacherController extends Controller
             Log::info('Validated Data:', $validated);
 
             // Handle photo upload
-            $teacherPhotoPath = public_path('photos/teacher');
+            $teacherPhotoPath = public_path('uploads/teacher');
             if (!file_exists($teacherPhotoPath)) {
                 mkdir($teacherPhotoPath, 0755, true);
             }
 
-            if ($request->hasFile('photo')) {
-                $photo = $request->file('photo');
-                $photoName = time() . '-' . date('d-m-Y') . '_add_' . $photo->getClientOriginalName();
-                $photo->move($teacherPhotoPath, $photoName);
-                $validated['avatar'] = 'photos/teacher/' . $photoName;
+            if ($request->hasFile('avatar')) {
+                $avatar = $request->file('avatar');
+                $photoName = time() . '-' . date('d-m-Y') . '_add_' . $avatar->getClientOriginalName();
+                $avatar->move($teacherPhotoPath, $photoName);
+                $validated['avatar'] = 'uploads/teacher/' . $photoName;
             }
-
             // Handle CV upload
-            $cvPath = public_path('photos/cv');
+            $cvPath = public_path('uploads/cv');
             if (!file_exists($cvPath)) {
                 mkdir($cvPath, 0755, true);
             }
@@ -97,7 +96,7 @@ class TeacherController extends Controller
                 $cv = $request->file('cv');
                 $cvName = time() . '-' . date('d-m-Y') . '_add_' . $cv->getClientOriginalName();
                 $cv->move($cvPath, $cvName);
-                $validated['cv'] = 'photos/cv/' . $cvName;
+                $validated['cv'] = 'uploads/cv/' . $cvName;
             }
 
             // Set default password if not provided
@@ -157,17 +156,17 @@ class TeacherController extends Controller
             $data = $request->validated();
 
             // Handle photo upload
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('avatar')) {
                 // Delete old photo if exists
                 if ($teacher->avatar && file_exists(public_path($teacher->avatar))) {
                     unlink(public_path($teacher->avatar));
                 }
 
-                $photo = $request->file('photo');
-                $photoName = time() . '-' . date('d-m-Y') . '_ed_' . $photo->getClientOriginalName();
-                $photoPath = public_path('photos/teacher');
-                $photo->move($photoPath, $photoName);
-                $data['avatar'] = 'photos/teacher/' . $photoName;
+                $avatar = $request->file('avatar');
+                $photoName = time() . '-' . date('d-m-Y') . '_ed_' . $avatar->getClientOriginalName();
+                $photoPath = public_path('uploads/teacher');
+                $avatar->move($photoPath, $photoName);
+                $data['avatar'] = 'uploads/teacher/' . $photoName;
             }
 
             // Handle CV upload
@@ -178,9 +177,9 @@ class TeacherController extends Controller
                 }
                 $cv = $request->file('cv');
                 $cvName = time() . '-' . date('d-m-Y') . '_ed_' . $cv->getClientOriginalName();
-                $cvPath = public_path('photos/cv');
+                $cvPath = public_path('uploads/cv');
                 $cv->move($cvPath, $cvName);
-                $data['cv'] = 'photos/cv/' . $cvName;
+                $data['cv'] = 'uploads/cv/' . $cvName;
             }
 
             // Update password if provided

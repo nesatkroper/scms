@@ -8,8 +8,8 @@
                 <div class="absolute -bottom-15">
                     <div data-id="{{ $teacher->id }}"
                         class="detail-btn size-32 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
-                        @if ($teacher->photo)
-                            <img src="{{ asset($teacher->photo) }}" alt="{{ $teacher->name }}"
+                        @if ($teacher->avatar)
+                            <img src="{{ asset($teacher->avatar) }}" alt="{{ $teacher->name }}"
                                 class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
