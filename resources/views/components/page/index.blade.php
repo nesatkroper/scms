@@ -1,5 +1,5 @@
 <div
-  class="box px-2 py-4 md:p-4 bg-white mb-16 dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+  class="box px-2 py-4 md:p-4 bg-white mb-16 dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm min-h-[80vh]">
   <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
     <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -39,7 +39,8 @@
       <div class="flex items-center mt-3 md:mt-0 gap-2">
         @if ($showSearch)
           <div class="relative w-full">
-            <input type="search" id="searchInput" placeholder="Search {{ $title }}..." class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+            <input type="search" id="searchInput" placeholder="Search {{ $title }}..."
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                                 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
@@ -76,7 +77,7 @@
 
 @push('scripts')
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
       if (typeof $ !== 'undefined') {
         $.ajaxSetup({
@@ -88,7 +89,7 @@
         });
       }
 
-      selectfields = function () {
+      selectfields = function() {
         document.querySelectorAll('.custom-select').forEach(select => {
           const header = select.querySelector('.select-header');
           const optionsBox = select.querySelector('.select-options');
@@ -105,7 +106,7 @@
             if (select.classList.contains('open')) searchInput.focus();
           });
 
-          searchInput.addEventListener('input', function () {
+          searchInput.addEventListener('input', function() {
             const term = this.value.toLowerCase().trim();
             let hasMatch = false;
             options.forEach(option => {
@@ -119,7 +120,7 @@
           });
 
           options.forEach(option => {
-            option.addEventListener('click', function () {
+            option.addEventListener('click', function() {
               options.forEach(opt => opt.classList.remove(
                 'selected'));
               this.classList.add('selected');
@@ -135,7 +136,7 @@
             });
           });
 
-          document.addEventListener('click', function (e) {
+          document.addEventListener('click', function(e) {
             if (!select.contains(e.target)) {
               select.classList.remove('open');
               optionsBox.classList.add('hidden');

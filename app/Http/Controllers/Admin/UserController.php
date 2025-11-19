@@ -15,60 +15,23 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-  // public function index(Request $request)
-  // {
-  //   $search = $request->input('search');
-  //   $perPage = $request->input('per_page', 8);
-  //   $roles = Role::all();
 
-  //   $users = User::with('roles')
-  //     ->when($search, function ($query) use ($search) {
-  //       return $query->where('name', 'like', "%{$search}%")
-  //         ->orWhere('email', 'like', "%{$search}%")
-  //         ->orWhere('phone', 'like', "%{$search}%");
-  //     })
-  //     ->orderBy('created_at', 'desc')
-  //     ->paginate($perPage)
-  //     ->appends([
-  //       'search' => $search,
-  //       'per_page' => $perPage
-  //     ]);
-
-  //   if ($request->ajax()) {
-  //     $html = [
-  //       'table' => view('admin.users.table', compact('users'))->render(),
-  //       'pagination' => $users->links()->toHtml()
-  //     ];
-
-  //     return response()->json([
-  //       'success' => true,
-  //       'html' => $html
-  //     ]);
-  //   }
-
-  //   return view('admin.users.index', compact('users', 'roles'));
-  // }
 
   public function index(Request $request)
   {
     $search = $request->input('search');
     $perPage = $request->input('per_page', 8);
-    // 💡 Added role filter input
     $roleFilter = $request->input('role_filter');
 
-    // Roles are needed for the filter dropdown in the view
     $roles = Role::all();
 
-    // $users = User::with('roles')
     $users = User::with(['roles', 'department'])
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('email', 'like', "%{$search}%")
           ->orWhere('phone', 'like', "%{$search}%");
       })
-      // 💡 Ensure the role filter logic is exactly this:
       ->when($roleFilter, function ($query) use ($roleFilter) {
-        // Spatie's role() method filters by role name or ID
         return $query->role($roleFilter);
       })
       ->orderBy('created_at', 'desc')
@@ -76,7 +39,6 @@ class UserController extends Controller
       ->appends([
         'search' => $search,
         'per_page' => $perPage,
-        // 💡 Append the new filter to the pagination links
         'role_filter' => $roleFilter,
       ]);
 
@@ -92,7 +54,6 @@ class UserController extends Controller
       ]);
     }
 
-    // Pass the active filter to the view
     return view('admin.users.index', compact('users', 'roles', 'roleFilter'));
   }
 
@@ -121,7 +82,6 @@ class UserController extends Controller
         $avatar = $request->file('avatar');
         $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
 
-        // Resize and save
         $image = $manager->read($avatar);
         $image->resize(640, 640);
         $image->save($avatarPath . '/' . $avatarName);
@@ -189,9 +149,7 @@ class UserController extends Controller
         'gender',
       ]);
 
-      // Handle avatar upload
       if ($request->hasFile('avatar')) {
-        // Delete old avatar if exists
         if ($user->avatar && file_exists(public_path($user->avatar))) {
           unlink(public_path($user->avatar));
         }
@@ -204,7 +162,6 @@ class UserController extends Controller
           mkdir($avatarPath, 0755, true);
         }
 
-        // Resize and save
         $manager = new ImageManager(new Driver());
         $image = $manager->read($avatar);
         $image->resize(640, 640);
@@ -224,7 +181,6 @@ class UserController extends Controller
 
       $user->update($data);
       $user->syncRoles($validatedData['type']);
-      // =========
       if ($user->student && ($validatedData['type'] === 'student')) {
         $user->student->update([
           'name' => $user->name,
@@ -241,7 +197,6 @@ class UserController extends Controller
           $user->student->update($studentData);
         }
       }
-      // =========
       return response()->json([
         'success' => true,
         'message' => 'User updated successfully!',
@@ -259,7 +214,6 @@ class UserController extends Controller
   public function destroy(User $user)
   {
     try {
-      // Delete avatar if exists
       if ($user->avatar && file_exists(public_path($user->avatar))) {
         unlink(public_path($user->avatar));
       }
