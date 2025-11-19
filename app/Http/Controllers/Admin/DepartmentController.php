@@ -35,8 +35,7 @@ class DepartmentController extends Controller
 
         if ($request->ajax()) {
             $html = [
-                'html' => view('admin.departments.partials.table', compact('departments'))->render(),
-                'cards' => view('admin.departments.partials.cardlist', compact('departments'))->render(),
+                'cards' => view('admin.departments.cardlist', compact('departments'))->render(),
                 'pagination' => $departments->links()->toHtml()
             ];
 
