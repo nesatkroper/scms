@@ -64,9 +64,10 @@
         </div>
         <div class="submenu {{ $isAcademicsActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
-            <li><a href="{{ route('admin.departments.index') }}"
+            <li>
+              <a href="{{ route('admin.classrooms.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.departments.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">departments</a>
+                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Classrooms</a>
             </li>
             <li>
               <a href="{{ route('admin.subjects.index') }}"
@@ -74,6 +75,12 @@
                 {{ request()->routeIs('admin.subjects.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                 subjects
               </a>
+            </li>
+            <li>
+              <a href="{{ route('admin.course_offerings.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course
+                Offerings</a>
             </li>
             <li>
               <a href="{{ route('admin.exams.index') }}"
@@ -85,16 +92,7 @@
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.scores.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">scores</a>
             </li>
-            <li>
-              <a href="{{ route('admin.course_offerings.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course</a>
-            </li>
-            <li>
-              <a href="{{ route('admin.classrooms.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Classrooms</a>
-            </li>
+
           </ul>
         </div>
       </li>
@@ -112,6 +110,10 @@
         </div>
         <div class="submenu {{ $isOrganizationActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
+            <li><a href="{{ route('admin.departments.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.departments.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">departments</a>
+            </li>
             <li>
               <a href="{{ route('admin.teachers.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize

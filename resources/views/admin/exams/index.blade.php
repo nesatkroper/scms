@@ -1,396 +1,228 @@
 @extends('layouts.admin')
-@section('title', 'Exams')
+
+@section('title', 'Exams List')
+
 @section('content')
-    <x-page.index btn-text="Create New Exam" :showReset="true" :showViewToggle="true" title="Exams"
-        iconSvgPath="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838l-2.727 1.17 1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z">
-        
-        {{-- Table & Card View Containers --}}
-        <div id="TableContainer" class="table-respone overflow-x-auto h-[60vh]">
-            @include('admin.exams.partials.table', ['exams' => $exams])
+
+  <div
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+      {{-- Icon for Exams (using a checklist/assessment theme) --}}
+      <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+      Exams List
+    </h3>
+
+    {{-- Success/Error Messages --}}
+    @if (session('success'))
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
+      </div>
+    @endif
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+      </div>
+    @endif
+
+    <form action="{{ route('admin.exams.index') }}" method="GET">
+      <div
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+
+        {{-- Create Button (Redirects to Create Page) --}}
+        <a href="{{ route('admin.exams.create') }}"
+          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+              clip-rule="evenodd" />
+          </svg>
+          Create New Exam
+        </a>
+
+        <div class="flex items-center mt-3 md:mt-0 gap-2">
+          <div class="relative w-full">
+            <input type="search" name="search" id="searchInput"
+              placeholder="Search exams by name, course, or description..."
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                    focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+              value="{{ request('search') }}">
+            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+          </div>
+
+          <button type="submit"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
+            title="Search">
+            <i class="fas fa-search text-white text-xs"></i>
+          </button>
+          <a href="{{ route('admin.exams.index') }}" id="resetSearch"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
+            title="Reset Search">
+            <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356-2A8.98 8.98 0 0020 12a9 9 0 11-8-9.98l-7.9 7.9M2 12h2"></path>
+            </svg>
+          </a>
         </div>
-        <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('admin.exams.partials.cardlist', ['exams' => $exams])
+      </div>
+    </form>
+
+    {{-- Exam Cards --}}
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      @forelse ($exams as $exam)
+        <div
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+
+          <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+            <div class="flex justify-between items-start gap-2">
+              <div>
+                {{-- Main Exam Name --}}
+                <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $exam->name }}</h4>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Course: <span
+                    class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $exam->courseOffering->subject->name ?? 'Course Deleted' }}</span>
+                </p>
+              </div>
+
+              {{-- Detail Button (Redirects to Show Page) --}}
+              <a href="{{ route('admin.exams.show', $exam->id) }}"
+                class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
+                title="View Details">
+                <span class="btn-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="p-4 space-y-3">
+            {{-- Exam Date --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-red-50 dark:bg-slate-700 text-red-600 dark:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Exam Date</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200">
+                  {{ \Carbon\Carbon::parse($exam->date)->format('F jS, Y') }}
+                </p>
+              </div>
+            </div>
+
+            {{-- Total Marks / Passing Marks --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-green-50 dark:bg-slate-700 text-green-600 dark:text-green-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 002.944 12c.328 1.488.844 2.936 1.551 4.316l-3.35 3.35a1 1 0 001.414 1.414l3.35-3.35c1.38 0.707 2.828 1.223 4.316 1.551a11.955 11.955 0 01-8.618-3.04A12.02 12.02 0 0012 21.056c1.488-.328 2.936-.844 4.316-1.551l3.35 3.35a1 1 0 001.414-1.414l-3.35-3.35c0.707-1.38 1.223-2.828 1.551-4.316a12.02 12.02 0 00.001-8.168z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Total Marks / Passing Marks</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200">
+                  <span>
+                    {{ $exam->total_marks }} / <span
+                      class="text-green-600 dark:text-green-400 font-bold">{{ $exam->passing_marks }}</span>
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {{-- Course Time Slot --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Scheduled Time</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200">
+                  <span>
+                    {{ $exam->courseOffering->time_slot ?? 'N/A' }}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {{-- Actions (Edit Link + Delete Form) --}}
+          <div
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+
+            {{-- Edit Button (Redirects to Edit Page) --}}
+            <a href="{{ route('admin.exams.edit', $exam->id) }}"
+              class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+              title="Edit">
+              <span class="btn-content flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </span>
+            </a>
+
+            {{-- Delete Button (Full form submission) --}}
+            <form action="{{ route('admin.exams.destroy', $exam->id) }}" method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
+              @csrf
+              @method('DELETE')
+              <button type="submit"
+                class="delete-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                title="Delete">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </form>
+          </div>
         </div>
+      @empty
+        <div class="col-span-full py-12 text-center">
+          <div
+            class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
+            <div class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400 dark:text-red-500" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Exams Found</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first exam to begin recording scores.</p>
+          </div>
+        </div>
+      @endforelse
+    </div>
 
-        {{-- Pagination --}}
-        <x-table.pagination :paginator="$exams"/>
+    {{-- Pagination Links --}}
+    <div class="mt-6">
+      {{ $exams->links() }}
+    </div>
 
-    </x-page.index>
-
-    {{-- Modals --}}
-    @include('admin.exams.partials.create')
-    @include('admin.exams.partials.edit')
-    @include('admin.exams.partials.detail')
-    @include('admin.exams.partials.bulkedit')
-    @include('admin.exams.partials.bulkdelete')
-    <x-modal.confirmdelete title="Exam" />
+  </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('assets/js/modal.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Core Configuration
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // DOM Elements
-            const backdrop = document.getElementById('modalBackdrop');
-            const perPageSelect = $('#perPageSelect');
-            const searchInput = $('#searchInput');
-            const resetSearch = $('#resetSearch');
-            const listViewBtn = $('#listViewBtn');
-            const cardViewBtn = $('#cardViewBtn');
-            const tableContainer = $('#TableContainer');
-            const cardContainer = $('#CardContainer');
-
-            const selectAllCheckbox = $('#selectAllCheckbox');
-            const bulkActionsBar = $('#bulkActionsBar');
-            const selectedCount = $('#selectedCount');
-            const deselectAllBtn = $('#deselectAll');
-            const bulkEditBtn = $('#bulkEditBtn');
-            const bulkDeleteBtn = $('#bulkDeleteBtn');
-
-            $('#openCreateModal').off('click').on('click', function() {
-                showModal('Modalcreate');
-            });
-
-            $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
-                closeModal('bulkEditModal');
-            });
-
-            // View Management
-            function setView(viewType) {
-                if (viewType === 'list') {
-                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.removeClass('hidden');
-                    cardContainer.addClass('hidden');
-                } else {
-                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.addClass('hidden');
-                    cardContainer.removeClass('hidden');
-                }
-                localStorage.setItem('viewitem', viewType);
-            }
-
-            // Search and Pagination
-            function searchData(searchTerm) {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const perPage = perPageSelect.val() || '';
-                $.ajax({
-                    url: "{{ route('admin.exams.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView,
-                        per_page: perPage
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to load data');
-                        }
-                    },
-                    error: function(xhr) {
-                        let errorMessage = 'Search failed';
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            errorMessage += ': ' + xhr.responseJSON.message;
-                        }
-                        console.error('Search failed:', xhr.responseText);
-                        ShowTaskMessage('error', errorMessage);
-
-                    }
-                });
-            }
-
-            function refreshContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const searchTerm = searchInput.val() || '';
-                const perPage = perPageSelect.val() || '';
-                $.ajax({
-                    url: "{{ route('admin.exams.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView,
-                        per_page: perPage
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to refresh data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Refresh failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to refresh data');
-                    }
-                });
-            }
-
-            // CRUD Operations
-            function handleCreateSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#createSubmitBtn');
-                const originalBtnHtml = submitBtn.html();
-                if (!this.checkValidity()) return $(this).addClass('was-validated');
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modalcreate');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                            form.trigger('reset');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error creating subject');
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            for (const field in errors) {
-                                if (errors.hasOwnProperty(field)) {
-                                    const errorMessage = errors[field][0];
-                                    $(`#error-${field}`).text(errorMessage);
-                                }
-                            }
-                            let errorMessages = Object.values(errors).flat().join('\n');
-                            ShowTaskMessage('error', errorMessages || 'Error updating exams');
-                        }
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleEditClick(e) {
-                e.preventDefault();
-                const editBtn = $(this);
-                const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
-                editBtn.prop('disabled', true);
-
-                const Id = $(this).data('id');
-
-                $.get(`/admin/exams/${Id}`)
-                    .done(function(response) {
-                        if (response.success) {
-                            const date = response.exam.date ? response.exam.date.substring(0, 10) : '';
-                            $('#edit_name').val(response.exam.name);
-                            setCustomSelectValue('subject_id',
-                                response.exam.subject_id, response.exam.subject.name);
-                            $('#edit_total_marks').val(response.exam.total_marks);
-                            $('#edit_passing_marks').val(response.exam.passing_marks);
-                            $('#edit_description').val(response.exam.description);
-                            $('#edit_date').val(date);
-                            $('#Formedit').attr('action', `exams/${Id}`);
-                            showModal('Modaledit');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load subject datas');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load subject data');
-                    })
-                    .always(function() {
-                        editBtn.find('.btn-content').html(originalContent);
-                        editBtn.prop('disabled', false);
-                    });
-
-                function setCustomSelectValue(name, value, text) {
-                    const wrapper = $(`.custom-select[data-name="${name}"]`);
-                    wrapper.find('input[type="hidden"]').val(value);
-                    wrapper.find('.selected-value').text(text);
-                    wrapper.find('.select-option').removeClass('selected');
-                    wrapper.find(`.select-option[data-value="${value}"]`).addClass('selected');
-                }
-
-            }
-
-            function handleEditSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                if (!this.checkValidity()) return $(this).addClass('was-validated');
-                const submitBtn = $('#saveEditBtn');
-                const originalBtnHtml = submitBtn.html();
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize() + '&_method=PUT',
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaledit');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error updating exams');
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            for (const field in errors) {
-                                if (errors.hasOwnProperty(field)) {
-                                    const errorMessage = errors[field][0];
-                                    $(`#edit-error-${field}`).text(errorMessage);
-                                }
-                            }
-                            let errorMessages = Object.values(errors).flat().join('\n');
-                            ShowTaskMessage('error', errorMessages || 'Error updating exams');
-                        }
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleDeleteClick(e) {
-                e.preventDefault();
-                const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/admin/exams/${Id}`);
-                showModal('Modaldelete');
-            }
-
-            function handleDeleteSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#confirmDeleteBtn');
-                const originalBtnHtml = submitBtn.html();
-
-                submitBtn.prop('disabled', true).html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Deleting...</span>');
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: {
-                        _method: 'DELETE'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaldelete');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting subject');
-                        }
-                    },
-                    error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting subject');
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleDetailClick(e) {
-                e.preventDefault();
-                const detailBtn = $(this);
-                const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html(
-                    '<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>');
-                detailBtn.prop('disabled', true);
-
-                const Id = $(this).data('id');
-
-                $.get(`/admin/exams/${Id}`)
-                    .done(function(response) {
-                        if (response.success) {
-                            const exam = response.exam;
-                            const date = exam.date ? new Date(exam.date).toLocaleDateString() : 'Not set';
-                            $('#detail_name').val(exam.name ?? '');
-                            $('#detail_subject').val(exam.subject?.name ?? 'No Subject');
-                            $('#detail_total_marks').val(exam.total_marks ?? '');
-                            $('#detail_passing_marks').val(exam.passing_marks ?? '');
-                            $('#detail_date').val(date);
-                            $('#detail_description').val(exam.description ?? '');
-
-                            showModal('Modaldetail');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load exam details');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load exam details');
-                    })
-                    .always(function() {
-                        detailBtn.find('.btn-content').html(originalContent);
-                        detailBtn.prop('disabled', false);
-                    });
-            }
-
-            function attachRowEventHandlers() {
-                $('.edit-btn').off('click').on('click', handleEditClick);
-                $('.delete-btn').off('click').on('click', handleDeleteClick);
-                $('.detail-btn').off('click').on('click', handleDetailClick);
-            }
-
-            function debounce(func, wait) {
-                let timeout;
-                return function() {
-                    const context = this,
-                        args = arguments;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(context, args), wait);
-                };
-            }
-
-            // Event Listeners
-            function initialize() {
-                // Set initial view
-                const savedView = localStorage.getItem('viewitem') || 'list';
-                setView(savedView);
-
-                // View toggle
-                listViewBtn.on('click', () => setView('list'));
-                cardViewBtn.on('click', () => setView('card'));
-
-                // Search
-                searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
-                resetSearch.on('click', () => {
-                    searchInput.val('');
-                    searchData('');
-                });
-
-                // Form submissions
-                $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
-                $('#Formedit').off('submit').on('submit', handleEditSubmit);
-                $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-                // Attach initial event handlers
-                attachRowEventHandlers();
-            }
-            // Start the application
-            initialize();
-        });
-    </script>
-@endpush
