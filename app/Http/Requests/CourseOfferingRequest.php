@@ -19,8 +19,8 @@ class CourseOfferingRequest extends FormRequest
       'classroom_id' => ['required', 'exists:classrooms,id'],
 
       'time_slot' => ['required', 'string', 'max:255'],
-      'start_time' => ['required', 'date_format:H:i:s'],
-      'end_time' => ['required', 'date_format:H:i:s', 'after:start_time'],
+      'start_time' => ['required', 'date_format:H:i'],
+      'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
 
       'join_start' => ['nullable', 'date'],
       'join_end' => ['nullable', 'date', 'after_or_equal:join_start'],
