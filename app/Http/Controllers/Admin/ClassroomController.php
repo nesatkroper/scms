@@ -5,45 +5,78 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ClassroomController extends Controller
 {
-    public function index()
-    {
-        $classrooms = Classroom::paginate(10);
-        return view('classrooms.index', compact('classrooms'));
-    }
+  public function index(Request $request)
+  {
+    $search = $request->input('search');
+    $perPage = $request->input('per_page', 10);
 
-    public function create()
-    {
-        return view('classrooms.create');
-    }
+    $classrooms = Classroom::query()
+      ->when($search, function ($query) use ($search) {
+        return $query->where('name', 'like', "%{$search}%")
+          ->orWhere('room_number', 'like', "%{$search}%");
+      })
+      ->withCount('schedules')
+      ->orderBy('created_at', 'desc')
+      ->paginate($perPage)
+      ->appends([
+        'search' => $search,
+        'per_page' => $perPage,
+      ]);
 
-    public function store(ClassroomRequest $request)
-    {
-        Classroom::create($request->validated());
-        return redirect()->route('classrooms.index')->with('success', 'Classroom added successfully!');
-    }
+    return view('admin.classrooms.index', compact('classrooms'));
+  }
 
-    public function show(Classroom $classroom)
-    {
-        return view('classrooms.show', compact('classroom'));
-    }
+  public function create()
+  {
+    return view('admin.classrooms.create');
+  }
 
-    public function edit(Classroom $classroom)
-    {
-        return view('classrooms.edit', compact('classroom'));
+  public function store(ClassroomRequest $request)
+  {
+    try {
+      Classroom::create($request->validated());
+      return redirect()->route('admin.classrooms.index')->with('success', 'Classroom created successfully!');
+    } catch (\Exception $e) {
+      Log::error('Error creating classroom: ' . $e->getMessage());
+      return redirect()->route('admin.classrooms.create')->with('error', 'Error creating classroom.')->withInput();
     }
+  }
 
-    public function update(ClassroomRequest $request, Classroom $classroom)
-    {
-        $classroom->update($request->validated());
-        return redirect()->route('classrooms.show', $classroom)->with('success', 'Classroom updated successfully!');
-    }
+  public function show(Classroom $classroom)
+  {
+    $classroom->load(['schedules', 'attendances']);
+    return view('admin.classrooms.show', compact('classroom'));
+  }
 
-    public function destroy(Classroom $classroom)
-    {
-        $classroom->delete();
-        return redirect()->route('classrooms.index')->with('success', 'Classroom deleted successfully!');
+  public function edit(Classroom $classroom)
+  {
+    return view('admin.classrooms.edit', compact('classroom'));
+  }
+
+  public function update(ClassroomRequest $request, Classroom $classroom)
+  {
+    try {
+      $classroom->update($request->validated());
+      return redirect()->route('admin.classrooms.index')->with('success', 'Classroom updated successfully');
+    } catch (\Exception $e) {
+      Log::error('Error updating classroom: ' . $e->getMessage());
+      return redirect()->route('admin.classrooms.edit', $classroom)->with('error', 'Error updating classroom.')->withInput();
     }
+  }
+
+  public function destroy(Classroom $classroom)
+  {
+    try {
+      $classroom->delete();
+      return redirect()->route('admin.classrooms.index')->with('success', 'Classroom deleted successfully');
+    } catch (\Exception $e) {
+      Log::error('Error deleting classroom: ' . $e->getMessage());
+      return redirect()->back()->with('error', 'Error deleting classroom: ' . $e->getMessage());
+    }
+  }
 }

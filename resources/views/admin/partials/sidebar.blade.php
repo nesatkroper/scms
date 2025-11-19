@@ -69,6 +69,10 @@
               <a href="{{ route('admin.assignments.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Course</a>
             </li>
+            <li>
+              <a href="{{ route('admin.classrooms.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Classrooms</a>
+            </li>
           </ul>
         </div>
       </li>
