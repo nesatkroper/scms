@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
-use App\Models\GradeLevel;
+use App\Http\Requests\StoreStudentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -53,7 +53,7 @@ class StudentController extends Controller
         return view('admin.students.index', compact('students'));
     }
 
-    public function store(UserRequest $request)
+    public function store(StoreStudentRequest $request)
     {
         try {
             $validated = $request->validated();
