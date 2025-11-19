@@ -16,11 +16,6 @@ class Subject extends Model
     'credit_hours' => 'integer',
   ];
 
-  public function department()
-  {
-    return $this->belongsTo(Department::class);
-  }
-
   public function students()
   {
     return $this->belongsToMany(User::class, 'student_course')

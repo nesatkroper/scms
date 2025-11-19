@@ -21,7 +21,7 @@ class DepartmentController extends Controller
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })
-            ->withCount(['subjects', 'users'])
+            ->withCount( 'users')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->appends([

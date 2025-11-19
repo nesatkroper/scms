@@ -33,10 +33,6 @@ class Department extends Model
         $query->where('name', 'student');
       });
   }
-  public function subjects(): HasMany
-  {
-    return $this->hasMany(Subject::class);
-  }
   public function head()
   {
     return $this->belongsTo(User::class, 'head_id');
