@@ -39,7 +39,8 @@
             <option value="">Select Subject</option>
             @foreach ($subjects as $subject)
               <option value="{{ $subject->id }}" @selected(old('subject_id') == $subject->id)>{{ $subject->name }}
-                ({{ $subject->code ?? '' }})</option>
+                ({{ $subject->code ?? '' }})
+              </option>
             @endforeach
           </select>
           @error('subject_id')
@@ -87,11 +88,17 @@
         {{-- Time Slot (e.g., Mon/Wed 10:00) --}}
         <div>
           <label for="time_slot" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Time Slot Name <span class="text-red-500">*</span>
+            Time Slot Category <span class="text-red-500">*</span>
           </label>
-          <input type="text" id="time_slot" name="time_slot" value="{{ old('time_slot') }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror"
-            placeholder="e.g., Mon/Wed/Fri 10:00 AM" required>
+          <select id="time_slot" name="time_slot" required
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
+            <option value="">Select Category</option>
+            @foreach (['morning', 'afternoon', 'evening'] as $slot)
+              <option value="{{ $slot }}">
+                {{ ucfirst($slot) }}
+              </option>
+            @endforeach
+          </select>
           @error('time_slot')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror

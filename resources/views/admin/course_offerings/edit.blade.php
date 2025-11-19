@@ -88,15 +88,21 @@
 
       <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
-        {{-- Time Slot (e.g., Mon/Wed 10:00) --}}
+
+        {{-- Time Slot (ENUM: morning, afternoon, evening) --}}
         <div>
           <label for="time_slot" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Time Slot Name <span class="text-red-500">*</span>
+            Time Slot Category <span class="text-red-500">*</span>
           </label>
-          <input type="text" id="time_slot" name="time_slot"
-            value="{{ old('time_slot', $courseOffering->time_slot) }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror"
-            placeholder="e.g., Mon/Wed/Fri 10:00 AM" required>
+          <select id="time_slot" name="time_slot" required
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
+            <option value="">Select Category</option>
+            @foreach (['morning', 'afternoon', 'evening'] as $slot)
+              <option value="{{ $slot }}" @selected(old('time_slot', $courseOffering->time_slot) == $slot)>
+                {{ ucfirst($slot) }}
+              </option>
+            @endforeach
+          </select>
           @error('time_slot')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
