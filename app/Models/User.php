@@ -137,6 +137,7 @@ class User extends Authenticatable
 
   public function courseOfferings()
   {
-    return $this->hasMany(CourseOffering::class);
+    return $this->hasMany(CourseOffering::class, 'teacher_id');
   }
+
 }

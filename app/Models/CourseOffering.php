@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourseOffering extends Model
 {
-  use HasFactory, SoftDeletes;
+  use SoftDeletes;
 
   protected $fillable = [
     'subject_id',
     'teacher_id',
     'classroom_id',
-    'section_id',
-    'semester',
-    'academic_year',
-  ];
-
-  protected $casts = [
-    'academic_year' => 'integer',
+    'time_slot',
+    'start_time',
+    'end_time',
+    'join_start',
+    'join_end',
+    'fee',
+    'capacity',
   ];
 
   public function subject()
@@ -30,29 +29,11 @@ class CourseOffering extends Model
 
   public function teacher()
   {
-    return $this->belongsTo(Teacher::class);
+    return $this->belongsTo(User::class, 'teacher_id');
   }
 
   public function classroom()
   {
     return $this->belongsTo(Classroom::class);
-  }
-
-  public function timetableSlots()
-  {
-    return $this->hasMany(TimetableSlot::class);
-  }
-
-  public function students()
-  {
-    return $this
-      ->belongsToMany(Student::class, 'student_course')
-      ->withPivot('grade_final')
-      ->withTimestamps();
-  }
-
-  public function attendances()
-  {
-    return $this->hasMany(Attendance::class);
   }
 }

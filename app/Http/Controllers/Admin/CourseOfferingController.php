@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CourseOfferingRequest;
+use App\Models\CourseOffering;
+use App\Models\Subject;
+use App\Models\User;
+use App\Models\Classroom;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+class CourseOfferingController extends Controller
+{
+  public function index(Request $request)
+  {
+    $search = $request->input('search');
+    $perPage = $request->input('per_page', 10);
+
+    $courseOfferings = CourseOffering::query()
+      ->with(['subject', 'teacher', 'classroom'])
+      ->when($search, function ($query) use ($search) {
+        return $query->where('time_slot', 'like', "%{$search}%")
+          ->orWhere('fee', 'like', "%{$search}%")
+          ->orWhereHas('subject', function ($q) use ($search) {
+          $q->where('name', 'like', "%{$search}%");
+        })
+          ->orWhereHas('teacher', function ($q) use ($search) {
+          $q->where('name', 'like', "%{$search}%");
+        });
+      })
+      ->orderBy('start_time', 'asc')
+      ->paginate($perPage)
+      ->appends([
+        'search' => $search,
+        'per_page' => $perPage,
+      ]);
+
+    return view('admin.course_offerings.index', compact('courseOfferings'));
+  }
+
+  public function create()
+  {
+    $subjects = Subject::orderBy('name')->get(['id', 'name']);
+    $teachers = User::orderBy('name')->get(['id', 'name']);
+    $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
+
+    return view('admin.course_offerings.create', compact('subjects', 'teachers', 'classrooms'));
+  }
+
+  public function store(CourseOfferingRequest $request)
+  {
+    try {
+      CourseOffering::create($request->validated());
+      return redirect()->route('admin.course_offerings.index')->with('success', 'Course Offering created successfully!');
+    } catch (\Exception $e) {
+      Log::error('Error creating Course Offering: ' . $e->getMessage());
+      return redirect()->route('admin.course_offerings.create')->with('error', 'Error creating course offering.')->withInput();
+    }
+  }
+
+  public function show(CourseOffering $courseOffering)
+  {
+    $courseOffering->load(['subject', 'teacher', 'classroom']);
+    return view('admin.course_offerings.show', compact('courseOffering'));
+  }
+
+  public function edit(CourseOffering $courseOffering)
+  {
+    $subjects = Subject::orderBy('name')->get(['id', 'name']);
+    $teachers = User::orderBy('name')->get(['id', 'name']);
+    $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
+
+    return view('admin.course_offerings.edit', compact('courseOffering', 'subjects', 'teachers', 'classrooms'));
+  }
+
+  public function update(CourseOfferingRequest $request, CourseOffering $courseOffering)
+  {
+    try {
+      $courseOffering->update($request->validated());
+      return redirect()->route('admin.course_offerings.index')->with('success', 'Course Offering updated successfully');
+    } catch (\Exception $e) {
+      Log::error('Error updating Course Offering: ' . $e->getMessage());
+      return redirect()->route('admin.course_offerings.edit', $courseOffering)->with('error', 'Error updating course offering.')->withInput();
+    }
+  }
+
+  public function destroy(CourseOffering $courseOffering)
+  {
+    try {
+      $courseOffering->delete();
+      return redirect()->route('admin.course_offerings.index')->with('success', 'Course Offering deleted successfully');
+    } catch (\Exception $e) {
+      Log::error('Error deleting Course Offering: ' . $e->getMessage());
+      return redirect()->back()->with('error', 'Error deleting course offering: ' . $e->getMessage());
+    }
+  }
+}

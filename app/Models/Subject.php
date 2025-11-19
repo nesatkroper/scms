@@ -55,4 +55,10 @@ class Subject extends Model
   {
     return $this->hasMany(TeacherSubject::class, 'subject_id');
   }
+
+  public function courseOfferings()
+  {
+    return $this->hasMany(CourseOffering::class);
+  }
+
 }

@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\{
   UserController,
   RoleController,
   ProfileController,
-  TeacherSubjectController
+  CourseOfferingController
 };
 
 
@@ -57,15 +57,7 @@ Route::get('/', function () {
 });
 
 
-Route::prefix('admin/assignments')->name('admin.assignments.')->group(function () {
-  Route::get('/', [TeacherSubjectController::class, 'index'])->name('index');
-  Route::get('/create', [TeacherSubjectController::class, 'create'])->name('create');
-  Route::post('/store', [TeacherSubjectController::class, 'store'])->name('store');
 
-  Route::get('/{teacher_id}/{subject_id}/edit', [TeacherSubjectController::class, 'edit'])->name('edit');
-  Route::put('/{teacher_id}/{subject_id}', [TeacherSubjectController::class, 'update'])->name('update');
-  Route::delete('/{teacher_id}/{subject_id}', [TeacherSubjectController::class, 'destroy'])->name('destroy');
-});
 
 
 Route::prefix('admin')
@@ -91,7 +83,7 @@ Route::prefix('admin')
       'subjects' => SubjectController::class,
       'teachers' => TeacherController::class,
       'scores' => ScoreController::class,
-      // 'assignments' => TeacherSubjectController::class,
+      'course_offerings' => CourseOfferingController::class,
     ]);
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
