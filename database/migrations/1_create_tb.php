@@ -185,6 +185,8 @@ return new class extends Migration
     Schema::create('teacher_subject', function (Blueprint $table) {
       $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('subject_id')->constrained()->onDelete('cascade');
+      // $table->enum('time_slot', ['morning', 'afternoon', 'evening'])
+      //   ->default('morning');
       $table->unique(['teacher_id', 'subject_id']);
       $table->timestamps();
     });
