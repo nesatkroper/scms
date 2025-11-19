@@ -17,13 +17,12 @@ class TeacherSubjectController extends Controller
   public function index()
   {
     $assignments = TeacherSubject::with(['teacher', 'subject'])->paginate(15);
-
     return view('admin.assignments.index', compact('assignments'));
   }
 
   public function create()
   {
-    $teachers = User::where('role', 'teacher')->orderBy('name')->get();
+    $teachers = User::role('teacher')->orderBy('name')->get();
     $subjects = Subject::orderBy('name')->get();
     $timeSlots = $this->timeSlots;
 
@@ -55,17 +54,25 @@ class TeacherSubjectController extends Controller
     }
   }
 
-  public function edit(TeacherSubject $assignment)
+  public function edit($teacher_id, $subject_id)
   {
-    $teachers = User::where('role', 'teacher')->orderBy('name')->get();
+    $assignment = TeacherSubject::where('teacher_id', $teacher_id)
+      ->where('subject_id', $subject_id)
+      ->firstOrFail();
+
+    $teachers = User::role('teacher')->orderBy('name')->get();
     $subjects = Subject::orderBy('name')->get();
     $timeSlots = $this->timeSlots;
 
     return view('admin.assignments.edit', compact('assignment', 'teachers', 'subjects', 'timeSlots'));
   }
 
-  public function update(Request $request, TeacherSubject $assignment)
+  public function update(Request $request, $teacher_id, $subject_id)
   {
+    $assignment = TeacherSubject::where('teacher_id', $teacher_id)
+      ->where('subject_id', $subject_id)
+      ->firstOrFail();
+
     $validatedData = $request->validate([
       'teacher_id' => ['required', 'exists:users,id'],
       'subject_id' => ['required', 'exists:subjects,id'],
@@ -73,7 +80,8 @@ class TeacherSubjectController extends Controller
     ]);
 
     if (
-      ($validatedData['teacher_id'] != $assignment->teacher_id || $validatedData['subject_id'] != $assignment->subject_id) &&
+      ($validatedData['teacher_id'] != $assignment->teacher_id ||
+        $validatedData['subject_id'] != $assignment->subject_id) &&
       TeacherSubject::where('teacher_id', $validatedData['teacher_id'])
         ->where('subject_id', $validatedData['subject_id'])
         ->exists()
@@ -90,8 +98,12 @@ class TeacherSubjectController extends Controller
     }
   }
 
-  public function destroy(TeacherSubject $assignment)
+  public function destroy($teacher_id, $subject_id)
   {
+    $assignment = TeacherSubject::where('teacher_id', $teacher_id)
+      ->where('subject_id', $subject_id)
+      ->firstOrFail();
+
     try {
       $assignment->delete();
       return redirect()->route('admin.assignments.index')->with('success', 'Assignment deleted successfully.');

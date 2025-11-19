@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route as R;
+use Illuminate\Support\Facades\Route ;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{
   AttendanceController,
@@ -19,35 +19,36 @@ use App\Http\Controllers\Admin\{
   ScoreController,
   UserController,
   RoleController,
-  ProfileController
+  ProfileController,
+  TeacherSubjectController
 };
 
-R::resource('admin/assignments', App\Http\Controllers\Admin\TeacherSubjectController::class)->names('admin.assignments');
 
 
-R::get('/home', function () {
+
+Route::get('/home', function () {
   return view('web.home');
 })->name('web.home');
 
-R::get('/about-us', function () {
+Route::get('/about-us', function () {
   return view('web.about');
 })->name('web.about');
-R::get('/contact', function () {
+Route::get('/contact', function () {
   return view('web.contact');
 })->name('web.contact');
-R::get('/what-we-do', function () {
+Route::get('/what-we-do', function () {
   return view('web.whatwedo');
 })->name('web.whatwedo');
-R::get('/donation', function () {
+Route::get('/donation', function () {
   return view('web.donation');
 })->name('web.donation');
-R::get('/', function () {
+Route::get('/', function () {
   return redirect('/home');
 });
 
 Auth::routes();
 
-R::get('/', function () {
+Route::get('/', function () {
 
   if (Auth::check())
     return redirect('/admin/profile');
@@ -55,14 +56,26 @@ R::get('/', function () {
   return redirect('/login');
 });
 
-R::prefix('admin')
+
+Route::prefix('admin/assignments')->name('admin.assignments.')->group(function () {
+  Route::get('/', [TeacherSubjectController::class, 'index'])->name('index');
+  Route::get('/create', [TeacherSubjectController::class, 'create'])->name('create');
+  Route::post('/store', [TeacherSubjectController::class, 'store'])->name('store');
+
+  Route::get('/{teacher_id}/{subject_id}/edit', [TeacherSubjectController::class, 'edit'])->name('edit');
+  Route::put('/{teacher_id}/{subject_id}', [TeacherSubjectController::class, 'update'])->name('update');
+  Route::delete('/{teacher_id}/{subject_id}', [TeacherSubjectController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('admin')
   ->as('admin.')
   ->middleware('auth')
   ->group(function () {
 
-    R::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    R::resources([
+    Route::resources([
       'users' => UserController::class,
       'roles' => RoleController::class,
       'permissions' => PermissionController::class,
@@ -78,12 +91,13 @@ R::prefix('admin')
       'subjects' => SubjectController::class,
       'teachers' => TeacherController::class,
       'scores' => ScoreController::class,
+      // 'assignments' => TeacherSubjectController::class,
     ]);
 
-    R::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    R::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    R::get('/students/profile/{student}', [StudentController::class, 'profile'])
+    Route::get('/students/profile/{student}', [StudentController::class, 'profile'])
       ->name('students.profile');
 
 
@@ -99,12 +113,12 @@ R::prefix('admin')
     ];
 
     foreach ($bulkRoutes as $prefix => $controller) {
-      R::prefix($prefix)
+      Route::prefix($prefix)
         ->as($prefix . '.')
         ->group(function () use ($controller) {
-          R::post('/bulk-delete', [$controller, 'bulkDelete'])->name('bulkDelete');
-          R::post('/bulk-data', [$controller, 'getBulkData'])->name('getBulkData');
-          R::post('/bulk-update', [$controller, 'bulkUpdate'])->name('bulkUpdate');
+          Route::post('/bulk-delete', [$controller, 'bulkDelete'])->name('bulkDelete');
+          Route::post('/bulk-data', [$controller, 'getBulkData'])->name('getBulkData');
+          Route::post('/bulk-update', [$controller, 'bulkUpdate'])->name('bulkUpdate');
         });
     }
   });
