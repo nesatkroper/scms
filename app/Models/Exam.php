@@ -9,11 +9,11 @@ class Exam extends Model
 {
   use SoftDeletes;
 
-  protected $fillable = ['name', 'description', 'subject_id', 'date', 'total_marks', 'passing_marks'];
+  protected $fillable = ['name', 'description', 'course_offering_id', 'date', 'total_marks', 'passing_marks'];
 
-  public function subject()
+  public function courseOffering()
   {
-    return $this->belongsTo(Subject::class);
+    return $this->belongsTo(CourseOffering::class, 'course_offering_id');
   }
 
   public function scores()

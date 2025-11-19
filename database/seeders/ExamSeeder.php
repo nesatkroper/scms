@@ -9,10 +9,10 @@ class ExamSeeder extends Seeder
 {
   public function run(): void
   {
-    $subjectIds = DB::table('subjects')->pluck('id')->toArray();
+    $courseId = DB::table('course_offerings')->pluck('id')->toArray();
     $exams = [];
 
-    foreach ($subjectIds as $subjectId) {
+    foreach ($courseId as $subjectId) {
       $exams[] = [
         'name' => "Midterm Exam Subject {$subjectId}",
         'subject_id' => $subjectId,

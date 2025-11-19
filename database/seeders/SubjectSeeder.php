@@ -9,7 +9,6 @@ class SubjectSeeder extends Seeder
 {
   public function run(): void
   {
-    $departmentIds = DB::table('departments')->pluck('id')->toArray();
 
     $subjects = [
       ['name' => 'Introduction to Programming', 'code' => 'CS101', 'credit_hours' => 3],
@@ -20,7 +19,6 @@ class SubjectSeeder extends Seeder
     ];
 
     foreach ($subjects as $subj) {
-      $subj['department_id'] = $departmentIds[array_rand($departmentIds)];
       $subj['description'] = $subj['name'] . ' course description.';
       $subj['created_at'] = now();
       $subj['updated_at'] = now();

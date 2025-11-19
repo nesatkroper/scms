@@ -1,10 +1,26 @@
 @php
+  $academicsRoutes = [
+      'admin.departments.*',
+      'admin.subjects.*',
+      'admin.exams.*',
+      'admin.scores.*',
+      'admin.course_offerings.*',
+      'admin.classrooms.*',
+  ];
+  $isAcademicsActive = request()->routeIs($academicsRoutes);
 
+  $organizationRoutes = ['admin.teachers.*', 'admin.students.*'];
+  $isOrganizationActive = request()->routeIs($organizationRoutes);
+
+  $financeRoutes = ['admin.expenses.*'];
+  $isFinanceActive = request()->routeIs($financeRoutes);
+
+  $administratorRoutes = ['admin.users.*', 'admin.roles.*'];
+  $isAdministratorActive = request()->routeIs($administratorRoutes);
 @endphp
 
 <aside id="sidebar"
   class="sidebar bg-indigo-800 dark:bg-slate-800 border-r border-gray-200 dark:border-gray-700 text-white fixed h-full z-30 left-0 top-0 w-64 md:translate-x-0 -translate-x-full">
-  <!-- Sidebar header -->
   <div class="flex items-center justify-between p-4 border-b border-indigo-700 dark:border-gray-700">
     <div class="flex items-center space-x-2">
       <img
@@ -20,13 +36,12 @@
       </svg>
     </button>
   </div>
-  <!-- Sidebar menu -->
   <nav class="pt-4 flex-grow overflow-y-auto">
     <ul>
-      <!-- Dashboard -->
       <li class="menu-item relative">
         <a href="{{ route('admin.home') }}"
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200">
+          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+          {{ request()->routeIs('admin.home') ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="fas fa-tachometer-alt text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
@@ -35,10 +50,11 @@
         </a>
       </li>
       <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
-      <!-- Academics -->
+
       <li class="menu-item relative">
         <div
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+          {{ $isAcademicsActive ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="ri-graduation-cap-fill text-lg"></i>
             <span class="ml-3 sidebar-text text-hidden">Academics</span>
@@ -46,41 +62,47 @@
           <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
           <span class="menu-tooltip">Academics</span>
         </div>
-        <div class="submenu">
+        <div class="submenu {{ $isAcademicsActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
             <li><a href="{{ route('admin.departments.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">departments</a>
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.departments.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">departments</a>
             </li>
             <li>
               <a href="{{ route('admin.subjects.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
+                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+                {{ request()->routeIs('admin.subjects.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                 subjects
               </a>
             </li>
             <li>
               <a href="{{ route('admin.exams.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">exams</a>
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.exams.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">exams</a>
             </li>
             <li>
               <a href="{{ route('admin.scores.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">scores</a>
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.scores.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">scores</a>
             </li>
             <li>
               <a href="{{ route('admin.course_offerings.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Course</a>
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course</a>
             </li>
             <li>
               <a href="{{ route('admin.classrooms.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Classrooms</a>
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Classrooms</a>
             </li>
           </ul>
         </div>
       </li>
 
-      {{-- Organization --}}
       <li class="menu-item relative">
         <div
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+          {{ $isOrganizationActive ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="fa-solid fa-lock"></i>
             <span class="ml-3 sidebar-text text-hidden">Organization</span>
@@ -88,18 +110,20 @@
           <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
           <span class="menu-tooltip">Organization</span>
         </div>
-        <div class="submenu">
+        <div class="submenu {{ $isOrganizationActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
             <li>
               <a href="{{ route('admin.teachers.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
+                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+                {{ request()->routeIs('admin.teachers.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                 <span class="ml-2">teachers</span>
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
             <li>
               <a href="{{ route('admin.students.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
+                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+                {{ request()->routeIs('admin.students.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                 <span class="ml-2">Students</span>
                 <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
@@ -114,7 +138,8 @@
       <li class="menu-item relative">
         <div
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg
-                            mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+                            mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+                            {{ $isFinanceActive ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="fas fa-money-bill-wave text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Finance</span>
@@ -122,105 +147,19 @@
           <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
           <span class="menu-tooltip">Finance</span>
         </div>
-        <div class="submenu">
+        <div class="submenu {{ $isFinanceActive ? 'active' : '' }}">
           <ul class="pl-2 pr-2">
 
             <li class="relative">
               <a href="{{ route('admin.expenses.index') }}"
                 class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
+                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200
+                                         {{ request()->routeIs('admin.expenses.*') ? 'bg-indigo-700' : '' }}">
                 <div class="flex items-center">
                   <i class="ri-money-dollar-circle-fill text-lg"></i>
                   <span class="ml-2">Expenses</span>
                 </div>
               </a>
-            </li>
-            <li class="relative">
-              <div
-                class="cursor-pointer px-3 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
-                                         rounded-md transition-all duration-200 js-submenu-toggle">
-                <div class="flex items-center">
-                  <i class="ri-presentation-fill text-lg"></i>
-                  <span class="ml-2">Reports</span>
-                </div>
-                <i class="fas fa-chevron-right menu-icon text-xs"></i>
-              </div>
-              <div class="submenu">
-                <ul class="pl-2">
-                  <li>
-                    <a href="#"
-                      class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                      <div class="flex items-center">
-                        <span class="ml-2">Daily Collection</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                      <div class="flex items-center">
-                        <i class="ri-money-dollar-circle-fill text-lg"></i>
-                        <span class="ml-2">Monthly Reports</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                      <div class="flex items-center">
-                        <i class="ri-money-dollar-circle-fill text-lg"></i>
-                        <span class="ml-2">Annual Reports</span>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="relative">
-              <div
-                class="cursor-pointer px-3 flex items-center justify-between py-2 hover:bg-indigo-700 dark:hover:bg-gray-700
-                                         rounded-md transition-all duration-200 js-submenu-toggle">
-                <div class="flex items-center">
-                  <span>Reports</span>
-                </div>
-                <i class="fas fa-chevron-right menu-icon text-xs"></i>
-              </div>
-              <div class="submenu">
-                <ul class="pl-2">
-                  <li>
-                    <a href="#"
-                      class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                      <div class="flex items-center">
-                        <span class="ml-2">Daily Collection</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                      <div class="flex items-center">
-                        <i class="ri-money-dollar-circle-fill text-lg"></i>
-                        <span class="ml-2">Monthly Reports</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200">
-                      <div class="flex items-center">
-                        <i class="ri-money-dollar-circle-fill text-lg"></i>
-                        <span class="ml-2">Annual Reports</span>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </li>
           </ul>
         </div>
@@ -232,7 +171,8 @@
       @if (Auth::user()->hasRole('admin'))
         <li class="menu-item relative">
           <div
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle">
+            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+            {{ $isAdministratorActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fa-solid fa-lock"></i>
               <span class="ml-3 sidebar-text text-hidden">Administrator</span>
@@ -240,13 +180,15 @@
             <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
             <span class="menu-tooltip">Administrator</span>
           </div>
-          <div class="submenu">
+          <div class="submenu {{ $isAdministratorActive ? 'active' : '' }}">
             <ul class="pl-4 pr-4">
               <li><a href="{{ route('admin.users.index') }}"
-                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">Users</a>
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                  {{ request()->routeIs('admin.users.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Users</a>
               </li>
               <li><a href="{{ route('admin.roles.index') }}"
-                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">roles</a>
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                  {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">roles</a>
               </li>
           </div>
         </li>

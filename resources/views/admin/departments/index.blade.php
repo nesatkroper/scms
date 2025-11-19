@@ -17,7 +17,6 @@
       Departments List
     </h3>
 
-    {{-- Success/Error Messages (Retained from previous version) --}}
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         <span class="block sm:inline">{{ session('success') }}</span>
@@ -72,8 +71,7 @@
       </div>
     </form>
 
-    {{-- Department Cards --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       @forelse ($departments as $department)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
