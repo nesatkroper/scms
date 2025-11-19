@@ -10,13 +10,10 @@ use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-
-
   public function index(Request $request)
   {
     $search = $request->input('search');
@@ -24,6 +21,7 @@ class UserController extends Controller
     $roleFilter = $request->input('role_filter');
 
     $roles = Role::all();
+    $departments = \App\Models\Department::all();
 
     $users = User::with(['roles', 'department'])
       ->when($search, function ($query) use ($search) {
@@ -42,19 +40,14 @@ class UserController extends Controller
         'role_filter' => $roleFilter,
       ]);
 
-    if ($request->ajax()) {
-      $html = [
-        'table' => view('admin.users.partials.table', compact('users'))->render(),
-        'pagination' => $users->links()->toHtml()
-      ];
+    return view('admin.users.index', compact('users', 'roles', 'roleFilter', 'departments'));
+  }
 
-      return response()->json([
-        'success' => true,
-        'html' => $html
-      ]);
-    }
-
-    return view('admin.users.index', compact('users', 'roles', 'roleFilter'));
+  public function create()
+  {
+    $roles = Role::all();
+    $departments = \App\Models\Department::all();
+    return view('admin.users.create', compact('roles', 'departments'));
   }
 
   public function store(Request $request)
@@ -62,13 +55,26 @@ class UserController extends Controller
     $validatedData = $request->validate([
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'min:8', 'confirmed'],
+      'password' => ['required', 'string', 'min:8'],
       'type' => ['required', 'string', Rule::exists('roles', 'name')],
       'phone' => ['nullable', 'string', 'max:255'],
       'address' => ['nullable', 'string'],
       'date_of_birth' => ['nullable', 'date'],
       'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
       'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+      'nationality' => ['nullable', 'string', 'max:255'],
+      'religion' => ['nullable', 'string', 'max:255'],
+      'blood_group' => ['nullable', 'string', 'max:10'],
+      'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
+      'joining_date' => ['nullable', 'date'],
+      'qualification' => ['nullable', 'string', 'max:255'],
+      'experience' => ['nullable', 'numeric', 'min:0'],
+      'specialization' => ['nullable', 'string', 'max:255'],
+      'salary' => ['nullable', 'numeric', 'min:0'],
+      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+      'admission_date' => ['nullable', 'date'],
+      'occupation' => ['nullable', 'string', 'max:255'],
+      'company' => ['nullable', 'string', 'max:255'],
     ]);
 
     try {
@@ -77,6 +83,7 @@ class UserController extends Controller
         mkdir($avatarPath, 0755, true);
       }
 
+      $validatedData['avatar'] = null;
       if ($request->hasFile('avatar')) {
         $manager = new ImageManager(new Driver());
         $avatar = $request->file('avatar');
@@ -89,40 +96,26 @@ class UserController extends Controller
         $validatedData['avatar'] = 'uploads/avatars/' . $avatarName;
       }
 
-      $user = User::create([
-        'name' => $validatedData['name'],
-        'email' => $validatedData['email'],
+      $user = User::create(array_merge($validatedData, [
         'password' => Hash::make($validatedData['password']),
-        'phone' => $validatedData['phone'],
-        'address' => $validatedData['address'],
-        'date_of_birth' => $validatedData['date_of_birth'],
-        'gender' => $validatedData['gender'],
-        'avatar' => $validatedData['avatar'] ?? null,
-      ]);
+        'avatar' => $validatedData['avatar'],
+      ]));
 
       $user->assignRole($validatedData['type']);
 
-      return response()->json([
-        'success' => true,
-        'message' => 'User created successfully!',
-        'user' => $user
-      ]);
+      return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating user: ' . $e->getMessage());
-      return response()->json([
-        'success' => false,
-        'message' => 'Error creating user: ' . $e->getMessage()
-      ], 500);
+      return back()->withInput()->with('error', 'Error creating user: ' . $e->getMessage());
     }
   }
 
-  public function show(User $user)
+  public function edit(User $user)
   {
     $user->load('roles');
-    return response()->json([
-      'success' => true,
-      'user' => $user
-    ]);
+    $roles = Role::all();
+    $departments = \App\Models\Department::all();
+    return view('admin.users.edit', compact('user', 'roles', 'departments'));
   }
 
   public function update(Request $request, User $user)
@@ -130,13 +123,26 @@ class UserController extends Controller
     $validatedData = $request->validate([
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-      'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+      'password' => ['nullable', 'string', 'min:8'],
       'type' => ['required', 'string', Rule::exists('roles', 'name')],
       'phone' => ['nullable', 'string', 'max:255'],
       'address' => ['nullable', 'string'],
       'date_of_birth' => ['nullable', 'date'],
       'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
       'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+      'nationality' => ['nullable', 'string', 'max:255'],
+      'religion' => ['nullable', 'string', 'max:255'],
+      'blood_group' => ['nullable', 'string', 'max:10'],
+      'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
+      'joining_date' => ['nullable', 'date'],
+      'qualification' => ['nullable', 'string', 'max:255'],
+      'experience' => ['nullable', 'numeric', 'min:0'],
+      'specialization' => ['nullable', 'string', 'max:255'],
+      'salary' => ['nullable', 'numeric', 'min:0'],
+      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+      'admission_date' => ['nullable', 'date'],
+      'occupation' => ['nullable', 'string', 'max:255'],
+      'company' => ['nullable', 'string', 'max:255'],
     ]);
 
     try {
@@ -147,6 +153,18 @@ class UserController extends Controller
         'address',
         'date_of_birth',
         'gender',
+        'nationality',
+        'religion',
+        'blood_group',
+        'department_id',
+        'joining_date',
+        'qualification',
+        'experience',
+        'specialization',
+        'salary',
+        'admission_date',
+        'occupation',
+        'company',
       ]);
 
       if ($request->hasFile('avatar')) {
@@ -181,15 +199,16 @@ class UserController extends Controller
 
       $user->update($data);
       $user->syncRoles($validatedData['type']);
+
       if ($user->student && ($validatedData['type'] === 'student')) {
-        $user->student->update([
+        $studentData = [
           'name' => $user->name,
           'email' => $user->email,
           'phone' => $user->phone,
           'gender' => $user->gender,
           'dob' => $user->date_of_birth,
           'photo' => $user->avatar,
-        ]);
+        ];
         if (isset($data['avatar'])) {
           $studentData['photo'] = $data['avatar'];
         }
@@ -197,17 +216,11 @@ class UserController extends Controller
           $user->student->update($studentData);
         }
       }
-      return response()->json([
-        'success' => true,
-        'message' => 'User updated successfully!',
-        'user' => $user->fresh('roles')
-      ]);
+
+      return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     } catch (\Exception $e) {
       Log::error('Error updating user: ' . $e->getMessage());
-      return response()->json([
-        'success' => false,
-        'message' => 'Error updating user: ' . $e->getMessage()
-      ], 500);
+      return back()->withInput()->with('error', 'Error updating user: ' . $e->getMessage());
     }
   }
 
@@ -220,16 +233,10 @@ class UserController extends Controller
 
       $user->delete();
 
-      return response()->json([
-        'success' => true,
-        'message' => 'User deleted successfully!'
-      ]);
+      return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
     } catch (\Exception $e) {
       Log::error('Error deleting user: ' . $e->getMessage());
-      return response()->json([
-        'success' => false,
-        'message' => 'Error deleting user: ' . $e->getMessage()
-      ], 500);
+      return back()->with('error', 'Error deleting user: ' . $e->getMessage());
     }
   }
 }

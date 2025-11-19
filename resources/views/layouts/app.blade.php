@@ -11,21 +11,16 @@
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/mainjq.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
   </head>
 
   <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-    <!-- Backdrop for mobile sidebar -->
     <div id="sidebar-backdrop" class="sidebar-backdrop fixed inset-0 z-20 hidden opacity-0"></div>
 
-    <!-- Main container -->
     <div class="h-screen">
 
-      <!-- Main content -->
       <div class="flex-1 flex flex-col transition-all duration-300 md:ml-64" id="main-content">
-        <!-- Header -->
-        {{-- @include('layouts.header') --}}
 
-        <!-- Main content area -->
         <main class="flex-1 mt-15 md:mt-0 bg-violet-50 dark:bg-gray-900">
           <div class="sm:p-4">
             @yield('content')
