@@ -80,7 +80,7 @@ class StudentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully!',
-                'data' => $user->load('gradeLevel')
+                'data' => $user
             ]);
         } catch (\Exception $e) {
             Log::error('Error creating student: ' . $e->getMessage());
