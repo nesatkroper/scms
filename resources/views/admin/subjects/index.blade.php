@@ -19,8 +19,6 @@
     <form action="{{ route('admin.subjects.index') }}" method="GET">
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-
-        {{-- Create Button (Redirects to Create Page) --}}
         <a href="{{ route('admin.subjects.create') }}"
           class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -35,7 +33,7 @@
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput" placeholder="Search subjects..."
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-              focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
@@ -66,7 +64,7 @@
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $subject->name }}</h4>
                 </div>
 
-                {{-- Detail Button (Redirects to Show Page) --}}
+                {{-- Detail Button --}}
                 <a href="{{ route('admin.subjects.show', $subject->id) }}"
                   class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-900 transition-colors"
                   title="View Details">
@@ -99,21 +97,7 @@
                   </p>
                 </div>
               </div>
-              <div class="flex items-center gap-3 text-sm">
-                <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Department</p>
-                  <p class="text-sm text-indigo-600 dark:text-indigo-400">
-                    <span>{{ $subject->department?->name ?? 'No Department' }}</span>
-                  </p>
-                </div>
-              </div>
+
               <div class="flex items-center gap-3 text-sm">
                 <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
                   <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
@@ -131,11 +115,9 @@
               </div>
             </div>
 
-            {{-- Actions (Edit Link + Delete Form) --}}
+            {{-- Actions --}}
             <div
               class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
-
-              {{-- Edit Button (Redirects to Edit Page) --}}
               <a href="{{ route('admin.subjects.edit', $subject->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
@@ -148,7 +130,6 @@
                 </span>
               </a>
 
-              {{-- Delete Button (Full form submission) --}}
               <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this subject? This action cannot be undone.');">
                 @csrf

@@ -4,189 +4,88 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepartmentRequest;
-use App\Http\Requests\StoreDepartmentRequest;
-use App\Http\Requests\UpdateDepartmentRequest;
-use Illuminate\Support\Facades\Log;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DepartmentController extends Controller
 {
-    // 🟢 List all departments with users (only from users table)
     public function index(Request $request)
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
-        $viewType = $request->input('view', 'table');
 
-        $departments = Department::with('users')
+        $departments = Department::with('head')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })
+            ->withCount(['subjects', 'users'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->appends([
                 'search' => $search,
                 'per_page' => $perPage,
-                'view' => $viewType
             ]);
-
-        if ($request->ajax()) {
-            $html = [
-                'cards' => view('admin.departments.cardlist', compact('departments'))->render(),
-                'pagination' => $departments->links()->toHtml()
-            ];
-
-            return response()->json([
-                'success' => true,
-                'html' => $html,
-                'view' => $viewType
-            ]);
-        }
 
         return view('admin.departments.index', compact('departments'));
     }
 
-    // 🟢 Store department
+    public function create()
+    {
+        $potentialHeads = User::whereHas('roles', fn ($q) => $q->where('name', 'teacher'))
+            ->orWhereHas('roles', fn ($q) => $q->where('name', 'admin'))
+            ->get(['id', 'name']);
+
+        return view('admin.departments.create', compact('potentialHeads'));
+    }
+
     public function store(DepartmentRequest $request)
     {
         try {
-            $department = Department::create($request->validated());
-            return response()->json([
-                'success' => true,
-                'message' => 'Department created successfully!',
-                'data' => $department
-            ]);
+            Department::create($request->validated());
+            return redirect()->route('admin.departments.index')->with('success', 'Department created successfully!');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating department: ' . $e->getMessage()
-            ], 500);
+            Log::error('Error creating department: ' . $e->getMessage());
+            return redirect()->route('admin.departments.create')->with('error', 'Error creating department.')->withInput();
         }
     }
 
-    // 🟢 Show department with users only
     public function show(Department $department)
     {
-        $department->load('users');
-
-        return response()->json([
-            'success' => true,
-            'data' => $department,
-        ]);
+        $department->load(['head', 'subjects', 'teachers', 'students']);
+        return view('admin.departments.show', compact('department'));
     }
 
-    // 🟢 Update department
-    public function update(DepartmentRequest $request, $id)
+    public function edit(Department $department)
+    {
+        $potentialHeads = User::whereHas('roles', fn ($q) => $q->where('name', 'teacher'))
+            ->orWhereHas('roles', fn ($q) => $q->where('name', 'admin'))
+            ->get(['id', 'name']);
+
+        return view('admin.departments.edit', compact('department', 'potentialHeads'));
+    }
+
+    public function update(DepartmentRequest $request, Department $department)
     {
         try {
-            $department = Department::findOrFail($id);
             $department->update($request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Department updated successfully',
-                'data' => $department->fresh('users')
-            ]);
+            return redirect()->route('admin.departments.index')->with('success', 'Department updated successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating department: ' . $e->getMessage()
-            ], 500);
+            Log::error('Error updating department: ' . $e->getMessage());
+            return redirect()->route('admin.departments.edit', $department)->with('error', 'Error updating department.')->withInput();
         }
     }
 
-    // 🟢 Delete department
-    public function destroy($id)
+    public function destroy(Department $department)
     {
         try {
-            $department = Department::findOrFail($id);
             $department->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Department deleted successfully'
-            ]);
+            return redirect()->route('admin.departments.index')->with('success', 'Department deleted successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting department: ' . $e->getMessage()
-            ], 500);
+            Log::error('Error deleting department: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error deleting department: ' . $e->getMessage());
         }
-    }
-
-    // 🟢 Bulk delete
-    public function bulkDelete(Request $request)
-    {
-        $ids = $request->input('ids');
-
-        if (empty($ids)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No departments selected'
-            ]);
-        }
-
-        Department::whereIn('id', $ids)->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => count($ids) . ' departments deleted successfully'
-        ]);
-    }
-
-    // 🟢 Get multiple departments for bulk editing
-    public function getBulkData(Request $request)
-    {
-        $ids = $request->input('ids');
-
-        if (count($ids) > 5) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You can only edit up to 5 departments at a time'
-            ], 400);
-        }
-
-        $departments = Department::whereIn('id', $ids)->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $departments
-        ]);
-    }
-
-    // 🟢 Bulk update
-    public function bulkUpdate(Request $request)
-    {
-        $validated = $request->validate([
-            'departments' => 'required|array',
-            'departments.*.id' => 'required|exists:departments,id',
-            'departments.*.name' => 'required|string|max:255',
-            'departments.*.description' => 'nullable|string'
-        ]);
-
-        $updatedCount = 0;
-
-        foreach ($validated['departments'] as $departmentData) {
-            try {
-                $department = Department::find($departmentData['id']);
-                $department->update([
-                    'name' => $departmentData['name'],
-                    'description' => $departmentData['description'] ?? null
-                ]);
-                $updatedCount++;
-            } catch (\Exception $e) {
-                Log::error("Error updating department: " . $e->getMessage());
-                continue;
-            }
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => "Successfully updated $updatedCount departments",
-            'redirect' => route('admin.departments.index')
-        ]);
     }
 }

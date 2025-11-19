@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubjectRequest;
 use App\Models\Subject;
-use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,14 +15,11 @@ class SubjectController extends Controller
     $search = $request->input('search');
     $perPage = $request->input('per_page', 10);
 
-    $subjects = Subject::with('department')
+    $subjects = Subject::query()
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('code', 'like', "%{$search}%")
-          ->orWhere('credit_hours', 'like', "%{$search}%")
-          ->orWhereHas('department', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          });
+          ->orWhere('credit_hours', 'like', "%{$search}%");
       })
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
@@ -37,8 +33,7 @@ class SubjectController extends Controller
 
   public function create()
   {
-    $departments = Department::all();
-    return view('admin.subjects.create', compact('departments'));
+    return view('admin.subjects.create');
   }
 
   public function store(SubjectRequest $request)
@@ -54,14 +49,12 @@ class SubjectController extends Controller
 
   public function show(Subject $subject)
   {
-    $subject->load('department');
     return view('admin.subjects.show', compact('subject'));
   }
 
   public function edit(Subject $subject)
   {
-    $departments = Department::all();
-    return view('admin.subjects.edit', compact('subject', 'departments'));
+    return view('admin.subjects.edit', compact('subject'));
   }
 
   public function update(SubjectRequest $request, Subject $subject)

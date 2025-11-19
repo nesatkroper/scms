@@ -10,7 +10,7 @@ class Subject extends Model
 {
   use HasFactory, SoftDeletes;
 
-  protected $fillable = ['name', 'code', 'department_id', 'description', 'credit_hours'];
+  protected $fillable = ['name', 'code',  'description', 'credit_hours'];
 
   protected $casts = [
     'credit_hours' => 'integer',
