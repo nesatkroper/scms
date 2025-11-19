@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Section;
 use App\Models\GradeLevel;
 use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -21,7 +22,7 @@ class SectionController extends Controller
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
         $gradeLevels = GradeLevel::all();
-        $teachers = Teacher::all();
+        $teachers = User::all();
 
         $sections = Section::with(['gradeLevel', 'teacher'])
             ->when($search, function ($query) use ($search) {

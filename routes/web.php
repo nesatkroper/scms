@@ -36,11 +36,6 @@ use App\Http\Controllers\Admin\{
   ProfileController
 };
 
-/*
-|--------------------------------------------------------------------------
-| FRONTEND WEBSITE ROUTES (No Login Required)
-|--------------------------------------------------------------------------
-*/
 
 R::get('/home', function () {
   return view('web.home');
@@ -59,14 +54,9 @@ R::get('/donation', function () {
   return view('web.donation');
 })->name('web.donation');
 R::get('/', function () {
-  return redirect('/home');   // 👈 redirect main domain to website home
+  return redirect('/home');
 });
 
-/*
-|--------------------------------------------------------------------------
-| AUTH ROUTES
-|--------------------------------------------------------------------------
-*/
 Auth::routes();
 
 R::get('/', function () {
@@ -76,11 +66,6 @@ R::get('/', function () {
 
   return redirect('/login');
 });
-/*
-|--------------------------------------------------------------------------
-| ADMIN PANEL ROUTES (Login Required)
-|--------------------------------------------------------------------------
-*/
 
 R::prefix('admin')
   ->as('admin.')
@@ -94,29 +79,16 @@ R::prefix('admin')
       'roles' => RoleController::class,
       'permissions' => PermissionController::class,
       'attendances' => AttendanceController::class,
-      'bookcategory' => BookCategoryController::class,
-      'books' => BookController::class,
-      'bookissues' => BookIssueController::class,
       'classrooms' => ClassroomController::class,
       'departments' => DepartmentController::class,
-      'events' => EventController::class,
       'exams' => ExamController::class,
       'expenses' => ExpenseController::class,
       'expensecategory' => ExpenseCategoryController::class,
-      'feestructures' => FeeStructureController::class,
-      'grades' => GradeController::class,
-      'gradelevels' => GradeLevelController::class,
-      'guardians' => GuardianController::class,
-      'notices' => NoticeController::class,
       'payments' => PaymentController::class,
       'sections' => SectionController::class,
-      'settings' => SettingController::class,
       'students' => StudentController::class,
-      'studentfees' => StudentFeeController::class,
       'subjects' => SubjectController::class,
       'teachers' => TeacherController::class,
-      'timetables' => TimetableController::class,
-      'timetable_entries' => TimetableEntryController::class,
       'scores' => ScoreController::class,
     ]);
 
@@ -127,22 +99,12 @@ R::prefix('admin')
       ->name('students.profile');
 
 
-    /*
-      |--------------------------------------------------------------------------
-      | BULK ACTIONS
-      |--------------------------------------------------------------------------
-      */
 
     $bulkRoutes = [
       'expenses' => ExpenseController::class,
       'sections' => SectionController::class,
-      'bookissues' => BookIssueController::class,
-      'bookcategory' => BookCategoryController::class,
-      'books' => BookController::class,
       'students' => StudentController::class,
-      'guardians' => GuardianController::class,
       'departments' => DepartmentController::class,
-      'gradelevels' => GradeLevelController::class,
       'subjects' => SubjectController::class,
       'exams' => ExamController::class,
       'teachers' => TeacherController::class,

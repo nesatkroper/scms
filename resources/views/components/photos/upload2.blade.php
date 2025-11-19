@@ -1,245 +1,240 @@
-<div class="relative">
-  <!-- Main Container -->
+<div class="absolute -bottom-12">
   <div
-    class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 shadow-lg relative"
-    id="photoUploadContainer">
-    <!-- Image Preview -->
-    <div id="photoPreviewContainer" class="w-full h-full hidden">
-      <img id="photoPreview" src="" alt="Preview" class="w-full h-full object-cover {{$rounded}}">
+    class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 shadow-lg relative">
+    {{-- Set the current image URL here. Use $name for ID, no $edit needed --}}
+    <img id="{{ $name }}" src="{{ $currentImageUrl }}" alt="Profile Photo"
+      class="w-full h-full object-cover rounded-full {{ $currentImageUrl ? '' : 'hidden' }}">
+
+    {{-- Show initials container if no current image exists --}}
+    <div id="{{ $name }}_initials"
+      class="rounded-full absolute inset-0 w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 {{ $currentImageUrl ? 'hidden' : '' }}">
+      <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
     </div>
 
-    <!-- Initials Display (shown when no image) -->
-    <div id="photoInitials"
-      class="absolute inset-0 {{$rounded}} w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600">
-      <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">
-        <i class="{{$icon}} text-8xl"></i>
-      </span>
-    </div>
+    <input type="file" id="upload_{{ $name }}" name="{{ $name }}" accept="image/*" class="hidden">
 
-    <!-- Hidden file input -->
-    <input type="file" id="photoUpload" name="{{ $name ?? 'avatar' }}" accept="image/*" class="hidden">
-
-    <!-- Upload Button -->
-    <label for="photoUpload"
-      class="size-8 flex justify-center items-center absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 z-25">
+    <label for="upload_{{ $name }}"
+      class="size-8 flex justify-center items-center absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
       <i class="ri-camera-line text-indigo-600 dark:text-indigo-300"></i>
     </label>
-  </div>
 
-  <!-- Drag & Drop Overlay -->
-  <div id="dropArea"
-    class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center hidden z-20">
-    <div class="text-white text-center p-4">
-      <i class="ri-upload-cloud-2-line text-3xl mb-2"></i>
-      <p>Drop your photo here</p>
-    </div>
+    {{-- ADDED: Remove button for edit pages --}}
+    @if ($canRemove && $currentImageUrl)
+      <button type="button" id="remove_{{ $name }}"
+        @click.prevent="{{ $removeAction }}; document.getElementById('{{ $name }}').src=''; document.getElementById('{{ $name }}').classList.add('hidden'); document.getElementById('{{ $name }}_initials').classList.remove('hidden');"
+        class="size-8 flex justify-center items-center absolute -top-1 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-1 rounded-full shadow cursor-pointer hover:bg-red-600 z-10">
+        <i class="ri-delete-bin-line"></i>
+      </button>
+    @endif
   </div>
 </div>
-
-<!-- Cropper Modal -->
-<div id="cropModal"
-  class="fixed inset-0 z-50 flex items-center justify-center rounded-xl bg-black bg-opacity-75 hidden">
+<div id="{{ $name }}CropModal"
+  class="overflow-hidden rounded-xl fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-lg bg-opacity-50 hidden">
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl p-4">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold">Crop Your Image</h3>
-      <button id="closeCropModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100">
-        <i class="ri-close-line text-2xl"></i>
-      </button>
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Crop Image</h3>
     </div>
-    <div class="cropper-container w-full h-[60vh]">
-      <img id="imageToCrop" src="" alt="" style="max-height: 60vh;">
-    </div>
-    <div class="flex justify-end space-x-3 mt-4">
-      <button type="button" id="cancelCrop"
-        class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
-        Cancel
-      </button>
-      <button type="button" id="cropImageBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-        Crop & Save
-      </button>
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex-1">
+        <div class="img-container">
+          <img id="{{ $name }}ImageToCrop" class="max-w-full max-h-[60vh]" src="" alt="Image to crop">
+        </div>
+      </div>
+
+      <div class="md:w-64 flex flex-col gap-3">
+        <div class="preview-container overflow-hidden w-[200px] h-[200px] rounded-full mx-auto border border-gray-200">
+        </div>
+        <div class="flex gap-2 mt-2 justify-center">
+          <button type="button" id="{{ $name }}RotateLeft"
+            class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </button>
+          <button type="button" id="{{ $name }}RotateRight"
+            class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 8V4m0 0h-4m4 0l-4 4m4 11v4m0 0h-4m4 0l-4-4" />
+            </svg>
+          </button>
+          <button type="button" id="{{ $name }}FlipHorizontal"
+            class="p-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex gap-2 mt-auto pt-4">
+          <button type="button" id="{{ $name }}ApplyCrop"
+            class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
+            Apply
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 @push('styles')
   <link rel="stylesheet" href="{{ asset('assets/css/cropperjs1.5.12.min.css') }}">
-  <style>
-    .cropper-view-box,
-    .cropper-face {
-      border-radius: 50%;
-    }
-
-    #dropArea {
-      transition: all 0.3s ease;
-    }
-
-    .cropper-modal {
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-  </style>
 @endpush
 @push('scripts')
   <script src="{{ asset('assets/js/cropperjs1.5.12.min.js') }}"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // DOM Elements
-      const photoUpload = document.getElementById('photoUpload');
-      const photoPreviewContainer = document.getElementById('photoPreviewContainer');
-      const photoPreview = document.getElementById('photoPreview');
-      const photoInitials = document.getElementById('photoInitials');
-      const dropArea = document.getElementById('dropArea');
-      const photoContainer = document.getElementById('photoUploadContainer');
-      const cropModal = document.getElementById('cropModal');
-      const imageToCrop = document.getElementById('imageToCrop');
-      const closeCropModal = document.getElementById('closeCropModal');
-      const cancelCrop = document.getElementById('cancelCrop');
-      const cropImageBtn = document.getElementById('cropImageBtn');
+    document.addEventListener('DOMContentLoaded', function() {
+      // Use the component name (e.g., 'avatar') to create unique IDs
+      const componentName = '{{ $name }}';
+
+      // Element references using componentName
+      const photoInput = document.getElementById(`upload_${componentName}`);
+      const photoPreview = document.getElementById(componentName);
+      const initialsContainer = document.getElementById(`${componentName}_initials`);
+      const cropModal = document.getElementById(`${componentName}CropModal`);
+      const ImageToCrop = document.getElementById(`${componentName}ImageToCrop`);
+      const applyCrop = document.getElementById(`${componentName}ApplyCrop`);
+      const rotateLeft = document.getElementById(`${componentName}RotateLeft`);
+      const rotateRight = document.getElementById(`${componentName}RotateRight`);
+      const flipHorizontal = document.getElementById(`${componentName}FlipHorizontal`);
+
       let cropper;
-      let currentFile;
+      let originalImageUrl;
 
-      // Prevent default drag behaviors
-      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        photoContainer.addEventListener(eventName, preventDefaults, false);
-        document.body.addEventListener(eventName, preventDefaults, false);
-      });
-
-      function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-
-      // Highlight drop area when item is dragged over it
-      ['dragenter', 'dragover'].forEach(eventName => {
-        photoContainer.addEventListener(eventName, highlight, false);
-      });
-
-      ['dragleave', 'drop'].forEach(eventName => {
-        photoContainer.addEventListener(eventName, unhighlight, false);
-      });
-
-      function highlight() {
-        dropArea.classList.remove('hidden');
-      }
-
-      function unhighlight() {
-        dropArea.classList.add('hidden');
-      }
-
-      // Handle dropped files
-      photoContainer.addEventListener('drop', handleDrop, false);
-
-      function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-
-        if (files.length) {
-          currentFile = files[0];
-          handleImageUpload(currentFile);
-        }
-      }
-
-      // Handle file selection via input
-      photoUpload.addEventListener('change', function (e) {
-        if (this.files && this.files.length) {
-          currentFile = this.files[0];
-          handleImageUpload(currentFile);
+      // Handle file selection
+      photoInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+          handleFile(this.files[0]);
+          this.value = ''; // Clear input for re-selection
         }
       });
 
-      // Process the uploaded image
-      function handleImageUpload(file) {
+      // Handle file
+      function handleFile(file) {
+        // Check if the file is an image
         if (!file.type.match('image.*')) {
-          ShowTaskMessage('error', 'Please select an image file (JPEG, PNG, etc.)');
+          // Assuming ShowTaskMessage is defined globally
+          if (typeof ShowTaskMessage !== 'undefined') {
+            ShowTaskMessage('error', 'Please select an image file (JPG, PNG)');
+          }
           return;
         }
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          // Show crop modal with the image
-          imageToCrop.src = e.target.result;
-          cropModal.classList.remove('hidden');
-          // Initialize cropper
+
+        // Create a URL for the file
+        originalImageUrl = URL.createObjectURL(file);
+
+        // Show crop modal
+        ImageToCrop.src = originalImageUrl;
+        cropModal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+
+        // Initialize cropper after image is loaded
+        ImageToCrop.onload = function() {
           if (cropper) {
             cropper.destroy();
           }
-          cropper = new Cropper(imageToCrop, {
+
+          cropper = new Cropper(ImageToCrop, {
             aspectRatio: 1,
             viewMode: 1,
             autoCropArea: 0.8,
             responsive: true,
+            preview: '.preview-container',
             guides: true,
-            movable: true,
-            zoomable: true,
-            rotatable: true,
-            scalable: true,
+            center: true,
+            highlight: true,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            toggleDragModeOnDblclick: false,
           });
         };
-        reader.readAsDataURL(file);
       }
-      // Crop image button
-      cropImageBtn.addEventListener('click', function () {
+
+      // Close crop modal and clean up
+      function closeCrop() {
         if (cropper) {
-          // Get the cropped canvas
+          cropper.destroy();
+          cropper = null;
+        }
+        if (originalImageUrl) {
+          URL.revokeObjectURL(originalImageUrl);
+          originalImageUrl = null;
+        }
+        cropModal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        photoInput.value = ''; // Reset the input
+      }
+
+      applyCrop.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (cropper) {
           const canvas = cropper.getCroppedCanvas({
-            width: 400,
-            height: 400,
-            minWidth: 100,
-            minHeight: 100,
-            maxWidth: 800,
-            maxHeight: 800,
+            width: 300,
+            height: 300,
+            minWidth: 256,
+            minHeight: 256,
+            maxWidth: 4096,
+            maxHeight: 4096,
             fillColor: '#fff',
             imageSmoothingEnabled: true,
             imageSmoothingQuality: 'high',
           });
 
           if (canvas) {
-            // Convert canvas to blob
-            canvas.toBlob(function (blob) {
-              // Create a new file from the blob
-              const croppedFile = new File([blob], currentFile.name, {
+            canvas.toBlob((blob) => {
+              // Update preview
+              photoPreview.src = URL.createObjectURL(blob);
+
+              // Show the image and hide initials
+              photoPreview.classList.remove('hidden');
+              initialsContainer.classList.add('hidden');
+
+              // Create a new File object
+              const file = new File([blob], 'profile-photo.jpg', {
                 type: 'image/jpeg',
                 lastModified: Date.now()
               });
-              // Create a new data transfer object
+
+              // Create a new FileList and DataTransfer
               const dataTransfer = new DataTransfer();
-              dataTransfer.items.add(croppedFile);
+              dataTransfer.items.add(file);
 
               // Update the file input
-              photoUpload.files = dataTransfer.files;
+              photoInput.files = dataTransfer.files;
 
-              // Update the preview
-              photoPreview.src = URL.createObjectURL(croppedFile);
-              photoPreviewContainer.classList.remove('hidden');
-              photoInitials.classList.add('hidden');
-
-              // Close the crop modal
-              cropModal.classList.add('hidden');
-              cropper.destroy();
+              // Clean up
+              if (originalImageUrl) {
+                URL.revokeObjectURL(originalImageUrl);
+              }
             }, 'image/jpeg', 0.9);
           }
         }
+        closeCrop();
       });
 
-      function closeCrop() {
-        cropModal.classList.add('hidden');
+      rotateLeft.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        cropper && cropper.rotate(-90);
+      });
+
+      rotateRight.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        cropper && cropper.rotate(90);
+      });
+
+      flipHorizontal.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (cropper) {
-          cropper.destroy();
-          cropper = null;
+          const scaleX = cropper.getData().scaleX || 1;
+          cropper.scaleX(-scaleX);
         }
-        // Reset file input
-        photoUpload.value = '';
-      }
-      // Close crop modal
-      closeCropModal.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        closeCrop();
-      });
-
-      cancelCrop.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        closeCrop();
       });
     });
   </script>

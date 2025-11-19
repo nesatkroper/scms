@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\GradeLevel;
@@ -20,19 +19,14 @@ class StudentController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 12);
         $viewType = $request->input('view', 'table');
-        $gradeLevels = GradeLevel::all();
 
         $students = User::role('student')
-            ->with('gradeLevel')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%")
-                    ->orWhere('admission_date', 'like', "%{$search}%")
-                    ->orWhereHas('gradeLevel', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+                    ->orWhere('admission_date', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
@@ -56,10 +50,10 @@ class StudentController extends Controller
             ]);
         }
 
-        return view('admin.students.index', compact('students', 'gradeLevels'));
+        return view('admin.students.index', compact('students'));
     }
 
-    public function store(StoreStudentRequest $request)
+    public function store(UserRequest $request)
     {
         try {
             $validated = $request->validated();
@@ -116,7 +110,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function update(UpdateStudentRequest $request, User $student)
+    public function update(UserRequest $request, User $student)
     {
         try {
             // Ensure the user is a student

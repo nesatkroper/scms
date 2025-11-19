@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
 use Spatie\Permission\Models\Role;
 
@@ -14,92 +14,66 @@ class UserSeeder extends Seeder
   public function run(): void
   {
     $faker = Faker::create();
-    $departmentIds = DB::table('departments')->pluck('id')->all();
-    $hasDepartments = !empty($departmentIds);
+    $departmentIds = DB::table('departments')->pluck('id')->toArray();
 
-    $roles = [
-      'admin',
-      'teacher',
-      'student',
-      'guardian',
-      'staff',
-    ];
+    $roles = ['admin', 'teacher', 'student', 'guardian', 'staff'];
     foreach ($roles as $roleName) {
       Role::firstOrCreate(['name' => $roleName]);
     }
 
-    $teachers = [];
-    for ($i = 0; $i < 5; $i++) {
-      $gender = $faker->randomElement(['male', 'female']);
-      $teachers[] = [
-        'name' => $faker->name($gender),
-        'email' => "teacher{$i}@example.com",
-        'email_verified_at' => now(),
-        'password' => Hash::make('password'),
-        'phone' => $faker->phoneNumber,
-        'address' => $faker->address,
-        'date_of_birth' => $faker->date(),
-        'gender' => $gender,
-        'department_id' => $hasDepartments ? $departmentIds[array_rand($departmentIds)] : null,
-        'joining_date' => $faker->date(),
-        'qualification' => $faker->randomElement(['PhD', 'Master', 'Bachelor']),
-        'experience' => $faker->randomElement(['3 years', '5 years', '10 years']),
-        'specialization' => $faker->randomElement(['Science', 'Mathematics', 'Literature']),
-        'salary' => $faker->randomFloat(2, 40000, 80000),
-        'created_at' => now(),
-        'updated_at' => now(),
-      ];
-    }
-
-    DB::table('users')->insert($teachers);
-
-    $students = [];
-    for ($i = 0; $i < 100; $i++) {
-      $gender = $faker->randomElement(['male', 'female']);
-      $students[] = [
-        'name' => $faker->name($gender),
-        'email' => "student{$i}@example.com",
-        'email_verified_at' => now(),
-        'password' => Hash::make('password'),
-        'gender' => $gender,
-        'blood_group' => $faker->randomElement(['A+', 'B+', 'O+', 'AB+']),
-        'nationality' => $faker->country,
-        'religion' => $faker->randomElement(['Christianity', 'Islam', 'Hinduism', 'Buddhism']),
-        'admission_date' => $faker->date(),
-        'avatar' => null,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ];
-    }
-
-    DB::table('users')->insert($students);
-
-    $adminUser = User::firstOrCreate(
-      ['email' => "admin@example.com"],
+    // Admin
+    $admin = User::updateOrCreate(
+      ['email' => 'admin@example.com'],
       [
-        'name' => "Admin User",
+        'name' => 'Admin User',
         'password' => Hash::make('password'),
         'email_verified_at' => now(),
       ]
     );
-    $adminUser->assignRole('admin');
+    $admin->assignRole('admin');
 
-    $teacherIds = DB::table('users')->where('email', 'like', 'teacher%')->pluck('id')->all();
-    $studentIds = DB::table('users')->where('email', 'like', 'student%')->pluck('id')->all();
-
-    $teacherRole = Role::where('name', 'teacher')->first();
-    $studentRole = Role::where('name', 'student')->first();
-
-    if ($teacherRole) {
-      foreach ($teacherIds as $id) {
-        User::find($id)->assignRole($teacherRole);
-      }
+    // Teachers
+    for ($i = 0; $i < 5; $i++) {
+      $gender = $faker->randomElement(['male', 'female']);
+      $teacher = User::updateOrCreate(
+        ['email' => "teacher{$i}@example.com"],
+        [
+          'name' => $faker->name($gender),
+          'password' => Hash::make('password'),
+          'email_verified_at' => now(),
+          'gender' => $gender,
+          'department_id' => $departmentIds[array_rand($departmentIds)],
+          'joining_date' => $faker->date(),
+          'qualification' => $faker->randomElement(['PhD', 'Master', 'Bachelor']),
+          'experience' => $faker->randomElement(['3 years', '5 years', '10 years']),
+          'specialization' => $faker->randomElement(['Science', 'Math', 'Literature']),
+          'salary' => $faker->randomFloat(2, 40000, 80000),
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]
+      );
+      $teacher->assignRole('teacher');
     }
 
-    if ($studentRole) {
-      foreach ($studentIds as $id) {
-        User::find($id)->assignRole($studentRole);
-      }
+    // Students
+    for ($i = 0; $i < 100; $i++) {
+      $gender = $faker->randomElement(['male', 'female']);
+      $student = User::updateOrCreate(
+        ['email' => "student{$i}@example.com"],
+        [
+          'name' => $faker->name($gender),
+          'password' => Hash::make('password'),
+          'email_verified_at' => now(),
+          'gender' => $gender,
+          'blood_group' => $faker->randomElement(['A+', 'B+', 'O+', 'AB+']),
+          'nationality' => $faker->country,
+          'religion' => $faker->randomElement(['Christianity', 'Islam', 'Hinduism', 'Buddhism']),
+          'admission_date' => $faker->date(),
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]
+      );
+      $student->assignRole('student');
     }
   }
 }

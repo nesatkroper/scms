@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\SubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Subject;
@@ -53,7 +54,7 @@ class SubjectController extends Controller
         return view('admin.subjects.index', compact('subjects', 'departments'));
     }
 
-    public function store(StoreSubjectRequest $request)
+    public function store(SubjectRequest $request)
     {
         try {
             $subject = Subject::create($request->validated());
@@ -79,7 +80,7 @@ class SubjectController extends Controller
         ]);
     }
 
-    public function update(UpdateSubjectRequest $request, Subject $subject)
+    public function update(SubjectRequest $request, Subject $subject)
     {
         try {
             $subject->update($request->validated());

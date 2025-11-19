@@ -74,8 +74,12 @@ class RoleController extends BaseController
       ]);
 
       if ($request->has('permissions')) {
-        $role->syncPermissions($request->permissions);
+        $permissionIds = collect($request->permissions)->map(fn($id) => (int) $id)->toArray();
+        $role->syncPermissions($permissionIds);
       }
+
+      app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
 
       return redirect()->route('admin.roles.index')
         ->with('success', 'Role created successfully!');

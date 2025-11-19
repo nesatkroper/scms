@@ -10,38 +10,18 @@ class DepartmentSeeder extends Seeder
   public function run(): void
   {
     $departments = [
-      [
-        'name' => 'Administration',
-        'description' => 'Oversees the daily operations and management of the school.',
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Human Resources',
-        'description' => 'Manages all personnel-related functions, including hiring and staff support.',
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Finance',
-        'description' => 'Responsible for the school\'s budget, financial planning, and accounting.',
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Maintenance',
-        'description' => 'Handles the upkeep and repair of all school facilities and grounds.',
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Student Services',
-        'description' => 'Provides support for student well-being, including counseling and extracurricular activities.',
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
+      ['name' => 'Administration', 'description' => 'Oversees the daily operations and management of the school.'],
+      ['name' => 'Human Resources', 'description' => 'Manages all personnel-related functions.'],
+      ['name' => 'Finance', 'description' => 'Responsible for the school\'s budget and accounting.'],
+      ['name' => 'Maintenance', 'description' => 'Handles upkeep and repair of facilities.'],
+      ['name' => 'Student Services', 'description' => 'Supports student well-being, counseling, extracurriculars.'],
     ];
 
-    DB::table('departments')->insert($departments);
+    foreach ($departments as $dept) {
+      DB::table('departments')->updateOrInsert(
+        ['name' => $dept['name']],
+        array_merge($dept, ['created_at' => now(), 'updated_at' => now()])
+      );
+    }
   }
 }

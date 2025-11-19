@@ -9,49 +9,23 @@ class SubjectSeeder extends Seeder
 {
   public function run(): void
   {
+    $departmentIds = DB::table('departments')->pluck('id')->toArray();
+
     $subjects = [
-      [
-        'name' => 'Introduction to Programming',
-        'code' => 'CS101',
-        'description' => 'A foundational course on the principles of computer programming.',
-        'credit_hours' => 3,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Data Structures',
-        'code' => 'CS202',
-        'description' => 'An in-depth study of data organization and management.',
-        'credit_hours' => 4,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'British Literature',
-        'code' => 'ENGL250',
-        'description' => 'A survey of key literary works from Great Britain.',
-        'credit_hours' => 3,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Creative Writing',
-        'code' => 'ENGL301',
-        'description' => 'Focuses on developing skills in various forms of creative writing.',
-        'credit_hours' => 3,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
-      [
-        'name' => 'Calculus I',
-        'code' => 'MATH150',
-        'description' => 'The first course in differential and integral calculus.',
-        'credit_hours' => 4,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ],
+      ['name' => 'Introduction to Programming', 'code' => 'CS101', 'credit_hours' => 3],
+      ['name' => 'Data Structures', 'code' => 'CS202', 'credit_hours' => 4],
+      ['name' => 'British Literature', 'code' => 'ENGL250', 'credit_hours' => 3],
+      ['name' => 'Creative Writing', 'code' => 'ENGL301', 'credit_hours' => 3],
+      ['name' => 'Calculus I', 'code' => 'MATH150', 'credit_hours' => 4],
     ];
 
-    DB::table('subjects')->insert($subjects);
+    foreach ($subjects as $subj) {
+      $subj['department_id'] = $departmentIds[array_rand($departmentIds)];
+      $subj['description'] = $subj['name'] . ' course description.';
+      $subj['created_at'] = now();
+      $subj['updated_at'] = now();
+
+      DB::table('subjects')->updateOrInsert(['code' => $subj['code']], $subj);
+    }
   }
 }

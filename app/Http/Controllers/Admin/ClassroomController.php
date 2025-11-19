@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreClassroomRequest;
-use App\Http\Requests\UpdateClassroomRequest;
+use App\Http\Requests\ClassroomRequest;
 use App\Models\Classroom;
 
 class ClassroomController extends Controller
@@ -20,7 +19,7 @@ class ClassroomController extends Controller
         return view('classrooms.create');
     }
 
-    public function store(StoreClassroomRequest $request)
+    public function store(ClassroomRequest $request)
     {
         Classroom::create($request->validated());
         return redirect()->route('classrooms.index')->with('success', 'Classroom added successfully!');
@@ -36,7 +35,7 @@ class ClassroomController extends Controller
         return view('classrooms.edit', compact('classroom'));
     }
 
-    public function update(UpdateClassroomRequest $request, Classroom $classroom)
+    public function update(ClassroomRequest $request, Classroom $classroom)
     {
         $classroom->update($request->validated());
         return redirect()->route('classrooms.show', $classroom)->with('success', 'Classroom updated successfully!');

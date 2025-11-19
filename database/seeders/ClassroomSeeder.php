@@ -9,12 +9,12 @@ class ClassroomSeeder extends Seeder
 {
   public function run(): void
   {
-    $classrooms = [];
     $letters = ['A', 'B', 'C'];
+    $classrooms = [];
+
     foreach ($letters as $letter) {
       for ($i = 1; $i <= 5; $i++) {
         $roomNumber = "{$letter}-10{$i}";
-
         $classrooms[] = [
           'name' => "Classroom {$letter}",
           'room_number' => $roomNumber,
@@ -25,6 +25,6 @@ class ClassroomSeeder extends Seeder
       }
     }
 
-    DB::table('classrooms')->insert($classrooms);
+    DB::table('classrooms')->upsert($classrooms, ['room_number']);
   }
 }

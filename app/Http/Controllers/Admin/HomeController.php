@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classroom;
 use Illuminate\Http\Request;
-use App\Models\Student;
-use App\Models\Teacher;
-use App\Models\Section;
-use App\Models\Payment;
-use App\Models\Attendance;
-use App\Models\Notice;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -19,11 +14,12 @@ class HomeController extends Controller
   {
     $teachers = User::role('Teacher')->count();
     $students = User::role('Student')->count();
+    $classroom = Classroom::count();
 
     $data = [
       'totalStudents' => $students,
       'totalTeachers' => $teachers,
-      'activeClasses' => 12,
+      'activeClasses' => $classroom,
       'feesCollected' => 87550.00,
       'recentStudents' => [
         [

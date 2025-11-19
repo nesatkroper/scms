@@ -21,9 +21,6 @@ class Department extends Model
   }
   public function teachers()
   {
-    // return $this->hasMany(User::class)->where('role', 'teacher'); // Adjust based on your role system
-    // return $this->hasMany(User::class)->where('role', 'teacher');
-    // return $this->hasMany(User::class);
     return $this->hasMany(User::class)
       ->whereHas('roles', function ($query) {
         $query->where('name', 'teacher');
@@ -42,6 +39,6 @@ class Department extends Model
   }
   public function head()
   {
-    return $this->belongsTo(User::class, 'head_id'); // Assuming 'head_id' is the foreign key
+    return $this->belongsTo(User::class, 'head_id');
   }
 }

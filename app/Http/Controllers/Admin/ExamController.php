@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ExamRequest;
 use App\Http\Requests\StoreExamRequest;
 use App\Http\Requests\UpdateExamRequest;
 use Illuminate\Support\Facades\Log;
@@ -55,7 +56,7 @@ class ExamController extends Controller
         return view('admin.exams.index', compact('exams', 'subjects'));
     }
 
-    public function store(StoreExamRequest $request)
+    public function store(ExamRequest $request)
     {
         try {
             $exam = Exam::create($request->validated());
@@ -80,7 +81,7 @@ class ExamController extends Controller
         ]);
     }
 
-    public function update(UpdateExamRequest $request, Exam $exam)
+    public function update(ExamRequest $request, Exam $exam)
     {
         try {
             $exam->update($request->validated());

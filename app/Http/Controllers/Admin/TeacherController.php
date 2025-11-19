@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Department;
 use App\Models\User;
@@ -25,7 +26,7 @@ class TeacherController extends Controller
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
         $departments = Department::all();
-        
+
         $teachers = User::role('teacher')
             ->with('department')
             ->when($search, function ($query) use ($search) {
@@ -65,11 +66,11 @@ class TeacherController extends Controller
         return view('admin.teachers.index', compact('teachers', 'departments'));
     }
 
-    public function store(StoreTeacherRequest $request)
+    public function store(UserRequest $request)
     {
         try {
             Log::info('Store Teacher Request Data:', $request->all());
-            
+
             $validated = $request->validated();
             Log::info('Validated Data:', $validated);
 
@@ -78,7 +79,7 @@ class TeacherController extends Controller
             if (!file_exists($teacherPhotoPath)) {
                 mkdir($teacherPhotoPath, 0755, true);
             }
-            
+
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
                 $photoName = time() . '-' . date('d-m-Y') . '_add_' . $photo->getClientOriginalName();
@@ -91,7 +92,7 @@ class TeacherController extends Controller
             if (!file_exists($cvPath)) {
                 mkdir($cvPath, 0755, true);
             }
-            
+
             if ($request->hasFile('cv')) {
                 $cv = $request->file('cv');
                 $cvName = time() . '-' . date('d-m-Y') . '_add_' . $cv->getClientOriginalName();
@@ -104,7 +105,7 @@ class TeacherController extends Controller
                 $validated['password'] = 'password'; // Default password
             }
             $validated['password'] = Hash::make($validated['password']);
-            
+
             // Create user
             $teacher = User::create($validated);
             $teacher->assignRole('teacher');
@@ -117,7 +118,7 @@ class TeacherController extends Controller
         } catch (\Exception $e) {
             Log::error('Teacher Store Error: ' . $e->getMessage());
             Log::error('Stack Trace: ' . $e->getTraceAsString());
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error creating teacher: ' . $e->getMessage()
@@ -142,7 +143,7 @@ class TeacherController extends Controller
         ]);
     }
 
-    public function update(UpdateTeacherRequest $request, User $teacher)
+    public function update(UserRequest $request, User $teacher)
     {
         try {
             // Ensure we're only updating teachers

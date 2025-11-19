@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Score extends Model
 {
-  use HasFactory, SoftDeletes;
+  use SoftDeletes;
 
   protected $fillable = [
     'student_id',
@@ -17,12 +16,12 @@ class Score extends Model
     'semester',
     'score',
     'grade',
-    'remarks',
+    'remarks'
   ];
 
   public function student()
   {
-    return $this->belongsTo(Student::class);
+    return $this->belongsTo(User::class, 'student_id');
   }
 
   public function exam()
