@@ -1,5 +1,5 @@
 <div
-  class="box px-2 py-4 md:p-4 bg-white mb-16 dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm min-h-[80vh]">
+  class="box px-2 py-4 md:p-4 bg-white mb-16 dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
   <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
     <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -10,20 +10,9 @@
 
   <div
     class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-    @if (!empty($btnHref) || $btnLink)
-      <a href="{{ $btnHref ?? route('admin.roles.create') }}" id="createRedirectLink"
+    @if ($canCreate)
+      <button id="openCreateModal" data-tooltip-target="tooltip" data-tooltip-placement="top"
         class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-            clip-rule="evenodd" />
-        </svg>
-        {{ $btnText }}
-      </a>
-    @elseif ($canCreate)
-      <button
-        class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2"
-        data-tooltip-target="tooltip" data-tooltip-placement="top">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
@@ -34,6 +23,17 @@
         </div>
         {{ $btnText }}
       </button>
+    @endif
+    @if ($btnLink)
+      <a href="{{ route('admin.roles.create') }}"
+        class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 w-48">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+            clip-rule="evenodd" />
+        </svg>
+        {{ $btnText }}
+      </a>
     @endif
     @if ($showSearch || $showReset || $showViewToggle)
       <div class="flex items-center mt-3 md:mt-0 gap-2">
@@ -84,6 +84,7 @@
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            // 'Accept': 'application/json'
           }
         });
       }
