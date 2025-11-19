@@ -28,10 +28,10 @@ class Subject extends Model
       ->withTimestamps();
   }
 
-  public function teachers()
-  {
-    return $this->belongsToMany(User::class, 'teacher_subject');
-  }
+  // public function teachers()
+  // {
+  //   return $this->belongsToMany(User::class, 'teacher_subject');
+  // }
 
   public function exams()
   {
@@ -46,5 +46,18 @@ class Subject extends Model
   public function scores()
   {
     return $this->hasMany(Score::class);
+  }
+
+  public function teachers()
+  {
+    return $this->belongsToMany(User::class, 'teacher_subject', 'subject_id', 'teacher_id')
+      ->using(TeacherSubject::class)
+      ->withPivot('time_slot')
+      ->withTimestamps();
+  }
+
+  public function teacherAssignments()
+  {
+    return $this->hasMany(TeacherSubject::class, 'subject_id');
   }
 }
