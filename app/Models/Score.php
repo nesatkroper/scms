@@ -12,7 +12,7 @@ class Score extends Model
   protected $fillable = [
     'student_id',
     'exam_id',
-    'subject_id',
+    'course_offering_id',
     'semester',
     'score',
     'grade',
@@ -29,8 +29,8 @@ class Score extends Model
     return $this->belongsTo(Exam::class);
   }
 
-  public function subject()
+  public function courseOffering()
   {
-    return $this->belongsTo(Subject::class);
+    return $this->belongsTo(CourseOffering::class, 'course_offering_id');
   }
 }
