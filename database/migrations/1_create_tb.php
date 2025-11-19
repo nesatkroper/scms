@@ -4,10 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
   public function up(): void
   {
-    //
+
     Schema::create('classrooms', function (Blueprint $table) {
       $table->id();
       $table->string('name');
@@ -17,7 +18,6 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
-    //
     Schema::create('departments', function (Blueprint $table) {
       $table->id();
       $table->string('name')->unique();
@@ -26,7 +26,6 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
-    //
     Schema::create('users', function (Blueprint $table) {
       $table->id();
       $table->string('name');
@@ -55,13 +54,13 @@ return new class extends Migration {
       $table->timestamps();
       $table->softDeletes();
     });
-    //
+
     Schema::create('password_reset_tokens', function (Blueprint $table) {
       $table->string('email')->primary();
       $table->string('token');
       $table->timestamp('created_at')->nullable();
     });
-    //
+
     Schema::create('sessions', function (Blueprint $table) {
       $table->string('id')->primary();
       $table->foreignId('user_id')->nullable()->index();
@@ -71,7 +70,6 @@ return new class extends Migration {
       $table->integer('last_activity')->index();
     });
 
-    //
     Schema::create('subjects', function (Blueprint $table) {
       $table->id();
       $table->string('name');
@@ -83,7 +81,6 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
-    //
     Schema::create('student_course', function (Blueprint $table) {
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('subject_id')->constrained()->onDelete('cascade');
@@ -91,7 +88,6 @@ return new class extends Migration {
       $table->timestamps();
       $table->unique(['student_id', 'subject_id']);
     });
-
 
     Schema::create('expense_categories', function (Blueprint $table) {
       $table->id();
@@ -101,7 +97,6 @@ return new class extends Migration {
       $table->softDeletes();
     });
 
-    //
     Schema::create('expenses', function (Blueprint $table) {
       $table->id();
       $table->string('title');
@@ -204,12 +199,7 @@ return new class extends Migration {
       $table->time('end_time');
       $table->timestamps();
     });
-
-
-
   }
-
-
 
   public function down(): void
   {
@@ -228,5 +218,4 @@ return new class extends Migration {
     Schema::dropIfExists('sessions');
     Schema::dropIfExists('schedules');
   }
-
 };

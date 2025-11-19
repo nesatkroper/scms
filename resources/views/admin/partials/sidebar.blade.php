@@ -51,18 +51,19 @@
             <li><a href="{{ route('admin.departments.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">departments</a>
             </li>
-            <li><a href="{{ route('admin.exams.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">exams</a>
-            </li>
-            <li><a href="{{ route('admin.scores.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">scores</a>
-            </li>
             <li>
               <a href="{{ route('admin.subjects.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize">
-                <span>subjects</span>
-                <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
+                subjects
               </a>
+            </li>
+            <li>
+              <a href="{{ route('admin.exams.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">exams</a>
+            </li>
+            <li>
+              <a href="{{ route('admin.scores.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize">scores</a>
             </li>
           </ul>
         </div>
