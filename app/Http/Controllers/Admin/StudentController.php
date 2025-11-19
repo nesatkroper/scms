@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -100,8 +101,6 @@ class StudentController extends Controller
                 'message' => 'Student not found'
             ], 404);
         }
-
-        $student->load('gradeLevel');
         $student->age = $student->date_of_birth ? \Carbon\Carbon::parse($student->date_of_birth)->age : null;
 
         return response()->json([
@@ -110,7 +109,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function update(UserRequest $request, User $student)
+    public function update(UpdateStudentRequest $request, User $student)
     {
         try {
             // Ensure the user is a student
@@ -142,7 +141,7 @@ class StudentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Student updated successfully!',
-                'data' => $student->fresh('gradeLevel')
+                'data' => $student
             ]);
         } catch (\Exception $e) {
             Log::error('Error updating student: ' . $e->getMessage());
@@ -311,13 +310,6 @@ class StudentController extends Controller
         if (!$student->hasRole('student')) {
             abort(404, 'Student not found');
         }
-
-        // Eager load relationships
-        $student->load([
-            'gradeLevel:id,name',
-            'guardians:id,name,phone,email,occupation,address',
-        ]);
-
         // Calculate age
         $student->age = $student->date_of_birth ? \Carbon\Carbon::parse($student->date_of_birth)->age : null;
 

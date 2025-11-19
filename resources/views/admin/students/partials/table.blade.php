@@ -4,8 +4,8 @@
       <x-table.tr>
         <x-table.td class="whitespace-nowrap text-gray-900 dark:text-white">
           <div class="flex items-center">
-            @if ($student->photo)
-              <img class="detail-btn size-10 rounded-full object-cover cursor-pointer" src="{{ asset($student->photo) }}"
+            @if ($student->avatar)
+              <img class="detail-btn size-10 rounded-full object-cover cursor-pointer" src="{{ asset($student->avatar) }}"
                 alt="{{ $student->name }} image" data-id="{{ $student->id }}">
             @else
               <div data-id="{{ $student->id }}"
