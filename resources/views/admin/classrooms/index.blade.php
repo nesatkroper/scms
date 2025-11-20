@@ -123,23 +123,6 @@
                 </p>
               </div>
             </div>
-
-            {{-- Schedules Count (The equivalent of 'Users Count' for Departments) --}}
-            <div class="flex items-center gap-3 text-sm">
-              <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h.01M16 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 3a3 3 0 100-6 3 3 0 000 6z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Total Schedules</p>
-                <p class="font-medium text-gray-700 dark:text-gray-200">
-                  <span>{{ $classroom->schedules_count }}</span>
-                </p>
-              </div>
-            </div>
           </div>
 
           {{-- Actions (Edit Link + Delete Form) --}}

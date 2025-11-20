@@ -20,7 +20,6 @@ class ClassroomController extends Controller
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('room_number', 'like', "%{$search}%");
       })
-      ->withCount('schedules')
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
       ->appends([
