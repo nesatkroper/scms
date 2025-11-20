@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ScoreRequest;
 use App\Models\Score;
 use App\Models\Exam;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -14,112 +13,57 @@ class ScoreController extends Controller
 {
   public function index(Request $request)
   {
-    $search = $request->input('search');
     $examId = $request->input('exam_id');
     $perPage = $request->input('per_page', 8);
+    $search = $request->input('search');
 
-    $exam = Exam::findOrFail($examId);
+    $exam = Exam::with('courseOffering.students')->findOrFail($examId);
 
-    $scores = Score::query()
-      ->with(['student:id,name', 'exam:id,name'])
-      ->when($search, function ($query) use ($search) {
-        $query->where('grade', 'like', "%{$search}%")
-          ->orWhere('remarks', 'like', "%{$search}%")
-          ->orWhereHas('student', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          })
-          ->orWhereHas('exam', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          });
-      })
-      ->when($examId, function ($query) use ($examId) {
-        $query->where('exam_id', $examId);
-      })
-      ->orderBy('created_at', 'desc')
-      ->paginate($perPage)
-      ->appends($request->query());
+    $studentsQuery = $exam->courseOffering->students();
 
-    return view('admin.scores.index', compact('scores', 'exam'));
-  }
-
-
-  public function create(Request $request)
-  {
-    $students = User::role('student')->orderBy('name')->get(['id', 'name']);
-
-    $examId = $request->input('exam_id');
-    $exam = null;
-
-    if ($examId) {
-      $exam = Exam::findOrFail($examId, ['id', 'type']);
+    // Optional search
+    if ($search) {
+      $studentsQuery = $studentsQuery->where(function ($q) use ($search) {
+        $q->where('name', 'like', "%{$search}%")
+          ->orWhere('email', 'like', "%{$search}%");
+      });
     }
 
-    $grades = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'];
+    // Eager load score for this exam
+    $students = $studentsQuery->with(['scores' => function ($q) use ($examId) {
+      $q->where('exam_id', $examId);
+    }])->paginate($perPage)->appends($request->query());
 
-    return view('admin.scores.create', compact(
-      'students',
-      'exam',
-      'grades',
-      'examId'
-    ));
+    return view('admin.scores.index', compact('students', 'exam'));
   }
-
 
   public function store(ScoreRequest $request)
   {
-    $exists = Score::where('student_id', $request->student_id)
-      ->where('exam_id', $request->exam_id)
-      ->exists();
+    $data = $request->validated();
 
-    if ($exists) {
-      return redirect()->route('admin.scores.create', ['exam_id' => $request->exam_id])
-        ->with('error', 'A score for this student in this exam already exists.')
-        ->withInput();
-    }
+    // Auto assign grade
+    $score = $data['score'];
+    if ($score >= 90) $data['grade'] = 'A+';
+    elseif ($score >= 80) $data['grade'] = 'A';
+    elseif ($score >= 70) $data['grade'] = 'B+';
+    elseif ($score >= 60) $data['grade'] = 'B';
+    elseif ($score >= 50) $data['grade'] = 'C+';
+    elseif ($score >= 40) $data['grade'] = 'C';
+    elseif ($score >= 30) $data['grade'] = 'D';
+    else $data['grade'] = 'F';
 
     try {
-      Score::create($request->validated());
-      return redirect()->route('admin.scores.index', ['exam_id' => $request->exam_id])->with('success', 'Score recorded successfully!');
+      Score::updateOrCreate(
+        ['student_id' => $data['student_id'], 'exam_id' => $data['exam_id']],
+        $data
+      );
+
+      return redirect()->route('admin.scores.index', ['exam_id' => $data['exam_id']])
+        ->with('success', 'Score saved successfully!');
     } catch (\Exception $e) {
-      Log::error('Error creating Score: ' . $e->getMessage());
-      return redirect()->route('admin.scores.create', ['exam_id' => $request->exam_id])->with('error', 'Error recording score.')->withInput();
+      Log::error('Error saving score: ' . $e->getMessage());
+      return redirect()->route('admin.scores.index', ['exam_id' => $data['exam_id']])
+        ->with('error', 'Failed to save score.')->withInput();
     }
-  }
-
-
-  public function edit($student_id, $exam_id)
-  {
-    $score = Score::where('student_id', $student_id)
-      ->where('exam_id', $exam_id)
-      ->firstOrFail();
-
-    $student = User::findOrFail($student_id, ['id', 'name']);
-    $exam = Exam::findOrFail($exam_id, ['id', 'name']);
-
-    $grades = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'];
-
-    return view('admin.scores.edit', compact('score', 'student', 'exam', 'grades'));
-  }
-
-  public function update(ScoreRequest $request, $student_id, $exam_id)
-  {
-    $score = Score::where('student_id', $student_id)
-      ->where('exam_id', $exam_id)
-      ->firstOrFail();
-
-    $score->update($request->validated());
-    return redirect()->route('admin.scores.index', ['exam_id' => $exam_id])->with('success', 'Score updated successfully');
-  }
-
-  public function destroy($student_id, $exam_id)
-  {
-    $score = Score::where('student_id', $student_id)
-      ->where('exam_id', $exam_id)
-      ->firstOrFail();
-
-    $examId = $score->exam_id;
-    $score->delete();
-
-    return redirect()->route('admin.scores.index', ['exam_id' => $examId])->with('success', 'Score deleted successfully');
   }
 }
