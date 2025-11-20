@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
     }
 
     // Students
-    for ($i = 0; $i < 100; $i++) {
+    for ($i = 0; $i < 50; $i++) {
       $gender = $faker->randomElement(['male', 'female']);
       $student = User::updateOrCreate(
         ['email' => "student{$i}@example.com"],

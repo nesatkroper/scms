@@ -9,14 +9,14 @@ class ExamSeeder extends Seeder
 {
   public function run(): void
   {
-    $courseId = DB::table('course_offerings')->pluck('id')->toArray();
+    $courseIds = DB::table('course_offerings')->pluck('id')->toArray();
     $exams = [];
 
-    foreach ($courseId as $subjectId) {
+    foreach ($courseIds as $courseId) {
       $exams[] = [
-        'name' => "Midterm Exam Subject {$subjectId}",
-        'subject_id' => $subjectId,
-        'description' => "Midterm exam for subject {$subjectId}",
+        'type' => 'midterm',
+        'course_offering_id' => $courseId,
+        'description' => "Midterm exam for course offering {$courseId}",
         'date' => now()->addWeeks(2),
         'total_marks' => 100,
         'passing_marks' => 50,
@@ -25,6 +25,6 @@ class ExamSeeder extends Seeder
       ];
     }
 
-    DB::table('exams')->upsert($exams, ['name', 'subject_id']);
+    DB::table('exams')->insert($exams);
   }
 }

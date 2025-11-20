@@ -13,7 +13,7 @@ class ClassroomSeeder extends Seeder
     $classrooms = [];
 
     foreach ($letters as $letter) {
-      for ($i = 1; $i <= 5; $i++) {
+      for ($i = 1; $i <= 2; $i++) {
         $roomNumber = "{$letter}-10{$i}";
         $classrooms[] = [
           'name' => "Classroom {$letter}",
