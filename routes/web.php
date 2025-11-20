@@ -184,10 +184,10 @@ Route::prefix('admin')
     Route::get('/course_offerings', [CourseOfferingController::class, 'index'])->name('course_offerings.index');
     Route::get('/course_offerings/create', [CourseOfferingController::class, 'create'])->name('course_offerings.create');
     Route::post('/course_offerings', [CourseOfferingController::class, 'store'])->name('course_offerings.store');
-    Route::get('/course_offerings/{id}', [CourseOfferingController::class, 'show'])->name('course_offerings.show');
-    Route::get('/course_offerings/{id}/edit', [CourseOfferingController::class, 'edit'])->name('course_offerings.edit');
-    Route::put('/course_offerings/{id}', [CourseOfferingController::class, 'update'])->name('course_offerings.update');
-    Route::delete('/course_offerings/{id}', [CourseOfferingController::class, 'destroy'])->name('course_offerings.destroy');
+    Route::get('/course_offerings/{course_offering}', [CourseOfferingController::class, 'show'])->name('course_offerings.show');
+    Route::get('/course_offerings/{course_offering}/edit', [CourseOfferingController::class, 'edit'])->name('course_offerings.edit');
+    Route::put('/course_offerings/{course_offering}', [CourseOfferingController::class, 'update'])->name('course_offerings.update');
+    Route::delete('/course_offerings/{course_offering}', [CourseOfferingController::class, 'destroy'])->name('course_offerings.destroy');
 
 
     Route::get('/scores', [ScoreController::class, 'index'])->name('scores.index');
