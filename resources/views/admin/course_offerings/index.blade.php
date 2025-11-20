@@ -90,7 +90,8 @@
               <div>
                 {{-- Main Subject Name --}}
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                  {{ $offering->subject->name ?? 'Subject Deleted' }}</h4>
+                  {{ $offering->subject->name ?? 'Subject Deleted' }} - {{ $offering->teacher->name ?? 'Unassigned' }}
+                </h4>
               </div>
 
               {{-- Detail Button (Redirects to Show Page) --}}
@@ -109,7 +110,7 @@
               </a>
             </div>
             {{-- Time Slot and Time Range --}}
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
               {{ $offering->time_slot }}
               ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
               {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})

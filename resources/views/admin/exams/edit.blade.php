@@ -33,13 +33,13 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
 
         {{-- Exam Type --}}
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-1">
           <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Exam Type <span class="text-red-500">*</span>
           </label>
           <select id="type" name="type" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
-            <option value="">Select Exam Type</option>
+            <option value="" disabled>Select Exam Type</option>
             @foreach (['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final'] as $examType)
               {{-- CORRECTED: Added $exam->type as a fallback for old() to pre-select the current value --}}
               <option value="{{ $examType }}" @selected(old('type', $exam->type) == $examType)>
@@ -53,7 +53,7 @@
         </div>
 
         {{-- Course Offering Select --}}
-        <div>
+        <div class="lg:col-span-2">
           <label for="course_offering_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Associated Course <span class="text-red-500">*</span>
           </label>
@@ -97,7 +97,7 @@
             Total Marks <span class="text-red-500">*</span>
           </label>
           <input type="number" id="total_marks" name="total_marks" required min="1" max="100" maxlength="3"
-            value="{{ old('total_marks', $exam->total_marks ?? '') }}"
+            value="{{ old('total_marks', $exam->total_marks ?? 100) }}"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
             placeholder="e.g., 100">
           @error('total_marks')

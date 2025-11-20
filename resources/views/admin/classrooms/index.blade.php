@@ -72,7 +72,7 @@
     </form>
 
     {{-- Classroom Cards --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
       @forelse ($classrooms as $classroom)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -137,23 +137,6 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400">Total Schedules</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span>{{ $classroom->schedules_count }}</span>
-                </p>
-              </div>
-            </div>
-
-            {{-- Empty Space to maintain vertical layout consistency --}}
-            <div class="flex items-center gap-3 text-sm opacity-0">
-              <div class="p-2 rounded-lg bg-pink-50 dark:bg-slate-700 text-pink-600 dark:text-pink-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-3-3H8a3 3 0 00-3 3v2h5zm-9 0H3v-2a3 3 0 013-3h2a3 3 0 013 3v2H8zm-3-3v2m3-3v2m8-3v2m-3-3v2m-3-3v2m-3-3v2m-3-3v2" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Placeholder</p>
-                <p class="font-medium text-gray-700 dark:text-gray-200">
-                  <span>&nbsp;</span>
                 </p>
               </div>
             </div>

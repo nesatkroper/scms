@@ -111,8 +111,8 @@
           <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Start Time <span class="text-red-500">*</span>
           </label>
-          <input type="time" id="start_time" name="start_time" value="{{ old('start_time') }}" min="06:00"
-            max="21:00"
+          <input type="time" id="start_time" name="start_time" value="{{ old('start_time') ?? '06:00' }}"
+            min="06:00" max="21:00"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('start_time') border-red-500 @enderror"
             required>
           @error('start_time')
@@ -125,7 +125,7 @@
           <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             End Time <span class="text-red-500">*</span>
           </label>
-          <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}" min="06:00"
+          <input type="time" id="end_time" name="end_time" value="{{ old('end_time') ?? '06:00' }}" min="06:00"
             max="21:00"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('end_time') border-red-500 @enderror"
             required>
@@ -162,8 +162,8 @@
           <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Enrollment Start Date
           </label>
-          <input type="date" id="join_start" name="join_start" value="{{ old('join_start') }}" min="2025-01-01"
-            max="2027-12-31"
+          <input type="date" id="join_start" name="join_start" value="{{ old('join_start') ?? '2025-01-01' }}"
+            min="2025-01-01" max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
           @error('join_start')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -175,8 +175,8 @@
           <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Enrollment End Date
           </label>
-          <input type="date" id="join_end" name="join_end" value="{{ old('join_end') }}" min="2025-01-01"
-            max="2027-12-31"
+          <input type="date" id="join_end" name="join_end" value="{{ old('join_end') ?? '2025-01-01' }}"
+            min="2025-01-01" max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
           @error('join_end')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

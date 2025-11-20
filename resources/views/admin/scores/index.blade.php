@@ -30,51 +30,71 @@
       </div>
     @endif
 
-    {{-- Students Cards --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    {{-- Students Table --}}
+    <div class="my-5 overflow-x-auto">
       @forelse($students as $student)
         @php
           $scoreEntry = $student->scores->first();
         @endphp
-        <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-          <div class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
-            <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">{{ $student->name }}</h4>
+
+        {{-- Each row is a form to handle individual score submission --}}
+        <form action="{{ route('admin.scores.store') }}" method="POST"
+          class="flex flex-col md:flex-row items-center border-b border-gray-200 dark:border-gray-700 py-3 first:pt-0 last:border-b-0">
+          @csrf
+          <input type="hidden" name="student_id" value="{{ $student->id }}">
+          <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+
+          {{-- Student Name (Full Width on Small Screens, Fixed Size on Larger) --}}
+          <div class="flex-shrink-0 w-full md:w-56 mb-2 md:mb-0">
+            <h4 class="font-semibold text-gray-700 dark:text-gray-300">
+              {{ $student->name }}
+            </h4>
           </div>
 
-          <form action="{{ route('admin.scores.store') }}" method="POST"
-            class="p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-            @csrf
-            <input type="hidden" name="student_id" value="{{ $student->id }}">
-            <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+          {{-- Input Fields Container (Allows inputs to stack/flex) --}}
+          <div class="flex-grow grid grid-cols-3 gap-4 w-full md:w-auto">
 
+            {{-- Score Input --}}
             <div>
-              <label class="block font-medium">Score:</label>
-              <input type="number" name="score" min="0" max="{{ $exam->total_marks }}"
-                value="{{ $scoreEntry->score ?? '' }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-gray-800 dark:text-gray-100">
+              <label for="score-{{ $student->id }}" class="block text-xs font-medium text-gray-500 dark:text-gray-400">
+                Score (Max: {{ $exam->total_marks }})
+              </label>
+              <input type="number" name="score" id="score-{{ $student->id }}" min="0"
+                max="{{ $exam->total_marks }}" value="{{ $scoreEntry->score ?? '' }}"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
+            {{-- Grade (Auto) --}}
             <div>
-              <label class="block font-medium">Grade (auto):</label>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">
+                Grade (Auto)
+              </label>
               <input type="text" name="grade" readonly value="{{ $scoreEntry->grade ?? '' }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-gray-800 dark:text-gray-100 bg-gray-100 dark:bg-gray-700">
+                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100 bg-gray-100 dark:bg-gray-700">
             </div>
 
+            {{-- Remarks --}}
             <div>
-              <label class="block font-medium">Remarks:</label>
-              <input type="text" name="remarks" value="{{ $scoreEntry->remarks ?? '' }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-gray-800 dark:text-gray-100">
+              <label for="remarks-{{ $student->id }}"
+                class="block text-xs font-medium text-gray-500 dark:text-gray-400">
+                Remarks
+              </label>
+              <input type="text" name="remarks" id="remarks-{{ $student->id }}"
+                value="{{ $scoreEntry->remarks ?? '' }}"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
             </div>
+          </div>
 
+          {{-- Save Button --}}
+          <div class="flex-shrink-0 mt-3 md:mt-0 md:ml-4 w-full md:w-20">
             <button type="submit"
-              class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors">
+              class="w-full px-3 py-1.5 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition-colors">
               Save
             </button>
-          </form>
-        </div>
+          </div>
+        </form>
       @empty
-        <div class="lg:col-span-4 p-8 text-center bg-gray-50 dark:bg-gray-700 rounded-lg shadow-inner">
+        <div class="p-8 text-center bg-gray-50 dark:bg-gray-700 rounded-lg shadow-inner">
           <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">
             No students found in this course offering.
           </p>

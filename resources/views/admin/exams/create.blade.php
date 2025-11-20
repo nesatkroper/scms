@@ -29,27 +29,33 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
 
-        {{-- Exam Name --}}
-        <div class="lg:col-span-2">
-          <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Title <span class="text-red-500">*</span>
+        {{-- 1. Exam Type (New addition from Edit) --}}
+        <div class="lg:col-span-1"> {{-- Changed to col-span-1 to make room for Title --}}
+          <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Exam Type <span class="text-red-500">*</span>
           </label>
-          <input type="text" id="name" name="name" value="{{ old('name') }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('name') border-red-500 @enderror"
-            placeholder="e.g., Midterm Assessment, Final Project Exam" required>
-          @error('name')
+          <select id="type" name="type" required
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
+            <option value="" disabled selected>Select Exam Type</option>
+            @foreach (['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final'] as $examType)
+              <option value="{{ $examType }}" @selected(old('type') == $examType)>
+                {{ ucfirst($examType) }}
+              </option>
+            @endforeach
+          </select>
+          @error('type')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
 
-        {{-- Course Offering Select --}}
-        <div>
+        {{-- 3. Course Offering Select --}}
+        <div class="lg:col-span-2"> {{-- Made this full width (col-span-3) for better display of long names --}}
           <label for="course_offering_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Associated Course <span class="text-red-500">*</span>
           </label>
           <select id="course_offering_id" name="course_offering_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
-            <option value="">Select Course Offering</option>
+            <option value="" disabled selected>Select Course Offering</option>
             @foreach ($courseOfferings as $offering)
               <option value="{{ $offering->id }}" @selected(old('course_offering_id') == $offering->id)>
                 {{-- Display as: Subject Name - Teacher Name (Time Slot) --}}
@@ -64,8 +70,8 @@
         </div>
       </div>
 
+      {{-- Description (Textarea) - Moved up for better grouping --}}
       <div class="mb-6">
-        {{-- Description (Textarea) --}}
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Description (Optional)
         </label>
@@ -78,14 +84,15 @@
       </div>
 
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
 
-        {{-- Exam Date --}}
+        {{-- 4. Exam Date --}}
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Exam Date <span class="text-red-500">*</span>
           </label>
-          <input type="date" id="date" name="date" value="{{ old('date') }}"
+          <input type="date" id="date" name="date" value="{{ old('date') ?? '2025-01-01' }}" min="2025-01-01"
+            max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror"
             required>
           @error('date')
@@ -93,12 +100,13 @@
           @enderror
         </div>
 
-        {{-- Total Marks --}}
+        {{-- 5. Total Marks --}}
         <div>
           <label for="total_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Total Marks <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') }}" min="1"
+          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}"
+            max="100" min="1"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
             placeholder="e.g., 100" required>
           @error('total_marks')
@@ -106,12 +114,13 @@
           @enderror
         </div>
 
-        {{-- Passing Marks --}}
+        {{-- 6. Passing Marks --}}
         <div>
           <label for="passing_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Passing Marks <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="passing_marks" name="passing_marks" value="{{ old('passing_marks') }}" min="0"
+          <input type="number" id="passing_marks" name="passing_marks" value="{{ old('passing_marks') ?? 60 }}"
+            min="0" max="100"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('passing_marks') border-red-500 @enderror"
             placeholder="e.g., 60" required>
           @error('passing_marks')
