@@ -57,7 +57,9 @@
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('teacher_id') border-red-500 @enderror">
             <option value="">Select Teacher</option>
             @foreach ($teachers as $teacher)
-              <option value="{{ $teacher->id }}" @selected(old('teacher_id') == $teacher->id)>{{ $teacher->name }}</option>
+              <option value="{{ $teacher->id }}" @selected(old('teacher_id') == $teacher->id)>{{ $teacher->name }}
+                ({{ $teacher->specialization }})
+              </option>
             @endforeach
           </select>
           @error('teacher_id')
@@ -109,7 +111,8 @@
           <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Start Time <span class="text-red-500">*</span>
           </label>
-          <input type="time" id="start_time" name="start_time" value="{{ old('start_time') }}"
+          <input type="time" id="start_time" name="start_time" value="{{ old('start_time') }}" min="06:00"
+            max="21:00"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('start_time') border-red-500 @enderror"
             required>
           @error('start_time')
@@ -122,7 +125,8 @@
           <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             End Time <span class="text-red-500">*</span>
           </label>
-          <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}"
+          <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}" min="06:00"
+            max="21:00"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('end_time') border-red-500 @enderror"
             required>
           @error('end_time')
@@ -143,8 +147,8 @@
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
             </div>
-            <input type="number" step="0.01" min="0.00" id="fee" name="fee"
-              value="{{ old('fee') }}"
+            <input type="number" step="0.01" min="0.00" max="50" maxlength="2" id="fee"
+              name="fee" value="{{ old('fee') }}"
               class="w-full pl-7 pr-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('fee') border-red-500 @enderror"
               placeholder="0.00" required>
           </div>
@@ -159,6 +163,7 @@
             Capacity <span class="text-red-500">*</span>
           </label>
           <input type="number" id="capacity" name="capacity" value="{{ old('capacity') }}" min="1"
+            max="30" maxlength="2"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('capacity') border-red-500 @enderror"
             placeholder="Max students" required>
           @error('capacity')
@@ -171,7 +176,8 @@
           <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Enrollment Start Date
           </label>
-          <input type="date" id="join_start" name="join_start" value="{{ old('join_start') }}"
+          <input type="date" id="join_start" name="join_start" value="{{ old('join_start') }}" min="2025-01-01"
+            max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
           @error('join_start')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -183,7 +189,8 @@
           <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Enrollment End Date
           </label>
-          <input type="date" id="join_end" name="join_end" value="{{ old('join_end') }}"
+          <input type="date" id="join_end" name="join_end" value="{{ old('join_end') }}" min="2025-01-01"
+            max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
           @error('join_end')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

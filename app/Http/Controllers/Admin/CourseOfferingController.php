@@ -24,11 +24,11 @@ class CourseOfferingController extends Controller
         return $query->where('time_slot', 'like', "%{$search}%")
           ->orWhere('fee', 'like', "%{$search}%")
           ->orWhereHas('subject', function ($q) use ($search) {
-          $q->where('name', 'like', "%{$search}%");
-        })
+            $q->where('name', 'like', "%{$search}%");
+          })
           ->orWhereHas('teacher', function ($q) use ($search) {
-          $q->where('name', 'like', "%{$search}%");
-        });
+            $q->where('name', 'like', "%{$search}%");
+          });
       })
       ->orderBy('start_time', 'asc')
       ->paginate($perPage)
@@ -42,8 +42,10 @@ class CourseOfferingController extends Controller
 
   public function create()
   {
-    $subjects = Subject::orderBy('name')->get(['id', 'name']);
-    $teachers = User::orderBy('name')->get(['id', 'name']);
+    $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);
+    $teachers = User::role('teacher')
+      ->orderBy('name')
+      ->get(['id', 'name', 'specialization']);
     $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
 
     return view('admin.course_offerings.create', compact('subjects', 'teachers', 'classrooms'));
@@ -69,7 +71,9 @@ class CourseOfferingController extends Controller
   public function edit(CourseOffering $courseOffering)
   {
     $subjects = Subject::orderBy('name')->get(['id', 'name']);
-    $teachers = User::orderBy('name')->get(['id', 'name']);
+    $teachers = User::role('teacher')
+      ->orderBy('name')
+      ->get(['id', 'name', 'specialization']);
     $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
 
     return view('admin.course_offerings.edit', compact('courseOffering', 'subjects', 'teachers', 'classrooms'));
