@@ -89,8 +89,8 @@
                   {{ $exam->courseOffering?->teacher?->name }}</h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Course: <span
-                    class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $exam->courseOffering->subject->name ?? 'Course Deleted' }}
-                    ({{ $exam->courseOffering?->teacher?->name }} - {{ $exam->courseOffering?->time_slot }})
+                    class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $exam->courseOffering->subject->name ?? 'Course Deleted' }}
+                    ({{ $exam->courseOffering?->time_slot }})
                   </span>
                 </p>
               </div>
@@ -172,36 +172,41 @@
 
           {{-- Actions (Edit Link + Delete Form) --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <a href="{{ route('admin.scores.index', ['exam_id' => $exam->id]) }}"
-              class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
               title="Assign Score">
               <span class="btn-content flex items-center justify-center">
-                <i class="fa-solid fa-book-atlas"></i>
+                <i class="fa-solid fa-book-atlas me-2"></i>
+                Assign Score
               </span>
             </a>
 
-            {{-- Edit Button (Redirects to Edit Page) --}}
-            <a href="{{ route('admin.exams.edit', $exam->id) }}"
-              class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit">
-              <span class="btn-content flex items-center justify-center">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </span>
-            </a>
+            <div class="flex">
+              {{-- Edit Button (Redirects to Edit Page) --}}
+              <a href="{{ route('admin.exams.edit', $exam->id) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  Edit
+                </span>
+              </a>
 
-            {{-- Delete Button (Full form submission) --}}
-            <form action="{{ route('admin.exams.destroy', $exam->id) }}" method="POST"
-              onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
-              @csrf
-              @method('DELETE')
-              <button type="submit"
-                class="delete-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                title="Delete">
-                <i class="fa-regular fa-trash-can"></i>
-              </button>
-            </form>
+              {{-- Delete Button (Full form submission) --}}
+              <form action="{{ route('admin.exams.destroy', $exam->id) }}" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete">
+                  <i class="fa-regular fa-trash-can me-2"></i>
+                  Delete
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       @empty

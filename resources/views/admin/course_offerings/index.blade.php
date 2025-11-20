@@ -181,18 +181,20 @@
 
             <div class="flex">
               <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Attendance">
                 <span class="btn-content flex items-center justify-center">
-                  <i class="fa-regular fa-calendar-days"></i>
+                  <i class="fa-regular fa-calendar-days me-2"></i>
+                  Attendance
                 </span>
               </a>
 
               <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Admission Register">
                 <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-book-atlas"></i>
+                  <i class="fa-solid fa-book-atlas me-2"></i>
+                  Register
                 </span>
               </a>
             </div>
@@ -200,10 +202,11 @@
             {{-- Edit Button (Redirects to Edit Page) --}}
             <div class="flex">
               <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
                 <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-pen-to-square"></i>
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  Edit
                 </span>
               </a>
 
@@ -213,9 +216,10 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit"
-                  class="delete-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Delete">
-                  <i class="fa-regular fa-trash-can"></i>
+                  <i class="fa-regular fa-trash-can me-2"></i>
+                  Delete
                 </button>
               </form>
             </div>

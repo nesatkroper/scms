@@ -1,6 +1,5 @@
 @php
   $academicsRoutes = [
-      'admin.departments.*',
       'admin.subjects.*',
       'admin.exams.*',
       'admin.scores.*',
@@ -9,7 +8,7 @@
   ];
   $isAcademicsActive = request()->routeIs($academicsRoutes);
 
-  $organizationRoutes = ['admin.teachers.*', 'admin.students.*'];
+  $organizationRoutes = ['admin.departments.*', 'admin.teachers.*', 'admin.students.*'];
   $isOrganizationActive = request()->routeIs($organizationRoutes);
 
   $financeRoutes = ['admin.expenses.*'];
@@ -82,28 +81,11 @@
                 {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course
                 Offerings</a>
             </li>
-            {{-- <li>
-              <a href="{{ route('admin.student_courses.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.student_courses.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Admission
-                Register</a>
-            </li> --}}
             <li>
               <a href="{{ route('admin.exams.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.exams.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">exams</a>
             </li>
-            {{-- <li>
-              <a href="{{ route('admin.scores.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.scores.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">scores</a>
-            </li> --}}
-            {{-- <li>
-              <a href="{{ route('admin.attendances.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.attendances.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">attendances</a>
-            </li> --}}
-
           </ul>
         </div>
       </li>
@@ -121,16 +103,18 @@
         </div>
         <div class="submenu {{ $isOrganizationActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
-            <li><a href="{{ route('admin.departments.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.departments.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">departments</a>
+            <li>
+              <a href="{{ route('admin.departments.index') }}"
+                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+                {{ request()->routeIs('admin.departments.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                <span class="ml-2">departments</span>
+              </a>
             </li>
             <li>
               <a href="{{ route('admin.teachers.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.teachers.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                 <span class="ml-2">teachers</span>
-                <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
             <li>
@@ -138,7 +122,6 @@
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.students.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                 <span class="ml-2">Students</span>
-                <span class="bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">3</span>
               </a>
             </li>
           </ul>
