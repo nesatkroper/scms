@@ -191,14 +191,6 @@ Route::prefix('admin')
     Route::delete('/course_offerings/{course_offering}', [CourseOfferingController::class, 'destroy'])->name('course_offerings.destroy');
 
 
-    Route::get('scores', [ScoreController::class, 'index'])->name('scores.index');
-    Route::get('scores/create', [ScoreController::class, 'create'])->name('scores.create');
-    Route::post('scores', [ScoreController::class, 'store'])->name('scores.store');
-    Route::get('scores/{student_id}/{exam_id}/edit', [ScoreController::class, 'edit'])->name('scores.edit');
-    Route::put('scores/{student_id}/{exam_id}', [ScoreController::class, 'update'])->name('scores.update');
-    Route::delete('scores/{student_id}/{exam_id}', [ScoreController::class, 'destroy'])->name('scores.destroy');
-
-
     Route::get('/student_courses', [StudentCourseController::class, 'index'])->name('student_courses.index');
     Route::get('/student_courses/create', [StudentCourseController::class, 'create'])->name('student_courses.create');
     Route::post('/student_courses', [StudentCourseController::class, 'store'])->name('student_courses.store');
@@ -208,10 +200,12 @@ Route::prefix('admin')
     Route::get('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'show'])->name('student_courses.show');
 
 
-
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+
+    Route::get('scores', [ScoreController::class, 'index'])->name('scores.index');
+    Route::post('scores/save-all', [ScoreController::class, 'saveAll'])->name('scores.saveAll');
 
 
     Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');

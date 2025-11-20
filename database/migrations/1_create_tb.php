@@ -188,7 +188,6 @@ return new class extends Migration
     Schema::create('scores', function (Blueprint $table) {
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('exam_id')->constrained()->onDelete('cascade');
-      $table->string('semester');
       $table->integer('score');
       $table->string('grade')->nullable();
       $table->text('remarks')->nullable();
