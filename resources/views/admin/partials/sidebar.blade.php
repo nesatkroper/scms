@@ -98,11 +98,11 @@
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.scores.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">scores</a>
             </li> --}}
-            <li>
+            {{-- <li>
               <a href="{{ route('admin.attendances.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.attendances.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">attendances</a>
-            </li>
+            </li> --}}
 
           </ul>
         </div>

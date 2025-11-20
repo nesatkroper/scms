@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2025 at 01:51 PM
+-- Generation Time: Nov 20, 2025 at 05:16 PM
 -- Server version: 8.0.44-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -85,12 +85,12 @@ CREATE TABLE `classrooms` (
 --
 
 INSERT INTO `classrooms` (`id`, `name`, `room_number`, `capacity`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Classroom A', 'A-101', 30, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(2, 'Classroom A', 'A-102', 30, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(3, 'Classroom B', 'B-101', 30, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(4, 'Classroom B', 'B-102', 30, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(5, 'Classroom C', 'C-101', 30, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(6, 'Classroom C', 'C-102', 30, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL);
+(1, 'Classroom A-101', 'A-101', 30, '2025-11-20 06:51:05', '2025-11-20 09:02:30', NULL),
+(2, 'Classroom A-102', 'A-102', 30, '2025-11-20 06:51:05', '2025-11-20 09:02:36', NULL),
+(3, 'Classroom B-101', 'B-101', 30, '2025-11-20 06:51:05', '2025-11-20 09:02:43', NULL),
+(4, 'Classroom B-102', 'B-102', 30, '2025-11-20 06:51:05', '2025-11-20 09:02:49', NULL),
+(5, 'Classroom C', 'C-101', 30, '2025-11-20 06:51:05', '2025-11-20 08:54:29', '2025-11-20 08:54:29'),
+(6, 'Classroom C', 'C-102', 30, '2025-11-20 06:51:05', '2025-11-20 08:54:31', '2025-11-20 08:54:31');
 
 -- --------------------------------------------------------
 
@@ -119,11 +119,11 @@ CREATE TABLE `course_offerings` (
 --
 
 INSERT INTO `course_offerings` (`id`, `subject_id`, `teacher_id`, `classroom_id`, `time_slot`, `start_time`, `end_time`, `join_start`, `join_end`, `fee`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 4, 6, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 3249.00, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(2, 2, 3, 3, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 3601.00, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(3, 3, 2, 5, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 1224.00, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(4, 4, 4, 6, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 3418.00, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(5, 5, 2, 5, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 2813.00, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL);
+(1, 1, 2, 1, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 8.00, '2025-11-20 06:51:05', '2025-11-20 09:03:26', NULL),
+(2, 2, 3, 3, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 12.00, '2025-11-20 06:51:05', '2025-11-20 09:04:37', NULL),
+(3, 3, 2, 3, 'evening', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 15.00, '2025-11-20 06:51:05', '2025-11-20 09:04:53', NULL),
+(4, 4, 4, 4, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 12.00, '2025-11-20 06:51:05', '2025-11-20 09:05:53', NULL),
+(5, 5, 2, 2, 'morning', '08:00:00', '10:00:00', '2025-11-10', '2025-12-20', 15.00, '2025-11-20 06:51:05', '2025-11-20 09:06:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -179,7 +179,8 @@ INSERT INTO `exams` (`id`, `type`, `description`, `course_offering_id`, `date`, 
 (2, 'midterm', 'Midterm exam for course offering 2', 2, '2025-12-04', 100, 50, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
 (3, 'midterm', 'Midterm exam for course offering 3', 3, '2025-12-04', 100, 50, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
 (4, 'midterm', 'Midterm exam for course offering 4', 4, '2025-12-04', 100, 50, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(5, 'midterm', 'Midterm exam for course offering 5', 5, '2025-12-04', 100, 50, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL);
+(5, 'midterm', 'Midterm exam for course offering 5', 5, '2025-12-04', 100, 50, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
+(6, 'homework2', NULL, 4, '2025-11-21', 100, 60, '2025-11-20 09:13:47', '2025-11-20 09:18:31', '2025-11-20 09:18:31');
 
 -- --------------------------------------------------------
 
@@ -521,7 +522,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '1_create_tb', 1),
 (2, '2_create_cache_table', 1),
 (3, '3_create_personal_access_tokens_table', 1),
-(4, '4_create_permission_tables', 1);
+(4, '4_create_permission_tables', 1),
+(5, '2025_11_20_170056_remove_semester_from_scores_table', 2);
 
 -- --------------------------------------------------------
 
@@ -833,7 +835,6 @@ INSERT INTO `schedules` (`id`, `teacher_id`, `subject_id`, `classroom_id`, `week
 CREATE TABLE `scores` (
   `student_id` bigint UNSIGNED NOT NULL,
   `exam_id` bigint UNSIGNED NOT NULL,
-  `semester` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `score` int NOT NULL,
   `grade` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remarks` text COLLATE utf8mb4_unicode_ci,
@@ -841,6 +842,72 @@ CREATE TABLE `scores` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `scores`
+--
+
+INSERT INTO `scores` (`student_id`, `exam_id`, `score`, `grade`, `remarks`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(7, 2, 5, 'F', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(8, 1, 34, 'D', NULL, '2025-11-20 10:01:25', '2025-11-20 10:13:11', NULL),
+(9, 1, 0, 'F', NULL, '2025-11-20 10:01:25', '2025-11-20 10:13:11', NULL),
+(10, 1, 0, 'F', NULL, '2025-11-20 10:01:25', '2025-11-20 10:13:11', NULL),
+(12, 1, 0, 'F', NULL, '2025-11-20 10:01:25', '2025-11-20 10:13:11', NULL),
+(12, 2, 55, 'C+', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(14, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(15, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(16, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(16, 2, 0, 'F', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(17, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(17, 2, 0, 'F', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(18, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(18, 2, 55, 'C+', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(19, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(19, 2, 0, 'F', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(20, 1, 33, 'D', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(21, 1, 34, 'D', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(22, 2, 0, 'F', NULL, '2025-11-20 10:10:29', '2025-11-20 10:12:34', NULL),
+(23, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(24, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(24, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(25, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(26, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(27, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(28, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(28, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(29, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(31, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(31, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(32, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(33, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(34, 2, 44, 'C', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(35, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(36, 1, 43, 'C', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(36, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(37, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(38, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(38, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(39, 1, 33, 'D', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(39, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(40, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(40, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(41, 1, 43, 'C', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(41, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:34', NULL),
+(42, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(44, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(45, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(47, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(47, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(49, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(49, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(50, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(51, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(52, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(53, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(53, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(54, 2, 0, 'F', NULL, '2025-11-20 10:10:30', '2025-11-20 10:12:35', NULL),
+(55, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL),
+(56, 1, 0, 'F', NULL, '2025-11-20 10:01:26', '2025-11-20 10:13:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -856,6 +923,13 @@ CREATE TABLE `sessions` (
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_activity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('AYDe94kOJyIIXFnRDYV89msNC4QFDcpq63xwLWqZ', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiNFBNWHdySUxvdXNGcGZGODI0NzVmeTd5UDh4MFB1UVoxZGJJd0xmZiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjQ0OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vc2NvcmVzP2V4YW1faWQ9MiI7czo1OiJyb3V0ZSI7czoxODoiYWRtaW4uc2NvcmVzLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NjM2NDY3Mzg7fX0=', 1763658921);
 
 -- --------------------------------------------------------
 
@@ -1052,11 +1126,11 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`id`, `name`, `code`, `description`, `credit_hours`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Introduction to Programming', 'CS101', 'Introduction to Programming course description.', 3, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(2, 'Data Structures', 'CS202', 'Data Structures course description.', 4, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(3, 'British Literature', 'ENGL250', 'British Literature course description.', 3, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(4, 'Creative Writing', 'ENGL301', 'Creative Writing course description.', 3, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL),
-(5, 'Calculus I', 'MATH150', 'Calculus I course description.', 4, '2025-11-20 06:51:05', '2025-11-20 06:51:05', NULL);
+(1, 'English', 'ENG001', 'Introduction to Programming course description.', 4, '2025-11-20 06:51:05', '2025-11-20 09:00:20', NULL),
+(2, 'Office Word I', 'WORD001', 'Data Structures course description.', 4, '2025-11-20 06:51:05', '2025-11-20 09:00:49', NULL),
+(3, 'Office Word II', 'WORD002', 'British Literature course description.', 4, '2025-11-20 06:51:05', '2025-11-20 09:01:09', NULL),
+(4, 'Office Excel I', 'EXCEL001', 'Creative Writing course description.', 4, '2025-11-20 06:51:05', '2025-11-20 09:01:24', NULL),
+(5, 'Office Excel II', 'EXCEL002', 'Calculus I course description.', 4, '2025-11-20 06:51:05', '2025-11-20 09:01:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -1383,7 +1457,7 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `expenses`
@@ -1413,7 +1487,7 @@ ALTER TABLE `fee_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payments`
