@@ -147,15 +147,13 @@ return new class extends Migration
         ->nullable();
       $table->decimal('fee', 10, 2)
         ->default(0);
-      $table->integer('capacity')
-        ->nullable();
       $table->timestamps();
       $table->softDeletes();
     });
 
     Schema::create('exams', function (Blueprint $table) {
       $table->id();
-      $table->string('name');
+      $table->enum('type', ['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final']);
       $table->text('description')
         ->nullable();
       $table->foreignId('course_offering_id')
@@ -219,7 +217,7 @@ return new class extends Migration
       $table->foreignId('exam_id')
         ->constrained()
         ->onDelete('cascade');
-      $table->foreignId('subject_id')
+      $table->foreignId('course_offering_id')
         ->constrained()
         ->onDelete('cascade');
       $table->string('semester');
@@ -230,7 +228,7 @@ return new class extends Migration
         ->nullable();
       $table->timestamps();
       $table->softDeletes();
-      $table->unique(['student_id', 'exam_id', 'subject_id', 'semester']);
+      $table->unique(['student_id', 'exam_id', 'course_offering_id', 'semester']);
     });
 
     Schema::create('schedules', function (Blueprint $table) {

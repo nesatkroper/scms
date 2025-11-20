@@ -19,7 +19,6 @@ class CourseOffering extends Model
     'join_start',
     'join_end',
     'fee',
-    'capacity',
   ];
 
   public function subject()

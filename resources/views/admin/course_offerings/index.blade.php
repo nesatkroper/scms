@@ -164,10 +164,10 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Fee / Capacity</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Fee </p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span>
-                    ${{ number_format($offering->fee, 2) }} / {{ $offering->capacity }} seats
+                    ${{ number_format($offering->fee, 2) }}
                   </span>
                 </p>
               </div>
