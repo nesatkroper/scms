@@ -85,7 +85,7 @@
             <div class="flex justify-between items-start gap-2">
               <div>
                 {{-- Main Exam Name --}}
-                <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $exam->name }}</h4>
+                <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">{{ $exam->type }}</h4>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Course: <span
                     class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $exam->courseOffering->subject->name ?? 'Course Deleted' }}</span>

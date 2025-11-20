@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Exam: ' . ($exam->name ?? 'N/A'))
+@section('title', 'Edit Exam: ' . ($exam->type ?? 'N/A'))
 @section('content')
 
   <div
@@ -17,7 +17,7 @@
             clip-rule="evenodd" />
         </svg>
         Edit Exam: <span class="ml-1 text-indigo-600 dark:text-indigo-400">
-          {{ $exam->name ?? 'N/A' }}
+          {{ $exam->type ?? 'N/A' }}
         </span>
       </h3>
       <a href="{{ route('admin.exams.index') }}"
@@ -32,15 +32,22 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
 
-        {{-- Exam Name --}}
+        {{-- Exam Type --}}
         <div class="lg:col-span-2">
-          <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Title <span class="text-red-500">*</span>
+          <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Exam Type <span class="text-red-500">*</span>
           </label>
-          <input type="text" id="name" name="name" value="{{ old('name', $exam->name ?? '') }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('name') border-red-500 @enderror"
-            placeholder="e.g., Midterm Assessment, Final Project Exam" required>
-          @error('name')
+          <select id="type" name="type" required
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
+            <option value="">Select Exam Type</option>
+            @foreach (['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final'] as $examType)
+              {{-- CORRECTED: Added $exam->type as a fallback for old() to pre-select the current value --}}
+              <option value="{{ $examType }}" @selected(old('type', $exam->type) == $examType)>
+                {{ ucfirst($examType) }}
+              </option>
+            @endforeach
+          </select>
+          @error('type')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
@@ -52,7 +59,7 @@
           </label>
           <select id="course_offering_id" name="course_offering_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
-            <option value="">Select Course Offering</option>
+            <option value="" disabled>Select Course Offering</option>
             @foreach ($courseOfferings as $offering)
               <option value="{{ $offering->id }}" @selected(old('course_offering_id', $exam->course_offering_id ?? null) == $offering->id)>
                 {{-- Display as: Subject Name - Teacher Name (Time Slot) --}}
@@ -75,11 +82,10 @@
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Exam Date <span class="text-red-500">*</span>
           </label>
-          {{-- Note: Formatting the date for the HTML date input --}}
-          <input type="date" id="date" name="date"
+          {{-- Formatting the date for the HTML date input (Y-m-d) --}}
+          <input type="date" id="date" name="date" required min="2025-01-01" max="2027-12-31"
             value="{{ old('date', $exam->date ? \Carbon\Carbon::parse($exam->date)->format('Y-m-d') : null) }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror"
-            required>
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror">
           @error('date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -90,10 +96,10 @@
           <label for="total_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Total Marks <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="total_marks" name="total_marks"
-            value="{{ old('total_marks', $exam->total_marks ?? '') }}" min="1"
+          <input type="number" id="total_marks" name="total_marks" required min="1" max="100" maxlength="3"
+            value="{{ old('total_marks', $exam->total_marks ?? '') }}"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
-            placeholder="e.g., 100" required>
+            placeholder="e.g., 100">
           @error('total_marks')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -104,10 +110,10 @@
           <label for="passing_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Passing Marks <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="passing_marks" name="passing_marks"
-            value="{{ old('passing_marks', $exam->passing_marks ?? '') }}" min="0"
+          <input type="number" id="passing_marks" name="passing_marks" required min="0" max="100"
+            maxlength="3" value="{{ old('passing_marks', $exam->passing_marks ?? '') }}"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('passing_marks') border-red-500 @enderror"
-            placeholder="e.g., 60" required>
+            placeholder="e.g., 60">
           @error('passing_marks')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
