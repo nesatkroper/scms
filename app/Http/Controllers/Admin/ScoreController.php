@@ -43,7 +43,6 @@ class ScoreController extends Controller
     $exam = Exam::with('courseOffering.students')->findOrFail($examId);
 
     foreach ($exam->courseOffering->students as $student) {
-
       $scoreValue = $request->input("score_{$student->id}", 0);
       $remarks = $request->input("remarks_{$student->id}");
 
@@ -56,35 +55,14 @@ class ScoreController extends Controller
       elseif ($scoreValue >= 30) $grade = 'D';
       else $grade = 'F';
 
-      // Check if exists
-      $exists = DB::table('scores')
-        ->where('student_id', $student->id)
-        ->where('exam_id', $examId)
-        ->exists();
-
-      if ($exists) {
-        // update
-        DB::table('scores')
-          ->where('student_id', $student->id)
-          ->where('exam_id', $examId)
-          ->update([
-            'score'      => $scoreValue,
-            'grade'      => $grade,
-            'remarks'    => $remarks,
-            'updated_at' => now(),
-          ]);
-      } else {
-        // insert
-        DB::table('scores')->insert([
-          'student_id' => $student->id,
-          'exam_id'    => $examId,
-          'score'      => $scoreValue,
-          'grade'      => $grade,
-          'remarks'    => $remarks,
-          'created_at' => now(),
-          'updated_at' => now(),
-        ]);
-      }
+      Score::updateOrCreate(
+        ['student_id' => $student->id, 'exam_id' => $examId],
+        [
+          'score'   => $scoreValue,
+          'grade'   => $grade,
+          'remarks' => $remarks,
+        ]
+      );
     }
 
     return back()->with('success', 'All scores saved successfully!');

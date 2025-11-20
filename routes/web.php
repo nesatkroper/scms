@@ -82,15 +82,6 @@ Route::prefix('admin')
     Route::delete('/permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
 
-    Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
-    Route::get('/attendances/create', [AttendanceController::class, 'create'])->name('attendances.create');
-    Route::post('/attendances', [AttendanceController::class, 'store'])->name('attendances.store');
-    Route::get('/attendances/{attendance}', [AttendanceController::class, 'show'])->name('attendances.show');
-    Route::get('/attendances/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
-    Route::put('/attendances/{attendance}', [AttendanceController::class, 'update'])->name('attendances.update');
-    Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
-
-
     Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
     Route::get('/classrooms/create', [ClassroomController::class, 'create'])->name('classrooms.create');
     Route::post('/classrooms', [ClassroomController::class, 'store'])->name('classrooms.store');
@@ -206,6 +197,9 @@ Route::prefix('admin')
 
     Route::get('scores', [ScoreController::class, 'index'])->name('scores.index');
     Route::post('scores/save-all', [ScoreController::class, 'saveAll'])->name('scores.saveAll');
+
+    Route::get('attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+    Route::post('attendances/save-all', [AttendanceController::class, 'saveAll'])->name('attendances.saveAll');
 
 
     Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');
