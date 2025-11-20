@@ -128,14 +128,13 @@ return new class extends Migration
     Schema::create('attendances', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-      $table->foreignId('classroom_id')->nullable()->constrained();
       $table->foreignId('course_offering_id')->nullable()->constrained();
       $table->date('date');
       $table->enum('status', ['present', 'absent', 'late', 'excused']);
       $table->text('remarks')->nullable();
       $table->timestamps();
       $table->softDeletes();
-      $table->unique(['student_id', 'course_offering_id', 'classroom_id', 'date'], 'attendances_unique_idx');
+      $table->unique(['student_id', 'course_offering_id',  'date'], 'attendances_unique_idx');
     });
 
 

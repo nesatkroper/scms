@@ -58,17 +58,30 @@
               </div>
             </div>
 
-            {{-- Status Select --}}
+            {{-- Status Radio Buttons --}}
             <div class="flex flex-col">
               <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Status</label>
-              <select name="status_{{ $student->id }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100">
-                <option value="present" {{ ($attendanceEntry?->status ?? '') === 'present' ? 'selected' : '' }}>Present
-                </option>
-                <option value="absent" {{ ($attendanceEntry?->status ?? '') === 'absent' ? 'selected' : '' }}>Absent
-                </option>
-                <option value="late" {{ ($attendanceEntry?->status ?? '') === 'late' ? 'selected' : '' }}>Late</option>
-              </select>
+              <div class="flex gap-2">
+                @php $currentStatus = $attendanceEntry?->status ?? ''; @endphp
+
+                <label class="inline-flex items-center">
+                  <input type="radio" name="status_{{ $student->id }}" value="present"
+                    {{ $currentStatus === 'present' ? 'checked' : '' }} class="form-radio text-green-600">
+                  <span class="ml-1 text-gray-700 dark:text-gray-200">Present</span>
+                </label>
+
+                <label class="inline-flex items-center">
+                  <input type="radio" name="status_{{ $student->id }}" value="absent"
+                    {{ $currentStatus === 'absent' ? 'checked' : '' }} class="form-radio text-red-600">
+                  <span class="ml-1 text-gray-700 dark:text-gray-200">Absent</span>
+                </label>
+
+                <label class="inline-flex items-center">
+                  <input type="radio" name="status_{{ $student->id }}" value="late"
+                    {{ $currentStatus === 'late' ? 'checked' : '' }} class="form-radio text-yellow-500">
+                  <span class="ml-1 text-gray-700 dark:text-gray-200">Late</span>
+                </label>
+              </div>
             </div>
 
             {{-- Remarks Input --}}
