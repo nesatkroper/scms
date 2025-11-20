@@ -196,7 +196,7 @@
                             const date = teacher.joining_date ? teacher.joining_date.substring(0, 10) : '';
                             const datedob = teacher.date_of_birth ? teacher.date_of_birth.substring(0, 10) : '';
                             // Set form values
-                            console.log(teacher)
+                            // console.log(teacher)
                             $('#edit_name').val(teacher.name);
                             $('#edit_user').val(teacher.user_id);
                             $('#edit_phone').val(teacher.phone);

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
-use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Log;
 use App\Models\Department;
 use App\Models\User;
@@ -142,7 +141,7 @@ class TeacherController extends Controller
         ]);
     }
 
-    public function update(UserRequest $request, User $teacher)
+    public function update(UpdateTeacherRequest $request, User $teacher)
     {
         try {
             // Ensure we're only updating teachers
@@ -193,9 +192,10 @@ class TeacherController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Teacher updated successfully',
+                'message' => 'Teacher updated successfullywww',
                 'teacher' => $teacher->fresh('department')
             ]);
+            
         } catch (\Exception $e) {
             Log::error('Teacher Update Error: ' . $e->getMessage());
             return response()->json([
