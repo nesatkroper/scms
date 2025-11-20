@@ -70,7 +70,7 @@ class CourseOfferingController extends Controller
 
   public function edit(CourseOffering $courseOffering)
   {
-    $subjects = Subject::orderBy('name')->get(['id', 'name']);
+    $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);
     $teachers = User::role('teacher')
       ->orderBy('name')
       ->get(['id', 'name', 'specialization']);

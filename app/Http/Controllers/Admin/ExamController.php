@@ -19,7 +19,7 @@ class ExamController extends Controller
     $exams = Exam::query()
       ->with(['courseOffering'])
       ->when($search, function ($query) use ($search) {
-        return $query->where('name', 'like', "%{$search}%")
+        return $query->where('type', 'like', "%{$search}%")
           ->orWhere('description', 'like', "%{$search}%")
           ->orWhereHas('courseOffering', function ($q) use ($search) {
             $q->where('time_slot', 'like', "%{$search}%")

@@ -67,21 +67,8 @@
         </div>
       </div>
 
-      <div class="mb-6">
-        {{-- Description (Textarea) --}}
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description (Optional)
-        </label>
-        <textarea id="description" name="description" rows="3"
-          class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
-          placeholder="Provide a brief description or instruction for the exam.">{{ old('description', $exam->description ?? '') }}</textarea>
-        @error('description')
-          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
-      </div>
-
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
 
         {{-- Exam Date --}}
         <div>
@@ -126,6 +113,19 @@
           @enderror
         </div>
 
+      </div>
+
+      <div class="mb-6">
+        {{-- Description (Textarea) --}}
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Description (Optional)
+        </label>
+        <textarea id="description" name="description" rows="3"
+          class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
+          placeholder="Provide a brief description or instruction for the exam.">{{ old('description', $exam->description ?? '') }}</textarea>
+        @error('description')
+          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">

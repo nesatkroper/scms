@@ -15,7 +15,11 @@ class ExamRequest extends FormRequest
   public function rules()
   {
     return [
-      'name' => ['required', 'string', 'max:255'],
+      'type' => [
+        'required',
+        'string',
+        Rule::in(['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final']),
+      ],
       'description' => ['nullable', 'string'],
       'course_offering_id' => [
         'required',
@@ -25,6 +29,13 @@ class ExamRequest extends FormRequest
       'date' => ['required', 'date'],
       'total_marks' => ['required', 'integer', 'min:1'],
       'passing_marks' => ['required', 'integer', 'min:0', 'lte:total_marks'],
+    ];
+  }
+
+  public function messages()
+  {
+    return [
+      'type.in' => 'The selected exam type is invalid. Allowed types: lab, quiz, homework1, homework2, homework3, midterm, final.',
     ];
   }
 }
