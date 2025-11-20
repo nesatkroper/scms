@@ -82,10 +82,15 @@ return new class extends Migration
 
     Schema::create('student_course', function (Blueprint $table) {
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-      $table->foreignId('subject_id')->constrained()->onDelete('cascade');
+      $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
       $table->decimal('grade_final', 5, 2)->nullable();
+      $table->enum('status', ['studying', 'suspended', 'dropped', 'completed'])
+        ->default('studying');
+      $table->enum('payment_status', ['pending', 'paid', 'overdue', 'free'])
+        ->default('pending');
+      $table->text('remarks')->nullable();
       $table->timestamps();
-      $table->unique(['student_id', 'subject_id']);
+      $table->unique(['student_id', 'course_offering_id']);
     });
 
     Schema::create('expense_categories', function (Blueprint $table) {
@@ -210,14 +215,10 @@ return new class extends Migration
     });
 
     Schema::create('scores', function (Blueprint $table) {
-      $table->id();
       $table->foreignId('student_id')
         ->constrained('users')
         ->onDelete('cascade');
       $table->foreignId('exam_id')
-        ->constrained()
-        ->onDelete('cascade');
-      $table->foreignId('course_offering_id')
         ->constrained()
         ->onDelete('cascade');
       $table->string('semester');
@@ -228,7 +229,7 @@ return new class extends Migration
         ->nullable();
       $table->timestamps();
       $table->softDeletes();
-      $table->unique(['student_id', 'exam_id', 'course_offering_id', 'semester']);
+      $table->unique(['student_id', 'exam_id']);
     });
 
     Schema::create('schedules', function (Blueprint $table) {
