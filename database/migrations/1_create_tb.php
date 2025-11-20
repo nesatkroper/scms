@@ -195,22 +195,10 @@ return new class extends Migration
       $table->softDeletes();
       $table->unique(['student_id', 'exam_id']);
     });
-
-    Schema::create('schedules', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('teacher_id')->constrained('users');
-      $table->foreignId('subject_id')->constrained();
-      $table->foreignId('classroom_id')->constrained();
-      $table->string('weekday');
-      $table->time('start_time');
-      $table->time('end_time');
-      $table->timestamps();
-    });
   }
 
   public function down(): void
   {
-    Schema::dropIfExists('schedules');
     Schema::dropIfExists('scores');
     Schema::dropIfExists('payments');
     Schema::dropIfExists('fees');

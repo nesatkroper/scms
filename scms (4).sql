@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2025 at 06:58 PM
+-- Generation Time: Nov 20, 2025 at 07:16 PM
 -- Server version: 8.0.44-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `scms12234567`
+-- Database: `scms`
 --
 
 -- --------------------------------------------------------
@@ -32,8 +32,8 @@ CREATE TABLE `attendances` (
   `student_id` bigint UNSIGNED NOT NULL,
   `course_offering_id` bigint UNSIGNED DEFAULT NULL,
   `date` date NOT NULL,
-  `status` enum('present','absent','late','excused') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `status` enum('present','absent','late','excused') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -208,8 +208,8 @@ INSERT INTO `attendances` (`id`, `student_id`, `course_offering_id`, `date`, `st
 --
 
 CREATE TABLE `cache` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `expiration` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -220,8 +220,8 @@ CREATE TABLE `cache` (
 --
 
 CREATE TABLE `cache_locks` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `expiration` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -233,8 +233,8 @@ CREATE TABLE `cache_locks` (
 
 CREATE TABLE `classrooms` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `room_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `room_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `capacity` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -264,7 +264,7 @@ CREATE TABLE `course_offerings` (
   `subject_id` bigint UNSIGNED NOT NULL,
   `teacher_id` bigint UNSIGNED DEFAULT NULL,
   `classroom_id` bigint UNSIGNED DEFAULT NULL,
-  `time_slot` enum('morning','afternoon','evening') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'morning',
+  `time_slot` enum('morning','afternoon','evening') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'morning',
   `start_time` time DEFAULT NULL,
   `end_time` time DEFAULT NULL,
   `join_start` date DEFAULT NULL,
@@ -294,8 +294,8 @@ INSERT INTO `course_offerings` (`id`, `subject_id`, `teacher_id`, `classroom_id`
 
 CREATE TABLE `departments` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -320,8 +320,8 @@ INSERT INTO `departments` (`id`, `name`, `description`, `created_at`, `updated_a
 
 CREATE TABLE `exams` (
   `id` bigint UNSIGNED NOT NULL,
-  `type` enum('lab','quiz','homework1','homework2','homework3','midterm','final') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `type` enum('lab','quiz','homework1','homework2','homework3','midterm','final') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `course_offering_id` bigint UNSIGNED NOT NULL,
   `date` date NOT NULL,
   `total_marks` int NOT NULL,
@@ -351,8 +351,8 @@ INSERT INTO `exams` (`id`, `type`, `description`, `course_offering_id`, `date`, 
 
 CREATE TABLE `expenses` (
   `id` bigint UNSIGNED NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `date` date NOT NULL,
   `expense_category_id` bigint UNSIGNED DEFAULT NULL,
@@ -396,8 +396,8 @@ INSERT INTO `expenses` (`id`, `title`, `description`, `amount`, `date`, `expense
 
 CREATE TABLE `expense_categories` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -425,8 +425,8 @@ CREATE TABLE `fees` (
   `fee_type_id` bigint UNSIGNED NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `due_date` date DEFAULT NULL,
-  `status` enum('unpaid','partially_paid','paid') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unpaid',
-  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `status` enum('unpaid','partially_paid','paid') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unpaid',
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -646,8 +646,8 @@ INSERT INTO `fees` (`id`, `student_id`, `fee_type_id`, `amount`, `due_date`, `st
 
 CREATE TABLE `fee_types` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -671,7 +671,7 @@ INSERT INTO `fee_types` (`id`, `name`, `description`, `created_at`, `updated_at`
 
 CREATE TABLE `migrations` (
   `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -695,7 +695,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `model_has_permissions` (
   `permission_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_id` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -707,7 +707,7 @@ CREATE TABLE `model_has_permissions` (
 
 CREATE TABLE `model_has_roles` (
   `role_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_id` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -780,8 +780,8 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -795,9 +795,9 @@ CREATE TABLE `payments` (
   `id` bigint UNSIGNED NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `payment_date` date NOT NULL,
-  `payment_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `transaction_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `payment_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transaction_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `received_by` bigint UNSIGNED NOT NULL,
   `student_id` bigint UNSIGNED NOT NULL,
   `fee_id` bigint UNSIGNED DEFAULT NULL,
@@ -814,8 +814,8 @@ CREATE TABLE `payments` (
 
 CREATE TABLE `permissions` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -902,11 +902,11 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -921,8 +921,8 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `roles` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -952,45 +952,6 @@ CREATE TABLE `role_has_permissions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedules`
---
-
-CREATE TABLE `schedules` (
-  `id` bigint UNSIGNED NOT NULL,
-  `teacher_id` bigint UNSIGNED NOT NULL,
-  `subject_id` bigint UNSIGNED NOT NULL,
-  `classroom_id` bigint UNSIGNED NOT NULL,
-  `weekday` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `schedules`
---
-
-INSERT INTO `schedules` (`id`, `teacher_id`, `subject_id`, `classroom_id`, `weekday`, `start_time`, `end_time`, `created_at`, `updated_at`) VALUES
-(1, 2, 4, 1, 'Thursday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(2, 2, 3, 2, 'Wednesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(3, 2, 1, 2, 'Monday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(4, 3, 5, 3, 'Tuesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(5, 3, 1, 5, 'Monday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(6, 3, 3, 5, 'Monday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(7, 4, 4, 5, 'Tuesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(8, 4, 2, 3, 'Tuesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(9, 4, 1, 4, 'Thursday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(10, 5, 3, 2, 'Tuesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(11, 5, 1, 6, 'Wednesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(12, 5, 3, 4, 'Tuesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(13, 6, 2, 1, 'Wednesday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(14, 6, 2, 4, 'Monday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05'),
-(15, 6, 2, 4, 'Friday', '08:00:00', '09:30:00', '2025-11-20 06:51:05', '2025-11-20 06:51:05');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `scores`
 --
 
@@ -999,8 +960,8 @@ CREATE TABLE `scores` (
   `student_id` bigint UNSIGNED NOT NULL,
   `exam_id` bigint UNSIGNED NOT NULL,
   `score` int NOT NULL,
-  `grade` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `grade` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1169,11 +1130,11 @@ INSERT INTO `scores` (`id`, `student_id`, `exam_id`, `score`, `grade`, `remarks`
 --
 
 CREATE TABLE `sessions` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip_address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_activity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1182,7 +1143,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('AYDe94kOJyIIXFnRDYV89msNC4QFDcpq63xwLWqZ', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiNFBNWHdySUxvdXNGcGZGODI0NzVmeTd5UDh4MFB1UVoxZGJJd0xmZiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjQ1OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vY2xhc3Nyb29tcy8xL2VkaXQiO3M6NToicm91dGUiO3M6MjE6ImFkbWluLmNsYXNzcm9vbXMuZWRpdCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzYzNjQ2NzM4O319', 1763665112);
+('AYDe94kOJyIIXFnRDYV89msNC4QFDcpq63xwLWqZ', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiNFBNWHdySUxvdXNGcGZGODI0NzVmeTd5UDh4MFB1UVoxZGJJd0xmZiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjQ0OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vY291cnNlX29mZmVyaW5ncyI7czo1OiJyb3V0ZSI7czoyODoiYWRtaW4uY291cnNlX29mZmVyaW5ncy5pbmRleCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzYzNjQ2NzM4O319', 1763666156);
 
 -- --------------------------------------------------------
 
@@ -1194,9 +1155,9 @@ CREATE TABLE `student_course` (
   `student_id` bigint UNSIGNED NOT NULL,
   `course_offering_id` bigint UNSIGNED NOT NULL,
   `grade_final` decimal(5,2) DEFAULT NULL,
-  `status` enum('studying','suspended','dropped','completed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'studying',
-  `payment_status` enum('pending','paid','overdue','free') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `remarks` text COLLATE utf8mb4_unicode_ci,
+  `status` enum('studying','suspended','dropped','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'studying',
+  `payment_status` enum('pending','paid','overdue','free') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1365,9 +1326,9 @@ INSERT INTO `student_course` (`student_id`, `course_offering_id`, `grade_final`,
 
 CREATE TABLE `subjects` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `credit_hours` int NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -1393,29 +1354,29 @@ INSERT INTO `subjects` (`id`, `name`, `code`, `description`, `credit_hours`, `cr
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `date_of_birth` date DEFAULT NULL,
-  `gender` enum('male','female','other') COLLATE utf8mb4_unicode_ci DEFAULT 'male',
+  `gender` enum('male','female','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'male',
   `department_id` bigint UNSIGNED DEFAULT NULL,
   `joining_date` date DEFAULT NULL,
-  `qualification` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `experience` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `specialization` text COLLATE utf8mb4_unicode_ci,
+  `qualification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `experience` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `specialization` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `salary` decimal(10,2) DEFAULT NULL,
-  `cv` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `blood_group` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nationality` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `religion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cv` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `blood_group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nationality` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `religion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `admission_date` date DEFAULT NULL,
-  `occupation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `company` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `occupation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1632,15 +1593,6 @@ ALTER TABLE `role_has_permissions`
   ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
 
 --
--- Indexes for table `schedules`
---
-ALTER TABLE `schedules`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `schedules_teacher_id_foreign` (`teacher_id`),
-  ADD KEY `schedules_subject_id_foreign` (`subject_id`),
-  ADD KEY `schedules_classroom_id_foreign` (`classroom_id`);
-
---
 -- Indexes for table `scores`
 --
 ALTER TABLE `scores`
@@ -1767,12 +1719,6 @@ ALTER TABLE `roles`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `schedules`
---
-ALTER TABLE `schedules`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
 -- AUTO_INCREMENT for table `scores`
 --
 ALTER TABLE `scores`
@@ -1855,14 +1801,6 @@ ALTER TABLE `payments`
 ALTER TABLE `role_has_permissions`
   ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `schedules`
---
-ALTER TABLE `schedules`
-  ADD CONSTRAINT `schedules_classroom_id_foreign` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`id`),
-  ADD CONSTRAINT `schedules_subject_id_foreign` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
-  ADD CONSTRAINT `schedules_teacher_id_foreign` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `scores`
