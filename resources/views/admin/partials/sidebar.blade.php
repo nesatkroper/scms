@@ -82,22 +82,22 @@
                 {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course
                 Offerings</a>
             </li>
-            <li>
+            {{-- <li>
               <a href="{{ route('admin.student_courses.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.student_courses.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Admission
                 Register</a>
-            </li>
+            </li> --}}
             <li>
               <a href="{{ route('admin.exams.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.exams.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">exams</a>
             </li>
-            <li>
+            {{-- <li>
               <a href="{{ route('admin.scores.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.scores.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">scores</a>
-            </li>
+            </li> --}}
             <li>
               <a href="{{ route('admin.attendances.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
