@@ -15,7 +15,10 @@ class StudentCourseController extends Controller
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 10);
+    $courseOfferingId = $request->input('course_offering_id');
+    $perPage = $request->input('per_page', 8);
+
+    $courseOffering = CourseOffering::findOrFail($courseOfferingId);
 
     $studentCourses = StudentCourse::query()
       ->with(['student:id,name', 'courseOffering.subject:id,name'])
@@ -29,20 +32,40 @@ class StudentCourseController extends Controller
             $q->where('name', 'like', "%{$search}%");
           });
       })
+      ->when($courseOfferingId, function ($query) use ($courseOfferingId) {
+        $query->where('course_offering_id', $courseOfferingId);
+      })
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
       ->appends($request->query());
 
-    return view('admin.student_courses.index', compact('studentCourses'));
+    return view('admin.student_courses.index', compact('studentCourses', 'courseOffering'));
   }
 
-  public function create()
+
+  public function create(Request $request)
   {
     $students = User::role('student')->orderBy('name')->get(['id', 'name']);
-    $courseOfferings = CourseOffering::with('subject:id,name,code')->get();
 
-    return view('admin.student_courses.create', compact('students', 'courseOfferings'));
+    $courseOfferingId = $request->input('course_offering_id');
+    $courseOffering = null;
+
+    if ($courseOfferingId) {
+      $courseOffering = CourseOffering::with('subject:id,name')->findOrFail($courseOfferingId);
+    }
+
+    $statuses = ['studying', 'suspended', 'dropped', 'completed'];
+    $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];
+
+    return view('admin.student_courses.create', compact(
+      'students',
+      'courseOffering',
+      'statuses',
+      'paymentStatuses',
+      'courseOfferingId'
+    ));
   }
+
 
   public function store(StudentCourseRequest $request)
   {
@@ -51,55 +74,54 @@ class StudentCourseController extends Controller
       ->exists();
 
     if ($exists) {
-      return redirect()->route('admin.student_courses.create')
+      return redirect()->route('admin.student_courses.create', ['course_offering_id' => $request->course_offering_id])
         ->with('error', 'This student is already enrolled in this course offering.')
         ->withInput();
     }
 
     try {
       StudentCourse::create($request->validated());
-      return redirect()->route('admin.student_courses.index')->with('success', 'Enrollment created successfully!');
+      return redirect()->route('admin.student_courses.index', ['course_offering_id' => $request->course_offering_id])->with('success', 'Enrollment created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating StudentCourse: ' . $e->getMessage());
-      return redirect()->route('admin.student_courses.create')->with('error', 'Error creating enrollment.')->withInput();
+      return redirect()->route('admin.student_courses.create', ['course_offering_id' => $request->course_offering_id])->with('error', 'Error creating enrollment.')->withInput();
     }
   }
 
-  public function show(StudentCourse $studentCourse)
-  {
-    $studentCourse->load(['student', 'courseOffering.subject', 'courseOffering.teacher']);
-    return view('admin.student_courses.show', compact('studentCourse'));
-  }
 
-  public function edit(StudentCourse $studentCourse)
+  public function edit($student_id, $course_offering_id)
   {
-    $studentCourse->load(['student:id,name', 'courseOffering.subject:id,name,code']);
+    $studentCourse = StudentCourse::where('student_id', $student_id)
+      ->where('course_offering_id', $course_offering_id)
+      ->firstOrFail();
+
+    $student = User::findOrFail($student_id, ['id', 'name']);
+    $courseOffering = CourseOffering::with('subject:id,name')->findOrFail($course_offering_id);
 
     $statuses = ['studying', 'suspended', 'dropped', 'completed'];
     $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];
 
-    return view('admin.student_courses.edit', compact('studentCourse', 'statuses', 'paymentStatuses'));
+    return view('admin.student_courses.edit', compact('studentCourse', 'student', 'courseOffering', 'statuses', 'paymentStatuses'));
   }
 
-  public function update(StudentCourseRequest $request, StudentCourse $studentCourse)
+  public function update(StudentCourseRequest $request, $student_id, $course_offering_id)
   {
-    try {
-      $studentCourse->update($request->validated());
-      return redirect()->route('admin.student_courses.index')->with('success', 'Enrollment updated successfully');
-    } catch (\Exception $e) {
-      Log::error('Error updating StudentCourse: ' . $e->getMessage());
-      return redirect()->route('admin.student_courses.edit', $studentCourse)->with('error', 'Error updating enrollment.')->withInput();
-    }
+    $studentCourse = StudentCourse::where('student_id', $student_id)
+      ->where('course_offering_id', $course_offering_id)
+      ->firstOrFail();
+
+    $studentCourse->update($request->validated());
+    return redirect()->route('admin.student_courses.index', ['course_offering_id' => $course_offering_id])->with('success', 'Enrollment updated successfully');
   }
 
-  public function destroy(StudentCourse $studentCourse)
+  public function destroy($student_id, $course_offering_id)
   {
-    try {
-      $studentCourse->delete();
-      return redirect()->route('admin.student_courses.index')->with('success', 'Enrollment deleted successfully');
-    } catch (\Exception $e) {
-      Log::error('Error deleting StudentCourse: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error deleting enrollment: ' . $e->getMessage());
-    }
+    $studentCourse = StudentCourse::where('student_id', $student_id)
+      ->where('course_offering_id', $course_offering_id)
+      ->firstOrFail();
+
+    $courseOfferingId = $studentCourse->course_offering_id;
+    $studentCourse->delete();
+    return redirect()->route('admin.student_courses.index', ['course_offering_id' => $courseOfferingId])->with('success', 'Enrollment deleted successfully');
   }
 }

@@ -1,209 +1,137 @@
 @extends('layouts.admin')
-@section('title', 'Create New Course Offering')
+
+@section('title', 'Create New Admission')
+
 @section('content')
 
-  <div
-    class="box px-4 py-6 md:p-8 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+  <div class="mx-auto">
+    <div
+      class="box px-4 py-6 md:p-8 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
 
-    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
-      <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-        {{-- Icon for Course Offering (Calendar) --}}
-        <svg class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>
-        Create New Course Offering
-      </h3>
-      <a href="{{ route('admin.course_offerings.index') }}"
-        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
-      </a>
-    </div>
-
-    <form action="{{ route('admin.course_offerings.store') }}" method="POST" id="createForm" class="p-0">
-      @csrf
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-
-        {{-- Subject Select --}}
-        <div>
-          <label for="subject_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Subject <span class="text-red-500">*</span>
-          </label>
-          <select id="subject_id" name="subject_id" required
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('subject_id') border-red-500 @enderror">
-            <option value="">Select Subject</option>
-            @foreach ($subjects as $subject)
-              <option value="{{ $subject->id }}" @selected(old('subject_id') == $subject->id)>{{ $subject->name }}
-                ({{ $subject->code ?? '' }})
-              </option>
-            @endforeach
-          </select>
-          @error('subject_id')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Teacher Select (Assuming User Model) --}}
-        <div>
-          <label for="teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Teacher <span class="text-red-500">*</span>
-          </label>
-          <select id="teacher_id" name="teacher_id" required
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('teacher_id') border-red-500 @enderror">
-            <option value="">Select Teacher</option>
-            @foreach ($teachers as $teacher)
-              <option value="{{ $teacher->id }}" @selected(old('teacher_id') == $teacher->id)>{{ $teacher->name }}
-                ({{ $teacher->specialization }})
-              </option>
-            @endforeach
-          </select>
-          @error('teacher_id')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Classroom Select --}}
-        <div>
-          <label for="classroom_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Classroom <span class="text-red-500">*</span>
-          </label>
-          <select id="classroom_id" name="classroom_id" required
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('classroom_id') border-red-500 @enderror">
-            <option value="">Select Classroom</option>
-            @foreach ($classrooms as $classroom)
-              <option value="{{ $classroom->id }}" @selected(old('classroom_id') == $classroom->id)>{{ $classroom->name }}</option>
-            @endforeach
-          </select>
-          @error('classroom_id')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-      </div>
-
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
-        {{-- Time Slot (e.g., Mon/Wed 10:00) --}}
-        <div>
-          <label for="time_slot" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Time Slot Category <span class="text-red-500">*</span>
-          </label>
-          <select id="time_slot" name="time_slot" required
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
-            <option value="">Select Category</option>
-            @foreach (['morning', 'afternoon', 'evening'] as $slot)
-              <option value="{{ $slot }}">
-                {{ ucfirst($slot) }}
-              </option>
-            @endforeach
-          </select>
-          @error('time_slot')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Start Time --}}
-        <div>
-          <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Start Time <span class="text-red-500">*</span>
-          </label>
-          <input type="time" id="start_time" name="start_time" value="{{ old('start_time') }}" min="06:00"
-            max="21:00"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('start_time') border-red-500 @enderror"
-            required>
-          @error('start_time')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- End Time --}}
-        <div>
-          <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            End Time <span class="text-red-500">*</span>
-          </label>
-          <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}" min="06:00"
-            max="21:00"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('end_time') border-red-500 @enderror"
-            required>
-          @error('end_time')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-      </div>
-
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
-        {{-- Fee (Price) --}}
-        <div>
-          <label for="fee" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Course Fee (USD) <span class="text-red-500">*</span>
-          </label>
-          <div class="relative mt-1 rounded-md shadow-sm">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
-            </div>
-            <input type="number" step="0.01" min="0.00" max="50" maxlength="2" id="fee"
-              name="fee" value="{{ old('fee') }}"
-              class="w-full pl-7 pr-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('fee') border-red-500 @enderror"
-              placeholder="0.00" required>
-          </div>
-          @error('fee')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Join Start Date --}}
-        <div>
-          <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Enrollment Start Date
-          </label>
-          <input type="date" id="join_start" name="join_start" value="{{ old('join_start') }}" min="2025-01-01"
-            max="2027-12-31"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
-          @error('join_start')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Join End Date --}}
-        <div>
-          <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Enrollment End Date
-          </label>
-          <input type="date" id="join_end" name="join_end" value="{{ old('join_end') }}" min="2025-01-01"
-            max="2027-12-31"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
-          @error('join_end')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-      </div>
-
-      <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <a href="{{ route('admin.course_offerings.index') }}"
-          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd" />
+      <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+          {{-- Icon for Create Admission --}}
+          <svg class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zm0 1c-2.67 0-4.85 1.58-5.78 3.5.93 1.92 3.11 3.5 5.78 3.5s4.85-1.58 5.78-3.5c-.93-1.92-3.11-3.5-5.78-3.5z" />
+            <path d="M17 11h-1v-1a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2z" />
           </svg>
-          Cancel
+          Create New Admission Record {{ $courseOffering?->subject?->name ?? 'Deleted' }}
+        </h3>
+        {{-- Back to Register Button --}}
+        <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $courseOfferingId]) }}"
+          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+          Back to Register
         </a>
-        <button type="submit"
-          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd" />
-          </svg>
-          Create Offering
-        </button>
       </div>
-    </form>
+
+      <form action="{{ route('admin.student_courses.store') }}" method="POST" class="p-0">
+        @csrf
+
+        <div class="space-y-6">
+          {{-- Student and Course Selects (2 Columns) --}}
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
+
+            {{-- 1. Student Field (Select) --}}
+            <div>
+              <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Student <span class="text-red-500">*</span>
+              </label>
+              <select name="student_id" id="student_id" required
+                class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('student_id') border-red-500 @enderror">
+                <option value="" disabled>Select Student</option>
+                @foreach ($students as $student)
+                  <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
+                    {{ $student->name }} (ID: {{ $student->id }})
+                  </option>
+                @endforeach
+              </select>
+              @error('student_id')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Admission Status <span class="text-red-500">*</span>
+              </label>
+              <select name="status" id="status" required
+                class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('status') border-red-500 @enderror">
+                <option value="" disabled>Select Status</option>
+                @foreach ($statuses as $status)
+                  <option value="{{ $status }}"
+                    {{ old('status') == $status || $status == 'studying' ? 'selected' : '' }}>
+                    {{ ucfirst($status) }}
+                  </option>
+                @endforeach
+              </select>
+              @error('status')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+
+            {{-- 4. Payment Status Field (Select) --}}
+            <div>
+              <label for="payment_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Payment Status <span class="text-red-500">*</span>
+              </label>
+              <select name="payment_status" id="payment_status" required
+                class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('payment_status') border-red-500 @enderror">
+                <option value="" disabled>Select Payment Status</option>
+                @foreach ($paymentStatuses as $pStatus)
+                  <option value="{{ $pStatus }}" {{ old('payment_status') == $pStatus ? 'selected' : '' }}>
+                    {{ ucfirst($pStatus) }}
+                  </option>
+                @endforeach
+              </select>
+              @error('payment_status')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+
+          </div>
+
+          {{-- 6. Remarks Field (Textarea) --}}
+          <div class="border-t pt-6 border-gray-200 dark:border-gray-700">
+            <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Remarks (Optional)
+            </label>
+            <textarea name="remarks" id="remarks" rows="5"
+              placeholder="Any special notes about this student's admission or progress."
+              class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('remarks') border-red-500 @enderror">{{ old('remarks') }}</textarea>
+            @error('remarks')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
+
+        </div>
+
+        {{-- Submit Button Row --}}
+        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-8">
+          <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $courseOfferingId]) }}"
+            class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+            Cancel
+          </a>
+          <button type="submit"
+            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+            Create Admission
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
+
 @endsection

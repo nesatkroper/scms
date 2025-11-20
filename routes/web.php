@@ -203,10 +203,11 @@ Route::prefix('admin')
     Route::get('/student_courses', [StudentCourseController::class, 'index'])->name('student_courses.index');
     Route::get('/student_courses/create', [StudentCourseController::class, 'create'])->name('student_courses.create');
     Route::post('/student_courses', [StudentCourseController::class, 'store'])->name('student_courses.store');
-    Route::get('/student_courses/{student_course}', [StudentCourseController::class, 'show'])->name('student_courses.show');
-    Route::get('/student_courses/{student_course}/edit', [StudentCourseController::class, 'edit'])->name('student_courses.edit');
-    Route::put('/student_courses/{student_course}', [StudentCourseController::class, 'update'])->name('student_courses.update');
-    Route::delete('/student_courses/{student_course}', [StudentCourseController::class, 'destroy'])->name('student_courses.destroy');
+    Route::get('/student_courses/{student_id}/{course_offering_id}/edit', [StudentCourseController::class, 'edit'])->name('student_courses.edit');
+    Route::put('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'update'])->name('student_courses.update');
+    Route::delete('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'destroy'])->name('student_courses.destroy');
+    Route::get('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'show'])->name('student_courses.show');
+
 
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');

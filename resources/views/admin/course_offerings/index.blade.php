@@ -178,7 +178,7 @@
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
-            <a href="{{ route('admin.scores.create') }}"
+            <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
               class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
               title="Admission Register">
               <span class="btn-content flex items-center justify-center">
