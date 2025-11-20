@@ -20,7 +20,8 @@ use App\Http\Controllers\Admin\{
   UserController,
   RoleController,
   ProfileController,
-  CourseOfferingController
+  CourseOfferingController,
+  StudentCourseController
 };
 
 
@@ -197,6 +198,15 @@ Route::prefix('admin')
     Route::get('/scores/{score}/edit', [ScoreController::class, 'edit'])->name('scores.edit');
     Route::put('/scores/{score}', [ScoreController::class, 'update'])->name('scores.update');
     Route::delete('/scores/{score}', [ScoreController::class, 'destroy'])->name('scores.destroy');
+
+
+    Route::get('/student_courses', [StudentCourseController::class, 'index'])->name('student_courses.index');
+    Route::get('/student_courses/create', [StudentCourseController::class, 'create'])->name('student_courses.create');
+    Route::post('/student_courses', [StudentCourseController::class, 'store'])->name('student_courses.store');
+    Route::get('/student_courses/{student_course}', [StudentCourseController::class, 'show'])->name('student_courses.show');
+    Route::get('/student_courses/{student_course}/edit', [StudentCourseController::class, 'edit'])->name('student_courses.edit');
+    Route::put('/student_courses/{student_course}', [StudentCourseController::class, 'update'])->name('student_courses.update');
+    Route::delete('/student_courses/{student_course}', [StudentCourseController::class, 'destroy'])->name('student_courses.destroy');
 
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');

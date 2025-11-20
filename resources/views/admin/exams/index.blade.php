@@ -175,7 +175,7 @@
 
             <a href="{{ route('admin.scores.create') }}"
               class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit">
+              title="Assign Score">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-book-atlas"></i>
               </span>

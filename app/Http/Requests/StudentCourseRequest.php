@@ -14,21 +14,29 @@ class StudentCourseRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'student_id' => 'required|exists:users,id',
-      'subject_id' => 'required|exists:subjects,id',
-      'grade_final' => 'nullable|numeric|between:0,100',
+      'student_id'        => 'required|exists:users,id',
+      'course_offering_id' => 'required|exists:course_offerings,id',
+      'grade_final'       => 'nullable|numeric|between:0,100',
+      'status'            => 'required|string|in:studying,suspended,dropped,completed',
+      'payment_status'    => 'required|string|in:pending,paid,overdue,free',
+      'remarks'           => 'nullable|string|max:500',
     ];
   }
 
   public function messages(): array
   {
     return [
-      'student_id.required' => 'Student is required.',
-      'student_id.exists' => 'Selected student does not exist.',
-      'subject_id.required' => 'Subject is required.',
-      'subject_id.exists' => 'Selected subject does not exist.',
-      'grade_final.numeric' => 'Grade must be a number.',
-      'grade_final.between' => 'Grade must be between 0 and 100.',
+      'student_id.required'          => 'Student is required.',
+      'student_id.exists'            => 'Selected student does not exist.',
+      'course_offering_id.required'  => 'Course offering is required.',
+      'course_offering_id.exists'    => 'Selected course offering does not exist.',
+      'grade_final.numeric'          => 'Grade must be a number.',
+      'grade_final.between'          => 'Grade must be between 0 and 100.',
+      'status.required'              => 'Status is required.',
+      'status.in'                    => 'Invalid student status.',
+      'payment_status.required'      => 'Payment status is required.',
+      'payment_status.in'            => 'Invalid payment status value.',
+      'remarks.max'                  => 'Remarks must not exceed 500 characters.',
     ];
   }
 }
