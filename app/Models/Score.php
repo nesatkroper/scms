@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Score extends Model
+class Score extends Pivot
 {
   use SoftDeletes;
+
+  protected $table = 'scores';
 
   protected $fillable = [
     'student_id',

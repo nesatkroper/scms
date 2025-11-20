@@ -191,13 +191,12 @@ Route::prefix('admin')
     Route::delete('/course_offerings/{course_offering}', [CourseOfferingController::class, 'destroy'])->name('course_offerings.destroy');
 
 
-    Route::get('/scores', [ScoreController::class, 'index'])->name('scores.index');
-    Route::get('/scores/create', [ScoreController::class, 'create'])->name('scores.create');
-    Route::get('/scores/filter', [ScoreController::class, 'filterStudents'])->name('scores.filterStudents');
-    Route::post('/scores', [ScoreController::class, 'store'])->name('scores.store');
-    Route::get('/scores/{score}/edit', [ScoreController::class, 'edit'])->name('scores.edit');
-    Route::put('/scores/{score}', [ScoreController::class, 'update'])->name('scores.update');
-    Route::delete('/scores/{score}', [ScoreController::class, 'destroy'])->name('scores.destroy');
+    Route::get('scores', [ScoreController::class, 'index'])->name('scores.index');
+    Route::get('scores/create', [ScoreController::class, 'create'])->name('scores.create');
+    Route::post('scores', [ScoreController::class, 'store'])->name('scores.store');
+    Route::get('scores/{student_id}/{exam_id}/edit', [ScoreController::class, 'edit'])->name('scores.edit');
+    Route::put('scores/{student_id}/{exam_id}', [ScoreController::class, 'update'])->name('scores.update');
+    Route::delete('scores/{student_id}/{exam_id}', [ScoreController::class, 'destroy'])->name('scores.destroy');
 
 
     Route::get('/student_courses', [StudentCourseController::class, 'index'])->name('student_courses.index');
