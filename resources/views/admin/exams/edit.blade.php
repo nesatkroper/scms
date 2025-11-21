@@ -30,7 +30,9 @@
       @csrf
       @method('PUT')
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
         {{-- Exam Type --}}
         <div class="lg:col-span-1">
@@ -52,31 +54,6 @@
           @enderror
         </div>
 
-        {{-- Course Offering Select --}}
-        <div class="lg:col-span-2">
-          <label for="course_offering_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Associated Course <span class="text-red-500">*</span>
-          </label>
-          <select id="course_offering_id" name="course_offering_id" required
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
-            <option value="" disabled>Select Course Offering</option>
-            @foreach ($courseOfferings as $offering)
-              <option value="{{ $offering->id }}" @selected(old('course_offering_id', $exam->course_offering_id ?? null) == $offering->id)>
-                {{-- Display as: Subject Name - Teacher Name (Time Slot) --}}
-                {{ $offering->subject->name ?? 'Deleted Subject' }} - {{ $offering->teacher->name ?? 'Unassigned' }}
-                ({{ $offering->time_slot }})
-              </option>
-            @endforeach
-          </select>
-          @error('course_offering_id')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-      </div>
-
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
-
         {{-- Exam Date --}}
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -90,6 +67,9 @@
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
 
         {{-- Total Marks --}}
         <div>

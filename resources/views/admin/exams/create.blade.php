@@ -27,7 +27,9 @@
     <form action="{{ route('admin.exams.store') }}" method="POST" id="createForm" class="p-0">
       @csrf
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
         {{-- 1. Exam Type (New addition from Edit) --}}
         <div class="lg:col-span-1"> {{-- Changed to col-span-1 to make room for Title --}}
@@ -48,44 +50,6 @@
           @enderror
         </div>
 
-        {{-- 3. Course Offering Select --}}
-        <div class="lg:col-span-2"> {{-- Made this full width (col-span-3) for better display of long names --}}
-          <label for="course_offering_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Associated Course <span class="text-red-500">*</span>
-          </label>
-          <select id="course_offering_id" name="course_offering_id" required
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
-            <option value="" disabled selected>Select Course Offering</option>
-            @foreach ($courseOfferings as $offering)
-              <option value="{{ $offering->id }}" @selected(old('course_offering_id') == $offering->id)>
-                {{-- Display as: Subject Name - Teacher Name (Time Slot) --}}
-                {{ $offering->subject->name ?? 'Deleted Subject' }} - {{ $offering->teacher->name ?? 'Unassigned' }}
-                ({{ $offering->time_slot }})
-              </option>
-            @endforeach
-          </select>
-          @error('course_offering_id')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-      </div>
-
-      {{-- Description (Textarea) - Moved up for better grouping --}}
-      <div class="mb-6">
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description (Optional)
-        </label>
-        <textarea id="description" name="description" rows="3"
-          class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
-          placeholder="Provide a brief description or instruction for the exam.">{{ old('description') }}</textarea>
-        @error('description')
-          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
-      </div>
-
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
-
         {{-- 4. Exam Date --}}
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -99,14 +63,17 @@
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
 
         {{-- 5. Total Marks --}}
         <div>
           <label for="total_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Total Marks <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}"
-            max="100" min="1"
+          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}" max="100"
+            min="1"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
             placeholder="e.g., 100" required>
           @error('total_marks')
@@ -127,7 +94,19 @@
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
+      </div>
 
+      {{-- Description (Textarea) - Moved up for better grouping --}}
+      <div class="mb-6">
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Description (Optional)
+        </label>
+        <textarea id="description" name="description" rows="3"
+          class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
+          placeholder="Provide a brief description or instruction for the exam.">{{ old('description') }}</textarea>
+        @error('description')
+          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">

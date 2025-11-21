@@ -160,7 +160,35 @@
             </a>
 
             <div class="flex">
-              {{-- Edit Button (Redirects to Edit Page) --}}
+
+              {{-- Edit Button --}}
+              <a href="{{ route('admin.exams.edit', ['exam' => $exam->id, 'course_offering_id' => $courseOfferingId]) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  Edit
+                </span>
+              </a>
+
+              {{-- Delete Button --}}
+              <form
+                action="{{ route('admin.exams.destroy', ['exam' => $exam->id, 'course_offering_id' => $courseOfferingId]) }}"
+                method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete">
+                  <i class="fa-regular fa-trash-can me-2"></i>
+                  Delete
+                </button>
+              </form>
+
+            </div>
+
+            {{-- <div class="flex">
               <a href="{{ route('admin.exams.edit', $exam->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
@@ -170,7 +198,6 @@
                 </span>
               </a>
 
-              {{-- Delete Button (Full form submission) --}}
               <form action="{{ route('admin.exams.destroy', $exam->id) }}" method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
                 @csrf
@@ -182,7 +209,7 @@
                   Delete
                 </button>
               </form>
-            </div>
+            </div> --}}
           </div>
         </div>
       @empty
