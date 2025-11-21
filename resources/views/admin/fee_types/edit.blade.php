@@ -1,6 +1,5 @@
 @extends('layouts.admin')
-{{-- Changed $department to $expenseCategory --}}
-@section('title', 'Edit Expense Category: ' . $expenseCategory->name)
+@section('title', 'Edit Fee Type: ' . $feeType->name)
 @section('content')
 
   <div
@@ -8,7 +7,6 @@
 
     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-        {{-- Icon for Expense Categories (tag icon) --}}
         <svg xmlns="http://www.w3.org/2000/svg"
           class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
           viewBox="0 0 20 20" fill="currentColor">
@@ -17,42 +15,40 @@
             d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
             clip-rule="evenodd" />
         </svg>
-        {{-- Changed Department to Expense Category and $department->name to $expenseCategory->name --}}
-        Edit Expense Category: {{ $expenseCategory->name }}
+        Edit Fee Type: {{ $feeType->name }}
       </h3>
-      <a href="{{ route('admin.expense_categories.index') }}"
+      <a href="{{ route('admin.fee_types.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         Back to List
       </a>
     </div>
 
-    {{-- Form action updated to the expense_categories update route --}}
-    <form action="{{ route('admin.expense_categories.update', $expenseCategory->id) }}" method="POST" id="editForm"
-      class="p-0">
+    {{-- Form action updated to the fee_types update route --}}
+    <form action="{{ route('admin.fee_types.update', $feeType->id) }}" method="POST" id="editForm" class="p-0">
       @csrf
       @method('PUT') {{-- Required for update method --}}
 
       <div class="grid grid-cols-1 gap-4 mb-4">
 
-        {{-- Category Name Field (Pre-filled with existing data) --}}
+        {{-- Fee Type Name Field (Pre-filled with existing data) --}}
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Category Name <span class="text-red-500">*</span>
+            Fee Type Name <span class="text-red-500">*</span>
           </label>
-          {{-- Pre-fill logic using $expenseCategory->name --}}
-          <input type="text" id="name" name="name" value="{{ old('name', $expenseCategory->name) }}"
+          {{-- Pre-fill logic using $feeType->name --}}
+          <input type="text" id="name" name="name" value="{{ old('name', $feeType->name) }}"
             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('name') border-red-500 @else border-gray-400 @enderror"
-            placeholder="Enter category name" required>
+            placeholder="Enter fee type name" required>
           @error('name')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
       </div>
 
-      {{-- Category Description Field (Pre-filled with existing data) --}}
+      {{-- Fee Type Description Field (Pre-filled with existing data) --}}
       <div class="mb-6">
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Description
@@ -62,7 +58,7 @@
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('description') border-red-500 @else border-gray-400 @enderror"
-          placeholder="Enter category description">{{ old('description', $expenseCategory->description) }}</textarea> {{-- Pre-fill logic using $expenseCategory->description --}}
+          placeholder="Enter fee type description">{{ old('description', $feeType->description) }}</textarea> {{-- Pre-fill logic using $feeType->description --}}
 
         @error('description')
           <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -70,7 +66,7 @@
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <a href="{{ route('admin.expense_categories.index') }}"
+        <a href="{{ route('admin.fee_types.index') }}"
           class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
@@ -79,7 +75,6 @@
           </svg>
           Cancel
         </a>
-        {{-- Submit button text updated and adjusted to category --}}
         <button type="submit"
           class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -88,7 +83,7 @@
               d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
               clip-rule="evenodd" />
           </svg>
-          Update Category
+          Update Fee Type
         </button>
       </div>
     </form>

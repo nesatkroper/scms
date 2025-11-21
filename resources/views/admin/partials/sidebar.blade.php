@@ -11,7 +11,7 @@
   $organizationRoutes = ['admin.departments.*', 'admin.teachers.*', 'admin.students.*'];
   $isOrganizationActive = request()->routeIs($organizationRoutes);
 
-  $financeRoutes = ['admin.expenses.*', 'admin.expense_categories.*', 'admin.expenses.*', 'admin.expenses.*'];
+  $financeRoutes = ['admin.fee_types.*', 'admin.expense_categories.*', 'admin.expenses.*', 'admin.expenses.*'];
   $isFinanceActive = request()->routeIs($financeRoutes);
 
   $administratorRoutes = ['admin.users.*', 'admin.roles.*'];
@@ -146,6 +146,13 @@
         <div class="submenu {{ $isFinanceActive ? 'active' : '' }}">
           <ul class="pl-2 pr-2">
 
+            <li>
+              <a href="{{ route('admin.fee_types.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.fee_types.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">fee
+                types
+              </a>
+            </li>
             <li>
               <a href="{{ route('admin.expense_categories.index') }}"
                 class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize

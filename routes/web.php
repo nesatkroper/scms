@@ -21,7 +21,8 @@ use App\Http\Controllers\Admin\{
   RoleController,
   ProfileController,
   CourseOfferingController,
-  StudentCourseController
+  StudentCourseController,
+  FeeTypeController,
 };
 
 
@@ -121,10 +122,19 @@ Route::prefix('admin')
     Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');
     Route::get('/expense_categories/create', [ExpenseCategoryController::class, 'create'])->name('expense_categories.create');
     Route::post('/expense_categories', [ExpenseCategoryController::class, 'store'])->name('expense_categories.store');
-    Route::get('/expense_categories/{cat}', [ExpenseCategoryController::class, 'show'])->name('expense_categories.show');
-    Route::get('/expense_categories/{cat}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_categories.edit');
-    Route::put('/expense_categories/{cat}', [ExpenseCategoryController::class, 'update'])->name('expense_categories.update');
-    Route::delete('/expense_categories/{cat}', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
+    Route::get('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'show'])->name('expense_categories.show');
+    Route::get('/expense_categories/{expense_category}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_categories.edit');
+    Route::put('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'update'])->name('expense_categories.update');
+    Route::delete('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
+
+
+    Route::get('/fee_types', [FeeTypeController::class, 'index'])->name('fee_types.index');
+    Route::get('/fee_types/create', [FeeTypeController::class, 'create'])->name('fee_types.create');
+    Route::post('/fee_types', [FeeTypeController::class, 'store'])->name('fee_types.store');
+    Route::get('/fee_types/{fee_type}', [FeeTypeController::class, 'show'])->name('fee_types.show');
+    Route::get('/fee_types/{fee_type}/edit', [FeeTypeController::class, 'edit'])->name('fee_types.edit');
+    Route::put('/fee_types/{fee_type}', [FeeTypeController::class, 'update'])->name('fee_types.update');
+    Route::delete('/fee_types/{fee_type}', [FeeTypeController::class, 'destroy'])->name('fee_types.destroy');
 
 
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
