@@ -7,17 +7,15 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      {{-- Icon for Fees (using a dollar sign/finance theme) --}}
       <svg class="size-8 p-1 rounded-full bg-green-50 text-green-600 dark:text-green-50 dark:bg-green-900"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="1" x2="12" y2="23"></line>
         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
       </svg>
-      Fees List
+      Fees List of - {{ $selectedFeeType->name ?? 'All' }}
     </h3>
 
-    {{-- Success/Error Messages --}}
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         <span class="block sm:inline">{{ session('success') }}</span>
@@ -29,12 +27,11 @@
       </div>
     @endif
 
-    <form action="{{ route('admin.fees.index') }}" method="GET">
+    <form action="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}" method="GET">
+      <input type="hidden" name="fee_type_id" value="{{ $feeTypeId }}">
       <div
-        class="p-2 md:grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-
-        {{-- Create Button (Redirects to Create Page) --}}
-        <a href="{{ route('admin.fees.create') }}"
+        class="p-2 flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+        <a href="{{ route('admin.fees.create', ['fee_type_id' => $feeTypeId]) }}"
           class="lg:col-span-1 text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
@@ -44,19 +41,7 @@
           Create New Fee
         </a>
 
-        {{-- Filters and Search --}}
-        <div class="lg:col-span-2 xl:col-span-3 flex items-center mt-3 lg:mt-0 gap-2 flex-wrap">
-
-          {{-- Fee Type Filter --}}
-          <select name="fee_type_id"
-            class="border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg py-1.5 px-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-            <option value="">All Fee Types</option>
-            @foreach ($feeTypes as $type)
-              <option value="{{ $type->id }}" @selected(request('fee_type_id') == $type->id)>{{ $type->name }}</option>
-            @endforeach
-          </select>
-
-          {{-- Status Filter --}}
+        <div class="lg:col-span-2 xl:col-span-3 flex items-center mt-3 lg:mt-0 gap-2 flex">
           <select name="status"
             class="border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg py-1.5 px-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
             <option value="">All Statuses</option>
@@ -66,25 +51,21 @@
             @endforeach
           </select>
 
-          {{-- Search Input --}}
           <div class="relative w-full flex-grow">
             <input type="search" name="search" id="searchInput"
               placeholder="Search by remarks, amount, student name/email..."
-              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                                focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
 
-          {{-- Search Button --}}
           <button type="submit"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
 
-          {{-- Reset Button --}}
-          <a href="{{ route('admin.fees.index') }}" id="resetSearch"
+          <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
             title="Reset Filters">
             <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
@@ -97,27 +78,23 @@
       </div>
     </form>
 
-    {{-- Fee Cards --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       @forelse ($fees as $fee)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
-                {{-- Main Fee Type and Student Name --}}
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">
-                  {{ $fee->feeType->name ?? 'Deleted Type' }}
+                  {{ $fee->feeType->name ?? 'Deleted Type' }} - {{ $fee->student->name ?? 'Student Deleted' }} -
+                  ${{ number_format($fee->amount, 2) }}
                 </h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Student: <span
                     class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $fee->student->name ?? 'Student Deleted' }}</span>
                 </p>
               </div>
-
-              {{-- Detail Button (Redirects to Show Page) --}}
-              <a href="{{ route('admin.fees.show', $fee->id) }}"
+              <a href="{{ route('admin.fees.show', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
                 class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
                 title="View Details">
                 <span class="btn-content">
@@ -134,25 +111,6 @@
           </div>
 
           <div class="p-4 space-y-3">
-            {{-- Fee Amount --}}
-            <div class="flex items-center gap-3 text-sm">
-              <div class="p-2 rounded-lg bg-green-50 dark:bg-slate-700 text-green-600 dark:text-green-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Amount Due</p>
-                <p class="font-medium text-gray-700 dark:text-gray-200">
-                  <span
-                    class="text-green-600 dark:text-green-400 font-bold">${{ number_format($fee->amount, 2) }}</span>
-                </p>
-              </div>
-            </div>
-
-            {{-- Due Date --}}
             <div class="flex items-center gap-3 text-sm">
               <div class="p-2 rounded-lg bg-red-50 dark:bg-slate-700 text-red-600 dark:text-red-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -169,7 +127,6 @@
               </div>
             </div>
 
-            {{-- Status --}}
             <div class="flex items-center gap-3 text-sm">
               <div class="p-2 rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
@@ -182,11 +139,7 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400">Status</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200 capitalize">
                   <span
-                    class="
-                                        @if ($fee->status == 'paid') text-green-600 dark:text-green-400
-                                        @elseif ($fee->status == 'partially_paid') text-yellow-600 dark:text-yellow-400
-                                        @else text-red-600 dark:text-red-400 @endif
-                                        font-bold">
+                    class="@if ($fee->status == 'paid') text-green-600 dark:text-green-400 @elseif ($fee->status == 'partially_paid') text-yellow-600 dark:text-yellow-400 @else text-red-600 dark:text-red-400 @endif font-bold">
                     {{ str_replace('_', ' ', $fee->status) }}
                   </span>
                 </p>
@@ -194,11 +147,9 @@
             </div>
           </div>
 
-          {{-- Actions (View Payments Link + Edit Link + Delete Form) --}}
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
-
-            <a href="{{ route('admin.payments.index', ['fee_id' => $fee->id]) }}"
+            <a href="{{ route('admin.payments.index', ['fee_id' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
               title="View Payments">
               <span class="btn-content flex items-center justify-center">
@@ -208,8 +159,7 @@
             </a>
 
             <div class="flex">
-              {{-- Edit Button (Redirects to Edit Page) --}}
-              <a href="{{ route('admin.fees.edit', $fee->id) }}"
+              <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
                 <span class="btn-content flex items-center justify-center">
@@ -218,9 +168,8 @@
                 </span>
               </a>
 
-              {{-- Delete Button (Full form submission) --}}
               <form action="{{ route('admin.fees.destroy', $fee->id) }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete this fee record? This action cannot be undone.');">
+                onsubmit="return confirm('Are you sure you want to delete this fee record?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
@@ -252,10 +201,8 @@
       @endforelse
     </div>
 
-    {{-- Pagination Links --}}
     <div class="mt-6">
       {{ $fees->links() }}
     </div>
-
   </div>
 @endsection

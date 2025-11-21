@@ -17,49 +17,48 @@ class FeeController extends Controller
   {
     $search = $request->input('search');
     $feeTypeId = $request->input('fee_type_id');
-    $perPage = $request->input('per_page', 10);
     $status = $request->input('status');
+    $perPage = $request->input('per_page', 6);
 
     $fees = Fee::query()
-      ->with(['student', 'feeType'])
-      ->when($feeTypeId, function ($query) use ($feeTypeId) {
-        return $query->where('fee_type_id', $feeTypeId);
-      })
-      ->when($status, function ($query) use ($status) {
-        return $query->where('status', $status);
-      })
+      ->with(['student:id,name,email', 'feeType:id,name'])
+      ->when($feeTypeId, fn($q) => $q->where('fee_type_id', $feeTypeId))
+      ->when($status, fn($q) => $q->where('status', $status))
       ->when($search, function ($query) use ($search) {
-        return $query->where('remarks', 'like', "%{$search}%")
-          ->orWhere('amount', 'like', "%{$search}%")
-          ->orWhereHas('student', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-              ->orWhere('email', 'like', "%{$search}%");
-          })
-          ->orWhereHas('feeType', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          });
+        $query->where(function ($q) use ($search) {
+          $q->where('remarks', 'like', "%{$search}%")
+            ->orWhere('amount', 'like', "%{$search}%")
+            ->orWhereHas('student', fn($q2) => $q2->where('name', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%"))
+            ->orWhereHas('feeType', fn($q2) => $q2->where('name', 'like', "%{$search}%"));
+        });
       })
       ->orderBy('due_date', 'desc')
+      ->orderBy('created_at', 'desc')
       ->paginate($perPage)
-      ->appends([
-        'search' => $search,
-        'fee_type_id' => $feeTypeId,
-        'status' => $status,
-        'per_page' => $perPage,
-      ]);
+      ->appends($request->query());
 
-    $feeTypes = FeeType::all();
+    $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
+    $selectedFeeType = $feeTypeId ? $feeTypes->firstWhere('id', $feeTypeId) : null;
     $statuses = ['unpaid', 'partially_paid', 'paid'];
 
-    return view('admin.fees.index', compact('fees', 'feeTypes', 'feeTypeId', 'statuses', 'status'));
+    return view('admin.fees.index', compact(
+      'fees',
+      'feeTypes',
+      'feeTypeId',
+      'selectedFeeType',
+      'statuses',
+      'status'
+    ));
   }
 
-  public function create()
+  public function create(Request $request)
   {
-    $students = User::where('role', 'student')->get();
-    $feeTypes = FeeType::all();
+    $students = User::where('role', 'student')->get(['id', 'name']);
+    $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
+    $selectedFeeType = $request->input('fee_type_id') ? FeeType::find($request->input('fee_type_id')) : null;
 
-    return view('admin.fees.create', compact('students', 'feeTypes'));
+    return view('admin.fees.create', compact('students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
   }
 
   public function store(FeeRequest $request)
@@ -67,13 +66,15 @@ class FeeController extends Controller
     try {
       $data = $request->validated();
       $data['created_by'] = Auth::id();
+
       Fee::create($data);
 
-      return redirect()->route('admin.fees.index', ['fee_type_id' => $data['fee_type_id']])
+      return redirect()
+        ->route('admin.fees.index', ['fee_type_id' => $data['fee_type_id']])
         ->with('success', 'Fee record created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating Fee: ' . $e->getMessage());
-      return redirect()->route('admin.fees.create')->with('error', 'Error creating fee record.')->withInput();
+      return back()->with('error', 'Error creating fee record.')->withInput();
     }
   }
 
@@ -85,10 +86,12 @@ class FeeController extends Controller
 
   public function edit(Fee $fee)
   {
-    $students = User::where('role', 'student')->get();
-    $feeTypes = FeeType::all();
+    $students = User::where('role', 'student')->get(['id', 'name']);
+    $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
+    $selectedFeeType = FeeType::find($fee->fee_type_id);
+    $feeTypeId = $fee->fee_type_id;
 
-    return view('admin.fees.edit', compact('fee', 'students', 'feeTypes'));
+    return view('admin.fees.edit', compact('fee', 'students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
   }
 
   public function update(FeeRequest $request, Fee $fee)
@@ -97,11 +100,12 @@ class FeeController extends Controller
       $data = $request->validated();
       $fee->update($data);
 
-      return redirect()->route('admin.fees.index', ['fee_type_id' => $data['fee_type_id']])
+      return redirect()
+        ->route('admin.fees.index', ['fee_type_id' => $data['fee_type_id']])
         ->with('success', 'Fee record updated successfully');
     } catch (\Exception $e) {
       Log::error('Error updating Fee: ' . $e->getMessage());
-      return redirect()->route('admin.fees.edit', $fee)->with('error', 'Error updating fee record.')->withInput();
+      return back()->with('error', 'Error updating fee record.')->withInput();
     }
   }
 
@@ -111,12 +115,12 @@ class FeeController extends Controller
 
     try {
       $fee->delete();
-
-      return redirect()->route('admin.fees.index', ['fee_type_id' => $feeTypeId])
+      return redirect()
+        ->route('admin.fees.index', ['fee_type_id' => $feeTypeId])
         ->with('success', 'Fee record deleted successfully');
     } catch (\Exception $e) {
       Log::error('Error deleting Fee: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error deleting fee record: ' . $e->getMessage());
+      return back()->with('error', 'Error deleting fee record.');
     }
   }
 }
