@@ -30,7 +30,7 @@ class CourseOfferingController extends Controller
             $q->where('name', 'like', "%{$search}%");
           });
       })
-      ->orderBy('start_time', 'asc')
+      ->orderBy('created_at', 'desc')
       ->paginate($perPage)
       ->appends([
         'search' => $search,

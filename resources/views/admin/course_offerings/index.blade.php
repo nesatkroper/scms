@@ -80,7 +80,7 @@
     </form>
 
     {{-- Course Offering Cards --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 xl:grid-cols-2 gap-4">
       @forelse ($courseOfferings as $offering)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -166,7 +166,7 @@
 
             <div class="flex">
               <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Attendance">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-regular fa-calendar-days me-2"></i>
@@ -174,9 +174,18 @@
                 </span>
               </a>
 
+              <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                title="Exam">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-toolbox me-2"></i>
+                  Exam
+                </span>
+              </a>
+
               @if ($offering->students->count() >= $offering->classroom->capacity)
                 <a href="#"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-check me-2"></i>

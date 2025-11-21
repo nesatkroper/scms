@@ -13,90 +13,132 @@ class ExamController extends Controller
 {
   public function index(Request $request)
   {
+    $courseOfferingId = $request->input('course_offering_id');
+
+    if (!$courseOfferingId) {
+      return redirect()->back()->with('error', 'Course offering ID is required.');
+    }
+
     $search = $request->input('search');
     $perPage = $request->input('per_page', 10);
+    $courses = CourseOffering::findOrFail($courseOfferingId);
 
     $exams = Exam::query()
+      ->where('course_offering_id', $courseOfferingId)
       ->with(['courseOffering'])
       ->when($search, function ($query) use ($search) {
-        return $query->where('type', 'like', "%{$search}%")
-          ->orWhere('description', 'like', "%{$search}%")
-          ->orWhereHas('courseOffering', function ($q) use ($search) {
-            $q->where('time_slot', 'like', "%{$search}%")
-              ->orWhereHas('subject', function ($s) use ($search) {
-                $s->where('name', 'like', "%{$search}%");
-              });
-          });
+        return $query->where(function ($q) use ($search) {
+          $q->where('type', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%")
+            ->orWhereHas('courseOffering.subject', function ($s) use ($search) {
+              $s->where('name', 'like', "%{$search}%");
+            });
+        });
       })
       ->orderBy('date', 'desc')
       ->paginate($perPage)
       ->appends([
-        'search' => $search,
+        'search'   => $search,
         'per_page' => $perPage,
+        'course_offering_id' => $courseOfferingId,
       ]);
 
-    return view('admin.exams.index', compact('exams'));
+    return view('admin.exams.index', compact('exams', 'courseOfferingId', 'courses'));
   }
 
-  public function create()
+  public function create(Request $request)
   {
-    $courseOfferings = CourseOffering::with(['subject', 'teacher', 'classroom'])->get();
+    $courseOfferingId = $request->input('course_offering_id');
 
+    $courseOffering = CourseOffering::with(['subject', 'teacher', 'classroom'])
+      ->find($courseOfferingId);
 
-    if ($courseOfferings->isEmpty()) {
-      return redirect()->route('admin.course_offerings.create')
-        ->with('error', 'No course offerings found. Please create one first.');
+    if (!$courseOffering) {
+      return redirect()->route('admin.course_offerings.index')
+        ->with('error', 'Invalid course offering.');
     }
 
-    return view('admin.exams.create', compact('courseOfferings'));
+    return view('admin.exams.create', compact('courseOffering', 'courseOfferingId'));
   }
 
   public function store(ExamRequest $request)
   {
     try {
-      Exam::create($request->validated());
-      return redirect()->route('admin.exams.index')->with('success', 'Exam created successfully!');
+      $data = $request->validated();
+      $data['course_offering_id'] = $request->input('course_offering_id');
+
+      Exam::create($data);
+
+      return redirect()
+        ->route('admin.exams.index', ['course_offering_id' => $data['course_offering_id']])
+        ->with('success', 'Exam created successfully!');
     } catch (\Exception $e) {
-      Log::error('Error creating Exam: ' . $e->getMessage());
-      return redirect()->route('admin.exams.create')->with('error', 'Error creating exam.')->withInput();
+      Log::error('Error creating exam: ' . $e->getMessage());
+      return redirect()->back()->with('error', 'Error creating exam.')->withInput();
     }
   }
 
-  public function show(Exam $exam)
+  public function show(Request $request, Exam $exam)
   {
+    $courseOfferingId = $request->input('course_offering_id');
+
+    if ($exam->course_offering_id != $courseOfferingId) {
+      return redirect()->back()->with('error', 'Access denied for this exam.');
+    }
+
     $exam->load(['courseOffering', 'scores']);
-    return view('admin.exams.show', compact('exam'));
+
+    return view('admin.exams.show', compact('exam', 'courseOfferingId'));
   }
 
-  public function edit(Exam $exam)
+  public function edit(Request $request, Exam $exam)
   {
-    $courseOfferings = CourseOffering::with(['subject', 'teacher', 'classroom'])->get();
+    $courseOfferingId = $request->input('course_offering_id');
 
-
-    if ($courseOfferings->isEmpty()) {
-      return redirect()->route('admin.course_offerings.create')
-        ->with('error', 'No course offerings found. Please create one first.');
+    if ($exam->course_offering_id != $courseOfferingId) {
+      return redirect()->back()->with('error', 'Access denied for this exam.');
     }
 
-    return view('admin.exams.edit', compact('exam', 'courseOfferings'));
+    $courseOffering = CourseOffering::with(['subject', 'teacher', 'classroom'])
+      ->find($courseOfferingId);
+
+    return view('admin.exams.edit', compact('exam', 'courseOffering', 'courseOfferingId'));
   }
 
   public function update(ExamRequest $request, Exam $exam)
   {
     try {
+      if ($exam->course_offering_id != $request->input('course_offering_id')) {
+        return redirect()->back()->with('error', 'Invalid course offering for update.');
+      }
+
       $exam->update($request->validated());
-      return redirect()->route('admin.exams.index')->with('success', 'Exam updated successfully');
+
+      return redirect()
+        ->route('admin.exams.index', [
+          'course_offering_id' => $exam->course_offering_id
+        ])
+        ->with('success', 'Exam updated successfully');
     } catch (\Exception $e) {
       Log::error('Error updating Exam: ' . $e->getMessage());
-      return redirect()->route('admin.exams.edit', $exam)->with('error', 'Error updating exam.')->withInput();
+      return redirect()->back()->with('error', 'Error updating exam.')->withInput();
     }
   }
 
-  public function destroy(Exam $exam)
+  public function destroy(Request $request, Exam $exam)
   {
     try {
+      $courseOfferingId = $request->input('course_offering_id');
+
+      if ($exam->course_offering_id != $courseOfferingId) {
+        return redirect()->back()->with('error', 'Invalid delete action.');
+      }
+
       $exam->delete();
-      return redirect()->route('admin.exams.index')->with('success', 'Exam deleted successfully');
+
+      return redirect()
+        ->route('admin.exams.index', ['course_offering_id' => $courseOfferingId])
+        ->with('success', 'Exam deleted successfully');
     } catch (\Exception $e) {
       Log::error('Error deleting Exam: ' . $e->getMessage());
       return redirect()->back()->with('error', 'Error deleting exam: ' . $e->getMessage());
