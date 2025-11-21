@@ -1,651 +1,197 @@
 @extends('layouts.admin')
-@section('title', 'Expensess')
+
+@section('title', 'Expense Ledger')
+
 @section('content')
 
-    <x-page.index :showReset="true" :showViewToggle="true" title="Expenses" btn-text="Create New"
-        iconSvgPath="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
-        btn-icon-svg-path="">
-        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('admin.expenses.partials.table', ['expenses' => $expenses])
-        </div>
-        <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('admin.expenses.partials.cardlist', ['expenses' => $expenses])
-        </div>
-        <x-table.pagination :paginator="$expenses" />
-    </x-page.index>
+  <div
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+      <svg class="size-8 p-1 rounded-full bg-red-50 text-red-600 dark:text-red-50 dark:bg-red-900"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 6v12m-3-2.818l-.511-.274a.75.75 0 01-.152-.962L9.423 6.326m-3.1 8.783L7.33 12m10.237 2.818l.511-.274a.75.75 0 00.152-.962l-1.423-2.618M18.8 12L16.67 9.177M5 12h14" />
+      </svg>
+      Expense Ledger
+    </h3>
 
-    @include('admin.expenses.partials.create')
-    @include('admin.expenses.partials.edit')
-    @include('admin.expenses.partials.detail')
-    <x-modal.confirmdelete title="Expenses" />
-    @include('admin.expenses.partials.bulkedit')
-    @include('admin.expenses.partials.bulkdelete')
+    {{-- Success/Error Messages --}}
+    @if (session('success'))
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        {{ session('success') }}
+      </div>
+    @endif
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        {{ session('error') }}
+      </div>
+    @endif
+
+    {{-- Search Form --}}
+    <form action="{{ route('admin.expenses.index') }}" method="GET">
+      <div
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-red-50 dark:bg-slate-800">
+        <a href="{{ route('admin.expenses.create') }}"
+          class="text-nowrap px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+              clip-rule="evenodd" />
+          </svg>
+          Record New Expense
+        </a>
+
+        <div class="flex items-center mt-3 md:mt-0 gap-2">
+          <div class="relative w-full">
+            <input type="search" name="search" id="searchInput"
+              placeholder="Search by title, description, or category..."
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                       focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-800 dark:text-gray-100"
+              value="{{ request('search') }}">
+            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+          </div>
+
+          <button type="submit"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-600 rounded-md transition-colors text-white"
+            title="Search">
+            <i class="fas fa-search text-white text-xs"></i>
+          </button>
+          <a href="{{ route('admin.expenses.index') }}" id="resetSearch"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-red-100 dark:bg-red-700 hover:bg-gray-300 dark:hover:bg-red-600 rounded-md transition-colors"
+            title="Reset Search">
+            <svg class="h-5 w-5 text-red-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356-2A8.98 8.98 0 0020 12a9 9 0 11-8-9.98l-7.9 7.9M2 12h2"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </form>
+
+    {{-- Expense Cards --}}
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      @forelse($expenses as $expense)
+        <div
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+
+          {{-- Header: Title & Amount --}}
+          <div class="px-4 py-3 bg-red-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+            <div class="flex justify-between items-center gap-2">
+              <h4 class="font-bold text-lg text-red-600 dark:text-red-400">
+                {{ $expense->title }}
+              </h4>
+              <span class="text-2xl font-extrabold text-red-700 dark:text-red-300">
+                ${{ number_format($expense->amount, 2) }}
+              </span>
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-tag text-red-500 text-xs"></i> Category:
+              <span class="text-red-600 dark:text-red-400">{{ $expense->category?->name ?? 'N/A' }}</span>
+            </p>
+          </div>
+
+          {{-- Details --}}
+          <div class="p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            {{-- Date & Creator --}}
+            <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
+
+              {{-- Expense Date --}}
+              <p class="flex items-center gap-1 font-medium text-gray-600 dark:text-gray-400">
+                <i class="fa-solid fa-calendar-alt text-blue-500"></i>
+                Date:
+                <span class="font-semibold text-gray-800 dark:text-gray-200">
+                  {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : 'N/A' }}
+                </span>
+              </p>
+
+              {{-- Created By --}}
+              <p class="flex items-center gap-1 font-medium text-gray-600 dark:text-gray-400">
+                <i class="fa-solid fa-user-edit text-green-500"></i>
+                Recorded By:
+                <span class="font-semibold text-gray-800 dark:text-gray-200">
+                  {{ $expense->creator?->name ?? 'Unknown' }}
+                </span>
+              </p>
+            </div>
+
+            {{-- Approver Status --}}
+            <p class="flex justify-between items-center">
+              <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                <i class="fa-solid fa-check-circle text-teal-500"></i>
+                Approval:
+              </span>
+              @if ($expense->approved_by)
+                <span
+                  class="font-bold px-2 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
+                  Approved
+                </span>
+              @else
+                <span
+                  class="font-bold px-2 py-0.5 rounded-full text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
+                  Pending
+                </span>
+              @endif
+            </p>
+
+            {{-- Description/Remarks --}}
+            @if ($expense->description)
+              <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50">
+                <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
+                  <i class="fa-solid fa-file-alt text-orange-500"></i>
+                  Notes:
+                </span>
+                <p class="text-xs italic text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-2 rounded-md">
+                  {{ Str::limit($expense->description, 100) }}
+                </p>
+              </div>
+            @endif
+          </div>
+
+          {{-- Actions --}}
+          <div
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            <a href="{{ route('admin.expenses.edit', $expense->id) }}"
+              class="btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+              title="Edit Expense">
+              <span class="btn-content flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </span>
+            </a>
+
+            <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this expense record?');">
+              @csrf
+              @method('DELETE')
+              <button type="submit"
+                class="delete-btn p-2 rounded-full flex justify-center items-center size-9 cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                title="Delete Expense">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      @empty
+        <div
+          class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          No expense records found. Click "Record New Expense" to start.
+        </div>
+      @endforelse
+    </div>
+
+    {{-- Pagination Links --}}
+    <div class="mt-6">
+      {{ $expenses->links() }}
+    </div>
+
+  </div>
+
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('assets/js/modal.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Core Configuration
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // DOM Elements
-            const backdrop = document.getElementById('modalBackdrop');
-            const perPageSelect = $('#perPageSelect');
-            const searchInput = $('#searchInput');
-            const resetSearch = $('#resetSearch');
-            const listViewBtn = $('#listViewBtn');
-            const cardViewBtn = $('#cardViewBtn');
-            const tableContainer = $('#TableContainer');
-            const cardContainer = $('#CardContainer');
-
-            const selectAllCheckbox = $('#selectAllCheckbox');
-            const bulkActionsBar = $('#bulkActionsBar');
-            const selectedCount = $('#selectedCount');
-            const deselectAllBtn = $('#deselectAll');
-            const bulkEditBtn = $('#bulkEditBtn');
-            const bulkDeleteBtn = $('#bulkDeleteBtn');
-
-            $('#openCreateModal').off('click').on('click', function() {
-                showModal('Modalcreate');
-            });
-
-            $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
-                closeModal('bulkEditModal');
-            });
-
-            // View Management
-            function setView(viewType) {
-                if (viewType === 'list') {
-                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.removeClass('hidden');
-                    cardContainer.addClass('hidden');
-                } else {
-                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.addClass('hidden');
-                    cardContainer.removeClass('hidden');
-                }
-                localStorage.setItem('viewitem', viewType);
-            }
-
-            // Search and Pagination
-            function searchData(searchTerm) {
-                const perPage = perPageSelect.val() || '';
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                $.ajax({
-                    url: "{{ route('admin.expenses.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView,
-                        per_page: perPage
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                            updateBulkActionsBar();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to load data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Search failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load data');
-                    }
-                });
-            }
-
-            // CRUD Operations
-            function handleCreateSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                if (!this.checkValidity()) {
-                    $(this).addClass('was-validated');
-                    return;
-                }
-                const submitBtn = $('#createSubmitBtn');
-                const originalBtnHtml = submitBtn.html();
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modalcreate');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                            form.trigger('reset');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error creating expenses');
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            for (const field in errors) {
-                                if (errors.hasOwnProperty(field)) {
-                                    const errorMessage = errors[field][0];
-                                    $(`#error-${field}`).text(errorMessage);
-                                }
-                            }
-                            ShowTaskMessage('error', `Invalid field something was wrong!`);
-                        }
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleEditClick(e) {
-                e.preventDefault();
-                const editBtn = $(this);
-                const originalContent = editBtn.find('.btn-content').html();
-                editBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                editBtn.prop('disabled', true);
-                const Id = $(this).data('id');
-                $.get(`/admin/expenses/${Id}`)
-                    .done(function(response) {
-                        if (response.success) {
-                            const exp = response.expenses;
-                            const date = exp.date ? exp.date.substring(0, 10) : '';
-                            $('#edit_title').val(exp.title);
-                            $('#edit_amount').val(exp.amount);
-                            $('#edit_category').val(exp.category);
-                            $('#edit_approved_by').val(exp.approved_by);
-                            $('#edit_description').val(exp.description);
-                            $('#edit_date').val(date);
-                            $('#Formedit').attr('action', `/expenses/${Id}`);
-                            showModal('Modaledit');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load expenses data');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load expenses data');
-                    })
-                    .always(function() {
-                        editBtn.find('.btn-content').html(originalContent);
-                        editBtn.prop('disabled', false);
-                    });
-            }
-
-            function handleEditSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#saveEditBtn');
-                const originalBtnHtml = submitBtn.html();
-                if (!this.checkValidity()) {
-                    $(this).addClass('was-validated');
-                    return;
-                }
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-                $.ajax({
-                    url: '/admin' + form.attr('action'),
-                    method: 'POST',
-                    data: form.serialize() + '&_method=PUT',
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaledit');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error updating expenses');
-                        }
-                    },
-                    error: function(xhr) {
-                        const errors = xhr.responseJSON?.errors || {};
-                        let errorMessages = Object.values(errors).flat().join('\n');
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            for (const field in errors) {
-                                if (errors.hasOwnProperty(field)) {
-                                    const errorMessage = errors[field][0];
-                                    $(`#error-${field}`).text(errorMessage);
-                                }
-                            }
-                            ShowTaskMessage('error', errorMessages || 'Error updating expenses');
-                        }
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleDeleteClick(e) {
-                e.preventDefault();
-                const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/expenses/${Id}`);
-                showModal('Modaldelete');
-            }
-
-            function handleDeleteSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#confirmDeleteBtn');
-                const originalBtnHtml = submitBtn.html();
-
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: 'POST',
-                    data: {
-                        _method: 'DELETE'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaldelete');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting expenses');
-                        }
-                    },
-                    error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message ||
-                            'Error deleting expenses');
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleDetailClick(e) {
-                e.preventDefault();
-                const detailBtn = $(this);
-                const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                detailBtn.prop('disabled', true);
-
-                const Id = $(this).data('id');
-
-                $.get(`/admin/expenses/${Id}`)
-                    .done(function(response) {
-                        if (response.success) {
-                            const exp = response.expenses;
-                            const date = exp.date ? exp.date.substring(0, 10) : '';
-
-                            $('#detail_title').val(exp.title ?? '');
-                            $('#detail_amount').val(exp.amount ?? '');
-                            $('#detail_category').val(exp.category ?? '');
-                            $('#detail_approved_by').val(exp.approved_by ?? '');
-                            $('#detail_description').val(exp.description ?? '');
-                            $('#detail_date').val(date ?? '');
-                            showModal('Modaldetail');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load expenses details');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load expenses details');
-                    })
-                    .always(function() {
-                        detailBtn.find('.btn-content').html(originalContent);
-                        detailBtn.prop('disabled', false);
-                    });
-            }
-
-            // Bulk Actions
-            function getSelectedIds() {
-                const selectedIds = [];
-                document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
-                    selectedIds.push(checkbox.value);
-                });
-                return selectedIds;
-            }
-
-            function updateBulkActionsBar() {
-                const selectedCountValue = $('.row-checkbox:checked').length;
-                selectedCount.text(selectedCountValue);
-
-                if (selectedCountValue > 0) {
-                    bulkActionsBar.removeClass('hidden');
-                    selectAllCheckbox.prop('checked', selectedCountValue === $('.row-checkbox').length);
-                } else {
-                    bulkActionsBar.addClass('hidden');
-                    selectAllCheckbox.prop('checked', false);
-                }
-            }
-
-            function handleBulkDelete() {
-                const selectedIds = getSelectedIds();
-                if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one expenses to delete');
-                    return;
-                }
-
-                const modal = document.getElementById('bulkDeleteToastModal');
-                document.getElementById('selectedCountText').textContent = selectedIds.length;
-
-                showModal('bulkDeleteToastModal');
-
-                document.getElementById('confirmBulkDeleteBtn').onclick = function() {
-                    const deleteBtn = document.getElementById('confirmBulkDeleteBtn');
-                    const originalBtnHtml = deleteBtn.innerHTML;
-                    deleteBtn.disabled = true;
-                    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
-
-                    $.ajax({
-                        url: "{{ route('admin.expenses.bulkDelete') }}",
-                        method: 'POST',
-                        data: {
-                            ids: selectedIds
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                closeModal('bulkDeleteToastModal');
-                                ShowTaskMessage('success', response.message);
-                                refreshContent();
-                            } else {
-                                ShowTaskMessage('error', response.message ||
-                                    'Error deleting expensess');
-                            }
-                        },
-                        error: function(xhr) {
-                            ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting expensess');
-                        },
-                        complete: function() {
-                            deleteBtn.disabled = false;
-                            deleteBtn.innerHTML = originalBtnHtml;
-                        }
-                    });
-                };
-            }
-
-            function handleBulkEdit() {
-                const selectedIds = getSelectedIds();
-                if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one expenses to edit');
-                    return;
-                }
-
-                const bulkEditBtn = document.getElementById('bulkEditBtn');
-                const originalBtnText = bulkEditBtn.innerHTML;
-                bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-                bulkEditBtn.disabled = true;
-                $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
-                if (selectedIds.length > 1) {
-                    $('#bulkEditContainer').removeClass('md:h-auto')
-                    $('#bulkEditContainer').addClass('h-[70vh]')
-                }
-
-                if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 expensess at a time');
-                    bulkEditBtn.innerHTML = originalBtnText;
-                    bulkEditBtn.disabled = false;
-                    return;
-                }
-
-                document.getElementById('bulkEditCount').textContent = selectedIds.length;
-
-                $.ajax({
-                    url: "{{ route('admin.expenses.getBulkData') }}",
-                    method: 'POST',
-                    data: {
-                        ids: selectedIds
-                    },
-                    success: function(response) {
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-
-                        if (!response.success) {
-                            ShowTaskMessage('error', response.message || 'Error loading data');
-                            return;
-                        }
-
-                        const container = document.getElementById('bulkEditContainer');
-                        container.innerHTML = '';
-
-                        response.data.forEach((gradeLevel, index) => {
-                            const fieldHtml = `
-                        <div class="sub-field mb-5 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                            <input type="hidden" name="gradelevels[${index}][id]" value="${gradeLevel.id}">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">expenses #${index + 1}</h4>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 sm:gap-4">
-                                <div class="mb-4">
-                                    <label for="gradelevels[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Name <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="gradelevels[${index}][name]" name="gradelevels[${index}][name]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${gradeLevel.name}"
-                                        placeholder="Enter expenses name" required>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="gradelevels[${index}][code]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Code <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" id="gradelevels[${index}][code]" name="gradelevels[${index}][code]"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        border-gray-400"
-                                        value="${gradeLevel.code}"
-                                        placeholder="Enter expenses code" required>
-                                </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <label for="gradelevels[${index}][description]"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Description
-                                </label>
-                                <textarea id="gradelevels[${index}][description]" name="gradelevels[${index}][description]" rows="2"
-                                    class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                    border-gray-400"
-                                    placeholder="Enter expenses description">${gradeLevel.description || ''}</textarea>
-                            </div>
-                        </div>
-                    `;
-
-                            container.insertAdjacentHTML('beforeend', fieldHtml);
-                        });
-
-                        showModal('bulkEditModal');
-                    },
-                    error: function(xhr) {
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-                        ShowTaskMessage('error', 'Error loading data');
-                    }
-                });
-            }
-
-            function handleBulkEditSubmit(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('bulkEditSubmitBtn');
-                const originalBtnHtml = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-
-                const dataform = [];
-                $('.sub-field').each(function(index) {
-                    const expenses = {
-                        id: $(this).find('input[type="hidden"]').val(),
-                        name: $(this).find('input[name$="[title]"]').val(),
-                        code: $(this).find('input[name$="[code]"]').val(),
-                        description: $(this).find('textarea[name$="[description]"]').val()
-                    };
-                    dataform.push(expenses);
-                });
-
-                $.ajax({
-                    url: "{{ route('admin.expenses.bulkUpdate') }}",
-                    method: 'POST',
-                    data: {
-                        expenses: dataform
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('bulkEditModal');
-                            ShowTaskMessage('success', response.message);
-                            refreshContent();
-                        } else {
-                            let errorMessage = response.message || 'Error updating expensess';
-                            if (response.errors) {
-                                errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
-                            }
-                            ShowTaskMessage('error', errorMessage);
-                        }
-                    },
-                    error: function(xhr) {
-                        let errorMessage = 'An error occurred while updating';
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON?.errors || {};
-                            errorMessage = Object.values(errors).flat().join('\n');
-                        }
-                        ShowTaskMessage('error', errorMessage);
-                    },
-                    complete: function() {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalBtnHtml;
-                    }
-                });
-            }
-
-            // Modal Management
-            function showModal(modalId) {
-                backdrop.classList.remove('hidden');
-                const modal = document.getElementById(modalId);
-                modal.classList.remove('hidden');
-
-                setTimeout(() => {
-                    modal.querySelector('div').classList.remove('opacity-0', 'scale-95');
-                    modal.querySelector('div').classList.add('opacity-100', 'scale-100');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                modal.querySelector('div').classList.remove('opacity-100', 'scale-100');
-                modal.querySelector('div').classList.add('opacity-0', 'scale-95');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    backdrop.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
-            // Utility Functions
-            function refreshContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const searchTerm = searchInput.val() || '';
-
-                $.ajax({
-                    url: "{{ route('admin.expenses.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                            updateBulkActionsBar();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to refresh data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Refresh failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to refresh data');
-                    }
-                });
-            }
-
-            function attachRowEventHandlers() {
-                $('.edit-btn').off('click').on('click', handleEditClick);
-                $('.delete-btn').off('click').on('click', handleDeleteClick);
-                $('.detail-btn').off('click').on('click', handleDetailClick);
-                $('.row-checkbox').off('change').on('change', updateBulkActionsBar);
-            }
-
-            function debounce(func, wait) {
-                let timeout;
-                return function() {
-                    const context = this,
-                        args = arguments;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(context, args), wait);
-                };
-            }
-
-            // Event Listeners
-            function initialize() {
-                // Set initial view
-                const savedView = localStorage.getItem('viewitem') || 'list';
-                setView(savedView);
-
-                // View toggle
-                listViewBtn.on('click', () => setView('list'));
-                cardViewBtn.on('click', () => setView('card'));
-
-                // Search
-                searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
-                resetSearch.on('click', () => {
-                    searchInput.val('');
-                    searchData('');
-                });
-
-                // Bulk actions
-                selectAllCheckbox.on('change', function() {
-                    $('.row-checkbox').prop('checked', this.checked);
-                    updateBulkActionsBar();
-                });
-
-                deselectAllBtn.on('click', function() {
-                    $('.row-checkbox').prop('checked', false);
-                    selectAllCheckbox.prop('checked', false);
-                    updateBulkActionsBar();
-                });
-
-                bulkEditBtn.on('click', handleBulkEdit);
-                bulkDeleteBtn.on('click', handleBulkDelete);
-
-                // Form submissions
-                $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
-                $('#Formedit').off('submit').on('submit', handleEditSubmit);
-                $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-                $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
-                // Attach initial event handlers
-                attachRowEventHandlers();
-                updateBulkActionsBar();
-            }
-
-            // Start the application
-            initialize();
-        });
-    </script>
-@endpush

@@ -11,6 +11,7 @@ class Fee extends Model
 
   protected $fillable = [
     'student_id',
+    'created_by',
     'fee_type_id',
     'amount',
     'due_date',
@@ -31,5 +32,10 @@ class Fee extends Model
   public function payments()
   {
     return $this->hasMany(Payment::class);
+  }
+
+  public function creator()
+  {
+    return $this->belongsTo(User::class, 'created_by');
   }
 }

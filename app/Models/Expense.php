@@ -15,7 +15,8 @@ class Expense extends Model
     'amount',
     'date',
     'expense_category_id',
-    'approved_by'
+    'approved_by',
+    'created_by',
   ];
 
   public function category()
@@ -26,5 +27,10 @@ class Expense extends Model
   public function approver()
   {
     return $this->belongsTo(User::class, 'approved_by');
+  }
+
+  public function creator()
+  {
+    return $this->belongsTo(User::class, 'created_by');
   }
 }
