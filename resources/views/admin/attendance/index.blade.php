@@ -73,7 +73,7 @@
       </div>
 
       {{-- Students List --}}
-      <div class="my-4 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+      <div class="my-2 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
         @forelse($students as $student)
           @php
             $attendanceEntry = $student->attendances->first();

@@ -220,6 +220,7 @@ Route::prefix('admin')
 
     Route::get('attendances', [AttendanceController::class, 'index'])->name('attendances.index');
     Route::post('attendances/save-all', [AttendanceController::class, 'saveAll'])->name('attendances.saveAll');
+    Route::get('attendances/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('attendances.show');
 
 
     Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');

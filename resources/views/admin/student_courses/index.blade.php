@@ -13,7 +13,10 @@
           d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-3-6h-3a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 007.5 21h4.5m-9-10.5h10.5m-10.5 0h10.5m-10.5 0v10.5A2.25 2.25 0 005.25 21h4.5m-9-10.5v10.5A2.25 2.25 0 005.25 21h4.5" />
       </svg>
       @if ($courseOffering)
-        Admission Register for {{ $courseOffering->subject?->name }}
+        Admission Register for {{ $courseOffering->subject?->name }} -
+        {{ $courseOffering->teacher->name }} -
+        {{ $courseOffering->classroom->name }}
+        ({{ $courseOffering->time_slot }})
       @endif
     </h3>
 
@@ -159,28 +162,42 @@
           </div>
 
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
-            <a href="{{ route('admin.student_courses.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
-              class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit Admission">
-              <span class="btn-content flex items-center justify-center">
-                <i class="fa-solid fa-pen-to-square me-2"></i>
-                Edit
-              </span>
-            </a>
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
-            <form
-              action="{{ route('admin.student_courses.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
-              method="POST" onsubmit="return confirm('Are you sure you want to delete this admission record?');">
-              @csrf
-              @method('DELETE')
-              <button type="submit"
-                class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                title="Delete Admission">
-                <i class="fa-regular fa-trash-can me-2"></i>
-                Delete
-              </button>
-            </form>
+            <div class="flex">
+              <a href="{{ route('admin.attendances.show', [$courseOffering->id, $admission->student->id]) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                title="Attendance">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-book-atlas me-2"></i>
+                  Attendance
+                </span>
+              </a>
+            </div>
+
+            <div class="flex">
+              <a href="{{ route('admin.student_courses.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit Admission">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  Edit
+                </span>
+              </a>
+
+              <form
+                action="{{ route('admin.student_courses.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+                method="POST" onsubmit="return confirm('Are you sure you want to delete this admission record?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete Admission">
+                  <i class="fa-regular fa-trash-can me-2"></i>
+                  Delete
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       @empty

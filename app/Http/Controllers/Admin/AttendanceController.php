@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\CourseOffering;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -34,6 +35,19 @@ class AttendanceController extends Controller
     ])->get();
 
     return view('admin.attendance.index', compact('students', 'courseOffering', 'date'));
+  }
+
+  public function show($courseOfferingId, $studentId)
+  {
+    $courseOffering = CourseOffering::findOrFail($courseOfferingId);
+    $student = User::findOrFail($studentId);
+
+    $attendances = Attendance::where('student_id', $studentId)
+      ->where('course_offering_id', $courseOfferingId)
+      ->orderBy('date', 'desc')
+      ->get();
+
+    return view('admin.attendance.show', compact('student', 'courseOffering', 'attendances'));
   }
 
   public function saveAll(Request $request)
