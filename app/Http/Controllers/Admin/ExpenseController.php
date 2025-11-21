@@ -88,7 +88,7 @@ class ExpenseController extends Controller
 
       $expense->update($data);
 
-      return redirect()->route('admin.expenses.index')->with('success', 'Expense record updated successfully.');
+      return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])->with('success', 'Expense record updated successfully.');
     } catch (\Exception $e) {
       Log::error('Error updating Expense: ' . $e->getMessage());
       return back()->with('error', 'Error updating expense record.')->withInput();
@@ -98,9 +98,10 @@ class ExpenseController extends Controller
 
   public function destroy(Expense $expense)
   {
+
     try {
       $expense->delete();
-      return redirect()->route('admin.expenses.index')->with('success', 'Expense record deleted successfully.');
+      return redirect()->route('admin.expenses.index', ['category_id' => $expense->expense_category_id])->with('success', 'Expense record deleted successfully.');
     } catch (\Exception $e) {
       Log::error('Error deleting Expense: ' . $e->getMessage());
       return redirect()->route('admin.expenses.index')->with('error', 'Error deleting expense record.')->withInput();

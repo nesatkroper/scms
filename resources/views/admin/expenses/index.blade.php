@@ -124,7 +124,7 @@
               @if ($expense->approved_by)
                 <span
                   class="font-bold px-2 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-                  Approved
+                  Approved by - {{ $expense?->approver?->name }}
                 </span>
               @else
                 <span
