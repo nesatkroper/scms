@@ -47,18 +47,22 @@ class ExpenseController extends Controller
   }
 
 
-  public function create()
+  public function create(Request $request)
   {
-    $categories = ExpenseCategory::orderBy('name')->get(['id', 'name']);
-    $approvers = User::orderBy('name')->get(['id', 'name']);
+    $categoryId = $request->input('category_id');
+    $category = ExpenseCategory::findOrFail($categoryId);
 
-    return view('admin.expenses.create', compact('categories', 'approvers'));
+    return view('admin.expenses.create', compact('category'));
   }
+
 
   public function store(ExpenseRequest $request)
   {
     try {
       $data = $request->validated();
+
+      $data['expense_category_id'] = $request->input('category_id');
+      $data['approved_by'] = null;
       $data['created_by'] = Auth::id();
 
       Expense::create($data);
@@ -66,28 +70,36 @@ class ExpenseController extends Controller
       return redirect()->route('admin.expenses.index')->with('success', 'Expense record created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating Expense: ' . $e->getMessage());
-      return redirect()->route('admin.expenses.create')->with('error', 'Error creating expense record.')->withInput();
+      return back()->with('error', 'Error creating expense record.')->withInput();
     }
   }
 
+
   public function edit(Expense $expense)
   {
-    $categories = ExpenseCategory::orderBy('name')->get(['id', 'name']);
-    $approvers = User::orderBy('name')->get(['id', 'name']);
+    $category = $expense->category;
 
-    return view('admin.expenses.edit', compact('expense', 'categories', 'approvers'));
+    return view('admin.expenses.edit', compact('expense', 'category'));
   }
+
 
   public function update(ExpenseRequest $request, Expense $expense)
   {
     try {
-      $expense->update($request->validated());
+      $data = $request->validated();
+
+      $data['expense_category_id'] = $expense->expense_category_id;
+      $data['approved_by'] = $expense->approved_by;
+
+      $expense->update($data);
+
       return redirect()->route('admin.expenses.index')->with('success', 'Expense record updated successfully.');
     } catch (\Exception $e) {
       Log::error('Error updating Expense: ' . $e->getMessage());
-      return redirect()->route('admin.expenses.edit', $expense)->with('error', 'Error updating expense record.')->withInput();
+      return back()->with('error', 'Error updating expense record.')->withInput();
     }
   }
+
 
   public function destroy(Expense $expense)
   {

@@ -31,7 +31,7 @@
     <form action="{{ route('admin.expenses.index') }}" method="GET">
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-red-50 dark:bg-slate-800">
-        <a href="{{ route('admin.expenses.create') }}"
+        <a href="{{ route('admin.expenses.create', ['category_id' => request('category_id')]) }}"
           class="text-nowrap px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"

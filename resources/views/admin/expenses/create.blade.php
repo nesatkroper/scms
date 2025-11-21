@@ -1,65 +1,137 @@
-<!-- Create Modal -->
-<div id="Modalcreate" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-  <div
-    class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 opacity-0 scale-95 border border-white dark:border-gray-600">
-    <!-- Header -->
-    <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+@extends('layouts.admin')
+
+@section('title', 'Record New Expense')
+
+@section('content')
+
+  <div class="box p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+
+    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        {{-- Icon for Expense (money icon) --}}
         <svg xmlns="http://www.w3.org/2000/svg"
-          class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-          viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-            clip-rule="evenodd" />
+          class="size-8 rounded-full p-1 bg-red-50 text-red-600 dark:text-red-50 dark:bg-red-900" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
         </svg>
-        Create New Expenses
+        Record New Expense
       </h3>
-      <x-button.btnclose id="closeCreateModal" />
+      <a href="{{ route('admin.expenses.index') }}"
+        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+        Back to Ledger
+      </a>
     </div>
 
-    <!-- Form Content -->
-    <form action="{{ route('admin.expenses.store') }}" method="POST" class="p-4 needs-validation" novalidate>
+    {{-- Error Message Display --}}
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        {{ session('error') }}
+      </div>
+    @endif
+
+    {{-- Form submits to the store method --}}
+    <form action="{{ route('admin.expenses.store') }}" method="POST" id="createForm" class="p-0">
       @csrf
 
-      <div class="h-[65vh] md:h-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-4 mb-2">
-          <!-- Name Field -->
-          <x-fields.input label="Title Name" name="title" placeholder="Enter title name" :required="true" />
-          <!-- Amount Field -->
-          <x-fields.input type="number" min="0" label="Amount" name="amount" placeholder="Enter Amount"
-            :required="true" />
-          <!-- category Field -->
-          {{-- <x-fields.select name="expense_category_id" label="Category" :options="" :value="old('expense_category_id')"
-                        :required="true" searchable="true" /> --}}
-          <x-fields.input type="date" name="date" label="Date" :value="old('approved_by')" required />
-          <!-- Approved by Field - Custom Select Version -->
-          <x-fields.select name="approved_by" label="Approved by" :options="$users" :value="old('approved_by')"
-            searchable="true" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+        {{-- 1. Title Field --}}
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Expense Title <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="title" name="title" value="{{ old('title') }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                @error('title') border-red-500 @else border-gray-400 @enderror"
+            placeholder="e.g., Office Supplies, Monthly Rent" required>
+          @error('title')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
         </div>
-        <!-- Description Field -->
-        <x-fields.textarea label="Description" name="description" required rows="2" />
+
+        {{-- 2. Amount Field --}}
+        <div>
+          <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Amount ($) <span class="text-red-500">*</span>
+          </label>
+          <input type="number" step="0.01" min="0.01" id="amount" name="amount" value="{{ old('amount') }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                @error('amount') border-red-500 @else border-gray-400 @enderror"
+            placeholder="e.g., 150.99" required>
+          @error('amount')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- 3. Date Field --}}
+        <div>
+          <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Date <span class="text-red-500">*</span>
+          </label>
+          <input type="date" id="date" name="date" value="{{ old('date', now()->toDateString()) }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                @error('date') border-red-500 @else border-gray-400 @enderror"
+            required>
+          @error('date')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <input type="hidden" name="category_id" value="{{ $category->id }}">
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+          <input type="text" class="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-700"
+            value="{{ $category->name }}" disabled>
+        </div>
+
       </div>
-      <!-- Form Actions -->
+
+      {{-- 6. Description Field --}}
+      <div class="mb-6">
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Description / Notes
+        </label>
+        <textarea id="description" name="description" rows="3"
+          class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+            @error('description') border-red-500 @else border-gray-400 @enderror"
+          placeholder="Detailed description of the expense and its purpose">{{ old('description') }}</textarea>
+
+        @error('description')
+          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
+      </div>
+
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <x-button.button btn-type="cancel" id="cancelCreateModal">
+        <a href="{{ route('admin.expenses.index') }}"
+          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
           Cancel
-        </x-button.button>
-        <x-button.button btn-type="save" id="createSubmitBtn" type="submit">
-          <span class="btn-content flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clip-rule="evenodd" />
-            </svg>
-            Create
-          </span>
-        </x-button.button>
+        </a>
+        <button type="submit"
+          class="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+              clip-rule="evenodd" />
+          </svg>
+          Record Expense
+        </button>
       </div>
     </form>
+
   </div>
-</div>
+@endsection
