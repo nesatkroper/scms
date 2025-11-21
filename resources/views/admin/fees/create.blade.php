@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Create New Fee Type')
+@section('title', 'Create New Fee Record')
 @section('content')
 
   <div
@@ -9,62 +9,150 @@
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg"
           class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-          viewBox="0 0 20 20" fill="currentColor">
-          <path
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 9H5a1 1 0 000 2h4v4a1 1 0 002 0v-4h4a1 1 0 000-2h-4V5a1 1 0 00-2 0v4z"
-            clip-rule="evenodd" />
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
         </svg>
-        Create New Fee Type
+        Create New Fee Record
       </h3>
-      <a href="{{ route('admin.fee_types.index') }}"
+      <a href="{{ route('admin.fees.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         Back to List
       </a>
     </div>
 
+    {{-- Error Message Display --}}
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+      </div>
+    @endif
+
     {{-- Form submits to the store method --}}
-    <form action="{{ route('admin.fee_types.store') }}" method="POST" id="createForm" class="p-0">
+    <form action="{{ route('admin.fees.store') }}" method="POST" id="createForm" class="p-0">
       @csrf
 
-      <div class="grid grid-cols-1 gap-4 mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
 
-        {{-- Fee Type Name Field --}}
+        {{-- 1. Student Field --}}
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fee Type Name <span class="text-red-500">*</span>
+          <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Student <span class="text-red-500">*</span>
           </label>
-          <input type="text" id="name" name="name" value="{{ old('name') }}"
+          <select id="student_id" name="student_id"
             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                    @error('name') border-red-500 @else border-gray-400 @enderror"
-            placeholder="e.g., Tuition Fee, Examination Fee" required>
-          @error('name')
+                    @error('student_id') border-red-500 @else border-gray-400 @enderror"
+            required>
+            <option value="">Select a Student</option>
+            @foreach ($students as $student)
+              <option value="{{ $student->id }}" @selected(old('student_id') == $student->id)>
+                {{ $student->name }} ({{ $student->email }})
+              </option>
+            @endforeach
+          </select>
+          @error('student_id')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- 2. Fee Type Field --}}
+        <div>
+          <label for="fee_type_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Fee Type <span class="text-red-500">*</span>
+          </label>
+          <select id="fee_type_id" name="fee_type_id"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('fee_type_id') border-red-500 @else border-gray-400 @enderror"
+            required>
+            <option value="">Select Fee Type</option>
+            @foreach ($feeTypes as $feeType)
+              <option value="{{ $feeType->id }}" @selected(old('fee_type_id') == $feeType->id)>
+                {{ $feeType->name }}
+              </option>
+            @endforeach
+          </select>
+          @error('fee_type_id')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- 3. Amount Field --}}
+        <div>
+          <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Amount ($) <span class="text-red-500">*</span>
+          </label>
+          <input type="number" step="0.01" min="0" id="amount" name="amount" value="{{ old('amount') }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('amount') border-red-500 @else border-gray-400 @enderror"
+            placeholder="e.g., 500.00" required>
+          @error('amount')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- 4. Due Date Field --}}
+        <div>
+          <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Due Date (Optional)
+          </label>
+          <input type="date" id="due_date" name="due_date" value="{{ old('due_date') }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('due_date') border-red-500 @else border-gray-400 @enderror">
+          @error('due_date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
 
       </div>
 
-      {{-- Fee Type Description Field --}}
-      <div class="mb-6">
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description
+      {{-- 5. Status Field --}}
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Payment Status <span class="text-red-500">*</span>
         </label>
-        <textarea id="description" name="description" rows="3"
+        <select id="status" name="status"
+          class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                @error('status') border-red-500 @else border-gray-400 @enderror"
+          required>
+          <option value="unpaid" @selected(old('status') == 'unpaid')>Unpaid</option>
+          <option value="partially_paid" @selected(old('status') == 'partially_paid')>Partially Paid</option>
+          <option value="paid" @selected(old('status') == 'paid')>Paid</option>
+        </select>
+        @error('status')
+          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
+      </div>
+
+      {{-- 6. Remarks Field --}}
+      <div class="mb-6">
+        <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Remarks (Optional)
+        </label>
+        <textarea id="remarks" name="remarks" rows="3"
           class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                @error('description') border-red-500 @else border-gray-400 @enderror"
-          placeholder="Briefly describe the purpose of this fee type (e.g., Annual required payment for core courses).">{{ old('description') }}</textarea>
+                @error('remarks') border-red-500 @else border-gray-400 @enderror"
+          placeholder="Any specific notes regarding this fee, payment plan details, etc.">{{ old('remarks') }}</textarea>
 
-        @error('description')
+        @error('remarks')
           <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
         @enderror
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <a href="{{ route('admin.fee_types.index') }}"
+        <a href="{{ route('admin.fees.index') }}"
           class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
@@ -80,7 +168,7 @@
               d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
               clip-rule="evenodd" />
           </svg>
-          Create Fee Type
+          Create Fee Record
         </button>
       </div>
     </form>

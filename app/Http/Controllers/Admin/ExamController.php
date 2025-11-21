@@ -42,6 +42,12 @@ class ExamController extends Controller
   {
     $courseOfferings = CourseOffering::with(['subject', 'teacher', 'classroom'])->get();
 
+
+    if ($courseOfferings->isEmpty()) {
+      return redirect()->route('admin.course_offerings.create')
+        ->with('error', 'No course offerings found. Please create one first.');
+    }
+
     return view('admin.exams.create', compact('courseOfferings'));
   }
 
@@ -65,6 +71,12 @@ class ExamController extends Controller
   public function edit(Exam $exam)
   {
     $courseOfferings = CourseOffering::with(['subject', 'teacher', 'classroom'])->get();
+
+
+    if ($courseOfferings->isEmpty()) {
+      return redirect()->route('admin.course_offerings.create')
+        ->with('error', 'No course offerings found. Please create one first.');
+    }
 
     return view('admin.exams.edit', compact('exam', 'courseOfferings'));
   }

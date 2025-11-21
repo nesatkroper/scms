@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Fee Type: ' . $feeType->name)
+@section('title', 'Edit Fee Record')
 @section('content')
 
   <div
@@ -8,65 +8,154 @@
     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg"
-          class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-          viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-          <path fill-rule="evenodd"
-            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-            clip-rule="evenodd" />
+          class="size-8 rounded-full p-1 bg-yellow-50 text-yellow-600 dark:text-yellow-50 dark:bg-yellow-900"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5l4 4L7 19l-4 1 1-4z"></path>
         </svg>
-        Edit Fee Type: {{ $feeType->name }}
+        Edit Fee Record: #{{ $fee->id }}
       </h3>
-      <a href="{{ route('admin.fee_types.index') }}"
+      <a href="{{ route('admin.fees.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         Back to List
       </a>
     </div>
 
-    {{-- Form action updated to the fee_types update route --}}
-    <form action="{{ route('admin.fee_types.update', $feeType->id) }}" method="POST" id="editForm" class="p-0">
+    {{-- Error Message Display --}}
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+      </div>
+    @endif
+
+    {{-- Form submits to the update method --}}
+    <form action="{{ route('admin.fees.update', $fee->id) }}" method="POST" id="editForm" class="p-0">
       @csrf
-      @method('PUT') {{-- Required for update method --}}
+      @method('PUT')
 
-      <div class="grid grid-cols-1 gap-4 mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
 
-        {{-- Fee Type Name Field (Pre-filled with existing data) --}}
+        {{-- 1. Student Field --}}
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fee Type Name <span class="text-red-500">*</span>
+          <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Student <span class="text-red-500">*</span>
           </label>
-          {{-- Pre-fill logic using $feeType->name --}}
-          <input type="text" id="name" name="name" value="{{ old('name', $feeType->name) }}"
+          <select id="student_id" name="student_id"
             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                    @error('name') border-red-500 @else border-gray-400 @enderror"
-            placeholder="Enter fee type name" required>
-          @error('name')
+                    @error('student_id') border-red-500 @else border-gray-400 @enderror"
+            required>
+            <option value="">Select a Student</option>
+            @foreach ($students as $student)
+              <option value="{{ $student->id }}" @selected(old('student_id', $fee->student_id) == $student->id)>
+                {{ $student->name }} ({{ $student->email }})
+              </option>
+            @endforeach
+          </select>
+          @error('student_id')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
+
+        {{-- 2. Fee Type Field --}}
+        <div>
+          <label for="fee_type_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Fee Type <span class="text-red-500">*</span>
+          </label>
+          <select id="fee_type_id" name="fee_type_id"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('fee_type_id') border-red-500 @else border-gray-400 @enderror"
+            required>
+            <option value="">Select Fee Type</option>
+            @foreach ($feeTypes as $feeType)
+              <option value="{{ $feeType->id }}" @selected(old('fee_type_id', $fee->fee_type_id) == $feeType->id)>
+                {{ $feeType->name }}
+              </option>
+            @endforeach
+          </select>
+          @error('fee_type_id')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- 3. Amount Field --}}
+        <div>
+          <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Amount ($) <span class="text-red-500">*</span>
+          </label>
+          <input type="number" step="0.01" min="0" id="amount" name="amount"
+            value="{{ old('amount', $fee->amount) }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('amount') border-red-500 @else border-gray-400 @enderror"
+            placeholder="e.g., 500.00" required>
+          @error('amount')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- 4. Due Date Field --}}
+        <div>
+          <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Due Date (Optional)
+          </label>
+          <input type="date" id="due_date" name="due_date" value="{{ old('due_date', $fee->due_date) }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('due_date') border-red-500 @else border-gray-400 @enderror">
+          @error('due_date')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
       </div>
 
-      {{-- Fee Type Description Field (Pre-filled with existing data) --}}
-      <div class="mb-6">
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description
+      {{-- 5. Status Field --}}
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Payment Status <span class="text-red-500">*</span>
         </label>
-        <textarea id="description" name="description" rows="3"
+        <select id="status" name="status"
+          class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                @error('status') border-red-500 @else border-gray-400 @enderror"
+          required>
+          {{-- Note: We use old() or the fee's current value to pre-select the option --}}
+          <option value="unpaid" @selected(old('status', $fee->status) == 'unpaid')>Unpaid</option>
+          <option value="partially_paid" @selected(old('status', $fee->status) == 'partially_paid')>Partially Paid</option>
+          <option value="paid" @selected(old('status', $fee->status) == 'paid')>Paid</option>
+        </select>
+        @error('status')
+          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
+      </div>
+
+      {{-- 6. Remarks Field --}}
+      <div class="mb-6">
+        <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Remarks (Optional)
+        </label>
+        <textarea id="remarks" name="remarks" rows="3"
           class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
-                @error('description') border-red-500 @else border-gray-400 @enderror"
-          placeholder="Enter fee type description">{{ old('description', $feeType->description) }}</textarea> {{-- Pre-fill logic using $feeType->description --}}
+                @error('remarks') border-red-500 @else border-gray-400 @enderror"
+          placeholder="Any specific notes regarding this fee, payment plan details, etc.">{{ old('remarks', $fee->remarks) }}</textarea>
 
-        @error('description')
+        @error('remarks')
           <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
         @enderror
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <a href="{{ route('admin.fee_types.index') }}"
+        <a href="{{ route('admin.fees.index') }}"
           class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
@@ -78,12 +167,11 @@
         <button type="submit"
           class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-            <path fill-rule="evenodd"
-              d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-              clip-rule="evenodd" />
+            <path
+              d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-1.414 2.828L11 9.043V15h-6V4h7.586l.707-.707a2 2 0 012.828 0l1.414 1.414A2 2 0 0117.414 5l.707.707zM16 9.043l-3 3V16h3v-6.957zM5 16h6v-6H5v6z"
+              fill-rule="evenodd" clip-rule="evenodd" />
           </svg>
-          Update Fee Type
+          Update Fee Record
         </button>
       </div>
     </form>

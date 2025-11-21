@@ -48,6 +48,18 @@ class CourseOfferingController extends Controller
       ->get(['id', 'name', 'specialization']);
     $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
 
+    if ($subjects->isEmpty()) {
+      return redirect()->route('admin.subjects.create')->with('error', 'No subjects found. Please create a subject first.');
+    }
+
+    if ($teachers->isEmpty()) {
+      return redirect()->route('admin.teachers.create')->with('error', 'No teachers found. Please create a teacher first.');
+    }
+
+    if ($classrooms->isEmpty()) {
+      return redirect()->route('admin.classrooms.create')->with('error', 'No classrooms found. Please create a classroom first.');
+    }
+
     return view('admin.course_offerings.create', compact('subjects', 'teachers', 'classrooms'));
   }
 
@@ -75,6 +87,18 @@ class CourseOfferingController extends Controller
       ->orderBy('name')
       ->get(['id', 'name', 'specialization']);
     $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
+
+    if ($subjects->isEmpty()) {
+      return redirect()->route('admin.subjects.create')->with('error', 'No subjects found. Please create a subject first.');
+    }
+
+    if ($teachers->isEmpty()) {
+      return redirect()->route('admin.teachers.create')->with('error', 'No teachers found. Please create a teacher first.');
+    }
+
+    if ($classrooms->isEmpty()) {
+      return redirect()->route('admin.classrooms.create')->with('error', 'No classrooms found. Please create a classroom first.');
+    }
 
     return view('admin.course_offerings.edit', compact('courseOffering', 'subjects', 'teachers', 'classrooms'));
   }

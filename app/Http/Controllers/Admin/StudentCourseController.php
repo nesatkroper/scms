@@ -47,6 +47,11 @@ class StudentCourseController extends Controller
   {
     $students = User::role('student')->orderBy('name')->get(['id', 'name']);
 
+    if ($students->isEmpty()) {
+      return redirect()->route('admin.students.create')
+        ->with('error', 'No students found. Please create a student first.');
+    }
+
     $courseOfferingId = $request->input('course_offering_id');
     $courseOffering = null;
 
@@ -97,6 +102,11 @@ class StudentCourseController extends Controller
 
     $student = User::findOrFail($student_id, ['id', 'name']);
     $courseOffering = CourseOffering::with('subject:id,name')->findOrFail($course_offering_id);
+
+    if ($student->isEmpty()) {
+      return redirect()->route('admin.students.create')
+        ->with('error', 'No students found. Please create a student first.');
+    }
 
     $statuses = ['studying', 'suspended', 'dropped', 'completed'];
     $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];

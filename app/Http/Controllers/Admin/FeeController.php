@@ -54,12 +54,19 @@ class FeeController extends Controller
 
   public function create(Request $request)
   {
-    $students = User::where('role', 'student')->get(['id', 'name']);
+    $students = User::role('student')->get(['id', 'name']);
     $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
-    $selectedFeeType = $request->input('fee_type_id') ? FeeType::find($request->input('fee_type_id')) : null;
+    $feeTypeId = $request->input('fee_type_id'); // define this variable
+    $selectedFeeType = $feeTypeId ? FeeType::find($feeTypeId) : null;
+
+    if ($students->isEmpty()) {
+      return redirect()->route('admin.students.create')
+        ->with('error', 'No students found. Please create a student first.');
+    }
 
     return view('admin.fees.create', compact('students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
   }
+
 
   public function store(FeeRequest $request)
   {
@@ -86,10 +93,16 @@ class FeeController extends Controller
 
   public function edit(Fee $fee)
   {
-    $students = User::where('role', 'student')->get(['id', 'name']);
+
+    $students = User::role('student')->get(['id', 'name']);
     $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
     $selectedFeeType = FeeType::find($fee->fee_type_id);
     $feeTypeId = $fee->fee_type_id;
+
+    if ($students->isEmpty()) {
+      return redirect()->route('admin.students.create')
+        ->with('error', 'No students found. Please create a student first.');
+    }
 
     return view('admin.fees.edit', compact('fee', 'students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
   }
