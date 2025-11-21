@@ -93,21 +93,6 @@
                   {{ $offering->subject->name ?? 'Subject Deleted' }} - {{ $offering->teacher->name ?? 'Unassigned' }}
                 </h4>
               </div>
-
-              {{-- Detail Button (Redirects to Show Page) --}}
-              <a href="{{ route('admin.course_offerings.show', $offering->id) }}"
-                class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
-                title="View Details">
-                <span class="btn-content">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </span>
-              </a>
             </div>
             {{-- Time Slot and Time Range --}}
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
@@ -189,14 +174,26 @@
                 </span>
               </a>
 
-              <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Admission Register">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-book-atlas me-2"></i>
-                  Register
-                </span>
-              </a>
+              @if ($offering->students->count() >= $offering->classroom->capacity)
+                <a href="#"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Admission Register">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-check me-2"></i>
+                    Class Full
+                  </span>
+                </a>
+              @else
+                <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Admission Register">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-book-atlas me-2"></i>
+                    Register
+                  </span>
+                </a>
+              @endif
+
             </div>
 
             {{-- Edit Button (Redirects to Edit Page) --}}

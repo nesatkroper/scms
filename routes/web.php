@@ -15,7 +15,6 @@ use App\Http\Controllers\Admin\{
   SubjectController,
   TeacherController,
   HomeController,
-  PermissionController,
   ScoreController,
   UserController,
   RoleController,
@@ -57,197 +56,87 @@ Route::prefix('admin')
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('classrooms', ClassroomController::class);
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('exams', ExamController::class);
+    Route::resource('expense_categories', ExpenseCategoryController::class);
+    Route::resource('expenses', ExpenseController::class);
+    Route::resource('fee_types', FeeTypeController::class);
+    Route::resource('fees', FeeController::class);
+    Route::resource('payments', PaymentController::class);
+    Route::resource('sections', SectionController::class);
+    Route::resource('students', StudentController::class);
+    Route::resource('subjects', SubjectController::class);
+    Route::resource('teachers', TeacherController::class);
+    Route::resource('course_offerings', CourseOfferingController::class);
 
-
-    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
-    Route::get('/roles/{role}', [RoleController::class, 'show'])->name('roles.show');
-    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
-    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
-
-
-    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
-    Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
-    Route::post('/permissions', [PermissionController::class, 'store'])->name('permissions.store');
-    Route::get('/permissions/{permission}', [PermissionController::class, 'show'])->name('permissions.show');
-    Route::get('/permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
-    Route::put('/permissions/{permission}', [PermissionController::class, 'update'])->name('permissions.update');
-    Route::delete('/permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
-
-
-    Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
-    Route::get('/classrooms/create', [ClassroomController::class, 'create'])->name('classrooms.create');
-    Route::post('/classrooms', [ClassroomController::class, 'store'])->name('classrooms.store');
-    Route::get('/classrooms/{classroom}', [ClassroomController::class, 'show'])->name('classrooms.show');
-    Route::get('/classrooms/{classroom}/edit', [ClassroomController::class, 'edit'])->name('classrooms.edit');
-    Route::put('/classrooms/{classroom}', [ClassroomController::class, 'update'])->name('classrooms.update');
-    Route::delete('/classrooms/{classroom}', [ClassroomController::class, 'destroy'])->name('classrooms.destroy');
-
-
-    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
-    Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
-    Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
-    Route::get('/departments/{department}', [DepartmentController::class, 'show'])->name('departments.show');
-    Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-    Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
-    Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
-
-
-    Route::get('/exams', [ExamController::class, 'index'])->name('exams.index');
-    Route::get('/exams/create', [ExamController::class, 'create'])->name('exams.create');
-    Route::post('/exams', [ExamController::class, 'store'])->name('exams.store');
-    Route::get('/exams/{exam}', [ExamController::class, 'show'])->name('exams.show');
-    Route::get('/exams/{exam}/edit', [ExamController::class, 'edit'])->name('exams.edit');
-    Route::put('/exams/{exam}', [ExamController::class, 'update'])->name('exams.update');
-    Route::delete('/exams/{exam}', [ExamController::class, 'destroy'])->name('exams.destroy');
-
-
-    Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');
-    Route::get('/expense_categories/create', [ExpenseCategoryController::class, 'create'])->name('expense_categories.create');
-    Route::post('/expense_categories', [ExpenseCategoryController::class, 'store'])->name('expense_categories.store');
-    Route::get('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'show'])->name('expense_categories.show');
-    Route::get('/expense_categories/{expense_category}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_categories.edit');
-    Route::put('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'update'])->name('expense_categories.update');
-    Route::delete('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
-
-
-    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
-    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
-    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
-    Route::get('/expenses/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
-    Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
-    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
-    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
-
-
-    Route::get('/fee_types', [FeeTypeController::class, 'index'])->name('fee_types.index');
-    Route::get('/fee_types/create', [FeeTypeController::class, 'create'])->name('fee_types.create');
-    Route::post('/fee_types', [FeeTypeController::class, 'store'])->name('fee_types.store');
-    Route::get('/fee_types/{fee_type}', [FeeTypeController::class, 'show'])->name('fee_types.show');
-    Route::get('/fee_types/{fee_type}/edit', [FeeTypeController::class, 'edit'])->name('fee_types.edit');
-    Route::put('/fee_types/{fee_type}', [FeeTypeController::class, 'update'])->name('fee_types.update');
-    Route::delete('/fee_types/{fee_type}', [FeeTypeController::class, 'destroy'])->name('fee_types.destroy');
-
-
-    Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
-    Route::get('/fees/create', [FeeController::class, 'create'])->name('fees.create');
-    Route::post('/fees', [FeeController::class, 'store'])->name('fees.store');
-    Route::get('/fees/{fee}', [FeeController::class, 'show'])->name('fees.show');
-    Route::get('/fees/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit');
-    Route::put('/fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
-    Route::delete('/fees/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy');
-
-
-    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
-    Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
-    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
-    Route::get('/payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
-    Route::get('/payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
-    Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
-    Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
-
-
-    Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
-    Route::get('/sections/create', [SectionController::class, 'create'])->name('sections.create');
-    Route::post('/sections', [SectionController::class, 'store'])->name('sections.store');
-    Route::get('/sections/{section}', [SectionController::class, 'show'])->name('sections.show');
-    Route::get('/sections/{section}/edit', [SectionController::class, 'edit'])->name('sections.edit');
-    Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
-    Route::delete('/sections/{section}', [SectionController::class, 'destroy'])->name('sections.destroy');
-
-
-    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-    Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
-    Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
-    Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
-    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
     Route::get('/students/profile/{student}', [StudentController::class, 'profile'])->name('students.profile');
-
-
-    Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
-    Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
-    Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
-    Route::get('/subjects/{subject}', [SubjectController::class, 'show'])->name('subjects.show');
-    Route::get('/subjects/{subject}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
-    Route::put('/subjects/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
-    Route::delete('/subjects/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
-
-
-    Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
-    Route::get('/teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
-    Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
-    Route::get('/teachers/{teacher}', [TeacherController::class, 'show'])->name('teachers.show');
-    Route::get('/teachers/{teacher}/edit', [TeacherController::class, 'edit'])->name('teachers.edit');
-    Route::put('/teachers/{teacher}', [TeacherController::class, 'update'])->name('teachers.update');
-    Route::delete('/teachers/{teacher}', [TeacherController::class, 'destroy'])->name('teachers.destroy');
-
-
-    Route::get('/course_offerings', [CourseOfferingController::class, 'index'])->name('course_offerings.index');
-    Route::get('/course_offerings/create', [CourseOfferingController::class, 'create'])->name('course_offerings.create');
-    Route::post('/course_offerings', [CourseOfferingController::class, 'store'])->name('course_offerings.store');
-    Route::get('/course_offerings/{course_offering}', [CourseOfferingController::class, 'show'])->name('course_offerings.show');
-    Route::get('/course_offerings/{course_offering}/edit', [CourseOfferingController::class, 'edit'])->name('course_offerings.edit');
-    Route::put('/course_offerings/{course_offering}', [CourseOfferingController::class, 'update'])->name('course_offerings.update');
-    Route::delete('/course_offerings/{course_offering}', [CourseOfferingController::class, 'destroy'])->name('course_offerings.destroy');
-
 
     Route::get('/student_courses', [StudentCourseController::class, 'index'])->name('student_courses.index');
     Route::get('/student_courses/create', [StudentCourseController::class, 'create'])->name('student_courses.create');
     Route::post('/student_courses', [StudentCourseController::class, 'store'])->name('student_courses.store');
+    Route::get('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'show'])->name('student_courses.show');
     Route::get('/student_courses/{student_id}/{course_offering_id}/edit', [StudentCourseController::class, 'edit'])->name('student_courses.edit');
     Route::put('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'update'])->name('student_courses.update');
     Route::delete('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'destroy'])->name('student_courses.destroy');
-    Route::get('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'show'])->name('student_courses.show');
-
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::prefix('scores')->name('scores.')->group(function () {
+      Route::get('/', [ScoreController::class, 'index'])->name('index');
+      Route::post('/save-all', [ScoreController::class, 'saveAll'])->name('saveAll');
+    });
 
-    Route::get('scores', [ScoreController::class, 'index'])->name('scores.index');
-    Route::post('scores/save-all', [ScoreController::class, 'saveAll'])->name('scores.saveAll');
+    Route::prefix('attendances')->name('attendances.')->group(function () {
+      Route::get('/', [AttendanceController::class, 'index'])->name('index');
+      Route::post('/save-all', [AttendanceController::class, 'saveAll'])->name('saveAll');
+      Route::get('/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('show');
+    });
 
-    Route::get('attendances', [AttendanceController::class, 'index'])->name('attendances.index');
-    Route::post('attendances/save-all', [AttendanceController::class, 'saveAll'])->name('attendances.saveAll');
-    Route::get('attendances/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('attendances.show');
+    Route::group([], function () {
+      Route::prefix('expenses')->name('expenses.')->group(function () {
+        Route::post('/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [ExpenseController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [ExpenseController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
 
+      Route::prefix('sections')->name('sections.')->group(function () {
+        Route::post('/bulk-delete', [SectionController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [SectionController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [SectionController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
 
-    Route::post('/expenses/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('expenses.bulkDelete');
-    Route::post('/expenses/bulk-data', [ExpenseController::class, 'getBulkData'])->name('expenses.getBulkData');
-    Route::post('/expenses/bulk-update', [ExpenseController::class, 'bulkUpdate'])->name('expenses.bulkUpdate');
+      Route::prefix('students')->name('students.')->group(function () {
+        Route::post('/bulk-delete', [StudentController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [StudentController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [StudentController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
 
-    Route::post('/sections/bulk-delete', [SectionController::class, 'bulkDelete'])->name('sections.bulkDelete');
-    Route::post('/sections/bulk-data', [SectionController::class, 'getBulkData'])->name('sections.getBulkData');
-    Route::post('/sections/bulk-update', [SectionController::class, 'bulkUpdate'])->name('sections.bulkUpdate');
+      Route::prefix('departments')->name('departments.')->group(function () {
+        Route::post('/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [DepartmentController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [DepartmentController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
 
-    Route::post('/students/bulk-delete', [StudentController::class, 'bulkDelete'])->name('students.bulkDelete');
-    Route::post('/students/bulk-data', [StudentController::class, 'getBulkData'])->name('students.getBulkData');
-    Route::post('/students/bulk-update', [StudentController::class, 'bulkUpdate'])->name('students.bulkUpdate');
+      Route::prefix('subjects')->name('subjects.')->group(function () {
+        Route::post('/bulk-delete', [SubjectController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [SubjectController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [SubjectController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
 
-    Route::post('/departments/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('departments.bulkDelete');
-    Route::post('/departments/bulk-data', [DepartmentController::class, 'getBulkData'])->name('departments.getBulkData');
-    Route::post('/departments/bulk-update', [DepartmentController::class, 'bulkUpdate'])->name('departments.bulkUpdate');
+      Route::prefix('exams')->name('exams.')->group(function () {
+        Route::post('/bulk-delete', [ExamController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [ExamController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [ExamController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
 
-    Route::post('/subjects/bulk-delete', [SubjectController::class, 'bulkDelete'])->name('subjects.bulkDelete');
-    Route::post('/subjects/bulk-data', [SubjectController::class, 'getBulkData'])->name('subjects.getBulkData');
-    Route::post('/subjects/bulk-update', [SubjectController::class, 'bulkUpdate'])->name('subjects.bulkUpdate');
-
-    Route::post('/exams/bulk-delete', [ExamController::class, 'bulkDelete'])->name('exams.bulkDelete');
-    Route::post('/exams/bulk-data', [ExamController::class, 'getBulkData'])->name('exams.getBulkData');
-    Route::post('/exams/bulk-update', [ExamController::class, 'bulkUpdate'])->name('exams.bulkUpdate');
-
-    Route::post('/teachers/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('teachers.bulkDelete');
-    Route::post('/teachers/bulk-data', [TeacherController::class, 'getBulkData'])->name('teachers.getBulkData');
-    Route::post('/teachers/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('teachers.bulkUpdate');
+      Route::prefix('teachers')->name('teachers.')->group(function () {
+        Route::post('/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('bulkDelete');
+        Route::post('/bulk-data', [TeacherController::class, 'getBulkData'])->name('getBulkData');
+        Route::post('/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('bulkUpdate');
+      });
+    });
   });
