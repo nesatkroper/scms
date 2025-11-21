@@ -11,7 +11,7 @@
   $organizationRoutes = ['admin.departments.*', 'admin.teachers.*', 'admin.students.*'];
   $isOrganizationActive = request()->routeIs($organizationRoutes);
 
-  $financeRoutes = ['admin.expenses.*'];
+  $financeRoutes = ['admin.expenses.*', 'admin.expense_categories.*', 'admin.expenses.*', 'admin.expenses.*'];
   $isFinanceActive = request()->routeIs($financeRoutes);
 
   $administratorRoutes = ['admin.users.*', 'admin.roles.*'];
@@ -146,16 +146,17 @@
         <div class="submenu {{ $isFinanceActive ? 'active' : '' }}">
           <ul class="pl-2 pr-2">
 
-            <li class="relative">
+            <li>
+              <a href="{{ route('admin.expense_categories.index') }}"
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.expense_categories.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">expense
+                categories</a>
+            </li>
+
+            <li>
               <a href="{{ route('admin.expenses.index') }}"
-                class="flex items-center justify-between px-3 py-2 hover:bg-indigo-700
-                                         dark:hover:bg-gray-700 rounded-lg transition-all duration-200
-                                         {{ request()->routeIs('admin.expenses.*') ? 'bg-indigo-700' : '' }}">
-                <div class="flex items-center">
-                  <i class="ri-money-dollar-circle-fill text-lg"></i>
-                  <span class="ml-2">Expenses</span>
-                </div>
-              </a>
+                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                {{ request()->routeIs('admin.expenses.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">expenses</a>
             </li>
           </ul>
         </div>

@@ -118,13 +118,13 @@ Route::prefix('admin')
     Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
 
 
-    Route::get('/expensecategory', [ExpenseCategoryController::class, 'index'])->name('expensecategory.index');
-    Route::get('/expensecategory/create', [ExpenseCategoryController::class, 'create'])->name('expensecategory.create');
-    Route::post('/expensecategory', [ExpenseCategoryController::class, 'store'])->name('expensecategory.store');
-    Route::get('/expensecategory/{cat}', [ExpenseCategoryController::class, 'show'])->name('expensecategory.show');
-    Route::get('/expensecategory/{cat}/edit', [ExpenseCategoryController::class, 'edit'])->name('expensecategory.edit');
-    Route::put('/expensecategory/{cat}', [ExpenseCategoryController::class, 'update'])->name('expensecategory.update');
-    Route::delete('/expensecategory/{cat}', [ExpenseCategoryController::class, 'destroy'])->name('expensecategory.destroy');
+    Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');
+    Route::get('/expense_categories/create', [ExpenseCategoryController::class, 'create'])->name('expense_categories.create');
+    Route::post('/expense_categories', [ExpenseCategoryController::class, 'store'])->name('expense_categories.store');
+    Route::get('/expense_categories/{cat}', [ExpenseCategoryController::class, 'show'])->name('expense_categories.show');
+    Route::get('/expense_categories/{cat}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_categories.edit');
+    Route::put('/expense_categories/{cat}', [ExpenseCategoryController::class, 'update'])->name('expense_categories.update');
+    Route::delete('/expense_categories/{cat}', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
 
 
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');

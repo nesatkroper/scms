@@ -3,112 +3,88 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExpenseCategoryRequest;
-use App\Http\Requests\StoreExpenseCategoryRequest;
-use App\Http\Requests\UpdateExpenseCategoryRequest;
 use App\Models\ExpenseCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+
 
 class ExpenseCategoryController extends Controller
 {
-    public function index(Request $request)
-    {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 12);
-        $viewType = $request->input('view', 'table');
+  public function index(Request $request)
+  {
+    $search = $request->input('search');
+    $perPage = $request->input('per_page', 10);
 
-        $categories = ExpenseCategory::with('expense')
-            ->when($search, function ($query) use ($search) {
-                return $query->where('id', 'like', "%{$search}%")
-                    ->orWhere('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage)
-            ->appends([
-                'search' => $search,
-                'per_page' => $perPage,
-                'view' => $viewType
-            ]);
+    $categories = ExpenseCategory::when($search, function ($query) use ($search) {
+      return $query->where('name', 'like', "%{$search}%")
+        ->orWhere('description', 'like', "%{$search}%");
+    })
+      ->withCount('expenses')
+      ->orderBy('created_at', 'desc')
+      ->paginate($perPage)
+      ->appends([
+        'search' => $search,
+        'per_page' => $perPage,
+      ]);
 
-        if ($request->ajax()) {
-            $html = [
-                'table' => view('admin.expensecategory.partials.table', compact('categories'))->render(),
-                'cards' => view('admin.expensecategory.partials.cardlist', compact('categories'))->render(),
-                'pagination' => $categories->links()->toHtml()
-            ];
+    return view('admin.expense_categories.index', compact('categories'));
+  }
 
-            return response()->json([
-                'success' => true,
-                'html' => $html,
-                'view' => $viewType
-            ]);
-        }
+  public function create()
+  {
+    return view('admin.expense_categories.create');
+  }
 
-        return view('admin.expensecategory.index', compact('categories'));
+  public function store(Request $request)
+  {
+    $validatedData = $request->validate([
+      'name' => 'required|string|max:255|unique:expense_categories,name',
+      'description' => 'nullable|string|max:1000',
+    ]);
+
+    try {
+      ExpenseCategory::create($validatedData);
+      return redirect()->route('admin.expense_categories.index')->with('success', 'Expense Category created successfully!');
+    } catch (\Exception $e) {
+      Log::error('Error creating expense category: ' . $e->getMessage());
+      return redirect()->route('admin.expense_categories.create')->with('error', 'Error creating expense category.')->withInput();
     }
+  }
 
-    public function store(ExpenseCategoryRequest $request)
-    {
-        try {
-            $category = ExpenseCategory::create($request->validated());
-            return response()->json([
-                'success' => true,
-                'message' => 'Expense category created successfully!',
-                'data' => $category
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating Expense category: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+  public function show(ExpenseCategory $expenseCategory)
+  {
+    return view('admin.expense_categories.show', compact('expenseCategory'));
+  }
 
-    public function show(ExpenseCategory $expensecategory)
-    {
-        $expensecategory->load('expense');
-        return response()->json([
-            'success' => true,
-            'data' => $expensecategory
-        ]);
-    }
+  public function edit(ExpenseCategory $expenseCategory)
+  {
+    return view('admin.expense_categories.edit', compact('expenseCategory'));
+  }
 
-    public function update(ExpenseCategoryRequest $request, $id)
-    {
-        try {
-            $category = ExpenseCategory::findOrFail($id);
-            $category->update($request->validated());
-            return response()->json([
-                'success' => true,
-                'message' => 'Expense category updated successfully',
-                'data' => $category->fresh('expense')
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating Expense category: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+  public function update(Request $request, ExpenseCategory $expenseCategory)
+  {
+    $validatedData = $request->validate([
+      'name' => 'required|string|max:255|unique:expense_categories,name,' . $expenseCategory->id,
+      'description' => 'nullable|string|max:1000',
+    ]);
 
-    public function destroy($id)
-    {
-        try {
-            $category = ExpenseCategory::findOrFail($id);
-            $category->delete();
-            return response()->json([
-                'success' => true,
-                'message' => 'Expense category deleted successfully'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting Expense category: ' . $e->getMessage()
-            ], 500);
-        }
+    try {
+      $expenseCategory->update($validatedData);
+      return redirect()->route('admin.expense_categories.index')->with('success', 'Expense Category updated successfully');
+    } catch (\Exception $e) {
+      Log::error('Error updating expense category: ' . $e->getMessage());
+      return redirect()->route('admin.expense_categories.edit', $expenseCategory)->with('error', 'Error updating expense category.')->withInput();
     }
+  }
+
+  public function destroy(ExpenseCategory $expenseCategory)
+  {
+    try {
+      $expenseCategory->delete();
+      return redirect()->route('admin.expense_categories.index')->with('success', 'Expense Category deleted successfully');
+    } catch (\Exception $e) {
+      Log::error('Error deleting expense category: ' . $e->getMessage());
+      return redirect()->back()->with('error', 'Error deleting expense category: ' . $e->getMessage());
+    }
+  }
 }
