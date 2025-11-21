@@ -105,11 +105,6 @@ class User extends Authenticatable
     return $this->hasMany(TeacherSubject::class, 'teacher_id');
   }
 
-  public function schedules()
-  {
-    return $this->hasMany(Schedule::class, 'teacher_id');
-  }
-
   public function approvedExpenses()
   {
     return $this->hasMany(Expense::class, 'approved_by');

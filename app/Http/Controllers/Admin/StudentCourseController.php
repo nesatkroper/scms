@@ -91,6 +91,86 @@ class StudentCourseController extends Controller
     }
   }
 
+  public function createNewStudent(Request $request)
+  {
+    $courseOfferingId = $request->input('course_offering_id');
+    $courseOffering = null;
+
+    if (!$courseOfferingId) {
+      return redirect()->route('admin.course_offerings.index')->with('error', 'Course Offering ID is required to enroll a new student.');
+    }
+
+    $courseOffering = CourseOffering::with('subject:id,name')->findOrFail($courseOfferingId);
+
+    $statuses = ['studying', 'suspended', 'dropped', 'completed'];
+    $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];
+
+    return view('admin.student_courses.create_new_student', compact(
+      'courseOffering',
+      'statuses',
+      'paymentStatuses',
+      'courseOfferingId'
+    ));
+  }
+
+  public function storeNewStudent(Request $request)
+  {
+    $studentData = $request->validate([
+      'name' => 'required|string|max:255',
+      'email' => 'required|string|email|max:255|unique:users,email',
+      'password' => 'required|string|min:8',
+      'phone' => 'nullable|string|max:255',
+      'address' => 'nullable|string|max:255',
+      'date_of_birth' => 'nullable|date',
+      'gender' => 'nullable|string|in:male,female,other',
+      'admission_date' => 'nullable|date',
+      'occupation' => 'nullable|string|max:255',
+      'company' => 'nullable|string|max:255',
+    ]);
+
+    $enrollmentData = $request->validate([
+      'course_offering_id' => 'required|exists:course_offerings,id',
+      'grade_final' => 'nullable|string|max:255',
+      'status' => 'required|string|in:studying,suspended,dropped,completed',
+      'payment_status' => 'required|string|in:pending,paid,overdue,free',
+      'remarks' => 'nullable|string',
+    ]);
+
+    try {
+      $student = User::create([
+        'name' => $studentData['name'],
+        'email' => $studentData['email'],
+        'password' => bcrypt($studentData['password']),
+        'phone' => $studentData['phone'] ?? null,
+        'address' => $studentData['address'] ?? null,
+        'date_of_birth' => $studentData['date_of_birth'] ?? null,
+        'gender' => $studentData['gender'] ?? null,
+        'admission_date' => $enrollmentData['admission_date'] ?? now()->toDateString(),
+        'occupation' => $studentData['occupation'] ?? null,
+        'company' => $studentData['company'] ?? null,
+      ]);
+
+      $student->assignRole('student');
+
+      StudentCourse::create([
+        'student_id' => $student->id,
+        'course_offering_id' => $enrollmentData['course_offering_id'],
+        'grade_final' => $enrollmentData['grade_final'] ?? null,
+        'status' => $enrollmentData['status'],
+        'payment_status' => $enrollmentData['payment_status'],
+        'remarks' => $enrollmentData['remarks'] ?? null,
+      ]);
+
+      return redirect()->route('admin.student_courses.index', ['course_offering_id' => $enrollmentData['course_offering_id']])
+        ->with('success', 'New student and enrollment created successfully!');
+    } catch (\Exception $e) {
+      Log::error('Error creating new student and enrollment: ' . $e->getMessage());
+      return redirect()->back()
+        ->with('error', 'Error creating new student and enrollment. Please check the logs.')
+        ->withInput();
+    }
+  }
+
 
   public function edit($student_id, $course_offering_id)
   {
