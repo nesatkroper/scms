@@ -33,15 +33,20 @@
     <form action="{{ route('admin.student_courses.index') }}" method="GET">
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-        <a href="{{ route('admin.student_courses.create', ['course_offering_id' => $courseOffering->id]) }}"
-          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clip-rule="evenodd" />
-          </svg>
-          Create New Admission
-        </a>
+
+        @if ($studentCourses->count() >= $courseOffering->classroom->capacity)
+          <div></div>
+        @else
+          <a href="{{ route('admin.student_courses.create', ['course_offering_id' => $courseOffering->id]) }}"
+            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+            </svg>
+            Create New Admission
+          </a>
+        @endif
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
           <div class="relative w-full">
@@ -78,15 +83,18 @@
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
           {{-- Header: Student Name & Course --}}
-          <div class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+          <div
+            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
             <div class="flex justify-between items-start gap-2">
               <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">
                 {{ $admission->student->name ?? 'Student Deleted' }}</h4>
             </div>
-            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold">
-              {{ $admission->courseOffering->subject->name ?? 'Course Deleted' }}</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Time Slot:
-              {{ $admission->courseOffering->time_slot ?? 'N/A' }}</p>
+            <div class="">
+              <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold">
+                {{ $admission->courseOffering->subject->name ?? 'Course Deleted' }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Time Slot:
+                {{ $admission->courseOffering->time_slot ?? 'N/A' }}</p>
+            </div>
           </div>
 
           {{-- NEW SECTION: Status and Details --}}
@@ -178,12 +186,6 @@
       @empty
       @endforelse
     </div>
-
-    {{-- Pagination Links --}}
-    <div class="mt-6">
-      {{ $studentCourses->links() }}
-    </div>
-
   </div>
 
 @endsection

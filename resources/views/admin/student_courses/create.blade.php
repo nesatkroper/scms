@@ -31,9 +31,10 @@
 
         <div class="space-y-6">
           {{-- Student and Course Selects (2 Columns) --}}
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
+            <input type="hidden" name="status" value="studying">
 
             {{-- 1. Student Field (Select) --}}
             <div>
@@ -50,25 +51,6 @@
                 @endforeach
               </select>
               @error('student_id')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-              @enderror
-            </div>
-
-            <div>
-              <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Admission Status <span class="text-red-500">*</span>
-              </label>
-              <select name="status" id="status" required
-                class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('status') border-red-500 @enderror">
-                <option value="" disabled>Select Status</option>
-                @foreach ($statuses as $status)
-                  <option value="{{ $status }}"
-                    {{ old('status') == $status || $status == 'studying' ? 'selected' : '' }}>
-                    {{ ucfirst($status) }}
-                  </option>
-                @endforeach
-              </select>
-              @error('status')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
             </div>
