@@ -58,28 +58,23 @@ class ExpenseController extends Controller
 
   public function store(ExpenseRequest $request)
   {
-    try {
-      $data = $request->validated();
+    $data = $request->validated();
+    $data['approved_by'] = null;
+    $data['created_by'] = Auth::id();
+    Expense::create($data);
 
-      $data['expense_category_id'] = $request->input('category_id');
-      $data['approved_by'] = null;
-      $data['created_by'] = Auth::id();
-
-      Expense::create($data);
-
-      return redirect()->route('admin.expenses.index')->with('success', 'Expense record created successfully!');
-    } catch (\Exception $e) {
-      Log::error('Error creating Expense: ' . $e->getMessage());
-      return back()->with('error', 'Error creating expense record.')->withInput();
-    }
+    return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
+      ->with('success', 'Expense record created successfully!');
   }
+
 
 
   public function edit(Expense $expense)
   {
     $category = $expense->category;
+    $approvers = User::orderBy('name')->get(['id', 'name']);
 
-    return view('admin.expenses.edit', compact('expense', 'category'));
+    return view('admin.expenses.edit', compact('expense', 'category', 'approvers'));
   }
 
 

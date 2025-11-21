@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
       FeeTypeSeeder::class,
       FeeSeeder::class,
       ExamSeeder::class,
-      ScheduleSeeder::class,
       ExpenseCategorySeeder::class,
       ExpenseSeeder::class,
     ]);
