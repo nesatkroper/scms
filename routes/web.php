@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\{
   CourseOfferingController,
   StudentCourseController,
   FeeTypeController,
+  FeeController,
 };
 
 
@@ -110,15 +111,6 @@ Route::prefix('admin')
     Route::delete('/exams/{exam}', [ExamController::class, 'destroy'])->name('exams.destroy');
 
 
-    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
-    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
-    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
-    Route::get('/expenses/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
-    Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
-    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
-    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
-
-
     Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');
     Route::get('/expense_categories/create', [ExpenseCategoryController::class, 'create'])->name('expense_categories.create');
     Route::post('/expense_categories', [ExpenseCategoryController::class, 'store'])->name('expense_categories.store');
@@ -128,6 +120,15 @@ Route::prefix('admin')
     Route::delete('/expense_categories/{expense_category}', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
 
 
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::get('/expenses/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
+    Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+
+
     Route::get('/fee_types', [FeeTypeController::class, 'index'])->name('fee_types.index');
     Route::get('/fee_types/create', [FeeTypeController::class, 'create'])->name('fee_types.create');
     Route::post('/fee_types', [FeeTypeController::class, 'store'])->name('fee_types.store');
@@ -135,6 +136,15 @@ Route::prefix('admin')
     Route::get('/fee_types/{fee_type}/edit', [FeeTypeController::class, 'edit'])->name('fee_types.edit');
     Route::put('/fee_types/{fee_type}', [FeeTypeController::class, 'update'])->name('fee_types.update');
     Route::delete('/fee_types/{fee_type}', [FeeTypeController::class, 'destroy'])->name('fee_types.destroy');
+
+
+    Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
+    Route::get('/fees/create', [FeeController::class, 'create'])->name('fees.create');
+    Route::post('/fees', [FeeController::class, 'store'])->name('fees.store');
+    Route::get('/fees/{fee}', [FeeController::class, 'show'])->name('fees.show');
+    Route::get('/fees/{fee}/edit', [FeeController::class, 'edit'])->name('fees.edit');
+    Route::put('/fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
+    Route::delete('/fees/{fee}', [FeeController::class, 'destroy'])->name('fees.destroy');
 
 
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');

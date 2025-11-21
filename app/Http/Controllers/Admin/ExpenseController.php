@@ -72,7 +72,7 @@ class ExpenseController extends Controller
   public function edit(Expense $expense)
   {
     $category = $expense->category;
-    $approvers = User::orderBy('name')->get(['id', 'name']);
+    $approvers = User::role(['admin', 'staff'])->get(['id', 'name']);
 
     return view('admin.expenses.edit', compact('expense', 'category', 'approvers'));
   }
@@ -80,20 +80,16 @@ class ExpenseController extends Controller
 
   public function update(ExpenseRequest $request, Expense $expense)
   {
-    try {
-      $data = $request->validated();
+    $data = $request->validated();
+    $data['expense_category_id'] = $expense->expense_category_id;
 
-      $data['expense_category_id'] = $expense->expense_category_id;
-      $data['approved_by'] = $expense->approved_by;
+    $expense->update($data);
 
-      $expense->update($data);
-
-      return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])->with('success', 'Expense record updated successfully.');
-    } catch (\Exception $e) {
-      Log::error('Error updating Expense: ' . $e->getMessage());
-      return back()->with('error', 'Error updating expense record.')->withInput();
-    }
+    return redirect()
+      ->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
+      ->with('success', 'Expense record updated successfully.');
   }
+
 
 
   public function destroy(Expense $expense)

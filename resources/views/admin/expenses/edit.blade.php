@@ -16,7 +16,8 @@
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
         </svg>
-        Edit Expense: <span class="text-red-600 dark:text-red-400">{{ $expense->title }}</span>
+        Edit Expense: <span class="text-red-600 dark:text-red-400">{{ $category->name }} - {{ $expense->title }} -
+          ({{ $expense?->creator?->name }})</span>
       </h3>
       <a href="{{ route('admin.expenses.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
@@ -35,6 +36,8 @@
     <form action="{{ route('admin.expenses.update', $expense->id) }}" method="POST" id="editForm" class="p-0">
       @csrf
       @method('PUT')
+
+      <input type="hidden" name="expense_category_id" value="{{ $category->id }}">
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
@@ -86,13 +89,6 @@
           @error('date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
-        </div>
-
-        <input type="hidden" name="category_id" value="{{ $category->id }}">
-
-        <div>
-          <label class="block text-sm font-medium">Category</label>
-          <input type="text" value="{{ $category->name }}" disabled class="bg-gray-100">
         </div>
 
         {{-- 5. Approved By Select Field (Optional) --}}
