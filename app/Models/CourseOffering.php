@@ -14,6 +14,7 @@ class CourseOffering extends Model
     'teacher_id',
     'classroom_id',
     'time_slot',
+    'schedule',
     'start_time',
     'end_time',
     'join_start',

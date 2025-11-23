@@ -97,6 +97,7 @@ return new class extends Migration
       $table->foreignId('teacher_id')->nullable()->constrained('users')->onDelete('set null');
       $table->foreignId('classroom_id')->nullable()->constrained()->onDelete('set null');
       $table->enum('time_slot', ['morning', 'afternoon', 'evening'])->default('morning');
+      $table->enum('schedule', ['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'])->default('mon-fri');
       $table->time('start_time')->nullable();
       $table->time('end_time')->nullable();
       $table->date('join_start')->nullable();
