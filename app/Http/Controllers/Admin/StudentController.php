@@ -13,8 +13,19 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
-class StudentController extends Controller
+class StudentController extends BaseController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyPermissions();
+    }
+
+    protected function ModelPermissionName(): string
+    {
+        return 'Student';
+    }
+    
     public function index(Request $request)
     {
         $search = $request->input('search');

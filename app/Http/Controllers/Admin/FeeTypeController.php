@@ -8,8 +8,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 
-class FeeTypeController extends Controller
+class FeeTypeController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'FeeType';
+  }
+
   public function index(Request $request)
   {
     $search = $request->input('search');

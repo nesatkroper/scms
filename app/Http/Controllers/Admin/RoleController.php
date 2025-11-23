@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Validator;
 
 class RoleController extends BaseController
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
   protected function ModelPermissionName(): string
   {
     return 'role';

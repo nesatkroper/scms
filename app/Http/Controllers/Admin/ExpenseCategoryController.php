@@ -8,8 +8,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 
-class ExpenseCategoryController extends Controller
+class ExpenseCategoryController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'ExpenseCategory';
+  }
+  
   public function index(Request $request)
   {
     $search = $request->input('search');

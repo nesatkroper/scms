@@ -11,8 +11,19 @@ use App\Models\Payment;
 use App\Models\StudentFee;
 use App\Models\User;
 
-class PaymentController extends Controller
+class PaymentController extends BaseController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyPermissions();
+    }
+
+    protected function ModelPermissionName(): string
+    {
+        return 'Payment';
+    }
+
     public function index()
     {
         $payments = Payment::with(['studentFee', 'receiver'])->paginate(10);

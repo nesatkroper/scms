@@ -8,8 +8,19 @@ use App\Models\CourseOffering;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class AttendanceController extends Controller
+class AttendanceController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Attendance';
+  }
+
   public function index(Request $request)
   {
     $courseOfferingId = $request->input('course_offering_id');

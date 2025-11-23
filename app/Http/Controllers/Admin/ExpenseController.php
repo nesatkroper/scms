@@ -11,8 +11,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
-class ExpenseController extends Controller
+class ExpenseController extends BaseController
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Expense';
+  }
+
   public function index(Request $request)
   {
     $search = $request->input('search');

@@ -8,8 +8,20 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class SubjectController extends Controller
+class SubjectController extends BaseController
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Subject';
+  }
+  
   public function index(Request $request)
   {
     $search = $request->input('search');

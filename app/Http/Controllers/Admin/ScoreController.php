@@ -9,8 +9,19 @@ use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ScoreController extends Controller
+class ScoreController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Score';
+  }
+
   public function index(Request $request)
   {
     $examId = $request->input('exam_id');

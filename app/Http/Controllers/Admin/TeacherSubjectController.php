@@ -10,8 +10,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
-class TeacherSubjectController extends Controller
+class TeacherSubjectController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'TeacherSubject';
+  }
+
   private $timeSlots = ['morning', 'afternoon', 'evening'];
 
   public function index()
@@ -39,8 +50,8 @@ class TeacherSubjectController extends Controller
 
     if (
       TeacherSubject::where('teacher_id', $validatedData['teacher_id'])
-        ->where('subject_id', $validatedData['subject_id'])
-        ->exists()
+      ->where('subject_id', $validatedData['subject_id'])
+      ->exists()
     ) {
       return redirect()->back()->with('error', 'This subject is already assigned to this teacher.')->withInput();
     }
@@ -83,8 +94,8 @@ class TeacherSubjectController extends Controller
       ($validatedData['teacher_id'] != $assignment->teacher_id ||
         $validatedData['subject_id'] != $assignment->subject_id) &&
       TeacherSubject::where('teacher_id', $validatedData['teacher_id'])
-        ->where('subject_id', $validatedData['subject_id'])
-        ->exists()
+      ->where('subject_id', $validatedData['subject_id'])
+      ->exists()
     ) {
       return redirect()->back()->with('error', 'The combination of this teacher and subject already exists.')->withInput();
     }

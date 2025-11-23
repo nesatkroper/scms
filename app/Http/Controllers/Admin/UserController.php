@@ -26,7 +26,6 @@ class UserController extends BaseController
     return 'User';
   }
 
-
   public function index(Request $request)
   {
     $search = $request->input('search');

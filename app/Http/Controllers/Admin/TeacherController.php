@@ -12,12 +12,19 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
-class TeacherController extends Controller
+class TeacherController extends BaseController
 {
-    // protected function ModelPermissionName(): string
-    // {
-    //     return 'teacher';
-    // }
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyPermissions();
+    }
+
+    protected function ModelPermissionName(): string
+    {
+        return 'Teacher';
+    }
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -187,7 +194,6 @@ class TeacherController extends Controller
                 'message' => 'Teacher updated successfullywww',
                 'teacher' => $teacher
             ]);
-            
         } catch (\Exception $e) {
             Log::error('Teacher Update Error: ' . $e->getMessage());
             return response()->json([

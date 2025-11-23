@@ -8,8 +8,19 @@ use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ClassroomController extends Controller
+class ClassroomController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Classroom';
+  }
+
   public function index(Request $request)
   {
     $search = $request->input('search');

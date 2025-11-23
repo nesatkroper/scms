@@ -8,8 +8,19 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
+  public function __construct()
+    {
+        parent::__construct();
+        $this->applyPermissions();
+    }
+
+    protected function ModelPermissionName(): string
+    {
+        return 'Home';
+    }
+
   public function index()
   {
     $teachers = User::role('Teacher')->count();

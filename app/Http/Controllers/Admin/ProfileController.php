@@ -9,8 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Profile';
+  }
+
   public function show(Request $request)
   {
     return view('admin.profile.show', [
@@ -31,7 +42,6 @@ class ProfileController extends Controller
       'gender' => ['required', Rule::in(['male', 'female'])],
       'avatar' => ['nullable', 'image', 'max:2048'],
       'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-      'department_id' => ['nullable', 'exists:departments,id'],
       'joining_date' => ['nullable', 'date'],
       'qualification' => ['nullable', 'string', 'max:255'],
       'salary' => ['nullable', 'numeric', 'min:0'],

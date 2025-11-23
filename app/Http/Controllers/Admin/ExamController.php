@@ -9,8 +9,21 @@ use App\Models\CourseOffering;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ExamController extends Controller
+class ExamController extends BaseController
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Exam';
+  }
+
+
   public function index(Request $request)
   {
     $courseOfferingId = $request->input('course_offering_id');
