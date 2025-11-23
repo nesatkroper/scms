@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,12 +38,14 @@ class UserController extends BaseController
 
     $users = User::with(['roles'])
       ->when($search, function ($query) use ($search) {
-        return $query->where('name', 'like', "%{$search}%")
-          ->orWhere('email', 'like', "%{$search}%")
-          ->orWhere('phone', 'like', "%{$search}%");
+        return $query->where(function ($q) use ($search) {
+          $q->where('name', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%")
+            ->orWhere('phone', 'like', "%{$search}%");
+        });
       })
       ->when($roleFilter, function ($query) use ($roleFilter) {
-        return $query->role($roleFilter);
+        return $query->role($roleFilter); // Spatie role filter
       })
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
@@ -58,7 +61,6 @@ class UserController extends BaseController
   public function create()
   {
     $roles = Role::all();
-
     return view('admin.users.create', compact('roles', 'departments'));
   }
 
@@ -126,7 +128,6 @@ class UserController extends BaseController
   {
     $user->load('roles');
     $roles = Role::all();
-
     return view('admin.users.edit', compact('user', 'roles', 'departments'));
   }
 
@@ -239,16 +240,75 @@ class UserController extends BaseController
   public function destroy(User $user)
   {
     try {
+      if (Auth::id() === $user->id) {
+        return response()->json([
+          'success' => false,
+          'message' => 'You cannot delete your own account!'
+        ], 403);
+      }
+
+      if (!$user->hasRole('student')) {
+        return response()->json([
+          'success' => false,
+          'message' => 'User not found'
+        ], 404);
+      }
+
+      // Delete avatar if exists
       if ($user->avatar && file_exists(public_path($user->avatar))) {
         unlink(public_path($user->avatar));
       }
 
+      // Delete CV if exists (you might want to add this)
+      if ($user->cv && file_exists(public_path($user->cv))) {
+        unlink(public_path($user->cv));
+      }
+
       $user->delete();
 
-      return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
+      return response()->json([
+        'success' => true,
+        'message' => 'User deleted successfully!'
+      ]);
     } catch (\Exception $e) {
       Log::error('Error deleting user: ' . $e->getMessage());
-      return back()->with('error', 'Error deleting user: ' . $e->getMessage());
+      return response()->json([
+        'success' => false,
+        'message' => 'Error deleting user: ' . $e->getMessage()
+      ], 500);
     }
   }
+
+
+  // public function destroy(User $user)
+  // {
+  //   try {
+  //     // Ensure the user is a User
+  //     if (!$user->hasRole('student')) {
+  //       return response()->json([
+  //         'success' => false,
+  //         'message' => 'User not found'S
+  //       ], 404);
+  //     }
+
+  //     // Delete avatar if exists
+  //     if ($user->avatar && file_exists(public_path($user->avatar))) {
+  //       unlink(public_path($user->avatar));
+  //     }
+
+  //     $user->delete();
+
+  //     return response()->json([
+  //       'success' => true,
+  //       'message' => 'User deleted successfully!'
+  //     ]);
+  //   } catch (\Exception $e) {
+  //     Log::error('Error deleting User: ' . $e->getMessage());
+  //     return response()->json([
+  //       'success' => false,
+  //       'message' => 'Error deleting User: ' . $e->getMessage()
+  //     ], 500);
+  //   }
+  // }
+
 }
