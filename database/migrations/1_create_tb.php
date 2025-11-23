@@ -86,6 +86,7 @@ return new class extends Migration
       $table->date('date');
       $table->foreignId('expense_category_id')->nullable()->constrained('expense_categories')->onDelete('set null');
       $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null');
+      $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
       $table->timestamps();
       $table->softDeletes();
     });
@@ -153,6 +154,7 @@ return new class extends Migration
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('fee_type_id')->constrained('fee_types')->onDelete('cascade');
+      $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
       $table->decimal('amount', 10, 2);
       $table->date('due_date')->nullable();
       $table->enum('status', ['unpaid', 'partially_paid', 'paid'])->default('unpaid');
