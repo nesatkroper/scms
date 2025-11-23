@@ -21,7 +21,7 @@ class UserController extends Controller
     $roleFilter = $request->input('role_filter');
 
     $roles = Role::all();
-    $departments = \App\Models\Department::all();
+
 
     $users = User::with(['roles', 'department'])
       ->when($search, function ($query) use ($search) {
@@ -46,7 +46,7 @@ class UserController extends Controller
   public function create()
   {
     $roles = Role::all();
-    $departments = \App\Models\Department::all();
+
     return view('admin.users.create', compact('roles', 'departments'));
   }
 
@@ -114,7 +114,7 @@ class UserController extends Controller
   {
     $user->load('roles');
     $roles = Role::all();
-    $departments = \App\Models\Department::all();
+
     return view('admin.users.edit', compact('user', 'roles', 'departments'));
   }
 
