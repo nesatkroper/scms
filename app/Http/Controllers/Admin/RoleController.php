@@ -133,22 +133,31 @@ class RoleController extends BaseController
   public function destroy(Role $role)
   {
     if ($role->name === 'admin') {
-      return redirect()->back()
-        ->with('error', 'Cannot delete the default "admin" role.');
+      return response()->json([
+        'success' => false,
+        'message' => 'Cannot delete the default "admin" role.'
+      ]);
     }
 
     if ($role->users()->count() > 0) {
-      return redirect()->back()
-        ->with('error', 'Cannot delete role assigned to users. Please unassign users first.');
+      return response()->json([
+        'success' => false,
+        'message' => 'Cannot delete role assigned to users. Please unassign users first.'
+      ]);
     }
 
     try {
       $role->delete();
-      return redirect()->route('admin.roles.index')
-        ->with('success', 'Role deleted successfully!');
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Role deleted successfully!',
+      ]);
     } catch (\Exception $e) {
-      return redirect()->back()
-        ->with('error', 'Error deleting role: ' . $e->getMessage());
+      return response()->json([
+        'success' => false,
+        'message' => 'Error deleting role: ' . $e->getMessage()
+      ]);
     }
   }
 }

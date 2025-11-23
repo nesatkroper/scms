@@ -113,13 +113,6 @@
   </div>
 
 @endsection
-
-## 💻 Updated JavaScript Logic
-
-The JavaScript now handles the "Check All" functionality, respects the existing search filter, and correctly initializes
-the master checkbox based on the role's current permissions.
-
-```javascript
 @push('scripts')
   <script>
     $(document).ready(function() {
