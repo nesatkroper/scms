@@ -53,6 +53,18 @@ class UserController extends BaseController
         'per_page' => $perPage,
         'role_filter' => $roleFilter,
       ]);
+    // AJAX Request for live search or pagination
+    if ($request->ajax()) {
+      $html = [
+        'table' => view('admin.users.table', compact('users'))->render(),
+        'pagination' => $users->links()->toHtml()
+      ];
+
+      return response()->json([
+        'success' => true,
+        'html' => $html
+      ]);
+    }
 
     return view('admin.users.index', compact('users', 'roles', 'roleFilter',));
   }
@@ -246,13 +258,19 @@ class UserController extends BaseController
         ], 403);
       }
 
-      if (!$user->hasRole('student')) {
+      // if (!$user->hasRole('student')) {
+      //   return response()->json([
+      //     'success' => false,
+      //     'message' => 'User not found'
+      //   ], 404);
+      // }
+      
+      if (!$user) {
         return response()->json([
           'success' => false,
           'message' => 'User not found'
         ], 404);
       }
-
       // Delete avatar if exists
       if ($user->avatar && file_exists(public_path($user->avatar))) {
         unlink(public_path($user->avatar));
@@ -277,37 +295,4 @@ class UserController extends BaseController
       ], 500);
     }
   }
-
-
-  // public function destroy(User $user)
-  // {
-  //   try {
-  //     // Ensure the user is a User
-  //     if (!$user->hasRole('student')) {
-  //       return response()->json([
-  //         'success' => false,
-  //         'message' => 'User not found'S
-  //       ], 404);
-  //     }
-
-  //     // Delete avatar if exists
-  //     if ($user->avatar && file_exists(public_path($user->avatar))) {
-  //       unlink(public_path($user->avatar));
-  //     }
-
-  //     $user->delete();
-
-  //     return response()->json([
-  //       'success' => true,
-  //       'message' => 'User deleted successfully!'
-  //     ]);
-  //   } catch (\Exception $e) {
-  //     Log::error('Error deleting User: ' . $e->getMessage());
-  //     return response()->json([
-  //       'success' => false,
-  //       'message' => 'Error deleting User: ' . $e->getMessage()
-  //     ], 500);
-  //   }
-  // }
-
 }

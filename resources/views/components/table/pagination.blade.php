@@ -45,7 +45,7 @@
       {{-- Rows per page and Page Links --}}
       <div class="flex items-center space-x-2">
         {{-- Rows per page dropdown --}}
-        <div class="flex items-center">
+        {{-- <div class="flex items-center">
           <span class="text-sm text-gray-700 dark:text-gray-300 mr-2">Rows per page:</span>
           <select id="perPageSelect" name="per_page"
             class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-300">
@@ -54,7 +54,7 @@
             <option value="20" {{ $paginator->perPage() == 20 ? 'selected' : '' }}>20</option>
             <option value="25" {{ $paginator->perPage() == 25 ? 'selected' : '' }}>25</option>
           </select>
-        </div>
+        </div> --}}
 
         {{-- Page Links --}}
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
