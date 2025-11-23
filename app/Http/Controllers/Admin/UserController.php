@@ -12,8 +12,20 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Log;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'User';
+  }
+
+
   public function index(Request $request)
   {
     $search = $request->input('search');
@@ -23,7 +35,7 @@ class UserController extends Controller
     $roles = Role::all();
 
 
-    $users = User::with(['roles', 'department'])
+    $users = User::with(['roles'])
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('email', 'like', "%{$search}%")
@@ -40,7 +52,7 @@ class UserController extends Controller
         'role_filter' => $roleFilter,
       ]);
 
-    return view('admin.users.index', compact('users', 'roles', 'roleFilter', 'departments'));
+    return view('admin.users.index', compact('users', 'roles', 'roleFilter',));
   }
 
   public function create()
