@@ -50,26 +50,4 @@ class GenerateModelPermissions extends Command
       ->values()
       ->toArray();
   }
-
-  // protected function getModels()
-  // {
-  //   $modelPath = app_path('Models');
-  //   $files = File::files($modelPath);
-
-  //   $models = [];
-
-  //   foreach ($files as $file) {
-  //     $className = pathinfo($file, PATHINFO_FILENAME);
-
-  //     if ($className === 'Model' || strpos($className, 'Abstract') === 0) {
-  //       continue;
-  //     }
-
-  //     $modelName = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $className));
-
-  //     $models[] = $modelName;
-  //   }
-
-  //   return $models;
-  // }
 }
