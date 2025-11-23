@@ -10,15 +10,15 @@ class DatabaseSeeder extends Seeder
   {
     $this->call([
       UserSeeder::class,
-      ClassroomSeeder::class,
-      SubjectSeeder::class,
-      CourseOfferingSeeder::class,
-      StudentCourseSeeder::class,
-      FeeTypeSeeder::class,
-      FeeSeeder::class,
-      ExamSeeder::class,
-      ExpenseCategorySeeder::class,
-      ExpenseSeeder::class,
+      // ClassroomSeeder::class,
+      // SubjectSeeder::class,
+      // CourseOfferingSeeder::class,
+      // StudentCourseSeeder::class,
+      // FeeTypeSeeder::class,
+      // FeeSeeder::class,
+      // ExamSeeder::class,
+      // ExpenseCategorySeeder::class,
+      // ExpenseSeeder::class,
     ]);
   }
 }
