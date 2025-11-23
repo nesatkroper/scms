@@ -20,7 +20,7 @@ class StudentCourseController extends BaseController
 
   protected function ModelPermissionName(): string
   {
-    return 'StudentCourse';
+    return 'Student-Course';
   }
 
   public function index(Request $request)

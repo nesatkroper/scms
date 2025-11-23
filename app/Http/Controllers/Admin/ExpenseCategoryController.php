@@ -18,9 +18,9 @@ class ExpenseCategoryController extends BaseController
 
   protected function ModelPermissionName(): string
   {
-    return 'ExpenseCategory';
+    return 'Expense-Category';
   }
-  
+
   public function index(Request $request)
   {
     $search = $request->input('search');

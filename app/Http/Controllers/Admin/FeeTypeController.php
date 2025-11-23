@@ -18,7 +18,7 @@ class FeeTypeController extends BaseController
 
   protected function ModelPermissionName(): string
   {
-    return 'FeeType';
+    return 'Fee-Type';
   }
 
   public function index(Request $request)

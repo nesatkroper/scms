@@ -21,7 +21,7 @@ class CourseOfferingController extends BaseController
 
   protected function ModelPermissionName(): string
   {
-    return 'CourseOffering';
+    return 'Course-Offering';
   }
 
   public function index(Request $request)
