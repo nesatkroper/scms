@@ -15,9 +15,10 @@ class CourseOfferingRequest extends FormRequest
   {
     return [
       'subject_id' => ['required', 'exists:subjects,id'],
-      'teacher_id' => ['required', 'exists:users,id'],
-      'classroom_id' => ['required', 'exists:classrooms,id'],
-      'time_slot' => ['required', 'string', 'max:255'],
+      'teacher_id' => ['nullable', 'exists:users,id'],
+      'classroom_id' => ['nullable', 'exists:classrooms,id'],
+      'time_slot' => ['required', 'string', 'in:morning,afternoon,evening'],
+      'schedule' => ['required', 'string', 'in:mon-wed,mon-fri,wed-fri,sat-sun'],
       'start_time' => ['required', 'date_format:H:i'],
       'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
       'join_start' => ['nullable', 'date'],
