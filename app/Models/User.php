@@ -22,7 +22,7 @@ class User extends Authenticatable
     'address',
     'date_of_birth',
     'gender',
-    'department_id',
+    // 'department_id',
     'joining_date',
     'qualification',
     'experience',

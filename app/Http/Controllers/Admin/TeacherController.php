@@ -12,19 +12,19 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
-class TeacherController extends BaseController
+class TeacherController extends Controller
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->applyPermissions();
-    }
+    // public function __construct()
+    // {
+    //     parent::__construct();
+    //     $this->applyPermissions();
+    // }
 
-    protected function ModelPermissionName(): string
-    {
-        return 'Teacher';
-    }
+    // protected function ModelPermissionName(): string
+    // {
+    //     return 'Teacher';
+    // }
     public function index(Request $request)
     {
         $search = $request->input('search');

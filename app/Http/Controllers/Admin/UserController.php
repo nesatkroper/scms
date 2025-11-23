@@ -78,7 +78,7 @@ class UserController extends BaseController
       'nationality' => ['nullable', 'string', 'max:255'],
       'religion' => ['nullable', 'string', 'max:255'],
       'blood_group' => ['nullable', 'string', 'max:10'],
-      'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
+      // 'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
       'joining_date' => ['nullable', 'date'],
       'qualification' => ['nullable', 'string', 'max:255'],
       'experience' => ['nullable', 'numeric', 'min:0'],
@@ -127,7 +127,7 @@ class UserController extends BaseController
   {
     $user->load('roles');
     $roles = Role::all();
-    return view('admin.users.edit', compact('user', 'roles', 'departments'));
+    return view('admin.users.edit', compact('user', 'roles'));
   }
 
   public function update(Request $request, User $user)
@@ -145,7 +145,7 @@ class UserController extends BaseController
       'nationality' => ['nullable', 'string', 'max:255'],
       'religion' => ['nullable', 'string', 'max:255'],
       'blood_group' => ['nullable', 'string', 'max:10'],
-      'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
+      // 'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
       'joining_date' => ['nullable', 'date'],
       'qualification' => ['nullable', 'string', 'max:255'],
       'experience' => ['nullable', 'numeric', 'min:0'],
@@ -168,7 +168,7 @@ class UserController extends BaseController
         'nationality',
         'religion',
         'blood_group',
-        'department_id',
+        // 'department_id',
         'joining_date',
         'qualification',
         'experience',

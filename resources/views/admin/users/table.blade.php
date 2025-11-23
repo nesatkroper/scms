@@ -1,4 +1,4 @@
-<x-table.table :headers="['User', 'Role', 'Email', 'Phone', 'Department', 'Joining Date', 'Gender']" :checkbox="false">
+<x-table.table :headers="['User', 'Role', 'Email', 'Phone', 'Joining Date', 'Gender']" :checkbox="false">
     @if (count($users) > 0)
         @foreach ($users as $user)
             <x-table.tr>
@@ -51,7 +51,7 @@
                 </x-table.td>
                 <x-table.td>{{ $user->email }}</x-table.td>
                 <x-table.td>{{ $user->phone ?? 'N/A' }}</x-table.td>
-                <x-table.td>{{ $user->department?->name ?? 'N/A' }}</x-table.td>
+                {{-- <x-table.td>{{ $user->department?->name ?? 'N/A' }}</x-table.td> --}}
                 <x-table.td>
                     {{ $user->admission_date ? \Carbon\Carbon::parse($user->admission_date)->format('M d, Y') : 'N/A' }}
                 </x-table.td>

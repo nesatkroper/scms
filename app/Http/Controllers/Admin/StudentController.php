@@ -13,18 +13,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
-class StudentController extends BaseController
+class StudentController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->applyPermissions();
-    }
+    // public function __construct()
+    // {
+    //     parent::__construct();
+    //     $this->applyPermissions();
+    // }
 
-    protected function ModelPermissionName(): string
-    {
-        return 'Student';
-    }
+    // protected function ModelPermissionName(): string
+    // {
+    //     return 'Student';
+    // }
     
     public function index(Request $request)
     {
