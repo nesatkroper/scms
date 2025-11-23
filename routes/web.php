@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\{
   ExpenseController,
   ExpenseCategoryController,
   PaymentController,
-  SectionController,
   StudentController,
   SubjectController,
   TeacherController,
@@ -62,7 +61,6 @@ Route::prefix('admin')
     Route::resource('fee_types', FeeTypeController::class);
     Route::resource('fees', FeeController::class);
     Route::resource('payments', PaymentController::class);
-    Route::resource('sections', SectionController::class);
     Route::resource('students', StudentController::class);
     Route::resource('subjects', SubjectController::class);
     Route::resource('teachers', TeacherController::class);

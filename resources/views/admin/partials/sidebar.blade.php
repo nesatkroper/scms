@@ -8,7 +8,7 @@
   ];
   $isAcademicsActive = request()->routeIs($academicsRoutes);
 
-  $organizationRoutes = ['admin.departments.*', 'admin.teachers.*', 'admin.students.*'];
+  $organizationRoutes = ['admin.teachers.*', 'admin.students.*'];
   $isOrganizationActive = request()->routeIs($organizationRoutes);
 
   $financeRoutes = ['admin.fee_types.*', 'admin.expense_categories.*', 'admin.expenses.*', 'admin.expenses.*'];
@@ -81,11 +81,6 @@
                 {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course
               </a>
             </li>
-            {{-- <li>
-              <a href="{{ route('admin.exams.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.exams.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">exams</a>
-            </li> --}}
           </ul>
         </div>
       </li>
@@ -103,13 +98,6 @@
         </div>
         <div class="submenu {{ $isOrganizationActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
-            <li>
-              <a href="{{ route('admin.departments.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
-                {{ request()->routeIs('admin.departments.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                <span class="ml-2">departments</span>
-              </a>
-            </li>
             <li>
               <a href="{{ route('admin.teachers.index') }}"
                 class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
@@ -160,12 +148,6 @@
                 expense
               </a>
             </li>
-
-            {{-- <li>
-              <a href="{{ route('admin.expenses.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.expenses.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">expenses</a>
-            </li> --}}
           </ul>
         </div>
       </li>
