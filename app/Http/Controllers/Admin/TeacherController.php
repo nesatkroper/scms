@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use Illuminate\Support\Facades\Log;
-use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,10 +23,8 @@ class TeacherController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
         $viewType = $request->input('view', 'table');
-        $departments = Department::all();
-
         $teachers = User::role('teacher')
-            ->with('department')
+
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -35,10 +32,7 @@ class TeacherController extends Controller
                     ->orWhere('specialization', 'like', "%{$search}%")
                     ->orWhere('joining_date', 'like', "%{$search}%")
                     ->orWhere('salary', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhereHas('department', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+                    ->orWhere('phone', 'like', "%{$search}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
@@ -62,7 +56,7 @@ class TeacherController extends Controller
             ]);
         }
 
-        return view('admin.teachers.index', compact('teachers', 'departments'));
+        return view('admin.teachers.index', compact('teachers'));
     }
 
     public function store(StoreTeacherRequest $request)
@@ -133,8 +127,6 @@ class TeacherController extends Controller
                 'message' => 'User is not a teacher'
             ], 404);
         }
-
-        $teacher->load('department');
         return response()->json([
             'success' => true,
             'teacher' => $teacher
@@ -193,7 +185,7 @@ class TeacherController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Teacher updated successfullywww',
-                'teacher' => $teacher->fresh('department')
+                'teacher' => $teacher
             ]);
             
         } catch (\Exception $e) {
@@ -335,7 +327,6 @@ class TeacherController extends Controller
                 'email' => 'required|email|unique:users,email,' . $teacherData['id'],
                 'gender' => 'required|in:male,female',
                 'date_of_birth' => 'required|date',
-                'department_id' => 'required|exists:departments,id',
                 'joining_date' => 'required|date',
                 'qualification' => 'required|string|max:255',
                 'experience' => 'nullable|string',

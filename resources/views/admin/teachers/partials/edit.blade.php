@@ -34,29 +34,6 @@
                         :required="true" />
                     <x-fields.select :edit="true" name="gender" label="Gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')"
                         required />
-                    <!-- Department Field -->
-                    <div class="mb-2">
-                        <label for="edit_depid" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Department <span class="text-red-500">*</span>
-                        </label>
-                        <select id="edit_depid" name="department_id"
-                            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                        @error('department_id') border-red-500 @else border-gray-400 @enderror"
-                            required>
-                            <option value="">Select department</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}"
-                                    {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        @error('department_id')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
                     <x-fields.input :edit="true" type="number" label="Experience" name="experience"
                         placeholder="Enter years of experience" required />
                     <!-- Joining Date Field -->

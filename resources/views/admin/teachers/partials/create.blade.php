@@ -25,27 +25,7 @@
                     :required="true" />
                 {{-- <x-fields.select name="department_id" label="Department" :options="$departments" :value="old('department_id')"
                         :required="true" searchable="true" /> --}}
-                <div class="mb-2">
-                    <label for="department_id"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Department <span class="text-red-500">*</span>
-                    </label>
-                    <select id="department_id" name="department_id"
-                        class="form-control form-select w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('department_id') border-red-500 @else border-gray-400 @enderror"
-                        required>
-                        <option value="">Select department</option>
-                        @foreach ($departments as $department)
-                            <option value="{{ $department->id }}"
-                                {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                                {{ $department->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <p class="error-department mt-1 text-sm text-red-600"></p>
-                    <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
-                        Field department is required.
-                    </div>
-                </div>
+                
                 <x-fields.input type="date" label="Joining Date" name="joining_date"
                     placeholder="Enter joining date" :required="true" />
 
