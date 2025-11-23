@@ -157,6 +157,7 @@ return new class extends Migration
       $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
       $table->decimal('amount', 10, 2);
       $table->date('due_date')->nullable();
+      $table->date('paid_date')->nullable(); // quick check
       $table->enum('status', ['unpaid', 'partially_paid', 'paid'])->default('unpaid');
       $table->text('remarks')->nullable();
       $table->timestamps();
@@ -170,6 +171,7 @@ return new class extends Migration
       $table->string('payment_method');
       $table->string('transaction_id')->nullable();
       $table->text('remarks')->nullable();
+      $table->foreignId('course_offering_id')->constrained('course_offerings')->onDelete('restrict');
       $table->foreignId('received_by')->constrained('users')->onDelete('restrict');
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('fee_id')->nullable()->constrained('fees')->onDelete('cascade');

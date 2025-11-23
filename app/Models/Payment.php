@@ -15,6 +15,7 @@ class Payment extends Model
     'payment_method',
     'transaction_id',
     'remarks',
+    'course_offering_id',
     'received_by',
     'student_id',
     'fee_id'
