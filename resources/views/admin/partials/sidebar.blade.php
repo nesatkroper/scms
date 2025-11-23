@@ -169,14 +169,22 @@
           </div>
           <div class="submenu {{ $isAdministratorActive ? 'active' : '' }}">
             <ul class="pl-4 pr-4">
-              <li><a href="{{ route('admin.users.index') }}"
-                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+              @if (Auth::user()->hasPermissionTo('view user'))
+                <li>
+                  <a href="{{ route('admin.users.index') }}"
+                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                   {{ request()->routeIs('admin.users.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Users</a>
-              </li>
-              <li><a href="{{ route('admin.roles.index') }}"
-                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                </li>
+              @endif
+
+              @if (Auth::user()->hasPermissionTo('view role'))
+                <li>
+                  <a href="{{ route('admin.roles.index') }}"
+                    class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                   {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">roles</a>
-              </li>
+                </li>
+              @endif
+
           </div>
         </li>
       @endif

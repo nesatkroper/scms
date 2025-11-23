@@ -17,6 +17,7 @@ class RoleController extends BaseController
     parent::__construct();
     $this->applyPermissions();
   }
+
   protected function ModelPermissionName(): string
   {
     return 'Role';
