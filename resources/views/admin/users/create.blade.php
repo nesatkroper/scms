@@ -6,8 +6,23 @@
         <div class="flex items-center justify-between px-3 md:px-0 mb-6">
             <h1 class="text-2xl font-semibold">Create New User</h1>
             <a href="{{ route('admin.users.index') }}"
-                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
-                Back to Users List
+                class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
+                <!-- Animated background effect -->
+                <span
+                    class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <!-- Button content -->
+                <span class="relative flex items-center">
+                    <!-- Animated arrow icon -->
+                    <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Users List
+                </span>
+                <!-- Shine effect on hover -->
+                <span
+                    class="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
             </a>
         </div>
 
@@ -39,7 +54,7 @@
 
             <div class="space-y-6">
                 <div class="relative h-28 flex items-end justify-center bg-gray-50 dark:bg-gray-700 rounded-t-lg">
-                   <x-photos.upload2 name="avatar" size="xl" :current-image-url="null" />
+                    <x-photos.upload2 name="avatar" size="xl" :current-image-url="null" />
                 </div>
 
                 <div class="pt-5 pb-4 border-b border-slate-300 dark:border-slate-700">
@@ -230,7 +245,8 @@
                     </div>
                 </div>
 
-                <div class="pb-4 border-b border-slate-300 dark:border-slate-700" x-show="['teacher', 'admin', 'staff'].includes(userRole)">
+                <div class="pb-4 border-b border-slate-300 dark:border-slate-700"
+                    x-show="['teacher', 'admin', 'staff'].includes(userRole)">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🧑‍💼 Employment/Academic
                         Details</h3>
                     <div class="grid grid-cols-1 md::grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">

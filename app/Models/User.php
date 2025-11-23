@@ -89,18 +89,18 @@ class User extends Authenticatable
     return $this->belongsToMany(Subject::class, 'teacher_subject');
   }
 
-  public function subjects()
-  {
-    return $this->belongsToMany(Subject::class, 'teacher_subject', 'teacher_id', 'subject_id')
-      ->using(TeacherSubject::class)
-      ->withPivot('time_slot')
-      ->withTimestamps();
-  }
+  // public function subjects()
+  // {
+  //   return $this->belongsToMany(Subject::class, 'teacher_subject', 'teacher_id', 'subject_id')
+  //     ->using(TeacherSubject::class)
+  //     ->withPivot('time_slot')
+  //     ->withTimestamps();
+  // }
 
-  public function subjectAssignments()
-  {
-    return $this->hasMany(TeacherSubject::class, 'teacher_id');
-  }
+  // public function subjectAssignments()
+  // {
+  //   return $this->hasMany(TeacherSubject::class, 'teacher_id');
+  // }
 
   public function approvedExpenses()
   {
