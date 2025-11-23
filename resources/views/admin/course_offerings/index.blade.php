@@ -85,21 +85,48 @@
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
-          <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
-            <div class="flex justify-between items-start gap-2">
-              <div>
-                {{-- Main Subject Name --}}
-                <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                  {{ $offering->subject->name ?? 'Subject Deleted' }} - {{ $offering->teacher->name ?? 'Unassigned' }}
-                </h4>
+          <div
+            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
+            <div class="flex flex-col">
+              <div class="flex justify-between items-start gap-2">
+                <div>
+                  {{-- Main Subject Name --}}
+                  <h4
+                    class="font-bold text-lg text-gray-800 dark:text-gray-200 @if ($offering->students->count() >= $offering->classroom->capacity) dark:text-red-600 @endif">
+                    {{ $offering->subject->name ?? 'Subject Deleted' }} - {{ $offering->teacher->name ?? 'Unassigned' }} -
+                    @if ($offering->students->count() >= $offering->classroom->capacity)
+                      (Full)
+                    @endif
+                  </h4>
+                </div>
               </div>
+              {{-- Time Slot and Time Range --}}
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
+                {{ $offering->time_slot }}
+                ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
+                {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})
+              </p>
             </div>
-            {{-- Time Slot and Time Range --}}
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
-              {{ $offering->time_slot }}
-              ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
-              {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})
-            </p>
+
+            <div class="flex">
+              <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                title="Attendance">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-file-export me-2"></i>
+                  Eport Attendance
+                </span>
+              </a>
+
+              <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                title="Attendance">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-download me-2"></i>
+                  Eport Score
+                </span>
+              </a>
+            </div>
           </div>
 
           <div class="p-4 space-y-3">
@@ -184,7 +211,7 @@
               </a>
 
               @if ($offering->students->count() >= $offering->classroom->capacity)
-                <a href="#"
+                <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <span class="btn-content flex items-center justify-center">

@@ -13,9 +13,6 @@ class SubjectSeeder extends Seeder
     $subjects = [
       ['name' => 'Introduction to Programming', 'code' => 'CS101', 'credit_hours' => 3],
       ['name' => 'Data Structures', 'code' => 'CS202', 'credit_hours' => 4],
-      ['name' => 'British Literature', 'code' => 'ENGL250', 'credit_hours' => 3],
-      ['name' => 'Creative Writing', 'code' => 'ENGL301', 'credit_hours' => 3],
-      ['name' => 'Calculus I', 'code' => 'MATH150', 'credit_hours' => 4],
     ];
 
     foreach ($subjects as $subj) {
