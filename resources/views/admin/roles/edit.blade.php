@@ -178,10 +178,6 @@
         $permissionItems.show();
         updateCheckAllState();
       });
-
-      // --- Initial State Check ---
-      // Run on document ready to correctly set the master checkbox based on
-      // the permissions already assigned to the role (via $rolePermissionIds)
       updateCheckAllState();
     });
   </script>
@@ -228,9 +224,13 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
                     Permissions
                 </label>
+                 <button type="button" id="toggleCheck"
+                        class="px-3 py-1 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">
+                        Check All
+                    </button>
+
                 <div
                     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 border p-2 rounded-md border-gray-300 dark:border-gray-700">
-
                     @php
                         $rolePermissionIds = $role->permissions->pluck('id')->toArray();
                     @endphp
@@ -290,24 +290,36 @@
             var $searchInput = $('#searchInput');
             var $resetBtn = $('#resetSearch');
             var $permissionItems = $('[id^="permission-"]');
-            // Filter permissions while typing
+
+            // Filter while typing
             $searchInput.on('keyup', function() {
                 var keyword = $(this).val().toLowerCase().trim();
 
                 $permissionItems.each(function() {
                     var label = $(this).next('label').text().toLowerCase();
-                    if (label.includes(keyword)) {
-                        $(this).closest('div').show();
-                    } else {
-                        $(this).closest('div').hide();
-                    }
+                    $(this).closest('div').toggle(label.includes(keyword));
                 });
             });
-            // Reset search input
+
+            // Reset search
             $resetBtn.on('click', function(e) {
                 e.preventDefault();
                 $searchInput.val('');
                 $permissionItems.closest('div').show();
+            });
+
+            // ✅ Toggle Check All / Uncheck All
+            $('#toggleCheck').on('click', function() {
+                let checkboxes = $('[id^="permission-"]');
+                let allChecked = checkboxes.length === checkboxes.filter(':checked').length;
+
+                if (allChecked) {
+                    checkboxes.prop('checked', false);
+                    $(this).text("Check All");
+                } else {
+                    checkboxes.prop('checked', true);
+                    $(this).text("Uncheck All");
+                }
             });
         });
     </script>
