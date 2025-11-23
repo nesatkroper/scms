@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{
   AttendanceController,
   ClassroomController,
-  DepartmentController,
   ExamController,
   ExpenseController,
   ExpenseCategoryController,
@@ -24,7 +23,6 @@ use App\Http\Controllers\Admin\{
   FeeTypeController,
   FeeController,
 };
-
 
 
 Route::get('/home', fn() => view('web.home'))->name('web.home');
@@ -55,11 +53,9 @@ Route::prefix('admin')
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('classrooms', ClassroomController::class);
-    Route::resource('departments', DepartmentController::class);
     Route::resource('exams', ExamController::class);
     Route::resource('expense_categories', ExpenseCategoryController::class);
     Route::resource('expenses', ExpenseController::class);
@@ -101,47 +97,17 @@ Route::prefix('admin')
       Route::get('/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('show');
     });
 
-    Route::group([], function () {
-      Route::prefix('expenses')->name('expenses.')->group(function () {
-        Route::post('/bulk-delete', [ExpenseController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [ExpenseController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [ExpenseController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
 
-      Route::prefix('sections')->name('sections.')->group(function () {
-        Route::post('/bulk-delete', [SectionController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [SectionController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [SectionController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
 
-      Route::prefix('students')->name('students.')->group(function () {
-        Route::post('/bulk-delete', [StudentController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [StudentController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [StudentController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
+    Route::prefix('students')->name('students.')->group(function () {
+      Route::post('/bulk-delete', [StudentController::class, 'bulkDelete'])->name('bulkDelete');
+      Route::post('/bulk-data', [StudentController::class, 'getBulkData'])->name('getBulkData');
+      Route::post('/bulk-update', [StudentController::class, 'bulkUpdate'])->name('bulkUpdate');
+    });
 
-      Route::prefix('departments')->name('departments.')->group(function () {
-        Route::post('/bulk-delete', [DepartmentController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [DepartmentController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [DepartmentController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
-
-      Route::prefix('subjects')->name('subjects.')->group(function () {
-        Route::post('/bulk-delete', [SubjectController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [SubjectController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [SubjectController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
-
-      Route::prefix('exams')->name('exams.')->group(function () {
-        Route::post('/bulk-delete', [ExamController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [ExamController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [ExamController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
-
-      Route::prefix('teachers')->name('teachers.')->group(function () {
-        Route::post('/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('bulkDelete');
-        Route::post('/bulk-data', [TeacherController::class, 'getBulkData'])->name('getBulkData');
-        Route::post('/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('bulkUpdate');
-      });
+    Route::prefix('teachers')->name('teachers.')->group(function () {
+      Route::post('/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('bulkDelete');
+      Route::post('/bulk-data', [TeacherController::class, 'getBulkData'])->name('getBulkData');
+      Route::post('/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('bulkUpdate');
     });
   });

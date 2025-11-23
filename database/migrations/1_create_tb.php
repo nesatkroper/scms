@@ -8,14 +8,6 @@ return new class extends Migration
 {
   public function up(): void
   {
-    Schema::create('departments', function (Blueprint $table) {
-      $table->id();
-      $table->string('name')->unique();
-      $table->text('description')->nullable();
-      $table->timestamps();
-      $table->softDeletes();
-    });
-
     Schema::create('classrooms', function (Blueprint $table) {
       $table->id();
       $table->string('name');
@@ -35,7 +27,6 @@ return new class extends Migration
       $table->text('address')->nullable();
       $table->date('date_of_birth')->nullable();
       $table->enum('gender', ['male', 'female', 'other'])->nullable()->default('male');
-      $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
       $table->date('joining_date')->nullable();
       $table->string('qualification')->nullable();
       $table->string('experience')->nullable();
@@ -212,7 +203,6 @@ return new class extends Migration
     Schema::dropIfExists('subjects');
     Schema::dropIfExists('sessions');
     Schema::dropIfExists('users');
-    Schema::dropIfExists('departments');
     Schema::dropIfExists('classrooms');
     Schema::dropIfExists('password_reset_tokens');
   }
