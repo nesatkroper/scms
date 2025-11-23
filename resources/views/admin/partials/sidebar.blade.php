@@ -38,9 +38,9 @@
   <nav class="pt-4 flex-grow overflow-y-auto">
     <ul>
       <li class="menu-item relative">
-        <a href="{{ route('admin.home') }}"
+        <a href="{{ route('admin.deshboard') }}"
           class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
-          {{ request()->routeIs('admin.home') ? 'bg-indigo-700' : '' }}">
+          {{ request()->routeIs('admin.deshboard') ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="fas fa-tachometer-alt text-center"></i>
             <span class="ml-3 sidebar-text text-hidden">Dashboard</span>

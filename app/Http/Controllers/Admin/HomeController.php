@@ -18,7 +18,7 @@ class HomeController extends BaseController
 
     protected function ModelPermissionName(): string
     {
-        return 'Home';
+        return 'deshboard';
     }
 
   public function index()

@@ -50,7 +50,7 @@ Route::prefix('admin')
   ->middleware('auth')
   ->group(function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('deshboard');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
