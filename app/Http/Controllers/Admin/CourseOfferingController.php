@@ -39,6 +39,9 @@ class CourseOfferingController extends BaseController
           })
           ->orWhereHas('teacher', function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%");
+          })
+          ->orWhereHas('classroom', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
           });
       })
       ->orderBy('created_at', 'desc')
@@ -54,9 +57,11 @@ class CourseOfferingController extends BaseController
   public function create()
   {
     $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);
+
     $teachers = User::role('teacher')
       ->orderBy('name')
       ->get(['id', 'name', 'specialization']);
+
     $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
 
     if ($subjects->isEmpty()) {

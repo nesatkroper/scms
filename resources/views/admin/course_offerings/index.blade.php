@@ -7,7 +7,6 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      {{-- Icon for Course Offerings (using a calendar/time theme) --}}
       <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
@@ -23,7 +22,6 @@
       Course Offerings List
     </h3>
 
-    {{-- Success/Error Messages --}}
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         <span class="block sm:inline">{{ session('success') }}</span>
@@ -39,7 +37,6 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        {{-- Create Button (Redirects to Create Page) --}}
         <a href="{{ route('admin.course_offerings.create') }}"
           class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -68,7 +65,6 @@
           <a href="{{ route('admin.course_offerings.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
             title="Reset Search">
-            {{-- Using a different reset icon since the original was from a non-standard icon library --}}
             <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -79,7 +75,6 @@
       </div>
     </form>
 
-    {{-- Course Offering Cards --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 xl:grid-cols-2 gap-4">
       @forelse ($courseOfferings as $offering)
         <div
@@ -90,7 +85,6 @@
             <div class="flex flex-col">
               <div class="flex justify-between items-start gap-2">
                 <div>
-                  {{-- Main Subject Name --}}
                   <h4
                     class="font-bold text-lg text-gray-800 dark:text-gray-200 @if ($offering->students->count() >= $offering->classroom->capacity) dark:text-red-600 @endif">
                     {{ $offering->subject->name ?? 'Subject Deleted' }} - {{ $offering->teacher->name ?? 'Unassigned' }} -
@@ -100,7 +94,6 @@
                   </h4>
                 </div>
               </div>
-              {{-- Time Slot and Time Range --}}
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
                 {{ $offering->time_slot }}
                 ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
@@ -130,7 +123,6 @@
           </div>
 
           <div class="p-4 space-y-3">
-            {{-- Teacher --}}
             <div class="flex items-center gap-3 text-sm">
               <div class="p-2 rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -148,7 +140,6 @@
               </div>
             </div>
 
-            {{-- Classroom --}}
             <div class="flex items-center gap-3 text-sm">
               <div class="p-2 rounded-lg bg-purple-50 dark:bg-slate-700 text-purple-600 dark:text-purple-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
@@ -167,7 +158,6 @@
               </div>
             </div>
 
-            {{-- Fee and Capacity --}}
             <div class="flex items-center gap-3 text-sm">
               <div class="p-2 rounded-lg bg-pink-50 dark:bg-slate-700 text-pink-600 dark:text-pink-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
@@ -187,7 +177,6 @@
             </div>
           </div>
 
-          {{-- Actions (Edit Link + Delete Form) --}}
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
@@ -232,7 +221,6 @@
 
             </div>
 
-            {{-- Edit Button (Redirects to Edit Page) --}}
             <div class="flex">
               <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
@@ -243,7 +231,6 @@
                 </span>
               </a>
 
-              {{-- Delete Button (Full form submission) --}}
               <form action="{{ route('admin.course_offerings.destroy', $offering->id) }}" method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this course offering? This action cannot be undone.');">
                 @csrf
@@ -277,7 +264,6 @@
       @endforelse
     </div>
 
-    {{-- Pagination Links --}}
     <div class="mt-6">
       {{ $courseOfferings->links() }}
     </div>
