@@ -164,11 +164,26 @@
                     </ul>
                 </nav>
                 <div class="relative">
-                    <a href="{{ route('web.donation') }}"
+                    {{-- <a href="{{ route('web.donation') }}"
                         class="px-3 py-2 border border-orange-500 rounded-md bg-orange-500 hover:bg-transparent dark:hover:bg-gray-7 hover:text-orange-500 text-slate-100 transition-colors duration-200 cursor-pointer">
                         <i
                             class="fas fa-hand-holding-heart w-5 group-hover:text-blue-500 transition-colors duration-200"></i>
                         Donation
+                    </a> --}}
+                    <a href="{{ route('web.donation') }}"
+                        class="group relative inline-flex items-center justify-center px-3 py-2 text-sm font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 rounded-md shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <!-- Animated background -->
+                        <span
+                            class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                        <!-- Shine effect -->
+                        <span
+                            class="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                        <!-- Button content -->
+                        <span class="relative flex items-center">
+                            <i
+                                class="fas fa-hand-holding-heart w-5 mr-2 transform group-hover:scale-110 transition-transform duration-200"></i>
+                            Make a Donation
+                        </span>
                     </a>
                 </div>
                 <!-- Desktop Theme Toggle -->

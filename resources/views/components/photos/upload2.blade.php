@@ -8,7 +8,7 @@
     {{-- Show initials container if no current image exists --}}
     <div id="{{ $name }}_initials"
       class="rounded-full absolute inset-0 w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 {{ $currentImageUrl ? 'hidden' : '' }}">
-      <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
+      <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"><i class="text-8xl ri-account-circle-fill"></i></span>
     </div>
 
     <input type="file" id="upload_{{ $name }}" name="{{ $name }}" accept="image/*" class="hidden">
