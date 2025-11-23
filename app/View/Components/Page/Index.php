@@ -14,7 +14,8 @@ class Index extends Component
     $showSearch,
     $showReset,
     $showViewToggle,
-    $canCreate,
+    $btnCreate,
+    $href,
     $btnLink;
 
   public function __construct(
@@ -24,7 +25,8 @@ class Index extends Component
     bool $showSearch = true,
     bool $showReset = true,
     bool $showViewToggle = true,
-    bool $canCreate = true,
+    bool $btnCreate = false,
+    string $href = '',
     bool $btnLink = false
   ) {
     $this->title = $title;
@@ -33,7 +35,8 @@ class Index extends Component
     $this->showSearch = $showSearch;
     $this->showReset = $showReset;
     $this->showViewToggle = $showViewToggle;
-    $this->canCreate = $canCreate;
+    $this->btnCreate = $btnCreate;
+    $this->href = $href;
     $this->btnLink = $btnLink;
   }
 

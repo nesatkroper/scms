@@ -2,7 +2,7 @@
 @section('title', 'Users')
 
 @section('content')
-    <x-page.index btn-text="Create New User" :showReset="true" :showViewToggle="true" title="User"
+    <x-page.index :btnLink="true" href="{{route('admin.users.create')}}" btn-text="Create New User" :showReset="true" :showViewToggle="true" title="User"
         iconSvgPath="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z">
         <!-- Filter Form -->
         <form action="{{ route('admin.users.index') }}" method="GET" id="FilterForm" class="my-2">
