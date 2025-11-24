@@ -98,7 +98,8 @@ class CourseOfferingController extends BaseController
 
   public function show(CourseOffering $courseOffering)
   {
-    $courseOffering->load(['subject', 'teacher', 'classroom']);
+    $courseOffering->load(['subject', 'teacher', 'classroom', 'students']);
+
     return view('admin.course_offerings.show', compact('courseOffering'));
   }
 

@@ -25,7 +25,10 @@ class CourseOffering extends Model
   protected $casts = [
     'join_start' => 'date',
     'join_end' => 'date',
+    'start_time' => 'datetime:H:i',
+    'end_time' => 'datetime:H:i',
   ];
+
 
   public function subject()
   {

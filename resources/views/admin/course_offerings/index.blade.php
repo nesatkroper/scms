@@ -213,6 +213,15 @@
             </div>
 
             <div class="flex">
+              <a href="{{ route('admin.course_offerings.show', $offering->id) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-regular fa-eye me-2"></i>
+                  Show
+                </span>
+              </a>
+
               <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
