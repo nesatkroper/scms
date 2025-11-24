@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Exports\AttendanceExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Attendance;
 use App\Models\CourseOffering;
 use App\Models\User;
@@ -47,6 +48,17 @@ class AttendanceController extends BaseController
 
     return view('admin.attendance.index', compact('students', 'courseOffering', 'date'));
   }
+
+
+  public function exportCourseAttendance($courseOfferingId)
+  {
+    $course = CourseOffering::findOrFail($courseOfferingId);
+
+    $fileName = 'Attendance_' . $course->subject->name . '_' . $course->time_slot . '.xlsx';
+
+    return Excel::download(new AttendanceExport($courseOfferingId), $fileName);
+  }
+
 
   public function show($courseOfferingId, $studentId)
   {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ScoreRequest;
+use App\Exports\ScoreExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Score;
 use App\Models\Exam;
 use Illuminate\Http\Request;
@@ -46,6 +46,16 @@ class ScoreController extends BaseController
 
     return view('admin.scores.index', compact('students', 'exam'));
   }
+
+  public function exportExamScores($examId)
+  {
+    $exam = Exam::with('courseOffering')->findOrFail($examId);
+
+    $fileName = 'Scores_' . $exam->title . '_' . $exam->courseOffering->subject->name . '.xlsx';
+
+    return Excel::download(new ScoreExport($examId), $fileName);
+  }
+
 
 
   public function saveAll(Request $request)

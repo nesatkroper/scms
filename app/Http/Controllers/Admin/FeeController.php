@@ -7,6 +7,7 @@ use App\Http\Requests\FeeRequest;
 use App\Models\Fee;
 use App\Models\FeeType;
 use App\Models\User;
+use App\Notifications\FeeAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -63,6 +64,22 @@ class FeeController extends BaseController
     ));
   }
 
+  public function markPaid(Fee $fee)
+  {
+    if ($fee->status === 'paid') {
+      return back()->with('error', 'This fee is already marked as paid.');
+    }
+
+    $fee->update([
+      'status' => 'paid',
+      'paid_date' => now(),
+    ]);
+
+
+
+    return back()->with('success', 'Fee successfully marked as paid.');
+  }
+
   public function create(Request $request)
   {
     $students = User::role('student')->get(['id', 'name']);
@@ -85,7 +102,12 @@ class FeeController extends BaseController
       $data = $request->validated();
       $data['created_by'] = Auth::id();
 
-      Fee::create($data);
+      if (!isset($data['status'])) {
+        $data['status'] = 'pending';
+      }
+
+      $fee = Fee::create($data);
+      $fee->student->notify(new FeeAssigned($fee));
 
       return redirect()
         ->route('admin.fees.index', ['fee_type_id' => $data['fee_type_id']])

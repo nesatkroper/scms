@@ -98,12 +98,16 @@ Route::prefix('admin')
     Route::prefix('scores')->name('scores.')->group(function () {
       Route::get('/', [ScoreController::class, 'index'])->name('index');
       Route::post('/save-all', [ScoreController::class, 'saveAll'])->name('saveAll');
+      Route::get('/export/{exam_id}', [ScoreController::class, 'exportExamScores'])
+        ->name('export');
     });
 
     Route::prefix('attendances')->name('attendances.')->group(function () {
       Route::get('/', [AttendanceController::class, 'index'])->name('index');
       Route::post('/save-all', [AttendanceController::class, 'saveAll'])->name('saveAll');
       Route::get('/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('show');
+      Route::get('/export/{course_offering_id}', [AttendanceController::class, 'exportCourseAttendance'])
+        ->name('export');
     });
 
     Route::get('notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
@@ -112,6 +116,7 @@ Route::prefix('admin')
 
 
     Route::post('expenses/{expense}/approve', [App\Http\Controllers\Admin\ExpenseController::class, 'approve'])->name('expenses.approve');
+    Route::post('fees/{fee}/mark-paid', [App\Http\Controllers\Admin\FeeController::class, 'markPaid'])->name('fees.markPaid');
 
 
     Route::prefix('students')->name('students.')->group(function () {

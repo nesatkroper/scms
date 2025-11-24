@@ -102,21 +102,12 @@
             </div>
 
             <div class="flex">
-              <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
+              <a href="{{ route('admin.attendances.export', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Attendance">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-file-export me-2"></i>
                   Eport Attendance
-                </span>
-              </a>
-
-              <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                title="Attendance">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-download me-2"></i>
-                  Eport Score
                 </span>
               </a>
             </div>

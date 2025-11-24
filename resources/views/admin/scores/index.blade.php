@@ -48,9 +48,18 @@
           </span>
         </h3>
 
-        <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
-          Save All Scores
-        </button>
+        <div class="flex gap-4">
+          <a href="{{ route('admin.exams.index', ['exam_id' => $exam->id]) }}"
+            class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            <span class="btn-content flex items-center justify-center">
+              <i class="fa-solid fa-arrow-left me-2"></i>
+              Back to Exam
+            </span>
+          </a>
+          <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            Save All Scores
+          </button>
+        </div>
       </div>
 
       {{-- Students List --}}
