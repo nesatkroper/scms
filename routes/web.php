@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\{
   StudentCourseController,
   FeeTypeController,
   FeeController,
+  NotificationController,
 };
 
 
@@ -43,6 +44,7 @@ Route::get('/', function () {
   return redirect('/login');
 });
 
+
 Route::get('/lang/{locale}', function ($locale) {
   if (! in_array($locale, ['en', 'km',]))
     abort(400);
@@ -51,6 +53,7 @@ Route::get('/lang/{locale}', function ($locale) {
   session()->put('locale', $locale);
   return back();
 })->name('lang.switch');
+
 
 
 Route::prefix('admin')
@@ -103,6 +106,12 @@ Route::prefix('admin')
       Route::get('/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('show');
     });
 
+    Route::get('notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('notifications/{id}/read', [App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('notifications/read-all', [App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+
+
+    Route::post('expenses/{expense}/approve', [App\Http\Controllers\Admin\ExpenseController::class, 'approve'])->name('expenses.approve');
 
 
     Route::prefix('students')->name('students.')->group(function () {

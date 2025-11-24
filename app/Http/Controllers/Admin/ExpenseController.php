@@ -7,9 +7,11 @@ use App\Http\Requests\ExpenseRequest;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\User;
+use App\Notifications\ExpenseCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class ExpenseController extends BaseController
 {
@@ -64,6 +66,8 @@ class ExpenseController extends BaseController
     $categoryId = $request->input('category_id');
     $category = ExpenseCategory::findOrFail($categoryId);
 
+
+
     return view('admin.expenses.create', compact('category'));
   }
 
@@ -73,13 +77,35 @@ class ExpenseController extends BaseController
     $data = $request->validated();
     $data['approved_by'] = null;
     $data['created_by'] = Auth::id();
-    Expense::create($data);
+    $expense =  Expense::create($data);
+
+    $notifiableUsers = User::role(['admin', 'staff'])->get();
+    Notification::send($notifiableUsers, new ExpenseCreated($expense));
 
     return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
       ->with('success', 'Expense record created successfully!');
   }
 
+  public function show(Expense $expense)
+  {
+    return view('admin.expenses.show', compact('expense'));
+  }
 
+  public function approve(Expense $expense)
+  {
+    if ($expense->approved_by) {
+      return back()->with('error', 'This expense is already approved.');
+    }
+
+    $expense->update([
+      'approved_by' => Auth::id(),
+      'approved_at' => now(),
+    ]);
+
+
+    return redirect()->route('admin.expenses.index')
+      ->with('success', "Expense '{$expense->title}' has been successfully approved!");
+  }
 
   public function edit(Expense $expense)
   {

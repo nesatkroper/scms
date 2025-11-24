@@ -10,16 +10,7 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-  // public function __construct()
-  //   {
-  //       parent::__construct();
-  //       $this->applyPermissions();
-  //   }
 
-  //   protected function ModelPermissionName(): string
-  //   {
-  //       return 'deshboard';
-  //   }
 
   public function index()
   {
