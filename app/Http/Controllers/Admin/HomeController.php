@@ -8,18 +8,18 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
 
-class HomeController extends BaseController
+class HomeController extends Controller
 {
-  public function __construct()
-    {
-        parent::__construct();
-        $this->applyPermissions();
-    }
+  // public function __construct()
+  //   {
+  //       parent::__construct();
+  //       $this->applyPermissions();
+  //   }
 
-    protected function ModelPermissionName(): string
-    {
-        return 'deshboard';
-    }
+  //   protected function ModelPermissionName(): string
+  //   {
+  //       return 'deshboard';
+  //   }
 
   public function index()
   {
