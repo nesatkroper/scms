@@ -1,90 +1,97 @@
 @extends('layouts.admin')
 @section('title', 'Create Role')
 @section('content')
+
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    <h2 class="text-2xl font-bold mb-2">Create New Role</h2>
+    <h2 class="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">Create New Role</h2>
 
     <form action="{{ route('admin.roles.store') }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
       @csrf
-      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        Name <span class="text-red-500">*</span>
-      </label>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-20 border p-2 rounded-md border-gray-300 bg-violet-50 dark:bg-slate-800 dark:border-gray-700">
-        <div class="">
-          <input type="text" id="name" name="name" value="{{ old('name') }}"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
-            placeholder="Enter role name" required maxlength="255">
-          @error('name')
-            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-          @enderror
-        </div>
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
-          <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search permissions ..."
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Role Name <span class="text-red-500">*</span>
+        </label>
+        <input type="text" id="name" name="name" value="{{ old('name') }}"
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
+          placeholder="Enter role name (e.g., administrator, teacher, student)" required maxlength="255">
+        @error('name')
+          <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+        @enderror
+      </div>
+
+      <div class="mb-4 p-3 border rounded-md border-gray-300 dark:border-gray-700 bg-violet-50 dark:bg-slate-800/50">
+
+        <h3 class="text-lg font-bold text-gray-700 dark:text-gray-300 mb-3">
+          Assign Permissions
+        </h3>
+
+        <div class="flex items-center gap-2 mb-4">
+          <div class="relative w-full sm:max-w-xs">
+            <input type="search" id="searchInput" placeholder="Search permissions..."
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+                focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
+            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
-          <button id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-            <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+          <button id="resetSearch" type="button"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
+            title="Reset Search">
+            <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356-2A8.98 8.98 0 0020 12a9 9 0 11-8-9.98l-7.9 7.9M2 12h2"></path>
+            </svg>
           </button>
         </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-          Permissions
-        </label>
 
         {{-- *** START: Check All Option *** --}}
         <div
-          class="flex items-center space-x-2 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-md border border-indigo-200 dark:border-indigo-700">
+          class="flex items-center space-x-2 mb-3 p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-md border border-indigo-300 dark:border-indigo-700">
           <input id="checkAllPermissions" type="checkbox"
             class="appearance-none size-4
-                            border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
-                            checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500
-                            hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
-                            focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
-                            before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
-                            before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
+                        border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
+                        checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500
+                        hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
+                        focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
+                        before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
+                        before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
           <label for="checkAllPermissions" class="text-sm font-bold text-indigo-700 dark:text-indigo-200 cursor-pointer">
-            Check All / Uncheck All
+            Check All / Uncheck All Visible Permissions
           </label>
         </div>
         {{-- *** END: Check All Option *** --}}
 
         <div id="permissionsGrid"
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 border p-2 rounded-md border-gray-300 dark:border-gray-700">
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
           @foreach ($permissions as $permission)
-            <div class="flex items-center space-x-2 permission-item">
+            <div
+              class="flex items-center space-x-2 p-1.5 permission-item rounded-md hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
               <input id="permission-{{ $permission->id }}-create" name="permissions[]" type="checkbox"
                 value="{{ $permission->id }}"
                 class="permission-checkbox appearance-none size-4
-                                border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
-                                checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
-                                hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
-                                focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
-                                before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
-                                before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100"
+                            border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
+                            checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
+                            hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
+                            focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
+                            before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L29seWxpbmU+PC9zdmc+')]
+                            before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100"
                 {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}>
               <label for="permission-{{ $permission->id }}-create"
-                class="text-sm font-medium text-gray-900 dark:text-gray-300 capitalize permission-label">
-                {{ $permission->name }}
+                class="text-sm font-medium text-gray-900 dark:text-gray-300 capitalize permission-label cursor-pointer">
+                {{ str_replace(['-', '_'], ' ', $permission->name) }}
               </label>
             </div>
           @endforeach
         </div>
         @error('permissions')
-          <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
         @enderror
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.roles.index') }}"
-          class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
+          class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -93,205 +100,58 @@
           Cancel
         </a>
         <button type="submit"
-          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clip-rule="evenodd" />
           </svg>
-          Create
+          Create Role
         </button>
       </div>
     </form>
+
   </div>
 
 @endsection
+
 @push('scripts')
   <script>
     $(document).ready(function() {
-      var $searchInput = $('#searchInput');
-      var $resetBtn = $('#resetSearch');
-      // Change variable name to reflect all checkboxes
-      var $allPermissionCheckboxes = $('.permission-checkbox');
-      var $permissionItems = $('.permission-item');
-      var $checkAll = $('#checkAllPermissions');
+      let $searchInput = $('#searchInput');
+      let $resetBtn = $('#resetSearch');
+      let $allCheckboxes = $('.permission-checkbox');
+      let $permissionItems = $('.permission-item');
+      let $checkAll = $('#checkAllPermissions');
 
-      // --- Check All / Uncheck All Logic ---
-      $checkAll.on('change', function() {
-        // Only affect visible permission checkboxes (respects search filter)
-        var isChecked = $(this).prop('checked');
-        $allPermissionCheckboxes.filter(':visible').prop('checked', isChecked);
-      });
-
-      // --- Individual Checkbox Monitoring ---
-      // If any individual checkbox is unchecked, uncheck the master checkbox
-      $allPermissionCheckboxes.on('change', function() {
-        var allChecked = $allPermissionCheckboxes.length === $allPermissionCheckboxes.filter(':checked').length;
-        $checkAll.prop('checked', allChecked);
-      });
-
-      // --- Filter Permissions while typing ---
-      $searchInput.on('keyup', function() {
-        var keyword = $(this).val().toLowerCase().trim();
-
-        $permissionItems.each(function() {
-          // Search against the label text
-          var label = $(this).find('.permission-label').text().toLowerCase();
-          if (label.includes(keyword)) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
-        });
-
-        // After filtering, check if the "Check All" state needs updating
-        updateCheckAllState();
-      });
-
-      // --- Reset Search Input ---
-      $resetBtn.on('click', function(e) {
-        e.preventDefault();
-        $searchInput.val('');
-        $permissionItems.show();
-        updateCheckAllState();
-      });
-
-      // --- Initial State and Post-Filter Check ---
-      function updateCheckAllState() {
-        // Only count currently visible items
-        var $visibleCheckboxes = $allPermissionCheckboxes.filter(':visible');
-        var allVisibleChecked = $visibleCheckboxes.length > 0 &&
-          $visibleCheckboxes.length === $visibleCheckboxes.filter(':checked').length;
-
-        // If the grid is empty, uncheck master. Otherwise, apply the state.
-        if ($visibleCheckboxes.length === 0) {
-          $checkAll.prop('checked', false);
-        } else {
-          $checkAll.prop('checked', allVisibleChecked);
-        }
+      function updateCheckAll() {
+        let visibleBoxes = $allCheckboxes.filter(':visible');
+        let checkedVisible = visibleBoxes.filter(':checked');
+        $checkAll.prop('checked', visibleBoxes.length > 0 && visibleBoxes.length === checkedVisible.length);
       }
 
-      // Initial check on load (to respect old('permissions'))
-      updateCheckAllState();
+      $checkAll.on('change', function() {
+        $allCheckboxes.filter(':visible').prop('checked', $(this).prop('checked'));
+      });
+
+      $allCheckboxes.on('change', updateCheckAll);
+
+      $searchInput.on('keyup', function() {
+        let keyword = $(this).val().toLowerCase();
+        $permissionItems.each(function() {
+          let text = $(this).find('.permission-label').text().toLowerCase();
+          $(this).toggle(text.includes(keyword));
+        });
+        updateCheckAll();
+      });
+
+      $resetBtn.on('click', function() {
+        $searchInput.val('');
+        $permissionItems.show();
+        updateCheckAll();
+      });
+
+      updateCheckAll();
     });
   </script>
 @endpush
-
-{{-- @extends('layouts.admin')
-@section('title', 'Create Role')
-@section('content')
-    <div
-        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-        <h2 class="text-2xl font-bold mb-2">Create New Role</h2>
-
-        <form action="{{ route('admin.roles.store') }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
-            @csrf
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Name <span class="text-red-500">*</span>
-            </label>
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-20 border p-2 rounded-md border-gray-300 bg-violet-50 dark:bg-slate-800 dark:border-gray-700">
-                <div class="">
-                    <input type="text" id="name" name="name" value="{{ old('name') }}"
-                        class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
-                        placeholder="Enter role name" required maxlength="255">
-                    @error('name')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="flex items-center mt-3 md:mt-0 gap-2">
-                    <div class="relative w-full">
-                        <input type="search" name="search" id="searchInput" placeholder="Search permissions ..."
-                            class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-                        <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-                    </div>
-                    <button id="resetSearch"
-                        class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-                        <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-                    Permissions
-                </label>
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 border p-2 rounded-md border-gray-300 dark:border-gray-700">
-                    @foreach ($permissions as $permission)
-                        <div class="flex items-center space-x-2">
-                            <input id="permission-{{ $permission->id }}-create" name="permissions[]" type="checkbox"
-                                value="{{ $permission->id }}"
-                                class="appearance-none size-4
-                                border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
-                                checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
-                                hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
-                                focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
-                                before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
-                                before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100"
-                                {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}>
-                            <label for="permission-{{ $permission->id }}-create"
-                                class="text-sm font-medium text-gray-900 dark:text-gray-300 capitalize">
-                                {{ $permission->name }}
-                            </label>
-                        </div>
-                    @endforeach
-                </div>
-                @error('permissions')
-                    <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <a href="{{ route('admin.roles.index') }}"
-                    class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Cancel
-                </a>
-                <button type="submit"
-                    class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Create
-                </button>
-            </div>
-        </form>
-    </div>
-
-@endsection
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            var $searchInput = $('#searchInput');
-            var $resetBtn = $('#resetSearch');
-            var $permissionItems = $('[id^="permission-"]');
-            // Filter permissions while typing
-            $searchInput.on('keyup', function() {
-                var keyword = $(this).val().toLowerCase().trim();
-
-                $permissionItems.each(function() {
-                    var label = $(this).next('label').text().toLowerCase();
-                    if (label.includes(keyword)) {
-                        $(this).closest('div').show();
-                    } else {
-                        $(this).closest('div').hide();
-                    }
-                });
-            });
-            // Reset search input
-            $resetBtn.on('click', function(e) {
-                e.preventDefault();
-                $searchInput.val('');
-                $permissionItems.closest('div').show();
-            });
-        });
-    </script>
-@endpush --}}
