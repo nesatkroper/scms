@@ -60,6 +60,7 @@ class AttendanceController extends BaseController
   }
 
 
+
   public function show($courseOfferingId, $studentId)
   {
     $courseOffering = CourseOffering::findOrFail($courseOfferingId);

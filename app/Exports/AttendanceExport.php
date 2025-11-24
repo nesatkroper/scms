@@ -3,11 +3,11 @@
 namespace App\Exports;
 
 use App\Models\Attendance;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use App\Models\CourseOffering;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class AttendanceExport implements FromCollection, WithHeadings, WithMapping
+class AttendanceExport implements FromView
 {
   protected $courseOfferingId;
 
@@ -16,33 +16,28 @@ class AttendanceExport implements FromCollection, WithHeadings, WithMapping
     $this->courseOfferingId = $courseOfferingId;
   }
 
-  public function collection()
+  public function view(): View
   {
-    return Attendance::with('student')
+    $course = CourseOffering::with('subject')->findOrFail($this->courseOfferingId);
+
+    $records = Attendance::with('student')
       ->where('course_offering_id', $this->courseOfferingId)
-      ->orderBy('date', 'asc')
-      ->get();
-  }
+      ->orderBy('student_id')
+      ->orderBy('date')
+      ->get()
+      ->groupBy('student_id');
 
-  public function headings(): array
-  {
-    return [
-      'Student Name',
-      'Student ID',
-      'Date',
-      'Status',
-      'Remarks',
-    ];
-  }
+    $dates = Attendance::where('course_offering_id', $this->courseOfferingId)
+      ->orderBy('date')
+      ->pluck('date')
+      ->map(fn($d) => \Carbon\Carbon::parse($d))
+      ->unique('day')
+      ->values();
 
-  public function map($attendance): array
-  {
-    return [
-      $attendance->student->name,
-      $attendance->student->id,
-      $attendance->date,
-      ucfirst($attendance->status),
-      $attendance->remarks ?? '—',
-    ];
+    return view('exports.attendance_sheet', [
+      'course' => $course,
+      'records' => $records,
+      'dates' => $dates,
+    ]);
   }
 }
