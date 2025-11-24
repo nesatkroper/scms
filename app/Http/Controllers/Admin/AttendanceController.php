@@ -69,7 +69,7 @@ class AttendanceController extends BaseController
     $courseOffering = CourseOffering::with('students')->findOrFail($courseOfferingId);
 
     foreach ($courseOffering->students as $student) {
-      $status = $request->input("status_{$student->id}", 'absent');
+      $status = $request->input("status_{$student->id}", 'absence');
       $remarks = $request->input("remarks_{$student->id}");
 
       Attendance::updateOrCreate(

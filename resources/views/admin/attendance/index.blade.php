@@ -32,10 +32,12 @@
       {{-- Status Key --}}
       <div class="mb-4">
         <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">Status Key:</span>
-        <span class="inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">P = Present</span>
-        <span class="inline-block px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">A = Absent</span>
-        <span class="inline-block px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-semibold">L = Late</span>
-        <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-semibold">E = Excused</span>
+        <span class="inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">L =
+          Attending (1 Score)</span>
+        <span class="inline-block px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-semibold">P =
+          Permission (0.5 Score)</span>
+        <span class="inline-block px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">A =
+          Absent (0 Score)</span>
       </div>
     </form>
 
@@ -67,17 +69,29 @@
           </span>
         </h3>
 
-        <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
-          Save All Attendance
-        </button>
+        <div class="flex gap-4">
+          <a href="{{ route('admin.course_offerings.index') }}"
+            class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            <span class="btn-content flex items-center justify-center">
+              <i class="fa-solid fa-arrow-left me-2"></i>
+              Back to Course
+            </span>
+          </a>
+
+          <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            <i class="fa-regular fa-floppy-disk me-2"></i>
+            Save All Attendance
+          </button>
+        </div>
       </div>
 
       {{-- Students List --}}
-      <div class="my-2 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+      <div class="my-2 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4">
         @forelse($students as $student)
           @php
             $attendanceEntry = $student->attendances->first();
-            $currentStatus = $attendanceEntry?->status ?? 'late';
+            $currentStatus = $attendanceEntry?->status ?? 'absence';
+
           @endphp
 
           <div class="border-b border-gray-200 dark:border-gray-700 py-2 grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -92,24 +106,19 @@
               <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Status</label>
               <div class="flex gap-2">
                 <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="late"
-                    {{ $currentStatus === 'late' ? 'checked' : '' }} class="form-radio text-yellow-500">
+                  <input type="radio" name="status_{{ $student->id }}" value="attending"
+                    {{ $currentStatus === 'attending' ? 'checked' : '' }} class="form-radio text-yellow-500">
                   <span class="ml-1 text-gray-700 dark:text-gray-200">L</span>
                 </label>
                 <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="present"
-                    {{ $currentStatus === 'present' ? 'checked' : '' }} class="form-radio text-green-600">
+                  <input type="radio" name="status_{{ $student->id }}" value="permission"
+                    {{ $currentStatus === 'permission' ? 'checked' : '' }} class="form-radio text-green-600">
                   <span class="ml-1 text-gray-700 dark:text-gray-200">P</span>
                 </label>
                 <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="absent"
-                    {{ $currentStatus === 'absent' ? 'checked' : '' }} class="form-radio text-red-600">
+                  <input type="radio" name="status_{{ $student->id }}" value="absence"
+                    {{ $currentStatus === 'absence' ? 'checked' : '' }} class="form-radio text-red-600">
                   <span class="ml-1 text-gray-700 dark:text-gray-200">A</span>
-                </label>
-                <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="excused"
-                    {{ $currentStatus === 'excused' ? 'checked' : '' }} class="form-radio text-blue-500">
-                  <span class="ml-1 text-gray-700 dark:text-gray-200">E</span>
                 </label>
               </div>
             </div>
