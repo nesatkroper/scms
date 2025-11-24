@@ -32,6 +32,7 @@ class ExpenseController extends BaseController
     $search = $request->input('search');
     $perPage = $request->input('per_page', 8);
     $categoryId = $request->input('category_id');
+    $expense = Expense::where('category_id', '=', $categoryId);
 
     $expenses = Expense::query()
       ->with(['category:id,name', 'creator:id,name'])
@@ -57,7 +58,7 @@ class ExpenseController extends BaseController
 
     $categories = ExpenseCategory::orderBy('name')->get(['id', 'name']);
 
-    return view('admin.expenses.index', compact('expenses', 'categories'));
+    return view('admin.expenses.index', compact('expenses', 'categories', 'expense'));
   }
 
 

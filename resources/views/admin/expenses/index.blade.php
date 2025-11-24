@@ -12,7 +12,8 @@
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M12 6v12m-3-2.818l-.511-.274a.75.75 0 01-.152-.962L9.423 6.326m-3.1 8.783L7.33 12m10.237 2.818l.511-.274a.75.75 0 00.152-.962l-1.423-2.618M18.8 12L16.67 9.177M5 12h14" />
       </svg>
-      Expense Ledger
+      Expense for
+      {{-- {{ $expense->category->name }} --}}
     </h3>
 
     {{-- Success/Error Messages --}}
