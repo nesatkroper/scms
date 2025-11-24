@@ -9,18 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
-class ProfileController extends BaseController
+class ProfileController extends Controller
 {
-  public function __construct()
-  {
-    parent::__construct();
-    $this->applyPermissions();
-  }
-
-  protected function ModelPermissionName(): string
-  {
-    return 'Profile';
-  }
 
   public function show(Request $request)
   {
