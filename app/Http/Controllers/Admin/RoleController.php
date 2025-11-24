@@ -85,6 +85,9 @@ class RoleController extends BaseController
         'name' => $request->name,
       ]);
 
+      // dd($request->all());
+
+
       $role->syncPermissions($request->permissions ?? []);
 
       return redirect()
