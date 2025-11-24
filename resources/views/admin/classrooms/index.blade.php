@@ -13,7 +13,7 @@
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M8.25 21v-4.5m0 0l-5.65 5.65-1.12-1.12 5.65-5.65V4.5A2.25 2.25 0 0112 2.25h8.25a2.25 2.25 0 012.25 2.25v13.5A2.25 2.25 0 0120.25 20.25H12a2.25 2.25 0 00-2.25 2.25z" />
       </svg>
-      Classrooms List
+      {{ __('message.classrooms_list') }}
     </h3>
 
     {{-- Success/Error Messages --}}
