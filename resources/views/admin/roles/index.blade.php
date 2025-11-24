@@ -3,51 +3,53 @@
 @section('title', 'Roles')
 
 @section('content')
-  <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mx-auto px-4 sm">
 
-    {{-- Page Header & Actions --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
-      <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">Roles Management</h1>
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
 
-      <a href="{{ route('admin.roles.create') }}"
-        class="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm
-               text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-               focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition duration-150 ease-in-out">
-        <i class="fa fa-plus -ml-1 mr-2 h-4 w-4"></i> Add Role
-      </a>
-    </div>
+      {{-- Group 1: Title and Add Button --}}
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 flex-shrink-0">
+        <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">Roles Management</h1>
 
-    {{-- Search and Filters Section (Modernized) --}}
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6 border border-gray-200 dark:border-gray-700">
-      <form action="{{ route('admin.roles.index') }}" method="GET" class="flex gap-3 items-center">
-        <div class="relative flex-grow">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="fa fa-search text-gray-400"></i>
+        <a href="{{ route('admin.roles.create') }}"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm
+                 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+                 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition duration-150 ease-in-out">
+          <i class="fa fa-plus -ml-1 mr-2 h-4 w-4"></i> Add Role
+        </a>
+      </div>
+
+      {{-- Group 2: Search Bar --}}
+      <div class="w-full md:w-96 md:ml-6 flex-shrink">
+        <form action="{{ route('admin.roles.index') }}" method="GET" class="flex gap-3 items-center">
+          <div class="relative flex-grow">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fa fa-search text-gray-400"></i>
+            </div>
+            <input type="text" name="search" placeholder="Search roles by name..." value="{{ request('search') }}"
+              class="block w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700
+                     rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                     focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm shadow-sm">
           </div>
-          <input type="text" name="search" placeholder="Search roles by name..." value="{{ request('search') }}"
-            class="block w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700
-                   rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-                   focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm">
-        </div>
 
-        <button type="submit"
-          class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200
-                 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-150 ease-in-out shadow-sm
-                 border border-gray-300 dark:border-gray-700">
-          <i class="fa fa-search"></i>
-          <span class="sr-only">Search</span>
-        </button>
+          <button type="submit"
+            class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200
+                   rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-150 ease-in-out shadow-sm
+                   border border-gray-300 dark:border-gray-700">
+            <i class="fa fa-search"></i>
+            <span class="sr-only">Search</span>
+          </button>
 
-        @if (request('search'))
-          <a href="{{ route('admin.roles.index') }}"
-            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm
-                   transition duration-150 ease-in-out flex items-center">
-            <i class="fa fa-times h-4 w-4"></i>
-          </a>
-        @endif
-      </form>
+          @if (request('search'))
+            <a href="{{ route('admin.roles.index') }}"
+              class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm
+                     transition duration-150 ease-in-out flex items-center">
+              <i class="fa fa-times h-4 w-4"></i>
+            </a>
+          @endif
+        </form>
+      </div>
     </div>
-
     {{-- Alerts (Softer Style) --}}
     @if (session('success'))
       <div
@@ -110,7 +112,7 @@
               <td class="px-4 py-3 text-right whitespace-nowrap">
                 <a href="{{ route('admin.roles.edit', $role->id) }}"
                   class="inline-flex px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm transition duration-150 ease-in-out shadow-sm mr-1">
-                  Edit
+                  <i class="fa-regular fa-pen-to-square"></i>
                 </a>
 
                 <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" class="inline"
@@ -120,7 +122,7 @@
 
                   <button type="submit"
                     class="inline-flex px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition duration-150 ease-in-out shadow-sm">
-                    Delete
+                    <i class="fa-regular fa-trash-can"></i>
                   </button>
                 </form>
               </td>
