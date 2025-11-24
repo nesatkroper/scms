@@ -94,8 +94,9 @@
                   </h4>
                 </div>
               </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize font-bold">
                 {{ $offering->time_slot }}
+                ({{ $offering->schedule }})
                 ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
                 {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})
               </p>

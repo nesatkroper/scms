@@ -57,11 +57,6 @@ class ClassroomController extends BaseController
     }
   }
 
-  public function show(Classroom $classroom)
-  {
-    $classroom->load(['schedules', 'attendances']);
-    return view('admin.classrooms.show', compact('classroom'));
-  }
 
   public function edit(Classroom $classroom)
   {

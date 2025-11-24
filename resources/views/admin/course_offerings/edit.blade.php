@@ -93,6 +93,71 @@
 
       <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
+        {{-- Fee (Price) (Added consistent attributes: step, min, maxlength) --}}
+        <div>
+          <label for="fee" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Course Fee (USD) <span class="text-red-500">*</span>
+          </label>
+          <div class="relative mt-1 rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
+            </div>
+            <input type="number" step="0.01" min="0.00" max="50" id="fee" name="fee" required
+              value="{{ old('fee', $courseOffering->fee) }}"
+              class="w-full pl-7 pr-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('fee') border-red-500 @enderror"
+              placeholder="0.00">
+          </div>
+          @error('fee')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- Join Start Date (Added min/max attributes for validation consistency) --}}
+        <div>
+          <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Enrollment Start Date
+          </label>
+          <input type="date" id="join_start" name="join_start" min="2025-01-01" max="2027-12-31" {{-- Uses Carbon for proper Y-m-d format, handles null with fallback --}}
+            value="{{ old('join_start', $courseOffering->join_start ? \Carbon\Carbon::parse($courseOffering->join_start)->format('Y-m-d') : null) }}"
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
+          @error('join_start')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- Join End Date (Added min/max attributes for validation consistency) --}}
+        <div>
+          <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Enrollment End Date
+          </label>
+          <input type="date" id="join_end" name="join_end" min="2025-01-01" max="2027-12-31" {{-- Uses Carbon for proper Y-m-d format, handles null with fallback --}}
+            value="{{ old('join_end', $courseOffering->join_end ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d') : null) }}"
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
+          @error('join_end')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+      </div>
+
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
+        <div>
+          <label for="schedule" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Schedule <span class="text-red-500">*</span>
+          </label>
+          <select id="schedule" name="schedule" required
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <option value="">Select Schedule</option>
+            @foreach (['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'] as $sch)
+              <option value="{{ $sch }}" @selected(old('schedule') == $sch)>
+                {{ strtoupper($sch) }}
+              </option>
+            @endforeach
+          </select>
+          @error('schedule')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
 
         {{-- Time Slot (ENUM: morning, afternoon, evening) --}}
         <div>
@@ -141,55 +206,6 @@
           @enderror
         </div>
 
-      </div>
-
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
-        {{-- Fee (Price) (Added consistent attributes: step, min, maxlength) --}}
-        <div>
-          <label for="fee" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Course Fee (USD) <span class="text-red-500">*</span>
-          </label>
-          <div class="relative mt-1 rounded-md shadow-sm">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
-            </div>
-            <input type="number" step="0.01" min="0.00" max="50" id="fee" name="fee" required
-              value="{{ old('fee', $courseOffering->fee) }}"
-              class="w-full pl-7 pr-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('fee') border-red-500 @enderror"
-              placeholder="0.00">
-          </div>
-          @error('fee')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Join Start Date (Added min/max attributes for validation consistency) --}}
-        <div>
-          <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Enrollment Start Date
-          </label>
-          <input type="date" id="join_start" name="join_start" min="2025-01-01" max="2027-12-31" {{-- Uses Carbon for proper Y-m-d format, handles null with fallback --}}
-            value="{{ old('join_start', $courseOffering->join_start ? \Carbon\Carbon::parse($courseOffering->join_start)->format('Y-m-d') : null) }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
-          @error('join_start')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
-
-        {{-- Join End Date (Added min/max attributes for validation consistency) --}}
-        <div>
-          <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Enrollment End Date
-          </label>
-          <input type="date" id="join_end" name="join_end" min="2025-01-01" max="2027-12-31"
-            {{-- Uses Carbon for proper Y-m-d format, handles null with fallback --}}
-            value="{{ old('join_end', $courseOffering->join_end ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d') : null) }}"
-            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
-          @error('join_end')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
-        </div>
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">

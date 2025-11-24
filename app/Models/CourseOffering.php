@@ -22,11 +22,12 @@ class CourseOffering extends Model
     'fee',
   ];
 
+
   protected $casts = [
     'join_start' => 'date',
     'join_end' => 'date',
-    'start_time' => 'datetime:H:i',
-    'end_time' => 'datetime:H:i',
+    'start_time' => 'datetime',
+    'end_time' => 'datetime',
   ];
 
 

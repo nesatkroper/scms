@@ -86,7 +86,7 @@
               </div>
 
               {{-- Detail Button (Redirects to Show Page) --}}
-              <a href="{{ route('admin.classrooms.show', $classroom->id) }}"
+              {{-- <a href="{{ route('admin.classrooms.show', $classroom->id) }}"
                 class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
                 title="View Details">
                 <span class="btn-content">
@@ -98,7 +98,7 @@
                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                 </span>
-              </a>
+              </a> --}}
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {{-- Display the Room Number clearly --}}
