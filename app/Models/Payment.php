@@ -21,6 +21,12 @@ class Payment extends Model
     'fee_id'
   ];
 
+  protected $casts = [
+    'payment_date' => 'datetime',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+  ];
+
   public function receiver()
   {
     return $this->belongsTo(User::class, 'received_by');
@@ -34,5 +40,10 @@ class Payment extends Model
   public function fee()
   {
     return $this->belongsTo(Fee::class);
+  }
+
+  public function courseOffering()
+  {
+    return $this->belongsTo(CourseOffering::class, 'course_offering_id');
   }
 }

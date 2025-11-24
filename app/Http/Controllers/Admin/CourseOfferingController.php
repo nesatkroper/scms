@@ -8,6 +8,7 @@ use App\Models\CourseOffering;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Classroom;
+use App\Notifications\CourseAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -82,7 +83,12 @@ class CourseOfferingController extends BaseController
   public function store(CourseOfferingRequest $request)
   {
     try {
-      CourseOffering::create($request->validated());
+      $offering = CourseOffering::create($request->validated());
+
+      if ($offering->teacher) {
+        $offering->teacher->notify(new CourseAssigned($offering));
+      }
+
       return redirect()->route('admin.course_offerings.index')->with('success', 'Course Offering created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating Course Offering: ' . $e->getMessage());

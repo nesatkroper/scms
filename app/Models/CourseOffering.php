@@ -22,6 +22,11 @@ class CourseOffering extends Model
     'fee',
   ];
 
+  protected $casts = [
+    'join_start' => 'date',
+    'join_end' => 'date',
+  ];
+
   public function subject()
   {
     return $this->belongsTo(Subject::class);
