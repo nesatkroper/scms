@@ -18,7 +18,22 @@ class ExamRequest extends FormRequest
       'type' => [
         'required',
         'string',
-        Rule::in(['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final']),
+        Rule::in([
+          'midterm',
+          'final',
+          'speaking',
+          'listening',
+          'reading',
+          'lab1',
+          'lab2',
+          'lab3',
+          'quiz1',
+          'quiz2',
+          'quiz3',
+          'homework1',
+          'homework2',
+          'homework3',
+        ]),
       ],
       'description' => ['nullable', 'string'],
       'course_offering_id' => [
@@ -32,10 +47,11 @@ class ExamRequest extends FormRequest
     ];
   }
 
+
   public function messages()
   {
     return [
-      'type.in' => 'The selected exam type is invalid. Allowed types: lab, quiz, homework1, homework2, homework3, midterm, final.',
+      'type.in' => 'Invalid exam type. Allowed types: midterm, final, speaking, listening, reading, lab1, lab2, lab3, quiz1, quiz2, quiz3, homework1, homework2, homework3.',
     ];
   }
 }

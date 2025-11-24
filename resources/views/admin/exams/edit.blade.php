@@ -36,14 +36,55 @@
 
         {{-- Exam Type --}}
         <div class="lg:col-span-1">
+          @php
+            $examTypes = [
+                'midterm' => 'Midterm',
+                'final' => 'Final',
+                'speaking' => 'Speaking',
+                'listening' => 'Listening',
+                'reading' => 'Reading',
+
+                'lab1' => 'Lab 1',
+                'lab2' => 'Lab 2',
+                'lab3' => 'Lab 3',
+
+                'quiz1' => 'Quiz 1',
+                'quiz2' => 'Quiz 2',
+                'quiz3' => 'Quiz 3',
+
+                'homework1' => 'Homework 1',
+                'homework2' => 'Homework 2',
+                'homework3' => 'Homework 3',
+            ];
+          @endphp
+
           <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Exam Type <span class="text-red-500">*</span>
+          </label>
+
+          <select id="type" name="type" required
+            class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
+
+            <option value="" disabled>Select Exam Type</option>
+
+            @foreach ($examTypes as $key => $label)
+              <option value="{{ $key }}" @selected(old('type', $exam->type) == $key)>
+                {{ $label }}
+              </option>
+            @endforeach
+          </select>
+
+          @error('type')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+
+          {{-- <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Exam Type <span class="text-red-500">*</span>
           </label>
           <select id="type" name="type" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
             <option value="" disabled>Select Exam Type</option>
             @foreach (['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final'] as $examType)
-              {{-- CORRECTED: Added $exam->type as a fallback for old() to pre-select the current value --}}
               <option value="{{ $examType }}" @selected(old('type', $exam->type) == $examType)>
                 {{ ucfirst($examType) }}
               </option>
@@ -51,7 +92,7 @@
           </select>
           @error('type')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-          @enderror
+          @enderror --}}
         </div>
 
         {{-- Exam Date --}}
