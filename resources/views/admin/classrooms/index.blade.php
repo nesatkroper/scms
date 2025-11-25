@@ -41,7 +41,7 @@
                 d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                 clip-rule="evenodd" />
             </svg>
-            Create New
+                {{ __('message.create_new') }}
           </a>
         @endif
 
@@ -102,7 +102,7 @@
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {{-- Display the Room Number clearly --}}
-              Room Number: <span class="font-medium text-indigo-500 dark:text-indigo-400">
+               {{ __('message.room_number') }}<span class="font-medium text-indigo-500 dark:text-indigo-400">
                 {{ $classroom->room_number }}
               </span>
             </p>
@@ -119,7 +119,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Capacity</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.capacity') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-indigo-600 dark:text-indigo-400">{{ $classroom->capacity }} Seats</span>
                 </p>
@@ -137,7 +137,7 @@
               title="Edit">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-pen-to-square me-2"></i>
-                Edit
+                {{ __('message.edit') }}
               </span>
             </a>
 
@@ -150,7 +150,7 @@
                 class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                 title="Delete">
                 <i class="fa-regular fa-trash-can me-2"></i>
-                Delete
+                {{ __('message.delete') }}
               </button>
             </form>
           </div>
@@ -166,8 +166,8 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Classrooms Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first classroom to get started</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_classrooms_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_classroom_to_get_started') }}</p>
           </div>
         </div>
       @endforelse

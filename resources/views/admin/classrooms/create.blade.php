@@ -13,12 +13,12 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M8.25 21v-4.5m0 0l-5.65 5.65-1.12-1.12 5.65-5.65V4.5A2.25 2.25 0 0112 2.25h8.25a2.25 2.25 0 012.25 2.25v13.5A2.25 2.25 0 0120.25 20.25H12a2.25 2.25 0 00-2.25 2.25z" />
         </svg>
-        Create New Classroom
+        {{ __('message.create_new_classroom') }}
       </h3>
       {{-- Back button updated for classrooms --}}
       <a href="{{ route('admin.classrooms.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -31,7 +31,7 @@
         {{-- Classroom Name Field --}}
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Classroom Name <span class="text-red-500">*</span>
+            {{ __('message.classroom_name') }} <span class="text-red-500">*</span>
           </label>
           <input type="text" id="name" name="name" value="{{ old('name') }}"
             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -47,7 +47,7 @@
         {{-- Room Number Field --}}
         <div>
           <label for="room_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Room Number <span class="text-red-500">*</span>
+            {{ __('message.room_number') }} <span class="text-red-500">*</span>
           </label>
           <input type="text" id="room_number" name="room_number" value="{{ old('room_number') }}"
             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -63,7 +63,7 @@
         {{-- Capacity Field --}}
         <div>
           <label for="capacity" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Capacity (Max Seats) <span class="text-red-500">*</span>
+            {{ __('message.capacity_(max_seats)') }} <span class="text-red-500">*</span>
           </label>
           <input type="number" id="capacity" name="capacity" value="{{ old('capacity') }}" max="50" maxlength="2"
             class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -86,7 +86,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
         {{-- Submit button text updated --}}
         <button type="submit"
@@ -96,7 +96,7 @@
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clip-rule="evenodd" />
           </svg>
-          Create Classroom
+          {{ __('message.create_classroom') }}
         </button>
       </div>
     </form>
