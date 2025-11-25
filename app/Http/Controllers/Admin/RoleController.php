@@ -4,96 +4,70 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Http\Request;
 
-class RoleController extends BaseController
+class RoleController extends Controller
 {
-  public function __construct()
+  public function index()
   {
-    parent::__construct();
-    $this->applyPermissions();
-  }
-
-  protected function ModelPermissionName(): string
-  {
-    return 'Role';
-  }
-
-  public function index(Request $request)
-  {
-    $search = $request->input('search');
-    $perPage = $request->input('per_page', 10);
-
-    $roles = Role::query()
-      ->when($search, function ($query) use ($search) {
-        $query->where('name', 'like', "%{$search}%");
-      })
-      ->orderBy('created_at', 'desc')
-      ->paginate($perPage)
-      ->appends([
-        'search' => $search,
-        'per_page' => $perPage,
-      ]);
-
+    $roles = Role::withCount('permissions')->paginate(10);
     return view('admin.roles.index', compact('roles'));
   }
 
   public function create()
   {
-    $permissions = Permission::orderBy('name')->get(['id', 'name']);
-
+    $permissions = Permission::where('guard_name', 'web')->orderBy('name')->get();
     return view('admin.roles.create', compact('permissions'));
   }
 
   public function store(RoleRequest $request)
   {
-    try {
-      $role = Role::create(['name' => $request->name]);
+    $role = Role::create([
+      'name' => $request->name,
+      'guard_name' => 'web',
+    ]);
 
-      if ($request->has('permissions')) {
-        $role->syncPermissions($request->permissions);
-      }
+    $permissions = Permission::whereIn('id', $request->permissions ?? [])->get();
+    $role->syncPermissions($permissions);
 
-      return redirect()->route('admin.roles.index')->with('success', 'Role created and permissions assigned successfully!');
-    } catch (\Exception $e) {
-      Log::error('Error creating Role: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error creating role.')->withInput();
-    }
+    return redirect()->route('admin.roles.index')->with('success', 'Role created successfully.');
   }
+
+
+
 
   public function edit(Role $role)
   {
-    $permissions = Permission::orderBy('name')->get(['id', 'name']);
+    $permissions = Permission::where('guard_name', 'web')->orderBy('name')->get();
     $rolePermissions = $role->permissions->pluck('id')->toArray();
 
     return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
   }
 
-  public function update(RoleRequest $request, Role $role)
+  public function update(Request $request, Role $role)
   {
-    try {
-      $role->update(['name' => $request->name]);
+    $request->validate([
+      'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+      'permissions' => 'nullable|array',
+      'permissions.*' => 'exists:permissions,id'
+    ]);
 
-      $role->syncPermissions($request->permissions ?? []);
+    $role->update([
+      'name' => $request->name,
+    ]);
 
-      return redirect()->route('admin.roles.index')->with('success', 'Role updated and permissions synced successfully!');
-    } catch (\Exception $e) {
-      Log::error('Error updating Role: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error updating role.')->withInput();
-    }
+    $permissions = Permission::whereIn('id', $request->permissions ?? [])->get();
+    $role->syncPermissions($permissions);
+
+    return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully.');
   }
 
   public function destroy(Role $role)
   {
-    try {
-      $role->delete();
-      return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully');
-    } catch (\Exception $e) {
-      Log::error('Error deleting Role: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error deleting role: ' . $e->getMessage());
-    }
+    $role->delete();
+
+    return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
   }
 }
