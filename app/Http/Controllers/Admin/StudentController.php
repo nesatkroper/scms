@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -17,10 +18,11 @@ class StudentController extends Controller
 
     if (!$studentRole) {
       $students = User::where('id', 0);
-      return view('admin.students.index', ['students' => $students->paginate(10)]);
+      return view('admin.students.index', ['students' => $students->paginate(8)]);
     }
 
     $query = User::role('student')
+      ->orderBy('created_at', 'desc')
       ->withCount(['fees', 'attendances']);
 
     if ($search = $request->input('search')) {
@@ -30,7 +32,7 @@ class StudentController extends Controller
       });
     }
 
-    $students = $query->paginate(10);
+    $students = $query->paginate(8);
 
     return view('admin.students.index', compact('students'));
   }
@@ -46,23 +48,31 @@ class StudentController extends Controller
     try {
       $data = $request->validated();
 
+      $defaultPassword = 'password';
+
       if ($request->hasFile('avatar')) {
         $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
       }
 
       $student = User::create(array_merge($data, [
-        'password' => bcrypt($request->password),
+        'password' => bcrypt($defaultPassword),
       ]));
 
       $student->assignRole('student');
 
       DB::commit();
-      return redirect()->route('admin.students.index')->with('success', 'Student created successfully.');
+      return redirect()->route('admin.students.index')->with('success', 'Student created successfully. Default password is: ' . $defaultPassword);
     } catch (\Exception $e) {
       DB::rollBack();
       return redirect()->back()->with('error', 'Failed to create student: ' . $e->getMessage());
     }
   }
+
+  public function show(User $student)
+  {
+    return view('admin.students.show', compact('student'));
+  }
+
 
   public function edit(User $student)
   {
@@ -85,6 +95,7 @@ class StudentController extends Controller
 
       if ($request->hasFile('avatar')) {
         if ($student->avatar) {
+          Storage::disk('public')->delete($student->avatar);
         }
         $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
       } else {
@@ -109,6 +120,10 @@ class StudentController extends Controller
   {
     if (!$student->hasRole('student')) {
       return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
+    }
+
+    if ($student->avatar) {
+      Storage::disk('public')->delete($student->avatar);
     }
 
     $student->delete();

@@ -19,7 +19,9 @@ class StudentRequest extends FormRequest
     $rules = [
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($studentId)],
-      'password' => ['sometimes', 'nullable', 'string', 'min:8', 'confirmed'],
+
+      'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+
       'phone' => ['nullable', 'string', 'max:20'],
       'address' => ['nullable', 'string', 'max:500'],
       'date_of_birth' => ['nullable', 'date'],
@@ -33,9 +35,6 @@ class StudentRequest extends FormRequest
       'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
     ];
 
-    if ($this->isMethod('POST')) {
-      $rules['password'] = ['required', 'string', 'min:8', 'confirmed'];
-    }
 
     return $rules;
   }

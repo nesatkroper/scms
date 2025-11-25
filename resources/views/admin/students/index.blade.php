@@ -100,6 +100,24 @@
               <td class="px-6 py-4 text-right whitespace-nowrap">
                 <div class="flex justify-end gap-2">
 
+                  <a href="{{ route('admin.students.show', $student->id) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Edit Student">
+                    <i class="fa-regular fa-eye"></i>
+                  </a>
+
+                  <a href="{{ route('admin.students.edit', $student->id) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Edit Student">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                  </a>
+
+                  <a href="{{ route('admin.students.edit', $student->id) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Edit Student">
+                    <i class="fa-solid fa-file-circle-plus"></i>
+                  </a>
+
                   <a href="{{ route('admin.students.edit', $student->id) }}"
                     class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                     title="Edit Student">
@@ -126,8 +144,8 @@
                   class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
                   <div
                     class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400 dark:text-red-500" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400 dark:text-red-500"
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
