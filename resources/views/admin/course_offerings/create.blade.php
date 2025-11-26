@@ -16,11 +16,11 @@
           <line x1="8" y1="2" x2="8" y2="6"></line>
           <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
-        Create New Course Offering
+        {{ __('message.create_new_course_offering') }}
       </h3>
       <a href="{{ route('admin.course_offerings.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -32,11 +32,11 @@
         {{-- Subject Select --}}
         <div>
           <label for="subject_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Subject <span class="text-red-500">*</span>
+            {{ __('message.subject') }} <span class="text-red-500">*</span>
           </label>
           <select id="subject_id" name="subject_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('subject_id') border-red-500 @enderror">
-            <option value="">Select Subject</option>
+            <option value="">{{ __('message.select_subject') }}</option>
             @foreach ($subjects as $subject)
               <option value="{{ $subject->id }}" @selected(old('subject_id') == $subject->id)>{{ $subject->name }}
                 ({{ $subject->code ?? '' }})
@@ -51,11 +51,11 @@
         {{-- Teacher Select (Assuming User Model) --}}
         <div>
           <label for="teacher_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Teacher <span class="text-red-500">*</span>
+            {{ __('message.teacher') }} <span class="text-red-500">*</span>
           </label>
           <select id="teacher_id" name="teacher_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('teacher_id') border-red-500 @enderror">
-            <option value="">Select Teacher</option>
+            <option value="">{{ __('message.select_teacher') }}</option>
             @foreach ($teachers as $teacher)
               <option value="{{ $teacher->id }}" @selected(old('teacher_id') == $teacher->id)>{{ $teacher->name }}
                 ({{ $teacher->specialization }})
@@ -70,11 +70,11 @@
         {{-- Classroom Select --}}
         <div>
           <label for="classroom_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Classroom <span class="text-red-500">*</span>
+            {{ __('message.classroom') }} <span class="text-red-500">*</span>
           </label>
           <select id="classroom_id" name="classroom_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('classroom_id') border-red-500 @enderror">
-            <option value="">Select Classroom</option>
+            <option value="">{{ __('message.select_classroom') }}</option>
             @foreach ($classrooms as $classroom)
               <option value="{{ $classroom->id }}" @selected(old('classroom_id') == $classroom->id)>{{ $classroom->name }}</option>
             @endforeach
@@ -89,7 +89,7 @@
         {{-- Fee (Price) --}}
         <div>
           <label for="fee" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Course Fee (USD) <span class="text-red-500">*</span>
+            {{ __('message.course_fee') }} (USD) <span class="text-red-500">*</span>
           </label>
           <div class="relative mt-1 rounded-md shadow-sm">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -108,7 +108,7 @@
         {{-- Join Start Date --}}
         <div>
           <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Enrollment Start Date
+            {{ __('message.enrollment_start_date') }}
           </label>
           <input type="date" id="join_start" name="join_start" value="{{ old('join_start') ?? '2025-01-01' }}"
             min="2025-01-01" max="2027-12-31"
@@ -121,7 +121,7 @@
         {{-- Join End Date --}}
         <div>
           <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Enrollment End Date
+            {{ __('message.enrollment_end_date') }}
           </label>
           <input type="date" id="join_end" name="join_end" value="{{ old('join_end') ?? '2025-01-01' }}"
             min="2025-01-01" max="2027-12-31"
@@ -136,11 +136,11 @@
         class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
         <div>
           <label for="schedule" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Schedule <span class="text-red-500">*</span>
+            {{ __('message.schedule') }} <span class="text-red-500">*</span>
           </label>
           <select id="schedule" name="schedule" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            <option value="">Select Schedule</option>
+            <option value="">{{ __('message.select_schedule') }}</option>
             @foreach (['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'] as $sch)
               <option value="{{ $sch }}" @selected(old('schedule') == $sch)>
                 {{ strtoupper($sch) }}
@@ -155,11 +155,11 @@
         {{-- Time Slot (e.g., Mon/Wed 10:00) --}}
         <div>
           <label for="time_slot" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Time Slot Category <span class="text-red-500">*</span>
+            {{ __('message.time_slot_category') }} <span class="text-red-500">*</span>
           </label>
           <select id="time_slot" name="time_slot" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
-            <option value="">Select Category</option>
+            <option value="">{{ __('message.select_category') }}</option>
             @foreach (['morning', 'afternoon', 'evening'] as $slot)
               <option value="{{ $slot }}">
                 {{ ucfirst($slot) }}
@@ -174,7 +174,7 @@
         {{-- Start Time --}}
         <div>
           <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Start Time <span class="text-red-500">*</span>
+            {{ __('message.start_time') }} <span class="text-red-500">*</span>
           </label>
           <input type="time" id="start_time" name="start_time" value="{{ old('start_time') ?? '06:00' }}"
             min="06:00" max="21:00"
@@ -188,7 +188,7 @@
         {{-- End Time --}}
         <div>
           <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            End Time <span class="text-red-500">*</span>
+            {{ __('message.end_time') }} <span class="text-red-500">*</span>
           </label>
           <input type="time" id="end_time" name="end_time" value="{{ old('end_time') ?? '06:00' }}"
             min="06:00" max="21:00"
@@ -209,7 +209,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
         <button type="submit"
           class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
@@ -218,7 +218,7 @@
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clip-rule="evenodd" />
           </svg>
-          Create Offering
+          {{ __('message.create_offering') }}
         </button>
       </div>
     </form>
