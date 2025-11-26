@@ -45,7 +45,7 @@
           <a href="{{ route('admin.subjects.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
             title="Reset Search">
-            <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+            <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
       </div>
