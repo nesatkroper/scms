@@ -2,7 +2,7 @@
 @section('title', 'Fees for: ' . $student->name)
 @section('content')
 
-  <div class="mb-6 flex justify-between items-center">
+  <div class="mb-6 flex justify-between items-center mb-10">
     <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
       <svg class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

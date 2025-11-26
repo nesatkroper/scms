@@ -5,7 +5,7 @@
 @section('content')
 
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-regular fa-file-lines"></i>
       Exams List for {{ $courses->subject->name }} - {{ $courses->teacher->name }} ({{ $courses->time_slot }})

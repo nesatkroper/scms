@@ -147,42 +147,6 @@
           </form>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400 mb-4">👮 Change User Role</h3>
-          <form action="{{ route('admin.users.role.update', $user) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="mb-4">
-              <label for="role_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Assign New
-                Role</label>
-              <select name="role_name" id="role_name" required
-                class="form-control form-select w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                    border-slate-300 @error('role_name') border-red-500 @enderror">
-                <option value="">-- Select Role --</option>
-
-                {{-- Ensure $allRoles is passed from your controller --}}
-                @foreach ($allRoles as $role)
-                  <option class="capitalize" value="{{ $role->name }}"
-                    @if ($user->hasRole($role->name)) selected @endif>
-                    {{ ucfirst($role->name) }}
-                  </option>
-                @endforeach
-              </select>
-              @error('role_name')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-              @enderror
-            </div>
-
-            <button type="submit"
-              class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
-              Change Role
-            </button>
-          </form>
-        </div>
-
         {{-- Delete Button Card --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
           <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>

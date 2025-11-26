@@ -7,7 +7,7 @@
   {{-- <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"> --}}
   <div x-data="userModals()"
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
@@ -103,7 +103,7 @@
                       @if ($role->name === 'admin') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
                       @elseif ($role->name === 'teacher') bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200
                       @elseif ($role->name === 'student') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                      @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif ">
+                      @else bg-purple-100 text-purple-800 dark:bg-purple-700 dark:text-purple-300 @endif ">
                     <i class="fa-solid fa-shield-halved"></i>
                     {{ $role->name }}
                   </span>
@@ -284,7 +284,7 @@
             <button @click.prevent="closeModals()" type="button"
               class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
 
-            <button type="submit" class="px-3 py-1 bg-indigo-600 text-white rounded">Update</button>
+            <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded">Update</button>
           </div>
         </form>
       </div>
@@ -296,6 +296,16 @@
         <h2 class="text-lg font-bold mb-3">
           Change Roles: <span x-text="user.name"></span>
         </h2>
+
+        @php
+          $allRoles = $roles;
+
+          $inputClasses =
+              'form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
+
+          $fileClasses =
+              'form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600';
+        @endphp
 
         <form :action="'/admin/users/role/' + user.id + ''" method="POST">
           @csrf
@@ -311,8 +321,14 @@
               @foreach ($roles as $role)
                 <label
                   class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 capitalize cursor-pointer">
-                  <input type="checkbox" name="roles[]" value="{{ $role->name }}" x-model="selectedRoles"
+                  <input type="checkbox" name="role_names[]" value="{{ $role->name }}"
+                    :checked="selectedRoles.includes('{{ $role->name }}')" x-model="selectedRoles"
                     class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-offset-gray-800">
+
+                  {{-- <input type="checkbox" name="role_names[]" value="{{ $role->name }}" x-model="selectedRoles"
+                    :checked="selectedRoles.includes('{{ $role->name }}')"
+                    class="form-checkbox h-4 w-4 text-indigo-600" /> --}}
+
                   <span class="ml-2">{{ $role->name }}</span>
                 </label>
               @endforeach
@@ -353,6 +369,7 @@
 
         openRoleModal(id) {
           this.user = window.UsersData.find(u => u.id === id);
+          this.selectedRoles = this.user.roles.map(r => r.name);
           this.showRoleModal = true;
         },
 
