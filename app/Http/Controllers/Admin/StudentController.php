@@ -23,7 +23,7 @@ class StudentController extends Controller
 
     if (!$studentRole) {
       $students = User::where('id', 0);
-      return view('admin.students.index', ['students' => $students->paginate(8)]);
+      return view('admin.students.index', ['students' => $students->paginate(9)]);
     }
 
     $query = User::role('student')
@@ -37,7 +37,7 @@ class StudentController extends Controller
       });
     }
 
-    $students = $query->paginate(8);
+    $students = $query->paginate(9);
 
     return view('admin.students.index', compact('students'));
   }
