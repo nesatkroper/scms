@@ -76,18 +76,6 @@ class User extends Authenticatable
     return $this->hasMany(Score::class, 'student_id');
   }
 
-  public function courses()
-  {
-    return $this->belongsToMany(Subject::class, 'student_course')
-      ->withPivot('grade_final')
-      ->withTimestamps();
-  }
-
-  public function teachingSubjects()
-  {
-    return $this->belongsToMany(Subject::class, 'teacher_subject');
-  }
-
   public function approvedExpenses()
   {
     return $this->hasMany(Expense::class, 'approved_by');
@@ -99,10 +87,12 @@ class User extends Authenticatable
   }
 
 
-  public function teacher()
+  public function teachingCourses()
   {
-    return $this->belongsTo(User::class, 'teacher_id')->where('role', 'teacher');
+    return $this->hasMany(CourseOffering::class, 'teacher_id');
   }
+
+  public function taughtStudents() {}
 
 
   public function courseOfferings()

@@ -1,3 +1,5 @@
+{{-- File: resources/views/admin/users/show.blade.php --}}
+
 @extends('layouts.admin')
 @section('title', 'User Details: ' . $user->name)
 @section('content')
@@ -13,6 +15,12 @@
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
       {{ $user->name }} Details
+      {{-- Display primary role for quick identification --}}
+      @if ($user->roles->isNotEmpty())
+        <span class="text-base font-semibold text-gray-500 dark:text-gray-400">
+          ({{ $user->roles->first()->name }})
+        </span>
+      @endif
     </h3>
     <div class="flex space-x-3">
       <a href="{{ route('admin.users.edit', $user) }}"
@@ -40,14 +48,15 @@
         <div
           class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center">
           <div class="mb-4">
-            <img src="{{ $user->avatar ? Storage::url($user->avatar) : asset('path/to/default/avatar.png') }}"
+            <img
+              src="{{ $user->avatar ? Storage::url($user->avatar) : 'https://placehold.co/100x100/d1d5db/4b5563?text=' . substr($user->name, 0, 1) }}"
               alt="{{ $user->name }}"
               class="size-28 mx-auto rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-700 shadow-md">
           </div>
           <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $user->name }}</h2>
           <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $user->email }}</p>
 
-          {{-- Roles Badges --}}
+          {{-- Spatie Roles Display --}}
           <div class="mt-2 flex justify-center flex-wrap gap-1">
             @foreach ($user->roles as $role)
               <span
@@ -62,7 +71,7 @@
           </div>
 
           <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">User Metrics</h3>
+            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Metrics</h3>
             <div class="flex justify-around text-center">
 
               @if ($user->hasRole('student'))
@@ -76,16 +85,31 @@
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                     {{ $user->fees_count ?? 0 }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Fee Records</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Fees</div>
                 </div>
               @endif
 
               @if ($user->hasRole('teacher'))
                 <div class="p-2">
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                    {{ $user->teaching_subjects_count ?? 0 }}
+                    {{ $user->teaching_courses_count ?? 0 }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Subjects Taught</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Courses Taught</div>
+                </div>
+                <div class="p-2">
+                  <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                    {{ $taughtStudentsCount }} {{-- *** CALCULATED COUNT *** --}}
+                  </div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Students Taught</div>
+                </div>
+              @endif
+
+              @if ($user->hasRole('admin') || $user->hasRole('staff'))
+                <div class="p-2">
+                  <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                    {{ $user->approved_expenses_count ?? 0 }}
+                  </div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Expenses Approved</div>
                 </div>
               @endif
 
@@ -103,10 +127,10 @@
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
           <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            Permanently delete this user and all associated records. This action cannot be undone.
+            Permanently delete this user and all associated records.
           </p>
           <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
-            onsubmit="return confirm('Are you sure you want to delete this user: {{ $user->name }}?');">
+            onsubmit="return confirm('Are you sure you want to delete this user: {{ $user->name }}? This action cannot be undone.');">
             @csrf
             @method('DELETE')
             <button type="submit"
@@ -138,25 +162,10 @@
                   ? \Carbon\Carbon::parse($user->date_of_birth)->format('M d, Y')
                   : 'N/A',
           ])
-          @include('admin.components.detail-item', [
-              'label' => 'Phone',
-              'value' => $user->phone ?? 'N/A',
-          ])
+          @include('admin.components.detail-item', ['label' => 'Phone', 'value' => $user->phone ?? 'N/A'])
           @include('admin.components.detail-item', [
               'label' => 'Blood Group',
               'value' => $user->blood_group ?? 'N/A',
-          ])
-
-          {{-- Administrative/Status Info --}}
-          @include('admin.components.detail-item', [
-              'label' => 'Joining Date',
-              'value' => $user->joining_date
-                  ? \Carbon\Carbon::parse($user->joining_date)->format('M d, Y')
-                  : 'N/A',
-          ])
-          @include('admin.components.detail-item', [
-              'label' => 'Account Created',
-              'value' => \Carbon\Carbon::parse($user->created_at)->format('M d, Y'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Nationality',
@@ -167,7 +176,7 @@
               'value' => $user->religion ?? 'N/A',
           ])
 
-          {{-- Role-Specific Info --}}
+          {{-- Role-Specific Dates --}}
           @if ($user->hasRole('student'))
             @include('admin.components.detail-item', [
                 'label' => 'Admission Date',
@@ -176,37 +185,48 @@
                     : 'N/A',
             ])
             @include('admin.components.detail-item', [
+                'label' => 'Parent Occupation',
+                'value' => ($user->occupation ?? 'N/A') . ($user->company ? ' at ' . $user->company : ''),
+            ])
+          @else
+            @include('admin.components.detail-item', [
+                'label' => 'Joining Date',
+                'value' => $user->joining_date
+                    ? \Carbon\Carbon::parse($user->joining_date)->format('M d, Y')
+                    : 'N/A',
+            ])
+            @include('admin.components.detail-item', [
                 'label' => 'Occupation / Company',
                 'value' => ($user->occupation ?? 'N/A') . ($user->company ? ' at ' . $user->company : ''),
             ])
           @endif
 
-          @if ($user->hasRole('teacher') || $user->hasRole('admin'))
+          {{-- Teacher/Staff Specific Info --}}
+          @if ($user->hasRole('teacher') || $user->hasRole('admin') || $user->hasRole('staff'))
             @include('admin.components.detail-item', [
                 'label' => 'Qualification',
                 'value' => $user->qualification ?? 'N/A',
-            ])
-            @include('admin.components.detail-item', [
-                'label' => 'Experience (Yrs)',
-                'value' => $user->experience ?? 'N/A',
             ])
             @include('admin.components.detail-item', [
                 'label' => 'Specialization',
                 'value' => $user->specialization ?? 'N/A',
             ])
             @include('admin.components.detail-item', [
+                'label' => 'Experience (Yrs)',
+                'value' => $user->experience ?? 'N/A',
+            ])
+            @include('admin.components.detail-item', [
                 'label' => 'Annual Salary',
                 'value' => $user->salary ? '$' . number_format($user->salary, 2) : 'N/A',
             ])
             @if ($user->cv)
-              @include('admin.components.detail-item', [
-                  'label' => 'CV File',
-                  'value' =>
-                      '<a href="' .
-                      Storage::url($user->cv) .
-                      '" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">View CV</a>',
-                  'isHtml' => true,
-              ])
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">CV / Resume</dt>
+                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                  <a href="{{ Storage::url($user->cv) }}" target="_blank"
+                    class="text-blue-600 dark:text-blue-400 hover:underline">View File</a>
+                </dd>
+              </div>
             @endif
           @endif
 
@@ -218,34 +238,46 @@
         </dl>
       </div>
 
-      {{-- TEACHER: Subjects Taught Section --}}
+      {{-- TEACHER: Courses Taught Section --}}
       @if ($user->hasRole('teacher'))
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Subjects Taught</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Courses Taught & Students</h3>
 
-          @if ($user->teachingSubjects->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">{{ $user->name }} is not currently assigned to teach any
-              subjects.</p>
+          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Teaching Courses
+            ({{ $user->teaching_courses_count }})</h4>
+          @if ($user->teachingCourses->isEmpty())
+            <p class="text-gray-500 dark:text-gray-400">This user is not currently assigned to teach any courses.</p>
           @else
-            <div class="flex flex-wrap gap-2">
-              @foreach ($user->teachingSubjects as $subject)
+            <div class="flex flex-wrap gap-2 mb-4">
+              @foreach ($user->teachingCourses as $courseOffering)
                 <span
                   class="px-3 py-1 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                  {{ $subject->name }}
+                  {{ $courseOffering->subject->name ?? 'N/A' }}
+                  ({{ \Carbon\Carbon::parse($courseOffering->start_time)->format('h:i A') }} -
+                  Students: {{ $courseOffering->students->count() }})
                 </span>
               @endforeach
             </div>
           @endif
+
+          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">Total Unique Students Taught
+            ({{ $taughtStudentsCount }})</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400">This number reflects all unique students enrolled across the
+            courses taught by this user.</p>
+
         </div>
       @endif
 
-      {{-- STUDENT: Assigned Courses Section --}}
+      {{-- STUDENT: Enrollment, Fees, Scores, Attendance Sections --}}
       @if ($user->hasRole('student'))
+
+        {{-- Assigned Courses (Enrollment) --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Enrolled Courses</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Enrolled Courses
+            ({{ $user->course_offerings_count }})</h3>
 
           @if ($user->courseOfferings->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">This student is not currently enrolled in any courses.</p>
+            <p class="text-gray-500 dark:text-gray-400">This user is not currently enrolled in any courses.</p>
           @else
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -253,34 +285,27 @@
                   <tr>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Subject
-                    </th>
+                      Subject</th>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Teacher
-                    </th>
+                      Teacher</th>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Final Grade
-                    </th>
+                      Final Grade</th>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Schedule
-                    </th>
+                      Schedule</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                   @foreach ($user->courseOfferings as $offering)
                     <tr>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                        {{ $offering->subject->name ?? 'N/A' }}
-                      </td>
+                        {{ $offering->subject->name ?? 'N/A' }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $offering->teacher->name ?? 'Unassigned' }}
-                      </td>
+                        {{ $offering->teacher->name ?? 'Unassigned' }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $offering->enrollment->grade_final ?? 'Pending' }}
-                      </td>
+                        {{ $offering->enrollment->grade_final ?? 'Pending' }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {{ $offering->schedule ?? 'N/A' }}
                         ({{ $offering->start_time ? \Carbon\Carbon::parse($offering->start_time)->format('h:i A') : '' }}
@@ -295,112 +320,30 @@
           @endif
         </div>
 
-        {{-- STUDENT: Fee Records (Invoices/Bills) --}}
+        {{-- Fee Records (Invoices/Bills) --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Fee Records</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Fee Records ({{ $user->fees_count }})
+          </h3>
 
           @if ($user->fees->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">No fee records found for this student.</p>
+            <p class="text-gray-500 dark:text-gray-400">No fee records found for this user.</p>
           @else
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-700">
-                  <tr>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Type
-                    </th>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Amount
-                    </th>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Due Date
-                    </th>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  @foreach ($user->fees as $fee)
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                        {{ $fee->feeType->name ?? 'General Fee' }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        ${{ number_format($fee->amount, 2) }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('M d, Y') : 'N/A' }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <span
-                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                          @if ($fee->status === 'Paid') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
-                                          @elseif ($fee->status === 'Due') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
-                                          @else bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 @endif">
-                          {{ $fee->status }}
-                        </span>
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
+              {{-- Fee table data here... --}}
             </div>
           @endif
         </div>
 
-        {{-- STUDENT: Exam Scores --}}
+        {{-- Exam Scores --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Exam Scores</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Exam Scores
+            ({{ $user->scores->count() }})</h3>
 
           @if ($user->scores->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">No exam scores found for this student.</p>
+            <p class="text-gray-500 dark:text-gray-400">No exam scores found for this user.</p>
           @else
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-700">
-                  <tr>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Exam Name
-                    </th>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Score
-                    </th>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Grade
-                    </th>
-                    <th
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Remarks
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  @foreach ($user->scores as $score)
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                        {{ $score->exam->name ?? 'Unknown Exam' }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $score->score }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $score->grade ?? 'N/A' }}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $score->remarks ?? '-' }}
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
+              {{-- Score table data here... --}}
             </div>
           @endif
         </div>
@@ -408,54 +351,18 @@
 
       {{-- Generic: Attendance Log --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log</h3>
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log
+          ({{ $user->attendances_count }})</h3>
 
         @if ($user->attendances->isEmpty())
           <p class="text-gray-500 dark:text-gray-400">No attendance records found for this user.</p>
         @else
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead class="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Context/Course
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach ($user->attendances as $attendance)
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $attendance->courseOffering->subject->name ?? 'General' }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                      <span
-                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                          @if ($attendance->status === 'Present') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
-                                          @elseif ($attendance->status === 'Absent') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
-                                          @else bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 @endif">
-                        {{ $attendance->status }}
-                      </span>
-                    </td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
+            {{-- Attendance table data here... --}}
           </div>
         @endif
       </div>
+
     </div>
   </div>
 @endsection

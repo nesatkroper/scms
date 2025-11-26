@@ -29,7 +29,7 @@ class UserController extends BaseController
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 8);
+    $perPage = $request->input('per_page', 9);
     $roleFilter = $request->input('role_filter');
 
     $roles = Role::all();
@@ -44,7 +44,7 @@ class UserController extends BaseController
         });
       })
       ->when($roleFilter, function ($query) use ($roleFilter) {
-        return $query->role($roleFilter); // Spatie role filter
+        return $query->role($roleFilter);
       })
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
@@ -53,7 +53,6 @@ class UserController extends BaseController
         'per_page' => $perPage,
         'role_filter' => $roleFilter,
       ]);
-    // AJAX Request for live search or pagination
     if ($request->ajax()) {
       $html = [
         'table' => view('admin.users.table', compact('users'))->render(),
@@ -75,6 +74,8 @@ class UserController extends BaseController
     return view('admin.users.create', compact('roles'));
   }
 
+
+
   public function store(Request $request)
   {
     $validatedData = $request->validate([
@@ -90,7 +91,6 @@ class UserController extends BaseController
       'nationality' => ['nullable', 'string', 'max:255'],
       'religion' => ['nullable', 'string', 'max:255'],
       'blood_group' => ['nullable', 'string', 'max:10'],
-      // 'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
       'joining_date' => ['nullable', 'date'],
       'qualification' => ['nullable', 'string', 'max:255'],
       'experience' => ['nullable', 'numeric', 'min:0'],
@@ -135,6 +135,43 @@ class UserController extends BaseController
     }
   }
 
+  public function show(User $user)
+  {
+    $user->load([
+      'roles',
+
+      'courseOfferings.subject',
+      'fees.feeType',
+      'scores.exam',
+      'attendances.courseOffering.subject',
+
+      'teachingCourses.subject',
+      'teachingCourses.courseOfferingsStudents',
+    ]);
+
+    $user->loadCount([
+      'fees',
+      'attendances',
+      'courseOfferings',
+      'teachingCourses',
+      'approvedExpenses',
+    ]);
+
+    $taughtStudentsCount = 0;
+    if ($user->hasRole('teacher')) {
+      $studentIds = collect();
+
+      foreach ($user->teachingCourses as $courseOffering) {
+        $courseOffering->students->pluck('id')->each(function ($id) use ($studentIds) {
+          $studentIds->push($id);
+        });
+      }
+      $taughtStudentsCount = $studentIds->unique()->count();
+    }
+
+    return view('admin.users.show', compact('user', 'taughtStudentsCount'));
+  }
+
   public function edit(User $user)
   {
     $user->load('roles');
@@ -157,7 +194,6 @@ class UserController extends BaseController
       'nationality' => ['nullable', 'string', 'max:255'],
       'religion' => ['nullable', 'string', 'max:255'],
       'blood_group' => ['nullable', 'string', 'max:10'],
-      // 'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
       'joining_date' => ['nullable', 'date'],
       'qualification' => ['nullable', 'string', 'max:255'],
       'experience' => ['nullable', 'numeric', 'min:0'],
@@ -180,7 +216,6 @@ class UserController extends BaseController
         'nationality',
         'religion',
         'blood_group',
-        // 'department_id',
         'joining_date',
         'qualification',
         'experience',
@@ -258,25 +293,17 @@ class UserController extends BaseController
         ], 403);
       }
 
-      // if (!$user->hasRole('student')) {
-      //   return response()->json([
-      //     'success' => false,
-      //     'message' => 'User not found'
-      //   ], 404);
-      // }
-      
+
       if (!$user) {
         return response()->json([
           'success' => false,
           'message' => 'User not found'
         ], 404);
       }
-      // Delete avatar if exists
       if ($user->avatar && file_exists(public_path($user->avatar))) {
         unlink(public_path($user->avatar));
       }
 
-      // Delete CV if exists (you might want to add this)
       if ($user->cv && file_exists(public_path($user->cv))) {
         unlink(public_path($user->cv));
       }
