@@ -82,7 +82,7 @@
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex items-start gap-4">
             {{-- User Avatar --}}
-            <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/images/cambodia.png') }}"
+            <img src="{{ $user->avatar ? asset($user->avatar) : asset('assets/images/cambodia.png') }}"
               alt="{{ $user->name }}" class="w-12 h-12 rounded-full object-cover">
 
             <div class="flex-grow">

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -13,28 +14,53 @@ class UserRequest extends FormRequest
 
   public function rules(): array
   {
+    $userId = $this->route('user') ? $this->route('user')->id : null;
+
+    $rules = [
+      'name' => ['required', 'string', 'max:255'],
+      'email' => [
+        'required',
+        'string',
+        'email',
+        'max:255',
+        Rule::unique('users', 'email')->ignore($userId),
+      ],
+      'type' => ['required', 'string', Rule::exists('roles', 'name')],
+      'phone' => ['nullable', 'string', 'max:255'],
+      'address' => ['nullable', 'string'],
+      'date_of_birth' => ['nullable', 'date'],
+      'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
+      'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+      'nationality' => ['nullable', 'string', 'max:255'],
+      'religion' => ['nullable', 'string', 'max:255'],
+      'blood_group' => ['nullable', 'string', 'max:10'],
+      'joining_date' => ['nullable', 'date'],
+      'qualification' => ['nullable', 'string', 'max:255'],
+      'experience' => ['nullable', 'numeric', 'min:0'],
+      'specialization' => ['nullable', 'string', 'max:255'],
+      'salary' => ['nullable', 'numeric', 'min:0'],
+      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+      'admission_date' => ['nullable', 'date'],
+      'occupation' => ['nullable', 'string', 'max:255'],
+      'company' => ['nullable', 'string', 'max:255'],
+    ];
+
+    if ($this->isMethod('POST')) {
+      $rules['password'] = ['required', 'string', 'min:8'];
+    } elseif ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+      $rules['password'] = ['nullable', 'string', 'min:8'];
+    }
+
+    return $rules;
+  }
+
+  public function messages(): array
+  {
     return [
-      'name' => 'required|string|max:255',
-      'email' => 'required|email|max:255|unique:users,email,' . $this->route('user'),
-      'password' => $this->isMethod('post') ? 'required|string|min:6' : 'nullable|string|min:6',
-      'phone' => 'nullable|string|max:20',
-      'address' => 'nullable|string',
-      'date_of_birth' => 'nullable|date',
-      'gender' => 'nullable|in:male,female,other',
-      'department_id' => 'nullable|exists:departments,id',
-      'joining_date' => 'nullable|date',
-      'qualification' => 'nullable|string|max:255',
-      'experience' => 'nullable|string|max:255',
-      'specialization' => 'nullable|string',
-      'salary' => 'nullable|numeric|min:0',
-      'cv' => 'nullable|file|mimes:pdf,doc,docx',
-      'blood_group' => 'nullable|string|max:5',
-      'nationality' => 'nullable|string|max:255',
-      'religion' => 'nullable|string|max:255',
-      'admission_date' => 'nullable|date',
-      'occupation' => 'nullable|string|max:255',
-      'company' => 'nullable|string|max:255',
-      'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+      'type.required' => 'The user role is required.',
+      'type.exists' => 'The selected role is invalid.',
+      'avatar.max' => 'The avatar image must not be greater than 2MB.',
+      'cv.max' => 'The CV file must not be greater than 5MB.',
     ];
   }
 }

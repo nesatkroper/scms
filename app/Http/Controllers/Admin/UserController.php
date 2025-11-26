@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -76,31 +77,9 @@ class UserController extends BaseController
 
 
 
-  public function store(Request $request)
+  public function store(UserRequest $request)
   {
-    $validatedData = $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'min:8'],
-      'type' => ['required', 'string', Rule::exists('roles', 'name')],
-      'phone' => ['nullable', 'string', 'max:255'],
-      'address' => ['nullable', 'string'],
-      'date_of_birth' => ['nullable', 'date'],
-      'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
-      'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-      'nationality' => ['nullable', 'string', 'max:255'],
-      'religion' => ['nullable', 'string', 'max:255'],
-      'blood_group' => ['nullable', 'string', 'max:10'],
-      'joining_date' => ['nullable', 'date'],
-      'qualification' => ['nullable', 'string', 'max:255'],
-      'experience' => ['nullable', 'numeric', 'min:0'],
-      'specialization' => ['nullable', 'string', 'max:255'],
-      'salary' => ['nullable', 'numeric', 'min:0'],
-      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-      'admission_date' => ['nullable', 'date'],
-      'occupation' => ['nullable', 'string', 'max:255'],
-      'company' => ['nullable', 'string', 'max:255'],
-    ]);
+    $validatedData = $request->validated();
 
     try {
       $avatarPath = public_path('uploads/avatars');
@@ -125,7 +104,6 @@ class UserController extends BaseController
         'password' => Hash::make($validatedData['password']),
         'avatar' => $validatedData['avatar'],
       ]));
-
       $user->assignRole($validatedData['type']);
 
       return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
@@ -179,31 +157,9 @@ class UserController extends BaseController
     return view('admin.users.edit', compact('user', 'roles'));
   }
 
-  public function update(Request $request, User $user)
+  public function update(UserRequest $request, User $user)
   {
-    $validatedData = $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-      'password' => ['nullable', 'string', 'min:8'],
-      'type' => ['required', 'string', Rule::exists('roles', 'name')],
-      'phone' => ['nullable', 'string', 'max:255'],
-      'address' => ['nullable', 'string'],
-      'date_of_birth' => ['nullable', 'date'],
-      'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
-      'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-      'nationality' => ['nullable', 'string', 'max:255'],
-      'religion' => ['nullable', 'string', 'max:255'],
-      'blood_group' => ['nullable', 'string', 'max:10'],
-      'joining_date' => ['nullable', 'date'],
-      'qualification' => ['nullable', 'string', 'max:255'],
-      'experience' => ['nullable', 'numeric', 'min:0'],
-      'specialization' => ['nullable', 'string', 'max:255'],
-      'salary' => ['nullable', 'numeric', 'min:0'],
-      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-      'admission_date' => ['nullable', 'date'],
-      'occupation' => ['nullable', 'string', 'max:255'],
-      'company' => ['nullable', 'string', 'max:255'],
-    ]);
+    $validatedData = $request->validated();
 
     try {
       $data = $request->only([
@@ -225,7 +181,6 @@ class UserController extends BaseController
         'occupation',
         'company',
       ]);
-
       if ($request->hasFile('avatar')) {
         if ($user->avatar && file_exists(public_path($user->avatar))) {
           unlink(public_path($user->avatar));
@@ -253,12 +208,11 @@ class UserController extends BaseController
       }
 
       if ($request->filled('password')) {
-        $data['password'] = Hash::make($request->password);
+        $data['password'] = Hash::make($validatedData['password']);
       }
 
       $user->update($data);
       $user->syncRoles($validatedData['type']);
-
       if ($user->student && ($validatedData['type'] === 'student')) {
         $studentData = [
           'name' => $user->name,
