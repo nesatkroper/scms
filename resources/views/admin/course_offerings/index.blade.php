@@ -94,7 +94,8 @@
                 {{ $offering->time_slot }}
                 ({{ $offering->schedule }})
                 ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
-                {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})
+                {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }}) -
+                (Total Students: {{ $offering->students->count() }})
               </p>
             </div>
 
@@ -141,7 +142,8 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Classroom</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  <span>{{ $offering->classroom->name ?? 'Location TBD' }}</span>
+                  <span>{{ $offering->classroom->name ?? 'Location TBD' }} ({{ $offering->classroom->capacity }}
+                    Seats)</span>
                 </p>
               </div>
             </div>
