@@ -21,7 +21,7 @@ class SubjectController extends BaseController
   {
     return 'Subject';
   }
-  
+
   public function index(Request $request)
   {
     $search = $request->input('search');
@@ -57,11 +57,6 @@ class SubjectController extends BaseController
       Log::error('Error creating subject: ' . $e->getMessage());
       return redirect()->route('admin.subjects.create')->with('error', 'Error creating subject.')->withInput();
     }
-  }
-
-  public function show(Subject $subject)
-  {
-    return view('admin.subjects.show', compact('subject'));
   }
 
   public function edit(Subject $subject)
