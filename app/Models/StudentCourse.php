@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class StudentCourse extends Pivot
 {
+  public $timestamps = true;
   protected $table = 'student_course';
 
   protected $fillable = [
@@ -16,6 +17,8 @@ class StudentCourse extends Pivot
     'payment_status',
     'remarks',
   ];
+
+
 
   public function student()
   {

@@ -16,7 +16,7 @@ class StudentCourseRequest extends FormRequest
     return [
       'student_id'        => 'required|exists:users,id',
       'course_offering_id' => 'required|exists:course_offerings,id',
-      'grade_final'       => 'nullable|numeric|between:0,100',
+      'grade_final' => 'nullable|numeric|min:0|max:100',
       'status'            => 'required|string|in:studying,suspended,dropped,completed',
       'payment_status'    => 'required|string|in:pending,paid,overdue,free',
       'remarks'           => 'nullable|string|max:500',

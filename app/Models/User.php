@@ -86,31 +86,24 @@ class User extends Authenticatable
     return $this->hasMany(Payment::class, 'received_by');
   }
 
-
-  public function teachingCourses()
+  public function scopeTeachers($query)
   {
-    return $this->hasMany(CourseOffering::class, 'teacher_id');
+    return $query->role('teacher');
   }
-
-  public function taughtStudents() {}
-
 
   public function courseOfferings()
   {
     return $this->belongsToMany(CourseOffering::class, 'student_course', 'student_id', 'course_offering_id')
       ->using(StudentCourse::class)
       ->as('enrollment')
-      ->withPivot('grade_final')
+      ->withPivot([
+        'grade_final',
+        'status',
+        'payment_status',
+        'remarks',
+      ])
       ->withTimestamps();
   }
-
-  // public function courseOfferings()
-  // {
-  //   return $this->belongsToMany(CourseOffering::class, 'student_course')
-  //     ->using(StudentCourse::class)
-  //     ->withPivot(['grade_final', 'status', 'payment_status', 'remarks'])
-  //     ->withTimestamps();
-  // }
 
 
   public function getAvatarUrlAttribute()

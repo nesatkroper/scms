@@ -15,7 +15,15 @@ class CourseOfferingRequest extends FormRequest
   {
     return [
       'subject_id' => ['required', 'exists:subjects,id'],
-      'teacher_id' => ['nullable', 'exists:users,id'],
+      'teacher_id' => [
+        'nullable',
+        'exists:users,id',
+        function ($attribute, $value, $fail) {
+          if (!\App\Models\User::find($value)?->hasRole('teacher')) {
+            $fail('Selected user is not a teacher.');
+          }
+        }
+      ],
       'classroom_id' => ['nullable', 'exists:classrooms,id'],
       'time_slot' => ['required', 'string', 'in:morning,afternoon,evening'],
       'schedule' => ['required', 'string', 'in:mon-wed,mon-fri,wed-fri,sat-sun'],

@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -118,8 +116,8 @@ class StudentController extends Controller
       }
 
       $student = User::create(array_merge($data, [
-        'password' => bcrypt($defaultPassword), // Using bcrypt for consistency with the original StudentController
-        'avatar' => $data['avatar'], // Set the processed avatar path
+        'password' => bcrypt($defaultPassword),
+        'avatar' => $data['avatar'],
       ]));
 
       $student->assignRole('student');
@@ -128,43 +126,11 @@ class StudentController extends Controller
       return redirect()->route('admin.students.index')->with('success', 'Student created successfully. Default password is: ' . $defaultPassword);
     } catch (\Exception $e) {
       DB::rollBack();
-      Log::error('Error creating student: ' . $e->getMessage()); // Use Log::error for consistency
+      Log::error('Error creating student: ' . $e->getMessage());
       return redirect()->back()->withInput()->with('error', 'Failed to create student: ' . $e->getMessage());
     }
   }
 
-  // public function storeEnrollment(Request $request, User $student)
-  // {
-  //   $validated = $request->validate([
-  //     'course_offering_id' => [
-  //       'required',
-  //       'exists:course_offerings,id',
-  //       Rule::unique('student_course')->where(function ($query) use ($student) {
-  //         return $query->where('student_id', $student->id);
-  //       }),
-  //     ],
-  //     'grade_final' => 'nullable|string|max:5',
-  //     'status' => 'required|in:active,completed,dropped',
-  //     'payment_status' => 'required|in:paid,pending,waived',
-  //     'remarks' => 'nullable|string|max:255',
-  //   ]);
-
-  //   try {
-  //     $student->courseOfferings()->attach($validated['course_offering_id'], [
-  //       'grade_final' => $validated['grade_final'],
-  //       'status' => $validated['status'],
-  //       'payment_status' => $validated['payment_status'],
-  //       'remarks' => $validated['remarks'],
-  //       'created_at' => now(),
-  //       'updated_at' => now(),
-  //     ]);
-
-  //     return redirect()->route('admin.students.courses.index', $student)
-  //       ->with('success', 'Student successfully enrolled in the course offering.');
-  //   } catch (\Exception $e) {
-  //     return back()->withInput()->withErrors(['enrollment' => 'Failed to create enrollment. ' . $e->getMessage()]);
-  //   }
-  // }
 
   public function storeEnrollment(StudentCourseRequest $request)
   {
@@ -282,7 +248,7 @@ class StudentController extends Controller
         $image->save($avatarPath . '/' . $avatarName);
 
         $data['avatar'] = 'uploads/avatars/' . $avatarName;
-      } elseif ($request->input('clear_avatar')) { // Added 'clear_avatar' logic for consistency
+      } elseif ($request->input('clear_avatar')) {
         if ($student->avatar && file_exists(public_path($student->avatar))) {
           unlink(public_path($student->avatar));
         }
@@ -304,7 +270,7 @@ class StudentController extends Controller
       return redirect()->route('admin.students.index')->with('success', 'Student updated successfully.');
     } catch (\Exception $e) {
       DB::rollBack();
-      Log::error('Error updating student: ' . $e->getMessage()); // Use Log::error for consistency
+      Log::error('Error updating student: ' . $e->getMessage());
       return redirect()->back()->withInput()->with('error', 'Failed to update student: ' . $e->getMessage());
     }
   }
