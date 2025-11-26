@@ -11,9 +11,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class StudentController extends Controller
 {
@@ -69,32 +72,6 @@ class StudentController extends Controller
     return view('admin.students.create');
   }
 
-  public function store(StudentRequest $request)
-  {
-    DB::beginTransaction();
-    try {
-      $data = $request->validated();
-
-      $defaultPassword = 'password';
-
-      if ($request->hasFile('avatar')) {
-        $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
-      }
-
-      $student = User::create(array_merge($data, [
-        'password' => bcrypt($defaultPassword),
-      ]));
-
-      $student->assignRole('student');
-
-      DB::commit();
-      return redirect()->route('admin.students.index')->with('success', 'Student created successfully. Default password is: ' . $defaultPassword);
-    } catch (\Exception $e) {
-      DB::rollBack();
-      return redirect()->back()->with('error', 'Failed to create student: ' . $e->getMessage());
-    }
-  }
-
   public function createEnrollment(User $student)
   {
     $enrolledIds = $student->courseOfferings()->pluck('course_offering_id');
@@ -111,6 +88,73 @@ class StudentController extends Controller
     $feeTypes = FeeType::all();
 
     return view('admin.students.fees.create', compact('student', 'feeTypes'));
+  }
+
+  // public function store(StudentRequest $request)
+  // {
+  //   DB::beginTransaction();
+  //   try {
+  //     $data = $request->validated();
+
+  //     $defaultPassword = 'password';
+
+  //     if ($request->hasFile('avatar')) {
+  //       $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+  //     }
+
+  //     $student = User::create(array_merge($data, [
+  //       'password' => bcrypt($defaultPassword),
+  //     ]));
+
+  //     $student->assignRole('student');
+
+  //     DB::commit();
+  //     return redirect()->route('admin.students.index')->with('success', 'Student created successfully. Default password is: ' . $defaultPassword);
+  //   } catch (\Exception $e) {
+  //     DB::rollBack();
+  //     return redirect()->back()->with('error', 'Failed to create student: ' . $e->getMessage());
+  //   }
+  // }
+
+  public function store(StudentRequest $request)
+  {
+    DB::beginTransaction();
+    try {
+      $data = $request->validated();
+      $defaultPassword = 'password';
+
+      $avatarPath = public_path('uploads/avatars');
+      if (!file_exists($avatarPath)) {
+        mkdir($avatarPath, 0755, true);
+      }
+
+      $data['avatar'] = null;
+      if ($request->hasFile('avatar')) {
+        $manager = new ImageManager(new Driver());
+        $avatar = $request->file('avatar');
+        $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
+
+        $image = $manager->read($avatar);
+        $image->resize(640, 640);
+        $image->save($avatarPath . '/' . $avatarName);
+
+        $data['avatar'] = 'uploads/avatars/' . $avatarName;
+      }
+
+      $student = User::create(array_merge($data, [
+        'password' => bcrypt($defaultPassword), // Using bcrypt for consistency with the original StudentController
+        'avatar' => $data['avatar'], // Set the processed avatar path
+      ]));
+
+      $student->assignRole('student');
+
+      DB::commit();
+      return redirect()->route('admin.students.index')->with('success', 'Student created successfully. Default password is: ' . $defaultPassword);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error('Error creating student: ' . $e->getMessage()); // Use Log::error for consistency
+      return redirect()->back()->withInput()->with('error', 'Failed to create student: ' . $e->getMessage());
+    }
   }
 
   public function storeEnrollment(Request $request, User $student)
@@ -174,7 +218,6 @@ class StudentController extends Controller
     }
   }
 
-
   public function show(User $student)
   {
     $student = $student->load([
@@ -193,7 +236,6 @@ class StudentController extends Controller
     return view('admin.students.show', compact('student'));
   }
 
-
   public function edit(User $student)
   {
     if (!$student->hasRole('student')) {
@@ -202,6 +244,39 @@ class StudentController extends Controller
 
     return view('admin.students.edit', compact('student'));
   }
+
+  // public function update(StudentRequest $request, User $student)
+  // {
+  //   if (!$student->hasRole('student')) {
+  //     return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
+  //   }
+
+  //   DB::beginTransaction();
+  //   try {
+  //     $data = $request->validated();
+
+  //     if ($request->hasFile('avatar')) {
+  //       if ($student->avatar) {
+  //         Storage::disk('public')->delete($student->avatar);
+  //       }
+  //       $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+  //     } else {
+  //       unset($data['password']);
+  //     }
+
+  //     if (isset($data['password'])) {
+  //       $data['password'] = bcrypt($data['password']);
+  //     }
+
+  //     $student->update($data);
+
+  //     DB::commit();
+  //     return redirect()->route('admin.students.index')->with('success', 'Student updated successfully.');
+  //   } catch (\Exception $e) {
+  //     DB::rollBack();
+  //     return redirect()->back()->with('error', 'Failed to update student: ' . $e->getMessage());
+  //   }
+  // }
 
   public function update(StudentRequest $request, User $student)
   {
@@ -214,16 +289,38 @@ class StudentController extends Controller
       $data = $request->validated();
 
       if ($request->hasFile('avatar')) {
-        if ($student->avatar) {
-          Storage::disk('public')->delete($student->avatar);
+        if ($student->avatar && file_exists(public_path($student->avatar))) {
+          unlink(public_path($student->avatar));
         }
-        $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+
+        $avatar = $request->file('avatar');
+        $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
+        $avatarPath = public_path('uploads/avatars');
+
+        if (!file_exists($avatarPath)) {
+          mkdir($avatarPath, 0755, true);
+        }
+
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($avatar);
+        $image->resize(640, 640);
+        $image->save($avatarPath . '/' . $avatarName);
+
+        $data['avatar'] = 'uploads/avatars/' . $avatarName;
+      } elseif ($request->input('clear_avatar')) { // Added 'clear_avatar' logic for consistency
+        if ($student->avatar && file_exists(public_path($student->avatar))) {
+          unlink(public_path($student->avatar));
+        }
+        $data['avatar'] = null;
       } else {
-        unset($data['password']);
+
+        unset($data['avatar']);
       }
 
-      if (isset($data['password'])) {
+      if (isset($data['password']) && !empty($data['password'])) {
         $data['password'] = bcrypt($data['password']);
+      } else {
+        unset($data['password']); // Remove password from data if not updating
       }
 
       $student->update($data);
@@ -232,9 +329,25 @@ class StudentController extends Controller
       return redirect()->route('admin.students.index')->with('success', 'Student updated successfully.');
     } catch (\Exception $e) {
       DB::rollBack();
-      return redirect()->back()->with('error', 'Failed to update student: ' . $e->getMessage());
+      Log::error('Error updating student: ' . $e->getMessage()); // Use Log::error for consistency
+      return redirect()->back()->withInput()->with('error', 'Failed to update student: ' . $e->getMessage());
     }
   }
+
+  // public function destroy(User $student)
+  // {
+  //   if (!$student->hasRole('student')) {
+  //     return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
+  //   }
+
+  //   if ($student->avatar) {
+  //     Storage::disk('public')->delete($student->avatar);
+  //   }
+
+  //   $student->delete();
+
+  //   return redirect()->route('admin.students.index')->with('success', 'Student deleted successfully.');
+  // }
 
   public function destroy(User $student)
   {
@@ -242,8 +355,8 @@ class StudentController extends Controller
       return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
     }
 
-    if ($student->avatar) {
-      Storage::disk('public')->delete($student->avatar);
+    if ($student->avatar && file_exists(public_path($student->avatar))) {
+      unlink(public_path($student->avatar));
     }
 
     $student->delete();
