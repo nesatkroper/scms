@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\{
   AttendanceController,
   ClassroomController,
@@ -36,6 +37,22 @@ Route::get('/', fn() => redirect('/home'));
 
 
 Auth::routes();
+
+
+
+
+// Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+//   ->middleware('guest')
+//   ->name('login');
+
+// Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+//   ->middleware('guest');
+
+// Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+//   ->middleware('auth')
+//   ->name('logout');
+
+
 
 Route::get('/', function () {
   if (Auth::check()) {
