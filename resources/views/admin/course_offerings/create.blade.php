@@ -95,8 +95,8 @@
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
             </div>
-            <input type="number" step="0.01" min="0.00" max="50" maxlength="2" id="fee"
-              name="fee" value="{{ old('fee') }}"
+            <input type="type" step="0.01" min="0.00" max="50" maxlength="2" id="fee"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="fee" value="{{ old('fee') }}"
               class="w-full pl-7 pr-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('fee') border-red-500 @enderror"
               placeholder="0.00" required>
           </div>

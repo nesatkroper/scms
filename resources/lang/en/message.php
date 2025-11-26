@@ -37,4 +37,5 @@ return [
   'classroom' => "Classroom:",
   'attendance_records' => "Attendance Records",
   'no_attendance_records_found_for_this_student_in_this_course' => "No attendance records found for this student in this course.",
+  'create_new_expense_category' => "Create New Expense Category",
 ];

@@ -37,4 +37,5 @@ return [
   'classroom' => "ថ្នាក់រៀន៖",
   'attendance_records' => "កំណត់ត្រាវត្តមាន",
   'no_attendance_records_found_for_this_student_in_this_course' => "មិនមានកំណត់ត្រាវត្តមានត្រូវបានរកឃើញសម្រាប់សិស្សនេះនៅក្នុងវគ្គសិក្សានេះទេ",
+
 ];
