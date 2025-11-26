@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Classroom;
 use App\Notifications\CourseAssigned;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CourseOfferingController extends BaseController
@@ -30,21 +31,31 @@ class CourseOfferingController extends BaseController
     $search = $request->input('search');
     $perPage = $request->input('per_page', 10);
 
+    $user = Auth::user();
+
     $courseOfferings = CourseOffering::query()
       ->with(['subject', 'teacher', 'classroom'])
-      ->when($search, function ($query) use ($search) {
-        return $query->where('time_slot', 'like', "%{$search}%")
-          ->orWhere('fee', 'like', "%{$search}%")
-          ->orWhereHas('subject', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          })
-          ->orWhereHas('teacher', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          })
-          ->orWhereHas('classroom', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-          });
+
+      ->when($user->hasRole('teacher'), function ($query) use ($user) {
+        $query->where('teacher_id', $user->id);
       })
+
+      ->when($search, function ($query) use ($search) {
+        $query->where(function ($q) use ($search) {
+          $q->where('time_slot', 'like', "%{$search}%")
+            ->orWhere('fee', 'like', "%{$search}%")
+            ->orWhereHas('subject', function ($q2) use ($search) {
+              $q2->where('name', 'like', "%{$search}%");
+            })
+            ->orWhereHas('teacher', function ($q3) use ($search) {
+              $q3->where('name', 'like', "%{$search}%");
+            })
+            ->orWhereHas('classroom', function ($q4) use ($search) {
+              $q4->where('name', 'like', "%{$search}%");
+            });
+        });
+      })
+
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
       ->appends([
@@ -54,6 +65,10 @@ class CourseOfferingController extends BaseController
 
     return view('admin.course_offerings.index', compact('courseOfferings'));
   }
+
+
+
+
 
   public function create()
   {

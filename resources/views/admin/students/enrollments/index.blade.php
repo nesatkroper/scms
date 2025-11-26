@@ -124,12 +124,12 @@
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
-            {{-- <a href="{{ route('admin.courseofferings.show', $course) }}"
+            <a href="{{ route('admin.course_offerings.show', $course) }}"
               class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
               title="View Course Details">
               <i class="fa-solid fa-eye me-2"></i>
               View Course
-            </a> --}}
+            </a>
 
           </div>
         </div>

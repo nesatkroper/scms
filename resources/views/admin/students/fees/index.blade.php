@@ -132,14 +132,6 @@
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
-            {{-- Example: Add Payment Button --}}
-            {{-- <a href="{{ route('admin.fees.payments.create', $fee) }}"
-              class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-              title="Add Payment">
-              <i class="fa-solid fa-money-check-dollar me-2"></i>
-              Payment
-            </a> --}}
-
             {{-- Example: View Details Button --}}
             <a href="{{ route('admin.fees.show', $fee) }}"
               class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
@@ -147,9 +139,6 @@
               <i class="fa-solid fa-eye me-2"></i>
               View
             </a>
-
-            {{-- Example: Edit Button (if applicable) --}}
-            {{-- <a href="{{ route('admin.fees.edit', $fee) }}" ...>Edit</a> --}}
 
           </div>
         </div>

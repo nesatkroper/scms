@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class StudentCourseController extends BaseController
 {
@@ -59,6 +60,7 @@ class StudentCourseController extends BaseController
 
     return view('admin.student_courses.index', compact('studentCourses', 'courseOffering'));
   }
+
 
   public function create(Request $request)
   {
