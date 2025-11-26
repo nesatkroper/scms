@@ -23,7 +23,7 @@ class StudentController extends Controller
 
     $query = User::role('student')
       ->orderBy('created_at', 'desc')
-      ->withCount(['fees', 'attendances']);
+      ->withCount(['fees', 'attendances', 'courseOfferings']);
 
     if ($search = $request->input('search')) {
       $query->where(function ($q) use ($search) {
@@ -68,8 +68,22 @@ class StudentController extends Controller
     }
   }
 
+
   public function show(User $student)
   {
+    $student = $student->load([
+      'fees.feeType',
+      'payments.receiver',
+      'attendances.courseOffering.subject',
+      'scores.exam',
+      'courseOfferings.subject',
+      'courseOfferings.teacher',
+    ]);
+
+    $student = User::withCount(['fees', 'attendances'])
+      ->findOrFail($student->id);
+
+
     return view('admin.students.show', compact('student'));
   }
 

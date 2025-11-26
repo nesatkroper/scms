@@ -162,20 +162,219 @@
         </dl>
       </div>
 
-      {{-- You can add sections here for Fees, Attendance, Assigned Courses, etc. --}}
-      {{-- Example placeholder --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Assigned Courses</h3>
-        <p class="text-gray-500 dark:text-gray-400">
-          *Course list integration would go here (e.g., using a table or list of courses related to the student).*
-        </p>
+
+        @if ($student->courseOfferings->isEmpty())
+          <p class="text-gray-500 dark:text-gray-400">This student is not currently enrolled in any courses.</p>
+        @else
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Subject
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Teacher
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Final Grade
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Schedule
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($student->courseOfferings as $offering)
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {{ $offering->subject->name ?? 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $offering->teacher->name ?? 'Unassigned' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $offering->enrollment->grade_final ?? 'Pending' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $offering->schedule ?? 'N/A' }}
+                      ({{ $offering->start_time ? \Carbon\Carbon::parse($offering->start_time)->format('h:i A') : '' }} -
+                      {{ $offering->end_time ? \Carbon\Carbon::parse($offering->end_time)->format('h:i A') : '' }})
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
+      </div>
+
+      {{-- 🚀 NEW SECTION: Fee Records (Invoices/Bills) --}}
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Fee Records</h3>
+
+        @if ($student->fees->isEmpty())
+          <p class="text-gray-500 dark:text-gray-400">No fee records found for this student.</p>
+        @else
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Type
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Due Date
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($student->fees as $fee)
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {{ $fee->feeType->name ?? 'General Fee' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      ${{ number_format($fee->amount, 2) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('M d, Y') : 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        @if ($fee->status === 'Paid') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
+                                        @elseif ($fee->status === 'Due') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
+                                        @else bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 @endif">
+                        {{ $fee->status }}
+                      </span>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
+      </div>
+
+      {{-- 🚀 NEW SECTION: Exam Scores --}}
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Exam Scores</h3>
+
+        @if ($student->scores->isEmpty())
+          <p class="text-gray-500 dark:text-gray-400">No exam scores found for this student.</p>
+        @else
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-500 dark:bg-gray-700">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Exam Name
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Score
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Grade
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Remarks
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($student->scores as $score)
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {{ $score->exam->name ?? 'Unknown Exam' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $score->score }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $score->grade ?? 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $score->remarks ?? '-' }}
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
+      </div>
+
+      {{-- 🚀 NEW SECTION: Attendance Log --}}
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log</h3>
+
+        @if ($student->attendances->isEmpty())
+          <p class="text-gray-500 dark:text-gray-400">No attendance records found for this student.</p>
+        @else
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Course
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($student->attendances as $attendance)
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {{ $attendance->courseOffering->subject->name ?? 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        @if ($attendance->status === 'Present') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
+                                        @elseif ($attendance->status === 'Absent') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
+                                        @else bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 @endif">
+                        {{ $attendance->status }}
+                      </span>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
       </div>
     </div>
   </div>
-
-  {{-- Simple Blade Component for reusability (optional but good practice) --}}
-  <script>
-    // This is a placeholder for the component definition which would normally be in views/components/detail-item.blade.php
-    // Since we can only provide full files, I'll place the logic here.
-  </script>
 @endsection

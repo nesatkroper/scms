@@ -74,8 +74,9 @@
           <tr>
             <th scope="col" class="px-6 py-3">Student Name</th>
             <th scope="col" class="px-6 py-3">Email</th>
-            <th scope="col" class="px-6 py-3 text-center">Admission Date</th>
-            <th scope="col" class="px-6 py-3 text-center">Attendance Records</th>
+            <th scope="col" class="px-6 py-3 text-center">Admission</th>
+            <th scope="col" class="px-6 py-3 text-center">Course</th>
+            <th scope="col" class="px-6 py-3 text-center">Attendance</th>
             <th scope="col" class="px-6 py-3 text-right">Actions</th>
           </tr>
         </thead>
@@ -90,6 +91,12 @@
               </td>
               <td class="px-6 py-4 text-center">
                 {{ $student->admission_date ? $student->admission_date->format('M d, Y') : 'N/A' }}
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span
+                  class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                  {{ $student->courseOfferings->count() }}
+                </span>
               </td>
               <td class="px-6 py-4 text-center">
                 <span

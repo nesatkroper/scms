@@ -103,15 +103,6 @@ class User extends Authenticatable
   {
     return $this->belongsTo(User::class, 'teacher_id')->where('role', 'teacher');
   }
-  public function guardians()
-  {
-    return $this->hasMany(User::class, 'student_id')->where('role', 'guardian');
-  }
-
-  public function students()
-  {
-    return $this->hasMany(User::class, 'guardian_id')->where('role', 'student');
-  }
 
   public function courseOfferings()
   {
