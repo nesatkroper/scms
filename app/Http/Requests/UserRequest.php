@@ -25,7 +25,9 @@ class UserRequest extends FormRequest
         'max:255',
         Rule::unique('users', 'email')->ignore($userId),
       ],
-      'type' => ['required', 'string', Rule::exists('roles', 'name')],
+      'type' => ['required', 'array'],
+      'type.*' => ['required', 'string', Rule::exists('roles', 'name')],
+
       'phone' => ['nullable', 'string', 'max:255'],
       'address' => ['nullable', 'string'],
       'date_of_birth' => ['nullable', 'date'],
@@ -57,8 +59,9 @@ class UserRequest extends FormRequest
   public function messages(): array
   {
     return [
-      'type.required' => 'The user role is required.',
-      'type.exists' => 'The selected role is invalid.',
+      'type.required' => 'The user role(s) are required.',
+      'type.array' => 'The user role(s) must be provided as a list.',
+      'type.*.exists' => 'One or more selected roles are invalid.',
       'avatar.max' => 'The avatar image must not be greater than 2MB.',
       'cv.max' => 'The CV file must not be greater than 5MB.',
     ];

@@ -68,6 +68,7 @@ class UserController extends BaseController
   public function store(UserRequest $request)
   {
     $validatedData = $request->validated();
+    $roles = $validatedData['type'];
 
     try {
       $avatarPath = public_path('uploads/avatars');
@@ -92,7 +93,8 @@ class UserController extends BaseController
         'password' => Hash::make($validatedData['password']),
         'avatar' => $validatedData['avatar'],
       ]));
-      $user->assignRole($validatedData['type']);
+
+      $user->assignRole($roles);
 
       return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     } catch (\Exception $e) {
@@ -150,6 +152,7 @@ class UserController extends BaseController
   public function update(UserRequest $request, User $user)
   {
     $validatedData = $request->validated();
+    $roles = $validatedData['type'];
 
     try {
       $data = $request->only([
@@ -202,7 +205,7 @@ class UserController extends BaseController
       }
 
       $user->update($data);
-      $user->syncRoles($validatedData['type']);
+      $user->syncRoles($roles);
       if ($user->student && ($validatedData['type'] === 'student')) {
         $studentData = [
           'name' => $user->name,
@@ -243,17 +246,19 @@ class UserController extends BaseController
   public function changeRole(Request $request, User $user)
   {
     $request->validate([
-      'role_name' => ['required', 'string', 'exists:roles,name'],
+      'role_names' => ['required', 'array'],
+      'role_names.*' => ['required', 'string', 'exists:roles,name'],
     ]);
 
-    $newRole = $request->role_name;
+    $newRoles = $request->role_names;
 
-    $user->syncRoles([$newRole]);
+    $user->syncRoles($newRoles);
+
+    $roleList = implode(', ', array_map('ucfirst', $newRoles));
 
     return redirect()->route('admin.users.show', $user)
-      ->with('success', $user->name . ' role successfully changed to: ' . ucfirst($newRole));
+      ->with('success', $user->name . ' roles successfully changed to: ' . $roleList);
   }
-
   public function destroy(User $user)
   {
     try {
