@@ -7,19 +7,15 @@
       <h1 class="text-2xl font-semibold">Edit User: {{ $user->name }}</h1>
       <a href="{{ route('admin.users.index') }}"
         class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
-        <!-- Animated background effect -->
         <span
           class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-        <!-- Button content -->
         <span class="relative flex items-center">
-          <!-- Animated arrow icon -->
           <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none"
             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Users List
         </span>
-        <!-- Shine effect on hover -->
         <span
           class="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
       </a>
@@ -32,8 +28,21 @@
     @endif
 
     @php
-      $rolesMap = $roles->pluck('name', 'name')->toArray();
-      $userRoleName = old('type', $user->roles->first()->name ?? '');
+      // Get all available roles (Spatie Role collection)
+      $allRoles = $roles;
+
+      // Get the role names currently assigned to the user
+      $userCurrentRoleNames = $user->roles->pluck('name')->toArray();
+
+      // Determine the selected roles, prioritizing 'old' input on validation failure
+      // If validation fails, old('type') will be an array (or null/string if old input logic was single-role previously)
+      $selectedRoles = old('type', $userCurrentRoleNames);
+
+      // Ensure $selectedRoles is always an array for Alpine.js and in_array checks
+      if (!is_array($selectedRoles)) {
+          $selectedRoles = [$selectedRoles];
+      }
+      $initialSelectedRolesJson = json_encode($selectedRoles);
 
       $inputClasses =
           'form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
@@ -45,10 +54,20 @@
     <form id="Formedit" action="{{ route('admin.users.update', $user) }}" method="POST"
       class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6" enctype="multipart/form-data" novalidate
       x-data="{
-          userRole: '{{ $userRoleName }}',
+          // Store the role names currently selected (array of strings)
+          selectedRoles: {{ $initialSelectedRolesJson }},
           avatarCleared: false,
           clearAvatar() {
               this.avatarCleared = true;
+          },
+          hasRole(roleName) {
+              return this.selectedRoles.includes(roleName);
+          },
+          isEmployee() {
+              return this.hasRole('teacher') || this.hasRole('admin') || this.hasRole('staff');
+          },
+          isStudent() {
+              return this.hasRole('student');
           }
       }">
       @csrf
@@ -110,25 +129,31 @@
               @enderror
             </div>
 
-            <div class="mb-2">
-              <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                User Role <span class="text-red-500">*</span>
+            {{-- START MODIFICATION: Role Checkboxes --}}
+            <div class="mb-2 col-span-1 md:col-span-2 lg:col-span-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                User Role(s) <span class="text-red-500">*</span>
               </label>
-              <select id="type" name="type" required x-model="userRole"
-                class="form-control form-select w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                    border-slate-300 @error('type') border-red-500 @enderror">
-                <option value="" disabled>Select User Role</option>
-                @foreach ($rolesMap as $name => $name)
-                  <option class="capitalize" value="{{ $name }}" @selected(old('type', $userRoleName) == $name)>
-                    {{ $name }}</option>
+              <div
+                class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600 @error('type') border-red-500 @enderror @error('type.*') border-red-500 @enderror">
+                @foreach ($allRoles as $role)
+                  <label
+                    class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 capitalize cursor-pointer">
+                    <input type="checkbox" name="type[]" value="{{ $role->name }}" @checked(in_array($role->name, $selectedRoles))
+                      x-model="selectedRoles"
+                      class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-offset-gray-800">
+                    <span class="ml-2">{{ $role->name }}</span>
+                  </label>
                 @endforeach
-              </select>
+              </div>
               @error('type')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
+              @error('type.*')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+              @enderror
             </div>
+            {{-- END MODIFICATION: Role Checkboxes --}}
 
             <div class="mb-2">
               <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -232,8 +257,7 @@
           </div>
         </div>
 
-        <div class="pb-4 border-b border-slate-300 dark:border-slate-700"
-          x-show="['teacher', 'admin', 'staff'].includes(userRole)">
+        <div class="pb-4 border-b border-slate-300 dark:border-slate-700" x-show="isEmployee()">
           <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🧑‍💼 Employment/Academic
             Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">
@@ -312,7 +336,7 @@
           </div>
         </div>
 
-        <div class="pb-4" x-show="userRole === 'student'">
+        <div class="pb-4" x-show="isStudent()">
           <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🎓 Student Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">
 
