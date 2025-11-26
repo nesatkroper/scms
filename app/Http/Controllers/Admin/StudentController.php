@@ -65,22 +65,9 @@ class StudentController extends Controller
     return view('admin.students.enrollments.index', compact('student', 'courses'));
   }
 
-
-
   public function create()
   {
     return view('admin.students.create');
-  }
-
-  public function createEnrollment(User $student)
-  {
-    $enrolledIds = $student->courseOfferings()->pluck('course_offering_id');
-
-    $availableCourses = CourseOffering::with('subject', 'teacher')
-      ->whereNotIn('id', $enrolledIds)
-      ->get();
-
-    return view('admin.students.enrollments.create', compact('student', 'availableCourses'));
   }
 
   public function createFee(User $student)
@@ -88,6 +75,23 @@ class StudentController extends Controller
     $feeTypes = FeeType::all();
 
     return view('admin.students.fees.create', compact('student', 'feeTypes'));
+  }
+
+  public function createEnrollment(User $student)
+  {
+    $enrolledIds = $student->courseOfferings()->pluck('course_offering_id');
+
+    $availableCourses = CourseOffering::with(['subject:id,name', 'teacher:id,name'])
+      ->whereNotIn('id', $enrolledIds)
+      ->orderBy('created_at', 'desc')
+      ->get();
+
+    if ($availableCourses->isEmpty()) {
+      return redirect()->route('admin.students.courses.index', $student->id)
+        ->with('error', 'This student is already enrolled in all available courses.');
+    }
+
+    return view('admin.students.enrollments.create', compact('student', 'availableCourses'));
   }
 
   public function store(StudentRequest $request)
@@ -131,38 +135,43 @@ class StudentController extends Controller
     }
   }
 
-
-  public function storeEnrollment(StudentCourseRequest $request)
+  public function storeEnrollment(StudentCourseRequest $request, User $student)
   {
-    $exists = StudentCourse::where('student_id', $request->student_id)
-      ->where('course_offering_id', $request->course_offering_id)
+    $data = $request->validated();
+    $data['student_id'] = $student->id;
+
+    $data['status'] = 'studying';
+
+    if ($data['payment_status'] === 'waived') {
+      $data['payment_status'] = 'free';
+    }
+
+    $exists = StudentCourse::where('student_id', $student->id)
+      ->where('course_offering_id', $data['course_offering_id'])
       ->exists();
 
     if ($exists) {
-      return redirect()->route('admin.student_courses.create', [
-        'course_offering_id' => $request->course_offering_id
-      ])
+      return back()
         ->with('error', 'This student is already enrolled in this course offering.')
         ->withInput();
     }
 
     try {
-      StudentCourse::create($request->validated());
+      StudentCourse::create($data);
 
-      return redirect()->route('admin.student_courses.index', [
-        'course_offering_id' => $request->course_offering_id
-      ])
+      return redirect()
+        ->route('admin.students.enrollments.index', $student)
         ->with('success', 'Enrollment created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating StudentCourse: ' . $e->getMessage());
 
-      return redirect()->route('admin.student_courses.create', [
-        'course_offering_id' => $request->course_offering_id
-      ])
-        ->with('error', 'Error creating enrollment.')
+      return back()
+        ->with('error', 'Error creating enrollment.' . $e->getMessage())
         ->withInput();
     }
   }
+
+
 
   public function storeFee(Request $request, User $student)
   {

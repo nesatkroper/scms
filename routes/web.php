@@ -138,7 +138,7 @@ Route::prefix('admin')
 
     Route::prefix('students')->name('students.')->group(function () {
       Route::get('fees/{student}', [StudentController::class, 'feesIndex'])->name('fees.index');
-      Route::get('courses/{student}', [StudentController::class, 'coursesIndex'])->name('courses.index');
+      Route::get('enrollments/{student}', [StudentController::class, 'coursesIndex'])->name('enrollments.index');
       Route::get('enrollments/create/{student}', [StudentController::class, 'createEnrollment'])->name('enrollments.create');
       Route::post('enrollments/{student}', [StudentController::class, 'storeEnrollment'])->name('enrollments.store');
       Route::get('fees/create/{student}', [StudentController::class, 'createFee'])->name('fees.create');

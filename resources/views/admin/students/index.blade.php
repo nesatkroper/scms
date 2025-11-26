@@ -91,7 +91,7 @@
                 Payment
               </a>
 
-              <a href="{{ route('admin.students.courses.index', $student->id) }}"
+              <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit Student">
                 <i class="fa-solid fa-file-circle-plus me-2"></i>

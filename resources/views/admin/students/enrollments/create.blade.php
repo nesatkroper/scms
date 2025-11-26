@@ -20,7 +20,7 @@
           Enroll **{{ $student->name }}** in a Course
         </h3>
         {{-- Back Button --}}
-        <a href="{{ route('admin.students.courses.index', $student) }}"
+        <a href="{{ route('admin.students.enrollments.index', $student) }}"
           class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
           Back to Courses
         </a>
@@ -44,8 +44,9 @@
         <div class="space-y-6">
 
           {{-- HIDDEN FIELDS --}}
-          <input type="hidden" name="status" value="active">
+          <input type="hidden" name="status" value="studying">
           <input type="hidden" name="grade_final" value="{{ old('grade_final', '') }}">
+          <input type="hidden" name="student_id" value="{{ $student->id }}">
 
           {{-- Course Offering and Payment Status Selects (2 Columns) --}}
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -78,7 +79,7 @@
               <select id="payment_status" name="payment_status" required
                 class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('payment_status') border-red-500 @enderror">
                 <option value="" disabled>Select Payment Status</option>
-                @foreach (['paid', 'pending', 'waived'] as $p)
+                @foreach (['pending', 'paid', 'overdue', 'free'] as $p)
                   <option value="{{ $p }}" {{ old('payment_status', 'pending') == $p ? 'selected' : '' }}>
                     {{ ucfirst($p) }}
                   </option>
@@ -107,7 +108,7 @@
 
         {{-- Submit Button Row --}}
         <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-8">
-          <a href="{{ route('admin.students.courses.index', $student) }}"
+          <a href="{{ route('admin.students.enrollments.index', $student) }}"
             class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd"
