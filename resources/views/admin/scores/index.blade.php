@@ -84,7 +84,7 @@
             <div class="flex flex-col">
               <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Score</label>
               <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
-                value="{{ $scoreEntry->score ?? 0 }}"
+                name="fee" value="{{ old('fee') }}" value="{{ $scoreEntry->score ?? 0 }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
                 text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
             </div>
