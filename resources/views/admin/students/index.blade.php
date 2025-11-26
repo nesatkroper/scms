@@ -1,5 +1,3 @@
-{{-- File: resources/views/admin/students/index.blade.php (with Avatar added) --}}
-
 @extends('layouts.admin')
 
 @section('title', 'Students List')
