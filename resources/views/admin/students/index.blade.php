@@ -81,12 +81,7 @@
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
 
             <div class="flex items-center gap-3">
-              {{-- *** AVATAR HERE *** --}}
-              <img
-                src="{{ $student->avatar ? Storage::url($student->avatar) : 'https://placehold.co/40x40/d1d5db/4b5563?text=' . substr($student->name, 0, 1) }}"
-                alt="{{ $student->name }}"
-                class="size-10 rounded-full object-cover border-2 border-blue-300 dark:border-blue-700 shadow-sm">
-              {{-- *** END AVATAR *** --}}
+              <img src="{{ $student->avatar_url }}" class="w-12 h-12 rounded-full object-cover">
 
               <a href="{{ route('admin.students.show', $student->id) }}"
                 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize truncate hover:text-blue-600 dark:hover:text-blue-400">

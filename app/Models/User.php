@@ -103,4 +103,11 @@ class User extends Authenticatable
       ->withPivot('grade_final')
       ->withTimestamps();
   }
+
+  public function getAvatarUrlAttribute()
+  {
+    return $this->avatar
+      ? asset($this->avatar)
+      : asset('assets/images/cambodia.png');
+  }
 }

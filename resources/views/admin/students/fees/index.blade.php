@@ -14,7 +14,7 @@
       Fee Records for: {{ $student->name }}
     </h3>
     <div class="flex space-x-3">
-      <a href="{{ route('admin.students.fees.create', $student) }}"
+      {{-- <a href="{{ route('admin.students.fees.create', $student) }}"
         class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center gap-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
@@ -22,7 +22,7 @@
             clip-rule="evenodd" />
         </svg>
         Add Fee Record
-      </a>
+      </a> --}}
 
       <a href="{{ route('admin.students.show', $student) }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
@@ -108,8 +108,7 @@
                   {{ $fee->creator->name ?? 'System' }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  {{-- Link to individual Fee record show page --}}
-                  {{-- <a href="{{ route('admin.fees.show', $fee) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">View</a> --}}
+
                 </td>
               </tr>
             @endforeach

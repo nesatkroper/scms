@@ -4,8 +4,15 @@
 
 @section('content')
 
-  <div
+  <script>
+    window.UsersData = @json($users);
+  </script>
+
+  {{-- <div
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"> --}}
+  <div x-data="userModals()"
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -76,14 +83,13 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       @forelse ($users as $user)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col @if ($user->hasRole('admin')) border border-red-300 dark:border-red-700 @endif
+">
 
           {{-- Card Header: Avatar, Name, and Roles --}}
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex items-start gap-4">
-            {{-- User Avatar --}}
-            <img src="{{ $user->avatar ? asset($user->avatar) : asset('assets/images/cambodia.png') }}"
-              alt="{{ $user->name }}" class="w-12 h-12 rounded-full object-cover">
+            <img src="{{ $user->avatar_url }}" class="w-12 h-12 rounded-full object-cover">
 
             <div class="flex-grow">
               <h4 class="font-bold text-xl text-gray-800 dark:text-gray-200">{{ $user->name }}</h4>
@@ -97,7 +103,8 @@
                       @if ($role->name === 'admin') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
                       @elseif ($role->name === 'teacher') bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200
                       @elseif ($role->name === 'student') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                      @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif">
+                      @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif ">
+                    <i class="fa-solid fa-shield-halved"></i>
                     {{ $role->name }}
                   </span>
                 @endforeach
@@ -177,36 +184,33 @@
 
             <div class="flex">
               {{-- Password Button: Triggers Password Modal --}}
-              <button type="button" @click="openPasswordModal({{ $user }})"
+
+              <button type="button" @click="openPasswordModal({{ $user->id }})"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors">
+                <i class="fa-solid fa-unlock-keyhole me-2"></i>
+                Password
+              </button>
+
+              <button type="button" @click="openRoleModal({{ $user->id }})"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors">
+                <i class="fa-solid fa-fingerprint me-2"></i>
+                Role
+              </button>
+
+              {{-- <button type="button"
                 class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Reset Password">
                 <i class="fa-solid fa-unlock-keyhole me-2"></i>
                 Password
               </button>
 
-              {{-- Role Button: Triggers Role Modal --}}
-              <button type="button" @click="openRoleModal({{ $user }})"
+              <button type="button"
                 class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Change Role">
                 <i class="fa-solid fa-fingerprint me-2"></i>
                 Role
-              </button>
+              </button> --}}
             </div>
-            {{-- <div class="flex">
-              <a href=""
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="View User">
-                <i class="fa-solid fa-unlock-keyhole me-2"></i>
-                Password
-              </a>
-
-              <a href=""
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit User">
-                <i class="fa-solid fa-fingerprint me-2"></i>
-                Role
-              </a>
-            </div> --}}
 
             <div class="flex">
               {{-- Show Button --}}
@@ -265,127 +269,82 @@
     </div>
 
   </div>
-
-  <div x-show="isPasswordModalOpen" style="display: none;" x-transition:enter="ease-out duration-300"
-    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
-    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div @click="closeModals()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-        aria-hidden="true"></div>
-
-      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-      <div
-        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
-            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100" id="modal-title">
-                Reset Password for <span x-text="currentUser ? currentUser.name : ''"
-                  class="text-indigo-600 dark:text-indigo-400"></span>
-              </h3>
-
-              <div class="mt-4">
-                <form :action="passwordFormAction" method="POST">
-                  @csrf
-                  @method('PUT')
-
-                  <div class="mb-4">
-                    <label for="modal_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      New Password
-                    </label>
-                    <input type="password" name="password" id="modal_password" required
-                      placeholder="Enter new password"
-                      class="form-control w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 border-slate-300">
-                  </div>
-
-                  <div class="mb-4">
-                    <label for="modal_password_confirmation"
-                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Confirm New Password
-                    </label>
-                    <input type="password" name="password_confirmation" id="modal_password_confirmation" required
-                      placeholder="Confirm new password"
-                      class="form-control w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 border-slate-300">
-                  </div>
-
-                  <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit"
-                      class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto sm:text-sm">
-                      Reset Password
-                    </button>
-                    <button @click="closeModals()" type="button"
-                      class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 dark:text-gray-300 text-base font-medium text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 sm:mt-0 sm:w-auto sm:text-sm">
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div x-show="isRoleModalOpen" style="display: none;" x-transition:enter="ease-out duration-300"
-    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
-    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div @click="closeModals()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-        aria-hidden="true"></div>
-
-      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-      <div
-        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
-            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100" id="modal-title">
-                Change Role for <span x-text="currentUser ? currentUser.name : ''"
-                  class="text-indigo-600 dark:text-indigo-400"></span>
-              </h3>
-
-              <div class="mt-4">
-                <form :action="roleFormAction" method="POST">
-                  @csrf
-                  @method('PUT')
-
-                  <div class="mb-4">
-                    <label for="modal_role_name"
-                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Assign New Role</label>
-                    <select name="role_name" id="modal_role_name" required x-model="currentRoleName"
-                      class="form-control form-select w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 border-slate-300">
-                      <template x-for="role in roles" :key="role">
-                        <option :value="role" :selected="role === currentRoleName"
-                          x-text="role.charAt(0).toUpperCase() + role.slice(1)"></option>
-                      </template>
-                    </select>
-                  </div>
-
-                  <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit"
-                      class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto sm:text-sm">
-                      Change Role
-                    </button>
-                    <button @click="closeModals()" type="button"
-                      class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 dark:text-gray-300 text-base font-medium text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 sm:mt-0 sm:w-auto sm:text-sm">
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 @endsection
+
+@push('script')
+  <script>
+    document.getElementById('resetSearch').addEventListener('click', e => {
+      document.getElementById('searchInput').value = '';
+    });
+  </script>
+  <script>
+    function userModals() {
+      return {
+        showPasswordModal: false,
+        showRoleModal: false,
+
+        user: {},
+
+        openPasswordModal(id) {
+          this.user = window.UsersData.find(u => u.id === id);
+          this.showPasswordModal = true;
+        },
+
+        openRoleModal(id) {
+          this.user = window.UsersData.find(u => u.id === id);
+          this.showRoleModal = true;
+        },
+
+        closeModals() {
+          this.showPasswordModal = false;
+          this.showRoleModal = false;
+        }
+      }
+    }
+  </script>
+@endpush
+
+<div x-show="showPasswordModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
+    <h2 class="text-lg font-bold mb-3">Reset Password: <span x-text="user.name"></span></h2>
+
+    <form :action="'/admin/users/' + user.id + '/password'" method="POST">
+      @csrf
+      @method('PUT')
+
+      <input type="password" name="password"
+        class="w-full border rounded px-3 py-2 mb-3 dark:bg-gray-700 dark:text-white" placeholder="New Password">
+
+      <div class="flex justify-end gap-2">
+        <button @click.prevent="closeModals()" type="button"
+          class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
+
+        <button type="submit" class="px-3 py-1 bg-indigo-600 text-white rounded">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div x-show="showRoleModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
+    <h2 class="text-lg font-bold mb-3">Change Role: <span x-text="user.name"></span></h2>
+
+    <form :action="'/admin/users/' + user.id + '/role'" method="POST">
+      @csrf
+      @method('PUT')
+
+      <select name="role" class="w-full border rounded px-3 py-2 mb-3 dark:bg-gray-700 dark:text-white">
+        <option value="admin">Admin</option>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
+
+      <div class="flex justify-end gap-2">
+        <button @click.prevent="closeModals()" type="button"
+          class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
+
+        <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
