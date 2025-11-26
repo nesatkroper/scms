@@ -1,844 +1,221 @@
 @extends('layouts.admin')
-@section('title', 'Students')
+
+@section('title', 'Students List')
+
 @section('content')
-    <x-page.index :btnCreate="true" btn-text="Create New Student" :showReset="true" :showViewToggle="true" title="Student"
-        iconSvgPath="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z">
 
-        {{-- <button data-tooltip-target="tooltip-t" data-tooltip-placement="top" class="tooltip-btn">
-            tooltip-t
-            <div id="tooltip-t" role="tooltip" class="text-sm font-medium">
-                placement tooltip t
-            </div>
-        </button>
-        <button data-tooltip-target="tooltip-b" data-tooltip-placement="bottom" class="tooltip-btn">
-            tooltip-b
-            <div id="tooltip-b" role="tooltip" class="text-sm font-medium">
-                b placement tooltip
-            </div>
-        </button>
-        <button data-tooltip-target="tooltip-l" data-tooltip-placement="left" class="tooltip-btn">
-            tooltip-r
-            <div id="tooltip-l" role="tooltip" class="text-sm font-medium">
-                left placement tooltip
-            </div>
-        </button>
-        <button data-tooltip-target="tooltip-r" data-tooltip-placement="right" class="tooltip-btn">
-            tooltip-r
-            <div id="tooltip-r" role="tooltip" class="text-sm font-medium">
-                Right placement tooltip
-            </div>
-        </button> --}}
+  <div
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
+    <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+      <svg class="size-8 p-1 rounded-full bg-blue-50 text-blue-600 dark:text-blue-50 dark:bg-blue-900"
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </svg>
+      Students List
+    </h3>
 
-        <div id="TableContainer" class="table-respone mt-6 overflow-x-auto h-[60vh]">
-            @include('admin.students.partials.table', ['students' => $students])
+    @if (session('success'))
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
+      </div>
+    @endif
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+      </div>
+    @endif
+
+    <form action="{{ route('admin.students.index') }}" method="GET">
+      <div
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-slate-800">
+
+        <a href="{{ route('admin.students.create') }}"
+          class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+              clip-rule="evenodd" />
+          </svg>
+          Enroll New Student
+        </a>
+
+        <div class="flex items-center mt-3 md:mt-0 gap-2">
+          <div class="relative w-full">
+            <input type="search" name="search" id="searchInput" placeholder="Search students by name or email..."
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-100"
+              value="{{ request('search') }}">
+            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+          </div>
+
+          <button type="submit"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 rounded-md transition-colors text-white"
+            title="Search">
+            <i class="fas fa-search text-white text-xs"></i>
+          </button>
+          <a href="{{ route('admin.students.index') }}" id="resetSearch"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
+            style="margin-top: 0 !important" title="Reset Search">
+            <i class="fa-solid fa-arrow-rotate-right"></i>
+          </a>
         </div>
-        <div id="CardContainer" class="hidden my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            @include('admin.students.partials.cardlist', ['students' => $students])
+      </div>
+    </form>
+
+    {{-- START: Card View for Students (Role Style) --}}
+    <div id="CardContainer" class="my-5 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+      @forelse ($students as $student)
+        <div
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+
+          {{-- Card Header: Student Name and Actions --}}
+          <div
+            class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
+
+            <div class="flex items-center gap-3">
+              <img src="{{ $student->avatar_url }}" class="w-12 h-12 rounded-full object-cover">
+
+              <a href="{{ route('admin.students.show', $student->id) }}"
+                class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize truncate hover:text-blue-600 dark:hover:text-blue-400">
+                {{ $student->name }}
+              </a>
+            </div>
+
+            <div class="flex items-center gap-1">
+              <a href="{{ route('admin.students.fees.index', $student->id) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit Student">
+                <i class="fa-solid fa-dollar-sign me-2"></i>
+                Payment
+              </a>
+
+              <a href="{{ route('admin.students.courses.index', $student->id) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit Student">
+                <i class="fa-solid fa-file-circle-plus me-2"></i>
+                Addmission
+              </a>
+            </div>
+          </div>
+
+          {{-- Card Body: Stats --}}
+          <div class="p-4 space-y-3">
+
+            {{-- Email --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-yellow-50 dark:bg-slate-700 text-yellow-600 dark:text-yellow-300">
+                <i class="fa-solid fa-at size-5"></i>
+              </div>
+              <div class="truncate">
+                <p class="text-xs text-gray-500 dark:text-gray-400">Email</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200 truncate" title="{{ $student->email }}">
+                  {{ $student->email }}
+                </p>
+              </div>
+            </div>
+
+            {{-- Admission Date --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-cyan-50 dark:bg-slate-700 text-cyan-600 dark:text-cyan-300">
+                <i class="fa-solid fa-calendar-alt size-5"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Admission Date</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200">
+                  <span class="text-sm text-cyan-600 dark:text-cyan-400">
+                    {{ $student->admission_date ? $student->admission_date->format('M d, Y') : 'N/A' }}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {{-- Courses Enrolled Count --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-300">
+                <i class="fa-solid fa-book size-5"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Courses Enrolled</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200">
+                  <span class="text-sm text-blue-600 dark:text-blue-400">{{ $student->courseOfferings->count() }}</span>
+                  Courses
+                </p>
+              </div>
+            </div>
+
+            {{-- Attendance Count --}}
+            <div class="flex items-center gap-3 text-sm">
+              <div class="p-2 rounded-lg bg-green-50 dark:bg-slate-700 text-green-600 dark:text-green-300">
+                <i class="fa-solid fa-check-circle size-5"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Attendance Records</p>
+                <p class="font-medium text-gray-700 dark:text-gray-200">
+                  <span class="text-sm text-green-600 dark:text-green-400">{{ $student->attendances_count }}</span>
+                  Records
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {{-- Card Footer: Primary Actions --}}
+          <div
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end">
+
+            {{-- View Details Button --}}
+            <a href="{{ route('admin.students.show', $student->id) }}"
+              class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+              title="View Student Details">
+              <i class="fa-regular fa-eye me-2"></i>
+              View
+            </a>
+
+            {{-- Edit Button --}}
+            <a href="{{ route('admin.students.edit', $student->id) }}"
+              class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+              title="Edit Student">
+              <i class="fa-solid fa-pen-to-square me-2"></i>
+              Edit
+            </a>
+
+            {{-- Delete Form/Button --}}
+            <form action="{{ route('admin.students.destroy', $student->id) }}" method="POST"
+              onsubmit="return confirm('Are you sure you want to delete the student \'{{ $student->name }}\'? This will soft-delete the user record.');">
+              @csrf
+              @method('DELETE')
+              <button type="submit"
+                class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                title="Delete Student">
+                <i class="fa-regular fa-trash-can me-2"></i>
+                Delete
+              </button>
+            </form>
+          </div>
         </div>
-        <x-table.pagination :paginator="$students" />
-    </x-page.index>
+      @empty
+        <div class="col-span-full py-12 text-center">
+          <div
+            class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
+            <div class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400 dark:text-red-500" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Students Found</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">There are no students matching your criteria.</p>
+          </div>
+        </div>
+      @endforelse
+    </div>
+    {{-- END: Card View for Students --}}
 
-    @include('admin.students.partials.create')
-    @include('admin.students.partials.edit')
-    @include('admin.students.partials.detail')
-    <x-modal.confirmdelete title="students" />
-    @include('admin.students.partials.bulkedit')
-    @include('admin.students.partials.bulkdelete')
+    <div class="mt-6">
+      {{ $students->links() }}
+    </div>
 
+  </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('assets/js/modal.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Core Configuration
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            // DOM Elements
-            const backdrop = document.getElementById('modalBackdrop');
-            const searchInput = $('#searchInput');
-            const resetSearch = $('#resetSearch');
-            const listViewBtn = $('#listViewBtn');
-            const cardViewBtn = $('#cardViewBtn');
-            const tableContainer = $('#TableContainer');
-            const cardContainer = $('#CardContainer');
-
-            const selectAllCheckbox = $('#selectAllCheckbox');
-            const bulkActionsBar = $('#bulkActionsBar');
-            const selectedCount = $('#selectedCount');
-            const deselectAllBtn = $('#deselectAll');
-            const bulkEditBtn = $('#bulkEditBtn');
-            const bulkDeleteBtn = $('#bulkDeleteBtn');
-
-            $('#openCreateModal').off('click').on('click', function() {
-                showModal('Modalcreate');
-            });
-
-            $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
-                closeModal('bulkEditModal');
-            });
-
-            // View Management
-            function setView(viewType) {
-                if (viewType === 'list') {
-                    listViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    cardViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.removeClass('hidden');
-                    cardContainer.addClass('hidden');
-                } else {
-                    cardViewBtn.addClass('bg-indigo-100 dark:bg-indigo-700').removeClass(
-                        'bg-gray-100 dark:bg-gray-700');
-                    listViewBtn.addClass('bg-gray-100 dark:bg-gray-700').removeClass(
-                        'bg-indigo-100 dark:bg-indigo-700');
-                    tableContainer.addClass('hidden');
-                    cardContainer.removeClass('hidden');
-                }
-                localStorage.setItem('viewitem', viewType);
-            }
-
-            // Search and Pagination
-            function searchData(searchTerm) {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                $.ajax({
-                    url: "{{ route('admin.students.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                            updateBulkActionsBar();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to load datas');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Search failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load data');
-                    }
-                });
-            }
-
-            function handleCreateSubmit(e) {
-              e.preventDefault();
-              const form = $(this);
-              const submitBtn = $('#createSubmitBtn');
-              const originalBtnHtml = submitBtn.html();
-              submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-              if (!this.checkValidity()) {
-                $(this).addClass('was-validated');
-                return;
-              }
-              const formData = new FormData(form[0]);
-              $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(response) {
-                  if (response.success) {
-                    closeModal('Modalcreate');
-                    ShowTaskMessage('success', response.message);
-                    refreshStudentContent();
-                    form.trigger('reset');
-                    // Reset photo preview
-                    $('#photoPreview').addClass('hidden');
-                    $('#dropArea').removeClass('hidden');
-                  } else {
-                    ShowTaskMessage('error', response.message || 'Error creating student');
-                  }
-                },
-                error: function(xhr) {
-                  if (xhr.status === 422) {
-                    const errors = xhr.responseJSON.errors;
-                    for (const field in errors) {
-                      if (errors.hasOwnProperty(field)) {
-                        const errorMessage = errors[field][0];
-                        $(`#error-${field}`).text(errorMessage);
-                      }
-                    }
-                    ShowTaskMessage('error', `Invalid field something was wrong!`);
-                  }
-                },
-                complete: function() {
-                  submitBtn.prop('disabled', false).html(originalBtnHtml);
-                }
-              });
-            }
-
-            function handleEditClick(e) {
-                e.preventDefault();
-                const editBtn = $(this);
-                const originalContent = editBtn.html();
-                editBtn.html('<i class="fas fa-spinner fa-spin"></i><span class="ml-2 textnone">Loading...</span>')
-                    .prop('disabled', true);
-
-                const Id = $(this).data('id');
-
-                $.get(`/admin/students/${Id}`)
-                    .done(function(response) {
-                        if (response.success && response.data) {
-                            const std = response.data;
-                            const date = std.admission_date ? std.admission_date.substring(0, 10) : '';
-                            const datedob = std.date_of_birth ? std.date_of_birth.substring(0, 10) : '';
-                            // Set form values
-                            console.log(std);
-                            $('#edit_name').val(std.name);
-                            $('#edit_user').val(std.user_id);
-                            $('#edit_phone').val(std.phone);
-                            $('#edit_email').val(std.email);
-                            $('#edit_gender').val(std.gender);
-                            $('#edit_date_of_birth').val(datedob);
-                            $('#edit_admission_date').val(date);
-                            $('#edit_address').val(std.address);
-                            $('#edit_blood_group').val(std.blood_group);
-                            $('#edit_nationality').val(std.nationality);
-                            $('#edit_religion').val(std.religion);
-                            // Handle photo display
-                            if (std.avatar) {
-                                $('#edit_avatar').attr('src', window.location.origin + '/' + std.avatar)
-                                    .removeClass('hidden');
-                            } else {
-                                let initials = '?';
-                                if (std.name) {
-                                    initials = std.name.split(' ')
-                                        .filter(n => n.length > 0)
-                                        .map(n => n[0])
-                                        .join('')
-                                        .toUpperCase()
-                                        .substring(0, 2);
-                                }
-                                if (std.avatar) {
-                                    $('#edit_avatar').attr('src', '/' + std.avatar).removeClass('hidden');
-                                    alert("ccc")
-                                } else {
-                                    const initials = std.name.split(' ').map(n => n[0]).join('')
-                                        .toUpperCase();
-                                    $('#edit_initials').removeClass('hidden').find('span').text(initials);
-                                }
-                            }
-                            // Set form action
-                            $('#Formedit').attr('action', `/students/${Id}`);
-                            showModal('Modaledit');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load student data');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load student data');
-                    })
-                    .always(function() {
-                        editBtn.html(originalContent).prop('disabled', false);
-                    });
-            }
-
-            function handleEditSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#saveEditBtn');
-                const originalBtnHtml = submitBtn.html();
-                if (!form[0].checkValidity()) {
-                    form.addClass('was-validated');
-                    submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    return;
-                }
-                const formData = new FormData(form[0]);
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
-                $.ajax({
-                    url: '/admin' + form.attr('action'),
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaledit');
-                            ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error updating student');
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON.errors;
-                            for (const field in errors) {
-                                if (errors.hasOwnProperty(field)) {
-                                    const errorMessage = errors[field][0];
-                                    $(`#edit-error-${field}`).text(errorMessage);
-                                }
-                            }
-                            let errorMessages = Object.values(errors).flat().join('\n');
-                            ShowTaskMessage('error', errorMessages || 'Error updating student');
-                        }
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleDeleteClick(e) {
-                e.preventDefault();
-                const Id = $(this).data('id');
-                $('#Formdelete').attr('action', `/students/${Id}`);
-                showModal('Modaldelete');
-            }
-
-            function handleDeleteSubmit(e) {
-                e.preventDefault();
-                const form = $(this);
-                const submitBtn = $('#confirmDeleteBtn');
-                const originalBtnHtml = submitBtn.html();
-
-                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...');
-
-                $.ajax({
-                    url: '/admin' + form.attr('action'),
-                    method: 'POST',
-                    data: {
-                        _method: 'DELETE'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('Modaldelete');
-                            ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Error deleting student');
-                        }
-                    },
-                    error: function(xhr) {
-                        ShowTaskMessage('error', xhr.responseJSON?.message || 'Error deleting student');
-                    },
-                    complete: function() {
-                        submitBtn.prop('disabled', false).html(originalBtnHtml);
-                    }
-                });
-            }
-
-            function handleDetailClick(e) {
-                e.preventDefault();
-                const detailBtn = $(this);
-                const originalContent = detailBtn.find('.btn-content').html();
-                detailBtn.find('.btn-content').html('<i class="fas fa-spinner fa-spin mr-2"></i> Loading...');
-                detailBtn.prop('disabled', true);
-
-                const Id = $(this).data('id');
-
-                $.get(`/admin/students/${Id}`)
-                    .done(function(response) {
-                        if (response.success) {
-                            const student = response.data;
-                            // Format dates
-                            const admissionDate = student.admission_date ?
-                                new Date(student.admission_date).toLocaleDateString() :
-                                '';
-                            const date_of_birth = student.date_of_birth ?
-                                new Date(student.date_of_birth).toLocaleDateString() :
-                                '';
-                            // Basic info
-                            $('#detail_name').text(student.name ?? '');
-                            $('#detail_age').text(student.age ?? '');
-                            $('#detail_gender').text(student.gender ?? '');
-                            $('#detail_blood_group').text(student.blood_group ?? '');
-                            $('#detail_religion').text(student.religion ?? '');
-                            $('#detail_nationality').text(student.nationality ?? '');
-                            $('#detail_grade').text(student.grade_level?.name ?? 'Unknown');
-                            $('#detail_code').text(student.grade_level?.code ?? 'Unknown');
-                            $('#detail_description').text(student.grade_level?.description ?? 'Unknown');
-                            $('.title').text(student.name ?? '');
-                            $('#detail_specialization').text(student.specialization ?? '');
-                            $('#detail_department')
-                                .text(student.department ?? '')
-                                .toggleClass('hidden', !student.department);
-
-                            // Stats
-                            $('#detail_experience').text(student.experience ?? '0');
-                            $('#detail_qualification').text(student.qualification ?? '');
-                            $('#detail_admission_date').text(admissionDate);
-
-                            // Contact info
-                            $('#detail_email').text(student.email ?? 'Not provided');
-                            $('#detail_phone').text(student.phone ?? 'Not provided');
-                            $('#detail_date_of_birth').text(date_of_birth);
-                            $('#detail_address').text(student.address ?? '');
-
-                            // Avatar / Initials
-                            const photoContainer = $('#detail_avatar');
-                            const initialsContainer = $('#detail_initials');
-                            const initialsSpan = initialsContainer.find('span');
-
-                            if (student.avatar) {
-                                photoContainer
-                                    .attr('src', `${window.location.origin}/${student.avatar}`)
-                                    .removeClass('hidden');
-                                initialsContainer.addClass('hidden');
-                            } else {
-                                photoContainer.addClass('hidden');
-                                initialsContainer.removeClass('hidden');
-                                const nameParts = (student.name ?? '')
-                                    .split(' ')
-                                    .filter(Boolean);
-                                const initials = nameParts.map((part) => part[0]).join('').toUpperCase();
-                                initialsSpan.text(initials);
-                            }
-
-                            showModal('Modaldetail');
-                        } else {
-                            ShowTaskMessage('error', response.message || 'Failed to load student details');
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to load student details');
-                    })
-                    .always(function() {
-                        detailBtn.find('.btn-content').html(originalContent);
-                        detailBtn.prop('disabled', false);
-                    });
-            }
-            // Bulk Actions
-            function getSelectedIds() {
-                const selectedIds = [];
-                document.querySelectorAll('.row-checkbox:checked').forEach(checkbox => {
-                    selectedIds.push(checkbox.value);
-                });
-                return selectedIds;
-            }
-
-            function updateBulkActionsBar() {
-                const selectedCountValue = $('.row-checkbox:checked').length;
-                selectedCount.text(selectedCountValue);
-
-                if (selectedCountValue > 0) {
-                    bulkActionsBar.removeClass('hidden');
-                    selectAllCheckbox.prop('checked', selectedCountValue === $('.row-checkbox').length);
-                } else {
-                    bulkActionsBar.addClass('hidden');
-                    selectAllCheckbox.prop('checked', false);
-                }
-            }
-
-            function handleBulkDelete() {
-                const selectedIds = getSelectedIds();
-                if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one student to delete');
-                    return;
-                }
-
-                const modal = document.getElementById('bulkDeleteToastModal');
-                document.getElementById('selectedCountText').textContent = selectedIds.length;
-
-                showModal('bulkDeleteToastModal');
-
-                document.getElementById('confirmBulkDeleteBtn').onclick = function() {
-                    const deleteBtn = document.getElementById('confirmBulkDeleteBtn');
-                    const originalBtnHtml = deleteBtn.innerHTML;
-                    deleteBtn.disabled = true;
-                    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
-
-                    $.ajax({
-                        url: "{{ route('admin.students.bulkDelete') }}",
-                        method: 'POST',
-                        data: {
-                            ids: selectedIds
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                closeModal('bulkDeleteToastModal');
-                                ShowTaskMessage('success', response.message);
-                                refreshStudentContent();
-                            } else {
-                                ShowTaskMessage('error', response.message ||
-                                    'Error deleting students');
-                            }
-                        },
-                        error: function(xhr) {
-                            ShowTaskMessage('error', xhr.responseJSON?.message ||
-                                'Error deleting students');
-                        },
-                        complete: function() {
-                            deleteBtn.disabled = false;
-                            deleteBtn.innerHTML = originalBtnHtml;
-                        }
-                    });
-                };
-            }
-
-            function handleBulkEdit() {
-                const selectedIds = getSelectedIds();
-                if (selectedIds.length === 0) {
-                    ShowTaskMessage('error', 'Please select at least one student to edit');
-                    return;
-                }
-
-                const bulkEditBtn = document.getElementById('bulkEditBtn');
-                const originalBtnText = bulkEditBtn.innerHTML;
-                bulkEditBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-                bulkEditBtn.disabled = true;
-
-                $('#bulkEditContainer').addClass('h-[70vh] md:h-auto')
-                if (selectedIds.length > 1) {
-                    $('#bulkEditContainer').removeClass('md:h-auto')
-                    $('#bulkEditContainer').addClass('h-[70vh]')
-                }
-                if (selectedIds.length > 5) {
-                    ShowTaskMessage('error', 'You can only edit up to 5 students at a time');
-                    bulkEditBtn.innerHTML = originalBtnText;
-                    bulkEditBtn.disabled = false;
-                    return;
-                }
-
-                document.getElementById('bulkEditCount').textContent = selectedIds.length;
-
-                $.ajax({
-                    url: "{{ route('admin.students.getBulkData') }}",
-                    method: 'POST',
-                    data: {
-                        ids: selectedIds
-                    },
-                    success: function(response) {
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-
-                        if (!response.success) {
-                            ShowTaskMessage('error', response.message || 'Error loading data');
-                            return;
-                        }
-
-                        const container = document.getElementById('bulkEditContainer');
-                        container.innerHTML = '';
-
-                        response.data.forEach((student, index) => {
-                            const fieldHtml = `
-                <div class="sub-field mb-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <input type="hidden" name="students[${index}][id]" value="${student.id}">
-                    <div class="flex justify-between items-center mb-2">
-                        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300">Student #${index + 1}</h4>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Name -->
-                        <div class="mb-4">
-                            <label for="students[${index}][name]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Full Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="students[${index}][name]" name="students[${index}][name]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.name}"
-                                placeholder="Enter full name" required>
-                        </div>
-
-                        <!-- Gender -->
-                        <div class="mb-4">
-                            <label for="students[${index}][gender]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Gender <span class="text-red-500">*</span>
-                            </label>
-                            <select id="students[${index}][gender]" name="students[${index}][gender]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400" required>
-                                <option value="male" ${student.gender === 'male' ? 'selected' : ''}>Male</option>
-                                <option value="female" ${student.gender === 'female' ? 'selected' : ''}>Female</option>
-                                <option value="other" ${student.gender === 'other' ? 'selected' : ''}>Other</option>
-                            </select>
-                        </div>
-
-                        <!-- Date of Birth -->
-                        <div class="mb-4">
-                            <label for="students[${index}][dob]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Date of Birth <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="students[${index}][dob]" name="students[${index}][dob]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.dob}"
-                                required>
-                        </div>
-
-                        <!-- Grade Level -->
-                        <div class="mb-4">
-                            <label for="students[${index}][grade_level_id]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Grade Level <span class="text-red-500">*</span>
-                            </label>
-                            <select id="students[${index}][grade_level_id]" name="students[${index}][grade_level_id]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400" required>
-                            </select>
-                        </div>
-
-                        <!-- Admission Date -->
-                        <div class="mb-4">
-                            <label for="students[${index}][admission_date]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Admission Date <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="students[${index}][admission_date]" name="students[${index}][admission_date]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.admission_date}"
-                                required>
-                        </div>
-
-                        <!-- Blood Group -->
-                        <div class="mb-4">
-                            <label for="students[${index}][blood_group]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Blood Group
-                            </label>
-                            <input type="text" id="students[${index}][blood_group]" name="students[${index}][blood_group]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.blood_group || ''}"
-                                placeholder="Enter blood group">
-                        </div>
-
-                        <!-- Nationality -->
-                        <div class="mb-4">
-                            <label for="students[${index}][nationality]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Nationality
-                            </label>
-                            <input type="text" id="students[${index}][nationality]" name="students[${index}][nationality]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.nationality || ''}"
-                                placeholder="Enter nationality">
-                        </div>
-
-                        <!-- Religion -->
-                        <div class="mb-4">
-                            <label for="students[${index}][religion]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Religion
-                            </label>
-                            <input type="text" id="students[${index}][religion]" name="students[${index}][religion]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.religion || ''}"
-                                placeholder="Enter religion">
-                        </div>
-
-                        <!-- Phone -->
-                        <div class="mb-4">
-                            <label for="students[${index}][phone]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Phone
-                            </label>
-                            <input type="text" id="students[${index}][phone]" name="students[${index}][phone]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.phone || ''}"
-                                placeholder="Enter phone number">
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-4">
-                            <label for="students[${index}][email]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Email
-                            </label>
-                            <input type="email" id="students[${index}][email]" name="students[${index}][email]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                value="${student.email || ''}"
-                                placeholder="Enter email">
-                        </div>
-
-                        <!-- Address -->
-                        <div class="mb-4">
-                            <label for="students[${index}][address]" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Address
-                            </label>
-                            <textarea id="students[${index}][address]" name="students[${index}][address]"
-                                class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
-                                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                border-gray-400"
-                                placeholder="Enter address">${student.address || ''}</textarea>
-                        </div>
-                    </div>
-                </div>
-                `;
-
-                            container.insertAdjacentHTML('beforeend', fieldHtml);
-                        });
-
-                        showModal('bulkEditModal');
-                    },
-                    error: function(xhr) {
-                        bulkEditBtn.innerHTML = originalBtnText;
-                        bulkEditBtn.disabled = false;
-                        ShowTaskMessage('error', 'Error loading data');
-                    }
-                });
-            }
-
-            function handleBulkEditSubmit(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('bulkEditSubmitBtn');
-                const originalBtnHtml = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-
-                const dataform = [];
-                $('.sub-field').each(function(index) {
-                    const data = {
-                        id: $(this).find('input[type="hidden"]').val(),
-                        name: $(this).find('input[name$="[name]"]').val(),
-                        gender: $(this).find('select[name$="[gender]"]').val(),
-                        dob: $(this).find('input[name$="[dob]"]').val(),
-                        grade_level_id: $(this).find('select[name$="[grade_level_id]"]').val(),
-                        admission_date: $(this).find('input[name$="[admission_date]"]').val(),
-                        blood_group: $(this).find('input[name$="[blood_group]"]').val(),
-                        nationality: $(this).find('input[name$="[nationality]"]').val(),
-                        religion: $(this).find('input[name$="[religion]"]').val(),
-                        phone: $(this).find('input[name$="[phone]"]').val(),
-                        email: $(this).find('input[name$="[email]"]').val(),
-                        address: $(this).find('textarea[name$="[address]"]').val()
-                    };
-                    dataform.push(data);
-                });
-
-                $.ajax({
-                    url: "{{ route('admin.students.bulkUpdate') }}",
-                    method: 'POST',
-                    data: {
-                        students: dataform
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            closeModal('bulkEditModal');
-                            ShowTaskMessage('success', response.message);
-                            refreshStudentContent();
-                        } else {
-                            let errorMessage = response.message || 'Error updating students';
-                            if (response.errors) {
-                                errorMessage += '\n' + Object.values(response.errors).flat().join('\n');
-                            }
-                            ShowTaskMessage('error', errorMessage);
-                        }
-                    },
-                    error: function(xhr) {
-                        let errorMessage = 'An error occurred while updating';
-                        if (xhr.status === 422) {
-                            const errors = xhr.responseJSON?.errors || {};
-                            errorMessage = Object.values(errors).flat().join('\n');
-                        }
-                        ShowTaskMessage('error', errorMessage);
-                    },
-                    complete: function() {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalBtnHtml;
-                    }
-                });
-            }
-            // Utility Functions
-            function refreshStudentContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const searchTerm = searchInput.val() || '';
-
-                $.ajax({
-                    url: "{{ route('admin.students.index') }}",
-                    method: 'GET',
-                    data: {
-                        search: searchTerm,
-                        view: currentView
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
-                            attachRowEventHandlers();
-                            updateBulkActionsBar();
-                        } else {
-                            ShowTaskMessage('error', 'Failed to refresh data');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Refresh failed:', xhr.responseText);
-                        ShowTaskMessage('error', 'Failed to refresh data');
-                    }
-                });
-            }
-
-            function attachRowEventHandlers() {
-                $('.edit-btn').off('click').on('click', handleEditClick);
-                $('.delete-btn').off('click').on('click', handleDeleteClick);
-                $('.detail-btn').off('click').on('click', handleDetailClick);
-                $('.row-checkbox').off('change').on('change', updateBulkActionsBar);
-            }
-
-            function debounce(func, wait) {
-                let timeout;
-                return function() {
-                    const context = this,
-                        args = arguments;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(context, args), wait);
-                };
-            }
-
-            // Event Listeners
-            function initialize() {
-                // Set initial view
-                const savedView = localStorage.getItem('viewitem') || 'list';
-                setView(savedView);
-                // View toggle
-                listViewBtn.on('click', () => setView('list'));
-                cardViewBtn.on('click', () => setView('card'));
-
-                // Search
-                searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
-                resetSearch.on('click', () => {
-                    searchInput.val('');
-                    searchData('');
-                });
-
-                // Bulk actions
-                selectAllCheckbox.on('change', function() {
-                    $('.row-checkbox').prop('checked', this.checked);
-                    updateBulkActionsBar();
-                });
-
-                deselectAllBtn.on('click', function() {
-                    $('.row-checkbox').prop('checked', false);
-                    selectAllCheckbox.prop('checked', false);
-                    updateBulkActionsBar();
-                });
-
-                bulkEditBtn.on('click', handleBulkEdit);
-                bulkDeleteBtn.on('click', handleBulkDelete);
-
-                // Form submissions
-                $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
-                $('#Formedit').off('submit').on('submit', handleEditSubmit);
-                $('#Formdelete').off('submit').on('submit', handleDeleteSubmit);
-                $('#bulkEditForm').off('submit').on('submit', handleBulkEditSubmit);
-                // Attach initial event handlers
-                attachRowEventHandlers();
-                updateBulkActionsBar();
-            }
-
-            // Start the application
-            initialize();
-        });
-    </script>
-@endpush

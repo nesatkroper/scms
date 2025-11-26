@@ -5,7 +5,7 @@
 @section('content')
 
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       {{-- Icon for Classrooms (using a location/room theme) --}}
       <svg class="size-8 p-1 rounded-full bg-cyan-50 text-cyan-600 dark:text-cyan-50 dark:bg-cyan-900"
@@ -41,7 +41,7 @@
                 d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                 clip-rule="evenodd" />
             </svg>
-                {{ __('message.create_new') }}
+            {{ __('message.create_new') }}
           </a>
         @endif
 
@@ -60,14 +60,9 @@
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.classrooms.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
-            title="Reset Search">
-            {{-- Reset Icon --}}
-            <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 4v5h.582m15.356-2A8.98 8.98 0 0020 12a9 9 0 11-8-9.98l-7.9 7.9M2 12h2"></path>
-            </svg>
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
+            style="margin-top: 0 !important" title="Reset Search">
+            <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
       </div>
@@ -102,7 +97,7 @@
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {{-- Display the Room Number clearly --}}
-               {{ __('message.room_number') }}<span class="font-medium text-indigo-500 dark:text-indigo-400">
+              {{ __('message.room_number') }}<span class="font-medium text-indigo-500 dark:text-indigo-400">
                 {{ $classroom->room_number }}
               </span>
             </p>
@@ -166,8 +161,10 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_classrooms_found') }}</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_classroom_to_get_started') }}</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_classrooms_found') }}
+            </h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_your_first_classroom_to_get_started') }}</p>
           </div>
         </div>
       @endforelse

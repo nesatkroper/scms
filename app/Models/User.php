@@ -76,18 +76,6 @@ class User extends Authenticatable
     return $this->hasMany(Score::class, 'student_id');
   }
 
-  public function courses()
-  {
-    return $this->belongsToMany(Subject::class, 'student_course')
-      ->withPivot('grade_final')
-      ->withTimestamps();
-  }
-
-  public function teachingSubjects()
-  {
-    return $this->belongsToMany(Subject::class, 'teacher_subject');
-  }
-
   public function approvedExpenses()
   {
     return $this->hasMany(Expense::class, 'approved_by');
@@ -99,25 +87,36 @@ class User extends Authenticatable
   }
 
 
-  public function teacher()
+  public function teachingCourses()
   {
-    return $this->belongsTo(User::class, 'teacher_id')->where('role', 'teacher');
-  }
-  public function guardians()
-  {
-    return $this->hasMany(User::class, 'student_id')->where('role', 'guardian');
+    return $this->hasMany(CourseOffering::class, 'teacher_id');
   }
 
-  public function students()
-  {
-    return $this->hasMany(User::class, 'guardian_id')->where('role', 'student');
-  }
+  public function taughtStudents() {}
+
 
   public function courseOfferings()
   {
     return $this->belongsToMany(CourseOffering::class, 'student_course', 'student_id', 'course_offering_id')
       ->using(StudentCourse::class)
       ->as('enrollment')
-      ->withPivot('grade_final');
+      ->withPivot('grade_final')
+      ->withTimestamps();
+  }
+
+  // public function courseOfferings()
+  // {
+  //   return $this->belongsToMany(CourseOffering::class, 'student_course')
+  //     ->using(StudentCourse::class)
+  //     ->withPivot(['grade_final', 'status', 'payment_status', 'remarks'])
+  //     ->withTimestamps();
+  // }
+
+
+  public function getAvatarUrlAttribute()
+  {
+    return $this->avatar
+      ? asset($this->avatar)
+      : asset('assets/images/cambodia.png');
   }
 }

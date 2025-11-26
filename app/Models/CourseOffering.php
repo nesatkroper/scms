@@ -58,4 +58,12 @@ class CourseOffering extends Model
       ->as('enrollment')
       ->withPivot('grade_final');
   }
+
+  // public function students()
+  // {
+  //   return $this->belongsToMany(User::class, 'student_course')
+  //     ->using(StudentCourse::class)
+  //     ->withPivot(['grade_final', 'status', 'payment_status', 'remarks'])
+  //     ->withTimestamps();
+  // }
 }

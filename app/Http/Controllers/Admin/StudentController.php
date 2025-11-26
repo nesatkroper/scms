@@ -3,370 +3,324 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\StudentCourseRequest;
+use App\Http\Requests\StudentRequest;
+use App\Models\CourseOffering;
+use App\Models\Fee;
+use App\Models\FeeType;
+use App\Models\StudentCourse;
 use App\Models\User;
-use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class StudentController extends Controller
 {
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    //     $this->applyPermissions();
-    // }
+  public function index(Request $request)
+  {
+    $studentRole = Role::where('name', 'student')->first();
 
-    // protected function ModelPermissionName(): string
-    // {
-    //     return 'Student';
-    // }
-    
-    public function index(Request $request)
-    {
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 12);
-        $viewType = $request->input('view', 'table');
-
-        $students = User::role('student')
-            ->when($search, function ($query) use ($search) {
-                return $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('address', 'like', "%{$search}%")
-                    ->orWhere('admission_date', 'like', "%{$search}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage)
-            ->appends([
-                'search' => $search,
-                'per_page' => $perPage,
-                'view' => $viewType
-            ]);
-
-        if ($request->ajax()) {
-            $html = [
-                'table' => view('admin.students.partials.table', compact('students'))->render(),
-                'cards' => view('admin.students.partials.cardlist', compact('students'))->render(),
-                'pagination' => $students->links()->toHtml()
-            ];
-
-            return response()->json([
-                'success' => true,
-                'html' => $html,
-                'view' => $viewType
-            ]);
-        }
-
-        return view('admin.students.index', compact('students'));
+    if (!$studentRole) {
+      $students = User::where('id', 0);
+      return view('admin.students.index', ['students' => $students->paginate(9)]);
     }
 
-    public function store(StoreStudentRequest $request)
-    {
-        try {
-            $validated = $request->validated();
-            $studentPhotoPath = public_path('uploads/students');
+    $query = User::role('student')
+      ->orderBy('created_at', 'desc')
+      ->withCount(['fees', 'attendances', 'courseOfferings']);
 
-            if (!file_exists($studentPhotoPath)) {
-                mkdir($studentPhotoPath, 0755, true);
-            }
-
-            if ($request->hasFile('avatar')) {
-                $avatar = $request->file('avatar');
-                $photoName = time() . '-' . date('d-m-Y') . '_add_avatar.' . $avatar->getClientOriginalExtension();
-                $avatar->move($studentPhotoPath, $photoName);
-                $validated['avatar'] = 'uploads/students/' . $photoName;
-            }
-
-            // Create user with student role
-            $user = User::create($validated + [
-                'password' => Hash::make('password123'),
-            ]);
-
-            $user->assignRole('student');
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Student created successfully!',
-                'data' => $user
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error creating student: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating student: ' . $e->getMessage()
-            ], 500);
-        }
+    if ($search = $request->input('search')) {
+      $query->where(function ($q) use ($search) {
+        $q->where('name', 'like', '%' . $search . '%')
+          ->orWhere('email', 'like', '%' . $search . '%');
+      });
     }
 
-    public function show(User $student)
-    {
-        // Ensure the user is a student
-        if (!$student->hasRole('student')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Student not found'
-            ], 404);
-        }
-        $student->age = $student->date_of_birth ? \Carbon\Carbon::parse($student->date_of_birth)->age : null;
+    $students = $query->paginate(9);
 
-        return response()->json([
-            'success' => true,
-            'data' => $student
-        ]);
+    return view('admin.students.index', compact('students'));
+  }
+
+  public function feesIndex(User $student)
+  {
+    $fees = $student->fees()
+      ->with(['payments', 'feeType', 'creator'])
+      ->latest()
+      ->paginate(15);
+
+    return view('admin.students.fees.index', compact('student', 'fees'));
+  }
+
+  public function coursesIndex(User $student)
+  {
+    $courses = $student->courseOfferings()
+      ->with(['subject', 'teacher', 'classroom'])
+      ->latest('pivot_created_at')
+      ->paginate(15);
+
+    return view('admin.students.enrollments.index', compact('student', 'courses'));
+  }
+
+
+
+  public function create()
+  {
+    return view('admin.students.create');
+  }
+
+  public function createEnrollment(User $student)
+  {
+    $enrolledIds = $student->courseOfferings()->pluck('course_offering_id');
+
+    $availableCourses = CourseOffering::with('subject', 'teacher')
+      ->whereNotIn('id', $enrolledIds)
+      ->get();
+
+    return view('admin.students.enrollments.create', compact('student', 'availableCourses'));
+  }
+
+  public function createFee(User $student)
+  {
+    $feeTypes = FeeType::all();
+
+    return view('admin.students.fees.create', compact('student', 'feeTypes'));
+  }
+
+  public function store(StudentRequest $request)
+  {
+    DB::beginTransaction();
+    try {
+      $data = $request->validated();
+      $defaultPassword = 'password';
+
+      $avatarPath = public_path('uploads/avatars');
+      if (!file_exists($avatarPath)) {
+        mkdir($avatarPath, 0755, true);
+      }
+
+      $data['avatar'] = null;
+      if ($request->hasFile('avatar')) {
+        $manager = new ImageManager(new Driver());
+        $avatar = $request->file('avatar');
+        $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
+
+        $image = $manager->read($avatar);
+        $image->resize(640, 640);
+        $image->save($avatarPath . '/' . $avatarName);
+
+        $data['avatar'] = 'uploads/avatars/' . $avatarName;
+      }
+
+      $student = User::create(array_merge($data, [
+        'password' => bcrypt($defaultPassword), // Using bcrypt for consistency with the original StudentController
+        'avatar' => $data['avatar'], // Set the processed avatar path
+      ]));
+
+      $student->assignRole('student');
+
+      DB::commit();
+      return redirect()->route('admin.students.index')->with('success', 'Student created successfully. Default password is: ' . $defaultPassword);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error('Error creating student: ' . $e->getMessage()); // Use Log::error for consistency
+      return redirect()->back()->withInput()->with('error', 'Failed to create student: ' . $e->getMessage());
+    }
+  }
+
+  // public function storeEnrollment(Request $request, User $student)
+  // {
+  //   $validated = $request->validate([
+  //     'course_offering_id' => [
+  //       'required',
+  //       'exists:course_offerings,id',
+  //       Rule::unique('student_course')->where(function ($query) use ($student) {
+  //         return $query->where('student_id', $student->id);
+  //       }),
+  //     ],
+  //     'grade_final' => 'nullable|string|max:5',
+  //     'status' => 'required|in:active,completed,dropped',
+  //     'payment_status' => 'required|in:paid,pending,waived',
+  //     'remarks' => 'nullable|string|max:255',
+  //   ]);
+
+  //   try {
+  //     $student->courseOfferings()->attach($validated['course_offering_id'], [
+  //       'grade_final' => $validated['grade_final'],
+  //       'status' => $validated['status'],
+  //       'payment_status' => $validated['payment_status'],
+  //       'remarks' => $validated['remarks'],
+  //       'created_at' => now(),
+  //       'updated_at' => now(),
+  //     ]);
+
+  //     return redirect()->route('admin.students.courses.index', $student)
+  //       ->with('success', 'Student successfully enrolled in the course offering.');
+  //   } catch (\Exception $e) {
+  //     return back()->withInput()->withErrors(['enrollment' => 'Failed to create enrollment. ' . $e->getMessage()]);
+  //   }
+  // }
+
+  public function storeEnrollment(StudentCourseRequest $request)
+  {
+    $exists = StudentCourse::where('student_id', $request->student_id)
+      ->where('course_offering_id', $request->course_offering_id)
+      ->exists();
+
+    if ($exists) {
+      return redirect()->route('admin.student_courses.create', [
+        'course_offering_id' => $request->course_offering_id
+      ])
+        ->with('error', 'This student is already enrolled in this course offering.')
+        ->withInput();
     }
 
-    public function update(UpdateStudentRequest $request, User $student)
-    {
-        try {
-            // Ensure the user is a student
-            if (!$student->hasRole('student')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Student not found'
-                ], 404);
-            }
+    try {
+      StudentCourse::create($request->validated());
 
-            $data = $request->validated();
+      return redirect()->route('admin.student_courses.index', [
+        'course_offering_id' => $request->course_offering_id
+      ])
+        ->with('success', 'Enrollment created successfully!');
+    } catch (\Exception $e) {
+      Log::error('Error creating StudentCourse: ' . $e->getMessage());
 
-            // Handle avatar upload
-            if ($request->hasFile('avatar')) {
-                // Delete old photo if exists
-                if ($student->avatar && file_exists(public_path($student->avatar))) {
-                    unlink(public_path($student->avatar));
-                }
+      return redirect()->route('admin.student_courses.create', [
+        'course_offering_id' => $request->course_offering_id
+      ])
+        ->with('error', 'Error creating enrollment.')
+        ->withInput();
+    }
+  }
 
-                $avatar = $request->file('avatar');
-                $photoName = time() . '-' . date('d-m-Y') . '_ed_avatar.' . $avatar->getClientOriginalExtension();
-                $photoPath = public_path('uploads/students');
-                $avatar->move($photoPath, $photoName);
-                $data['avatar'] = 'uploads/students/' . $photoName;
-            }
+  public function storeFee(Request $request, User $student)
+  {
+    $validated = $request->validate([
+      'fee_type_id' => 'required|exists:fee_types,id',
+      'amount' => 'required|numeric|min:0.01',
+      'due_date' => 'required|date',
+      'status' => 'required|in:Draft,Due,Partial,Paid',
+      'description' => 'nullable|string|max:255',
+    ]);
 
-            $student->update($data);
+    try {
+      Fee::create([
+        'student_id' => $student->id,
+        'fee_type_id' => $validated['fee_type_id'],
+        'amount' => $validated['amount'],
+        'due_date' => $validated['due_date'],
+        'status' => $validated['status'],
+        'description' => $validated['description'],
+        'created_by_id' => Auth::id(),
+      ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Student updated successfully!',
-                'data' => $student
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error updating student: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating student: ' . $e->getMessage()
-            ], 500);
-        }
+      return redirect()->route('admin.students.fees.index', $student)
+        ->with('success', 'New fee record successfully created.');
+    } catch (\Exception $e) {
+      return back()->withInput()->withErrors(['fee_creation' => 'Failed to create fee record. ' . $e->getMessage()]);
+    }
+  }
+
+  public function show(User $student)
+  {
+    $student = $student->load([
+      'fees.feeType',
+      'payments.receiver',
+      'attendances.courseOffering.subject',
+      'scores.exam',
+      'courseOfferings.subject',
+      'courseOfferings.teacher',
+    ]);
+
+    $student = User::withCount(['fees', 'attendances'])
+      ->findOrFail($student->id);
+
+
+    return view('admin.students.show', compact('student'));
+  }
+
+  public function edit(User $student)
+  {
+    if (!$student->hasRole('student')) {
+      return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
     }
 
-    public function destroy(User $student)
-    {
-        try {
-            // Ensure the user is a student
-            if (!$student->hasRole('student')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Student not found'
-                ], 404);
-            }
+    return view('admin.students.edit', compact('student'));
+  }
 
-            // Delete avatar if exists
-            if ($student->avatar && file_exists(public_path($student->avatar))) {
-                unlink(public_path($student->avatar));
-            }
-
-            $student->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Student deleted successfully!'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error deleting student: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting student: ' . $e->getMessage()
-            ], 500);
-        }
+  public function update(StudentRequest $request, User $student)
+  {
+    if (!$student->hasRole('student')) {
+      return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
     }
 
+    DB::beginTransaction();
+    try {
+      $data = $request->validated();
 
-    public function bulkDelete(Request $request)
-    {
-        $ids = $request->input('ids');
-
-        if (empty($ids)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No students selected'
-            ], 400);
+      if ($request->hasFile('avatar')) {
+        if ($student->avatar && file_exists(public_path($student->avatar))) {
+          unlink(public_path($student->avatar));
         }
 
-        try {
-            $students = User::role('student')->whereIn('id', $ids)->get();
+        $avatar = $request->file('avatar');
+        $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
+        $avatarPath = public_path('uploads/avatars');
 
-            foreach ($students as $student) {
-                // Delete associated files
-                if ($student->avatar && file_exists(public_path($student->avatar))) {
-                    unlink(public_path($student->avatar));
-                }
-                $student->delete();
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => count($students) . ' students deleted successfully'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error deleting students: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting students: ' . $e->getMessage()
-            ], 500);
+        if (!file_exists($avatarPath)) {
+          mkdir($avatarPath, 0755, true);
         }
+
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($avatar);
+        $image->resize(640, 640);
+        $image->save($avatarPath . '/' . $avatarName);
+
+        $data['avatar'] = 'uploads/avatars/' . $avatarName;
+      } elseif ($request->input('clear_avatar')) { // Added 'clear_avatar' logic for consistency
+        if ($student->avatar && file_exists(public_path($student->avatar))) {
+          unlink(public_path($student->avatar));
+        }
+        $data['avatar'] = null;
+      } else {
+
+        unset($data['avatar']);
+      }
+
+      if (isset($data['password']) && !empty($data['password'])) {
+        $data['password'] = bcrypt($data['password']);
+      } else {
+        unset($data['password']);
+      }
+
+      $student->update($data);
+
+      DB::commit();
+      return redirect()->route('admin.students.index')->with('success', 'Student updated successfully.');
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error('Error updating student: ' . $e->getMessage()); // Use Log::error for consistency
+      return redirect()->back()->withInput()->with('error', 'Failed to update student: ' . $e->getMessage());
+    }
+  }
+
+  public function destroy(User $student)
+  {
+    if (!$student->hasRole('student')) {
+      return redirect()->route('admin.students.index')->with('error', 'User is not a student.');
     }
 
-    public function getBulkData(Request $request)
-    {
-        $ids = $request->input('ids');
-
-        if (empty($ids)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No students selected'
-            ], 400);
-        }
-
-        if (count($ids) > 5) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You can only edit up to 5 students at a time'
-            ], 400);
-        }
-
-        try {
-            $students = User::role('student')->whereIn('id', $ids)->get();
-            return response()->json([
-                'success' => true,
-                'data' => $students
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error fetching students: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error fetching students: ' . $e->getMessage()
-            ], 500);
-        }
+    if ($student->avatar && file_exists(public_path($student->avatar))) {
+      unlink(public_path($student->avatar));
     }
 
-    public function bulkUpdate(Request $request)
-    {
-        $request->validate([
-            'students' => 'required|array',
-            'students.*.id' => 'required|exists:users,id',
-        ]);
+    $student->delete();
 
-        $updatedCount = 0;
-
-        foreach ($request->input('students') as $studentData) {
-            $validator = Validator::make($studentData, [
-                'id' => 'required|exists:users,id',
-                'name' => 'required|string|max:255',
-                'gender' => 'required|in:male,female,other',
-                'dob' => 'required|date',
-                'grade_level_id' => 'required|exists:grade_levels,id',
-                'phone' => 'nullable|string|max:20',
-                'email' => 'nullable|email|max:255',
-                'address' => 'nullable|string',
-                'blood_group' => 'nullable|string|max:10',
-                'nationality' => 'nullable|string|max:100',
-                'religion' => 'nullable|string|max:100',
-                'admission_date' => 'required|date',
-            ]);
-
-            if ($validator->fails()) {
-                Log::error("Validation failed for student ID {$studentData['id']}: " . json_encode($validator->errors()));
-                continue;
-            }
-
-            try {
-                $student = User::findOrFail($studentData['id']);
-                $validatedData = $validator->validated();
-
-                // Map dob to date_of_birth
-                $validatedData['date_of_birth'] = $validatedData['dob'];
-                unset($validatedData['dob']);
-
-                $student->update($validatedData);
-                $updatedCount++;
-            } catch (\Exception $e) {
-                Log::error("Error updating student: " . $e->getMessage());
-            }
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => "Successfully updated $updatedCount students",
-            'redirect' => route('admin.students.index')
-        ]);
-    }
-
-    public function profile(User $student)
-    {
-        // Ensure the user is a student
-        if (!$student->hasRole('student')) {
-            abort(404, 'Student not found');
-        }
-        // Calculate age
-        $student->age = $student->date_of_birth ? \Carbon\Carbon::parse($student->date_of_birth)->age : null;
-
-        // Calculate academic statistics
-        $academicStats = $this->calculateAcademicStats($student);
-
-        // Format data for the view
-        $formattedData = $this->formatStudentData($student, $academicStats);
-
-        return view('admin.students.profile', $formattedData);
-    }
-
-    /**
-     * Calculate academic statistics for the student
-     */
-    private function calculateAcademicStats($student)
-    {
-        // You can implement your actual logic here based on your application's needs
-        // For now, returning placeholder data
-
-        return [
-            'gpa' => '3.8',
-            'gpa_percentage' => '95.0',
-            'attendance_rate' => '92',
-            'fee_progress' => '85',
-            'present_days' => 46,
-            'absent_days' => 4,
-            'total_fees' => 1000,
-            'paid_fees' => 850,
-            'due_fees' => 150,
-        ];
-    }
-
-    /**
-     * Format student data for the view
-     */
-    private function formatStudentData($student, $academicStats)
-    {
-        return [
-            'student' => $student,
-            'academicStats' => $academicStats,
-            'recentBookIssues' => collect([]), // Placeholder - implement based on your app
-            'recentFees' => collect([]), // Placeholder - implement based on your app
-            'recentAttendances' => collect([]), // Placeholder - implement based on your app
-            'courseGrades' => collect([]), // Placeholder - implement based on your app
-            'guardians' => $student->guardians ?? collect([]),
-        ];
-    }
+    return redirect()->route('admin.students.index')->with('success', 'Student deleted successfully.');
+  }
 }

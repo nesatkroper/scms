@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,7 @@ class UserController extends BaseController
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 8);
+    $perPage = $request->input('per_page', 9);
     $roleFilter = $request->input('role_filter');
 
     $roles = Role::all();
@@ -44,7 +45,7 @@ class UserController extends BaseController
         });
       })
       ->when($roleFilter, function ($query) use ($roleFilter) {
-        return $query->role($roleFilter); // Spatie role filter
+        return $query->role($roleFilter);
       })
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
@@ -53,18 +54,7 @@ class UserController extends BaseController
         'per_page' => $perPage,
         'role_filter' => $roleFilter,
       ]);
-    // AJAX Request for live search or pagination
-    if ($request->ajax()) {
-      $html = [
-        'table' => view('admin.users.table', compact('users'))->render(),
-        'pagination' => $users->links()->toHtml()
-      ];
 
-      return response()->json([
-        'success' => true,
-        'html' => $html
-      ]);
-    }
 
     return view('admin.users.index', compact('users', 'roles', 'roleFilter',));
   }
@@ -75,32 +65,10 @@ class UserController extends BaseController
     return view('admin.users.create', compact('roles'));
   }
 
-  public function store(Request $request)
+  public function store(UserRequest $request)
   {
-    $validatedData = $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'min:8'],
-      'type' => ['required', 'string', Rule::exists('roles', 'name')],
-      'phone' => ['nullable', 'string', 'max:255'],
-      'address' => ['nullable', 'string'],
-      'date_of_birth' => ['nullable', 'date'],
-      'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
-      'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-      'nationality' => ['nullable', 'string', 'max:255'],
-      'religion' => ['nullable', 'string', 'max:255'],
-      'blood_group' => ['nullable', 'string', 'max:10'],
-      // 'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
-      'joining_date' => ['nullable', 'date'],
-      'qualification' => ['nullable', 'string', 'max:255'],
-      'experience' => ['nullable', 'numeric', 'min:0'],
-      'specialization' => ['nullable', 'string', 'max:255'],
-      'salary' => ['nullable', 'numeric', 'min:0'],
-      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-      'admission_date' => ['nullable', 'date'],
-      'occupation' => ['nullable', 'string', 'max:255'],
-      'company' => ['nullable', 'string', 'max:255'],
-    ]);
+    $validatedData = $request->validated();
+    $roles = $validatedData['type'];
 
     try {
       $avatarPath = public_path('uploads/avatars');
@@ -126,13 +94,52 @@ class UserController extends BaseController
         'avatar' => $validatedData['avatar'],
       ]));
 
-      $user->assignRole($validatedData['type']);
+      $user->assignRole($roles);
 
       return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating user: ' . $e->getMessage());
       return back()->withInput()->with('error', 'Error creating user: ' . $e->getMessage());
     }
+  }
+
+  public function show(User $user)
+  {
+    $user->load([
+      'roles',
+
+      'courseOfferings.subject',
+      'fees.feeType',
+      'scores.exam',
+      'attendances.courseOffering.subject',
+
+      'teachingCourses.subject',
+      'teachingCourses.courseOfferingsStudents',
+    ]);
+
+    $user->loadCount([
+      'fees',
+      'attendances',
+      'courseOfferings',
+      'teachingCourses',
+      'approvedExpenses',
+    ]);
+
+    $allRoles = \Spatie\Permission\Models\Role::all();
+
+    $taughtStudentsCount = 0;
+    if ($user->hasRole('teacher')) {
+      $studentIds = collect();
+
+      foreach ($user->teachingCourses as $courseOffering) {
+        $courseOffering->students->pluck('id')->each(function ($id) use ($studentIds) {
+          $studentIds->push($id);
+        });
+      }
+      $taughtStudentsCount = $studentIds->unique()->count();
+    }
+
+    return view('admin.users.show', compact('user', 'taughtStudentsCount', 'allRoles'));
   }
 
   public function edit(User $user)
@@ -142,32 +149,10 @@ class UserController extends BaseController
     return view('admin.users.edit', compact('user', 'roles'));
   }
 
-  public function update(Request $request, User $user)
+  public function update(UserRequest $request, User $user)
   {
-    $validatedData = $request->validate([
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-      'password' => ['nullable', 'string', 'min:8'],
-      'type' => ['required', 'string', Rule::exists('roles', 'name')],
-      'phone' => ['nullable', 'string', 'max:255'],
-      'address' => ['nullable', 'string'],
-      'date_of_birth' => ['nullable', 'date'],
-      'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
-      'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-      'nationality' => ['nullable', 'string', 'max:255'],
-      'religion' => ['nullable', 'string', 'max:255'],
-      'blood_group' => ['nullable', 'string', 'max:10'],
-      // 'department_id' => ['nullable', 'integer', Rule::exists('departments', 'id')],
-      'joining_date' => ['nullable', 'date'],
-      'qualification' => ['nullable', 'string', 'max:255'],
-      'experience' => ['nullable', 'numeric', 'min:0'],
-      'specialization' => ['nullable', 'string', 'max:255'],
-      'salary' => ['nullable', 'numeric', 'min:0'],
-      'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-      'admission_date' => ['nullable', 'date'],
-      'occupation' => ['nullable', 'string', 'max:255'],
-      'company' => ['nullable', 'string', 'max:255'],
-    ]);
+    $validatedData = $request->validated();
+    $roles = $validatedData['type'];
 
     try {
       $data = $request->only([
@@ -180,7 +165,6 @@ class UserController extends BaseController
         'nationality',
         'religion',
         'blood_group',
-        // 'department_id',
         'joining_date',
         'qualification',
         'experience',
@@ -190,7 +174,6 @@ class UserController extends BaseController
         'occupation',
         'company',
       ]);
-
       if ($request->hasFile('avatar')) {
         if ($user->avatar && file_exists(public_path($user->avatar))) {
           unlink(public_path($user->avatar));
@@ -218,12 +201,11 @@ class UserController extends BaseController
       }
 
       if ($request->filled('password')) {
-        $data['password'] = Hash::make($request->password);
+        $data['password'] = Hash::make($validatedData['password']);
       }
 
       $user->update($data);
-      $user->syncRoles($validatedData['type']);
-
+      $user->syncRoles($roles);
       if ($user->student && ($validatedData['type'] === 'student')) {
         $studentData = [
           'name' => $user->name,
@@ -248,6 +230,35 @@ class UserController extends BaseController
     }
   }
 
+  public function changePassword(Request $request, User $user)
+  {
+    $request->validate([
+      'password' => ['required', 'string', 'min:8'],
+    ]);
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return redirect()->route('admin.users.show', $user)
+      ->with('success', 'Password for ' . $user->name . ' has been successfully changed.');
+  }
+
+  public function changeRole(Request $request, User $user)
+  {
+    $request->validate([
+      'role_names' => ['required', 'array'],
+      'role_names.*' => ['required', 'string', 'exists:roles,name'],
+    ]);
+
+    $newRoles = $request->role_names;
+
+    $user->syncRoles($newRoles);
+
+    $roleList = implode(', ', array_map('ucfirst', $newRoles));
+
+    return redirect()->route('admin.users.show', $user)
+      ->with('success', $user->name . ' roles successfully changed to: ' . $roleList);
+  }
   public function destroy(User $user)
   {
     try {
@@ -258,25 +269,17 @@ class UserController extends BaseController
         ], 403);
       }
 
-      // if (!$user->hasRole('student')) {
-      //   return response()->json([
-      //     'success' => false,
-      //     'message' => 'User not found'
-      //   ], 404);
-      // }
-      
+
       if (!$user) {
         return response()->json([
           'success' => false,
           'message' => 'User not found'
         ], 404);
       }
-      // Delete avatar if exists
       if ($user->avatar && file_exists(public_path($user->avatar))) {
         unlink(public_path($user->avatar));
       }
 
-      // Delete CV if exists (you might want to add this)
       if ($user->cv && file_exists(public_path($user->cv))) {
         unlink(public_path($user->cv));
       }

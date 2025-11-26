@@ -4,7 +4,7 @@
 
 @section('content')
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
     {{-- Success Message --}}
     @if (session('success'))
@@ -43,9 +43,9 @@
       <div class="mb-4">
         <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ __('message.status_key') }}</span>
         <span class="inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">L =
-         {{ __('message.attending_(1_score)') }} </span>
+          {{ __('message.attending_(1_score)') }} </span>
         <span class="inline-block px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-semibold">P =
-         {{ __('message.permission_(05_score)') }}</span>
+          {{ __('message.permission_(05_score)') }}</span>
         <span class="inline-block px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">A =
           {{ __('message.absent_(0_score)') }}</span>
       </div>
@@ -108,12 +108,15 @@
             {{-- Student Info --}}
             <div class="md:col-span-2">
               <span class="font-semibold text-gray-800 dark:text-gray-200">{{ $student->name }}</span>
-              <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.student_id') }} {{ $student->id }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.student_id') }} {{ $student->id }}
+              </div>
             </div>
 
             {{-- Status Radio Buttons --}}
+
             <div class="flex flex-col">
-              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.status') }}</label>
+              <label
+                class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.status') }}</label>
               <div class="flex gap-2">
                 <label class="inline-flex items-center">
                   <input type="radio" name="status_{{ $student->id }}" value="attending"
@@ -135,7 +138,8 @@
 
             {{-- Remarks Input --}}
             <div class="flex flex-col">
-              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
+              <label
+                class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
               <input type="text" name="remarks_{{ $student->id }}" value="{{ $attendanceEntry->remarks ?? '' }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100">
             </div>

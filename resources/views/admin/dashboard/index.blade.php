@@ -254,7 +254,7 @@
     <div class="box grid grid-cols-1 lg:grid-cols-3 gap-4">
       <!-- Attendance Chart -->
       <div
-        class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+        class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Attendance Overview</h3>
           <div class="flex bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
@@ -271,7 +271,7 @@
       </div>
 
       <!-- Recent Activities -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Recent Activities</h3>
         <div class="space-y-4">
           <!-- Activity Item -->

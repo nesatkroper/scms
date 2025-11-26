@@ -20,7 +20,7 @@ class GenerateModelPermissions extends Command
 
     foreach ($models as $model) {
       foreach ($permissions as $permission) {
-        $permissionName = "{$permission} {$model}";
+        $permissionName = "{$permission}_{$model}";
         Permission::firstOrCreate(['name' => $permissionName]);
         $this->info("Permission created: {$permissionName}");
       }

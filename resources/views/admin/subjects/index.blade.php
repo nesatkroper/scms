@@ -2,7 +2,7 @@
 @section('title', 'Subjects List')
 @section('content')
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -45,7 +45,7 @@
           <a href="{{ route('admin.subjects.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
             title="Reset Search">
-            <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+            <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
       </div>
@@ -63,21 +63,6 @@
                 <div>
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $subject->name }}</h4>
                 </div>
-
-                {{-- Detail Button --}}
-                <a href="{{ route('admin.subjects.show', $subject->id) }}"
-                  class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-900 transition-colors"
-                  title="View Details">
-                  <span class="btn-content">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </span>
-                </a>
               </div>
             </div>
 
