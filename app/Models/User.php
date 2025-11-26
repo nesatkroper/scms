@@ -104,6 +104,15 @@ class User extends Authenticatable
       ->withTimestamps();
   }
 
+  // public function courseOfferings()
+  // {
+  //   return $this->belongsToMany(CourseOffering::class, 'student_course')
+  //     ->using(StudentCourse::class)
+  //     ->withPivot(['grade_final', 'status', 'payment_status', 'remarks'])
+  //     ->withTimestamps();
+  // }
+
+
   public function getAvatarUrlAttribute()
   {
     return $this->avatar

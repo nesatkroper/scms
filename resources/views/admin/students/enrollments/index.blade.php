@@ -4,13 +4,7 @@
 
   <div class="mb-6 flex justify-between items-center">
     <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-10">
-      <svg class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20v2.5a2.5 2.5 0 0 1-2.5 2.5H6.5A2.5 2.5 0 0 1 4 19.5z" />
-        <path d="M14 17V7a2 2 0 0 0-2-2H4" />
-        <path d="M4 7V4a2 2 0 0 1 2-2h14v10" />
-      </svg>
+      <i class="fa-regular fa-calendar-plus"></i>
       Enrolled Courses for: {{ $student->name }}
     </h3>
     <div class="flex space-x-3">
@@ -34,6 +28,18 @@
       </a>
     </div>
   </div>
+
+  {{-- Success/Error Messages --}}
+  @if (session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+      <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+  @endif
+  @if (session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+      <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+  @endif
 
   <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
     <div class="overflow-x-auto">
