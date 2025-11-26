@@ -44,6 +44,8 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="{{ asset('assets/js/validation.js') }}"></script>
 
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     @stack('scripts')
     @stack('script')
 

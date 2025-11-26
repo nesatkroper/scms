@@ -4,10 +4,6 @@
 
 @section('content')
 
-  <script>
-    window.UsersData = @json($users);
-  </script>
-
   {{-- <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"> --}}
   <div x-data="userModals()"
@@ -81,6 +77,10 @@
 
     {{-- START: Card View for Users --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <script>
+        window.UsersData = @json($users->items() ?? $users);
+      </script>
+
       @forelse ($users as $user)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col @if ($user->hasRole('admin')) border border-red-300 dark:border-red-700 @endif
@@ -268,6 +268,67 @@
       {{ $users->links() }}
     </div>
 
+    <div x-show="showPasswordModal" x-cloak x-transition.opacity
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
+        <h2 class="text-lg font-bold mb-3">Reset Password: <span x-text="user.name"></span></h2>
+
+        <form :action="'/admin/users/' + user.id + '/password'" method="POST">
+          @csrf
+          @method('PUT')
+
+          <input type="text" name="password"
+            class="w-full border rounded px-3 py-2 mb-3 dark:bg-gray-700 dark:text-white" placeholder="New Password">
+
+          <div class="flex justify-end gap-2">
+            <button @click.prevent="closeModals()" type="button"
+              class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
+
+            <button type="submit" class="px-3 py-1 bg-indigo-600 text-white rounded">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div x-show="showRoleModal" x-cloak x-transition.opacity
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-[28rem]">
+        <h2 class="text-lg font-bold mb-3">
+          Change Roles: <span x-text="user.name"></span>
+        </h2>
+
+        <form :action="'/admin/users/role/' + user.id + ''" method="POST">
+          @csrf
+          @method('PUT')
+
+          {{-- Role Multi-Select --}}
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              User Role(s) <span class="text-red-500">*</span>
+            </label>
+
+            <div class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600">
+              @foreach ($roles as $role)
+                <label
+                  class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 capitalize cursor-pointer">
+                  <input type="checkbox" name="roles[]" value="{{ $role->name }}" x-model="selectedRoles"
+                    class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-offset-gray-800">
+                  <span class="ml-2">{{ $role->name }}</span>
+                </label>
+              @endforeach
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-2">
+            <button @click.prevent="closeModals()" type="button"
+              class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
+
+            <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 @endsection
 
@@ -304,47 +365,10 @@
   </script>
 @endpush
 
-<div x-show="showPasswordModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
-    <h2 class="text-lg font-bold mb-3">Reset Password: <span x-text="user.name"></span></h2>
-
-    <form :action="'/admin/users/' + user.id + '/password'" method="POST">
-      @csrf
-      @method('PUT')
-
-      <input type="password" name="password"
-        class="w-full border rounded px-3 py-2 mb-3 dark:bg-gray-700 dark:text-white" placeholder="New Password">
-
-      <div class="flex justify-end gap-2">
-        <button @click.prevent="closeModals()" type="button"
-          class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
-
-        <button type="submit" class="px-3 py-1 bg-indigo-600 text-white rounded">Update</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div x-show="showRoleModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
-    <h2 class="text-lg font-bold mb-3">Change Role: <span x-text="user.name"></span></h2>
-
-    <form :action="'/admin/users/' + user.id + '/role'" method="POST">
-      @csrf
-      @method('PUT')
-
-      <select name="role" class="w-full border rounded px-3 py-2 mb-3 dark:bg-gray-700 dark:text-white">
-        <option value="admin">Admin</option>
-        <option value="teacher">Teacher</option>
-        <option value="student">Student</option>
-      </select>
-
-      <div class="flex justify-end gap-2">
-        <button @click.prevent="closeModals()" type="button"
-          class="px-3 py-1 bg-gray-300 dark:bg-gray-700 rounded">Close</button>
-
-        <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded">Update</button>
-      </div>
-    </form>
-  </div>
-</div>
+@push('styles')
+  <style>
+    [x-cloak] {
+      display: none !important;
+    }
+  </style>
+@endpush
