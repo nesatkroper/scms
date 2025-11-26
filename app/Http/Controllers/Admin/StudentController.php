@@ -49,7 +49,7 @@ class StudentController extends Controller
       ->latest()
       ->paginate(15);
 
-    return view('admin.students.fees-index', compact('student', 'fees'));
+    return view('admin.students.fees.index', compact('student', 'fees'));
   }
 
   public function coursesIndex(User $student)
