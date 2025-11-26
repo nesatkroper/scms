@@ -128,6 +128,11 @@ Route::prefix('admin')
       Route::post('fees/{student}', [StudentController::class, 'storeFee'])->name('fees.store');
     });
 
+    Route::prefix('users')->name('users.')->group(function () {
+      Route::put('/password/{user}', [UserController::class, 'changePassword'])->name('password.update');
+      Route::put('/role/{user}', [UserController::class, 'changeRole'])->name('role.update');
+    });
+
 
     Route::prefix('teachers')->name('teachers.')->group(function () {
       Route::post('/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('bulkDelete');

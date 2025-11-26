@@ -54,17 +54,7 @@ class UserController extends BaseController
         'per_page' => $perPage,
         'role_filter' => $roleFilter,
       ]);
-    if ($request->ajax()) {
-      $html = [
-        'table' => view('admin.users.table', compact('users'))->render(),
-        'pagination' => $users->links()->toHtml()
-      ];
 
-      return response()->json([
-        'success' => true,
-        'html' => $html
-      ]);
-    }
 
     return view('admin.users.index', compact('users', 'roles', 'roleFilter',));
   }
@@ -74,8 +64,6 @@ class UserController extends BaseController
     $roles = Role::all();
     return view('admin.users.create', compact('roles'));
   }
-
-
 
   public function store(UserRequest $request)
   {
@@ -135,6 +123,8 @@ class UserController extends BaseController
       'approvedExpenses',
     ]);
 
+    $allRoles = \Spatie\Permission\Models\Role::all();
+
     $taughtStudentsCount = 0;
     if ($user->hasRole('teacher')) {
       $studentIds = collect();
@@ -147,7 +137,7 @@ class UserController extends BaseController
       $taughtStudentsCount = $studentIds->unique()->count();
     }
 
-    return view('admin.users.show', compact('user', 'taughtStudentsCount'));
+    return view('admin.users.show', compact('user', 'taughtStudentsCount', 'allRoles'));
   }
 
   public function edit(User $user)
@@ -235,6 +225,33 @@ class UserController extends BaseController
       Log::error('Error updating user: ' . $e->getMessage());
       return back()->withInput()->with('error', 'Error updating user: ' . $e->getMessage());
     }
+  }
+
+  public function changePassword(Request $request, User $user)
+  {
+    $request->validate([
+      'password' => ['required', 'string', 'min:8'],
+    ]);
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return redirect()->route('admin.users.show', $user)
+      ->with('success', 'Password for ' . $user->name . ' has been successfully changed.');
+  }
+
+  public function changeRole(Request $request, User $user)
+  {
+    $request->validate([
+      'role_name' => ['required', 'string', 'exists:roles,name'],
+    ]);
+
+    $newRole = $request->role_name;
+
+    $user->syncRoles([$newRole]);
+
+    return redirect()->route('admin.users.show', $user)
+      ->with('success', $user->name . ' role successfully changed to: ' . ucfirst($newRole));
   }
 
   public function destroy(User $user)

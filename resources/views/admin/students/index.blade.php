@@ -173,11 +173,11 @@
 
           {{-- Card Footer: Primary Actions --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end">
 
             {{-- View Details Button --}}
             <a href="{{ route('admin.students.show', $student->id) }}"
-              class="btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
               title="View Student Details">
               <i class="fa-regular fa-eye me-2"></i>
               View
@@ -185,7 +185,7 @@
 
             {{-- Edit Button --}}
             <a href="{{ route('admin.students.edit', $student->id) }}"
-              class="btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
               title="Edit Student">
               <i class="fa-solid fa-pen-to-square me-2"></i>
               Edit
@@ -197,7 +197,7 @@
               @csrf
               @method('DELETE')
               <button type="submit"
-                class="delete-btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                 title="Delete Student">
                 <i class="fa-regular fa-trash-can me-2"></i>
                 Delete

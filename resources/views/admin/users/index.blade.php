@@ -173,36 +173,71 @@
 
           {{-- Card Footer: Actions --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
 
-            {{-- Show Button --}}
-            <a href="{{ route('admin.users.show', $user->id) }}"
-              class="btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-              title="View User">
-              <i class="fa-regular fa-eye me-2"></i>
-              Show
-            </a>
-
-            {{-- Edit Button --}}
-            <a href="{{ route('admin.users.edit', $user->id) }}"
-              class="btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit User">
-              <i class="fa-solid fa-pen-to-square me-2"></i>
-              Edit
-            </a>
-
-            {{-- Delete Form/Button --}}
-            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-              onsubmit="return confirm('Are you sure you want to delete the user \'{{ $user->name }}\'? This action cannot be undone.');">
-              @csrf
-              @method('DELETE')
-              <button type="submit"
-                class="delete-btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                title="Delete User">
-                <i class="fa-regular fa-trash-can me-2"></i>
-                Delete
+            <div class="flex">
+              {{-- Password Button: Triggers Password Modal --}}
+              <button type="button" @click="openPasswordModal({{ $user }})"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Reset Password">
+                <i class="fa-solid fa-unlock-keyhole me-2"></i>
+                Password
               </button>
-            </form>
+
+              {{-- Role Button: Triggers Role Modal --}}
+              <button type="button" @click="openRoleModal({{ $user }})"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                title="Change Role">
+                <i class="fa-solid fa-fingerprint me-2"></i>
+                Role
+              </button>
+            </div>
+            {{-- <div class="flex">
+              <a href=""
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="View User">
+                <i class="fa-solid fa-unlock-keyhole me-2"></i>
+                Password
+              </a>
+
+              <a href=""
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit User">
+                <i class="fa-solid fa-fingerprint me-2"></i>
+                Role
+              </a>
+            </div> --}}
+
+            <div class="flex">
+              {{-- Show Button --}}
+              <a href="{{ route('admin.users.show', $user->id) }}"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                title="View User">
+                <i class="fa-regular fa-eye me-2"></i>
+                Show
+              </a>
+
+              {{-- Edit Button --}}
+              <a href="{{ route('admin.users.edit', $user->id) }}"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit User">
+                <i class="fa-solid fa-pen-to-square me-2"></i>
+                Edit
+              </a>
+
+              {{-- Delete Form/Button --}}
+              <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete the user \'{{ $user->name }}\'? This action cannot be undone.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                  class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete User">
+                  <i class="fa-regular fa-trash-can me-2"></i>
+                  Delete
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       @empty
@@ -229,5 +264,128 @@
       {{ $users->links() }}
     </div>
 
+  </div>
+
+  <div x-show="isPasswordModalOpen" style="display: none;" x-transition:enter="ease-out duration-300"
+    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div @click="closeModals()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        aria-hidden="true"></div>
+
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div
+        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100" id="modal-title">
+                Reset Password for <span x-text="currentUser ? currentUser.name : ''"
+                  class="text-indigo-600 dark:text-indigo-400"></span>
+              </h3>
+
+              <div class="mt-4">
+                <form :action="passwordFormAction" method="POST">
+                  @csrf
+                  @method('PUT')
+
+                  <div class="mb-4">
+                    <label for="modal_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      New Password
+                    </label>
+                    <input type="password" name="password" id="modal_password" required
+                      placeholder="Enter new password"
+                      class="form-control w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 border-slate-300">
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="modal_password_confirmation"
+                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Confirm New Password
+                    </label>
+                    <input type="password" name="password_confirmation" id="modal_password_confirmation" required
+                      placeholder="Confirm new password"
+                      class="form-control w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 border-slate-300">
+                  </div>
+
+                  <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit"
+                      class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto sm:text-sm">
+                      Reset Password
+                    </button>
+                    <button @click="closeModals()" type="button"
+                      class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 dark:text-gray-300 text-base font-medium text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 sm:mt-0 sm:w-auto sm:text-sm">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div x-show="isRoleModalOpen" style="display: none;" x-transition:enter="ease-out duration-300"
+    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div @click="closeModals()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        aria-hidden="true"></div>
+
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div
+        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100" id="modal-title">
+                Change Role for <span x-text="currentUser ? currentUser.name : ''"
+                  class="text-indigo-600 dark:text-indigo-400"></span>
+              </h3>
+
+              <div class="mt-4">
+                <form :action="roleFormAction" method="POST">
+                  @csrf
+                  @method('PUT')
+
+                  <div class="mb-4">
+                    <label for="modal_role_name"
+                      class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Assign New Role</label>
+                    <select name="role_name" id="modal_role_name" required x-model="currentRoleName"
+                      class="form-control form-select w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 border-slate-300">
+                      <template x-for="role in roles" :key="role">
+                        <option :value="role" :selected="role === currentRoleName"
+                          x-text="role.charAt(0).toUpperCase() + role.slice(1)"></option>
+                      </template>
+                    </select>
+                  </div>
+
+                  <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit"
+                      class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto sm:text-sm">
+                      Change Role
+                    </button>
+                    <button @click="closeModals()" type="button"
+                      class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 dark:text-gray-300 text-base font-medium text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 sm:mt-0 sm:w-auto sm:text-sm">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 @endsection
