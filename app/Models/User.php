@@ -104,11 +104,13 @@ class User extends Authenticatable
     return $this->belongsTo(User::class, 'teacher_id')->where('role', 'teacher');
   }
 
+
   public function courseOfferings()
   {
     return $this->belongsToMany(CourseOffering::class, 'student_course', 'student_id', 'course_offering_id')
       ->using(StudentCourse::class)
       ->as('enrollment')
-      ->withPivot('grade_final');
+      ->withPivot('grade_final')
+      ->withTimestamps();
   }
 }

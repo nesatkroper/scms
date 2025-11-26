@@ -34,59 +34,60 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {{-- Left Column: Profile and Stats --}}
     <div class="lg:col-span-1">
-      <div
-        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center">
-        <div class="mb-4">
-          <img
-            src="{{ $student->avatar ? Storage::url($student->avatar) : 'https://placehold.co/100x100/d1d5db/4b5563?text=S' }}"
-            alt="{{ $student->name }}"
-            class="size-28 mx-auto rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-700 shadow-md">
-        </div>
-        <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $student->name }}</h2>
-        <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $student->email }}</p>
+      <div class="lg:sticky lg:top-10">
+        <div
+          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+          <div class="mb-4">
+            <img
+              src="{{ $student->avatar ? Storage::url($student->avatar) : 'https://placehold.co/100x100/d1d5db/4b5563?text=S' }}"
+              alt="{{ $student->name }}"
+              class="size-28 mx-auto rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-700 shadow-md">
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $student->name }}</h2>
+          <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $student->email }}</p>
 
-        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Student Metrics</h3>
-          <div class="flex justify-around text-center">
-            {{-- Assuming your controller loaded counts (e.g., withCount(['fees', 'attendances'])) --}}
-            <div class="p-2">
-              <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                {{ $student->fees_count ?? 0 }}
+          <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Student Metrics</h3>
+            <div class="flex justify-around text-center">
+              {{-- Assuming your controller loaded counts (e.g., withCount(['fees', 'attendances'])) --}}
+              <div class="p-2">
+                <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                  {{ $student->fees_count ?? 0 }}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">Fee Records</div>
               </div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">Fee Records</div>
-            </div>
-            <div class="p-2">
-              <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                {{ $student->attendances_count ?? 0 }}
+              <div class="p-2">
+                <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                  {{ $student->attendances_count ?? 0 }}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">Attendance</div>
               </div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">Attendance</div>
             </div>
           </div>
         </div>
-      </div>
 
-      {{-- Delete Button Card --}}
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-        <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Permanently delete this student and all associated records. This action cannot be undone.
-        </p>
-        <form action="{{ route('admin.students.destroy', $student) }}" method="POST"
-          onsubmit="return confirm('Are you sure you want to delete this student: {{ $student->name }}?');">
-          @csrf
-          @method('DELETE')
-          <button type="submit"
-            class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
-            Delete Student
-          </button>
-        </form>
+        {{-- Delete Button Card --}}
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+          <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Permanently delete this student and all associated records. This action cannot be undone.
+          </p>
+          <form action="{{ route('admin.students.destroy', $student) }}" method="POST"
+            onsubmit="return confirm('Are you sure you want to delete this student: {{ $student->name }}?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit"
+              class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
+              Delete Student
+            </button>
+          </form>
+        </div>
       </div>
-
     </div>
 
-    {{-- Right Column: Detailed Information --}}
+    {{-- Right Column: Detailed Information (SCROLLABLE) --}}
+    {{-- No changes needed here, as the sticky left column handles the effect --}}
     <div class="lg:col-span-2">
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
@@ -162,6 +163,7 @@
         </dl>
       </div>
 
+      {{-- Assigned Courses --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Assigned Courses</h3>
 
@@ -215,7 +217,7 @@
         @endif
       </div>
 
-      {{-- 🚀 NEW SECTION: Fee Records (Invoices/Bills) --}}
+      {{-- Fee Records (Invoices/Bills) --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Fee Records</h3>
 
@@ -273,7 +275,7 @@
         @endif
       </div>
 
-      {{-- 🚀 NEW SECTION: Exam Scores --}}
+      {{-- Exam Scores --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Exam Scores</h3>
 
@@ -325,7 +327,7 @@
         @endif
       </div>
 
-      {{-- 🚀 NEW SECTION: Attendance Log --}}
+      {{-- Attendance Log --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log</h3>
 

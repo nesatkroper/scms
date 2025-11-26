@@ -113,13 +113,13 @@
                     <i class="fa-regular fa-eye"></i>
                   </a>
 
-                  <a href="{{ route('admin.students.edit', $student->id) }}"
+                  <a href="{{ route('admin.students.fees.index', $student->id) }}"
                     class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                     title="Edit Student">
                     <i class="fa-solid fa-dollar-sign"></i>
                   </a>
 
-                  <a href="{{ route('admin.students.edit', $student->id) }}"
+                  <a href="{{ route('admin.students.courses.index', $student->id) }}"
                     class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
                     title="Edit Student">
                     <i class="fa-solid fa-file-circle-plus"></i>

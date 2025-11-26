@@ -120,10 +120,14 @@ Route::prefix('admin')
 
 
     Route::prefix('students')->name('students.')->group(function () {
-      Route::post('/bulk-delete', [StudentController::class, 'bulkDelete'])->name('bulkDelete');
-      Route::post('/bulk-data', [StudentController::class, 'getBulkData'])->name('getBulkData');
-      Route::post('/bulk-update', [StudentController::class, 'bulkUpdate'])->name('bulkUpdate');
+      Route::get('fees/{student}', [StudentController::class, 'feesIndex'])->name('fees.index');
+      Route::get('courses/{student}', [StudentController::class, 'coursesIndex'])->name('courses.index');
+      Route::get('enrollments/create/{student}', [StudentController::class, 'createEnrollment'])->name('enrollments.create');
+      Route::post('enrollments/{student}', [StudentController::class, 'storeEnrollment'])->name('enrollments.store');
+      Route::get('fees/create/{student}', [StudentController::class, 'createFee'])->name('fees.create');
+      Route::post('fees/{student}', [StudentController::class, 'storeFee'])->name('fees.store');
     });
+
 
     Route::prefix('teachers')->name('teachers.')->group(function () {
       Route::post('/bulk-delete', [TeacherController::class, 'bulkDelete'])->name('bulkDelete');
