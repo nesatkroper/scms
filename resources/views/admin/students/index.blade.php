@@ -1,3 +1,5 @@
+{{-- File: resources/views/admin/students/index.blade.php (with Avatar added) --}}
+
 @extends('layouts.admin')
 
 @section('title', 'Students List')
@@ -74,15 +76,25 @@
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
-          {{-- Card Header: Student Name and Role Icon --}}
+          {{-- Card Header: Student Name and Actions --}}
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
 
-            <a href="{{ route('admin.students.show', $student->id) }}"
-              class="font-bold text-xl text-gray-800 dark:text-gray-200 capitalize truncate hover:text-blue-600 dark:hover:text-blue-400">
-              {{ $student->name }}
-            </a>
-            <div class="flex">
+            <div class="flex items-center gap-3">
+              {{-- *** AVATAR HERE *** --}}
+              <img
+                src="{{ $student->avatar ? Storage::url($student->avatar) : 'https://placehold.co/40x40/d1d5db/4b5563?text=' . substr($student->name, 0, 1) }}"
+                alt="{{ $student->name }}"
+                class="size-10 rounded-full object-cover border-2 border-blue-300 dark:border-blue-700 shadow-sm">
+              {{-- *** END AVATAR *** --}}
+
+              <a href="{{ route('admin.students.show', $student->id) }}"
+                class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize truncate hover:text-blue-600 dark:hover:text-blue-400">
+                {{ $student->name }}
+              </a>
+            </div>
+
+            <div class="flex items-center gap-1">
               <a href="{{ route('admin.students.fees.index', $student->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit Student">
@@ -159,13 +171,13 @@
             </div>
           </div>
 
-          {{-- Card Footer: Actions --}}
+          {{-- Card Footer: Primary Actions --}}
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
             {{-- View Details Button --}}
             <a href="{{ route('admin.students.show', $student->id) }}"
-              class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
               title="View Student Details">
               <i class="fa-regular fa-eye me-2"></i>
               View
@@ -173,7 +185,7 @@
 
             {{-- Edit Button --}}
             <a href="{{ route('admin.students.edit', $student->id) }}"
-              class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
               title="Edit Student">
               <i class="fa-solid fa-pen-to-square me-2"></i>
               Edit
@@ -185,7 +197,7 @@
               @csrf
               @method('DELETE')
               <button type="submit"
-                class="delete-btn px-3 py-2 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                class="delete-btn px-3 py-1 rounded-lg flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                 title="Delete Student">
                 <i class="fa-regular fa-trash-can me-2"></i>
                 Delete
@@ -218,7 +230,6 @@
 
   </div>
 @endsection
-
 {{-- @extends('layouts.admin')
 
 @section('title', 'Students List')
