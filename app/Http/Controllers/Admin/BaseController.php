@@ -20,9 +20,9 @@ abstract class BaseController extends Controller
   {
     $model = Str::lower(Str::singular($this->model));
 
-    $this->middleware("permission:view $model")->only(['index', 'show']);
-    $this->middleware("permission:create $model")->only(['create', 'store']);
-    $this->middleware("permission:update $model")->only(['edit', 'update']);
-    $this->middleware("permission:delete $model")->only(['destroy']);
+    $this->middleware("permission:view_$model")->only(['index', 'show']);
+    $this->middleware("permission:create_$model")->only(['create', 'store']);
+    $this->middleware("permission:update_$model")->only(['edit', 'update']);
+    $this->middleware("permission:delete_$model")->only(['destroy']);
   }
 }

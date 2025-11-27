@@ -8,8 +8,20 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class RoleController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Role';
+  }
+
+
   public function index()
   {
     $roles = Role::withCount('permissions')->paginate(10);

@@ -169,7 +169,7 @@
           </div>
           <div class="submenu {{ $isAdministratorActive ? 'active' : '' }}">
             <ul class="pl-4 pr-4">
-              @if (Auth::user()->hasPermissionTo('view user'))
+              @if (Auth::user()->hasPermissionTo('view_user'))
                 <li>
                   <a href="{{ route('admin.users.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
@@ -177,7 +177,7 @@
                 </li>
               @endif
 
-              @if (Auth::user()->hasPermissionTo('view role'))
+              @if (Auth::user()->hasPermissionTo('view_role'))
                 <li>
                   <a href="{{ route('admin.roles.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
