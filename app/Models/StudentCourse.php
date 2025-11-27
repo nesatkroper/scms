@@ -18,6 +18,10 @@ class StudentCourse extends Pivot
     'remarks',
   ];
 
+  public function fee()
+  {
+    return $this->hasOne(Fee::class, 'student_course_id');
+  }
 
 
   public function student()

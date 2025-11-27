@@ -42,6 +42,12 @@ class Fee extends Model
     return $this->belongsTo(User::class, 'created_by');
   }
 
+  public function studentCourse()
+  {
+    return $this->belongsTo(StudentCourse::class, 'student_course_id');
+  }
+
+
   public function getPaidDateAttribute()
   {
     return $this->payments()->latest('payment_date')->value('payment_date');
