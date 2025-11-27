@@ -38,7 +38,7 @@
               class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu">
               <div class="py-1" role="none">
-                <a href="#"
+                <a href="{{ route('admin.students.index') }}"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
@@ -51,14 +51,7 @@
                   Export Data
                 </a>
               </div>
-              <div class="py-1" role="none">
-                <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
-                  Settings
-                </a>
-              </div>
+
             </div>
           </div>
         </div>
@@ -99,7 +92,7 @@
               class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu">
               <div class="py-1" role="none">
-                <a href="#"
+                <a href="{{ route('admin.teachers.index') }}"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
@@ -112,14 +105,7 @@
                   Export Data
                 </a>
               </div>
-              <div class="py-1" role="none">
-                <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
-                  Settings
-                </a>
-              </div>
+
             </div>
           </div>
         </div>
@@ -161,7 +147,7 @@
               class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
-                <a href="#"
+                <a href="{{ route('admin.course_offerings.index') }}"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
@@ -172,14 +158,6 @@
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
                   Export Data
-                </a>
-              </div>
-              <div class="py-1" role="none">
-                <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
-                  Settings
                 </a>
               </div>
             </div>
@@ -224,7 +202,7 @@
               class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
-                <a href="#"
+                <a href="{{ route('admin.fees.index') }}"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
@@ -237,14 +215,7 @@
                   Export Data
                 </a>
               </div>
-              <div class="py-1" role="none">
-                <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-cog mr-3 text-indigo-500 w-4 text-center"></i>
-                  Settings
-                </a>
-              </div>
+
             </div>
           </div>
         </div>
@@ -300,7 +271,7 @@
 
     <!-- Recently Enrolled Students Table -->
     <div
-      class="box bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+      class="box bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden mb-10">
       <div class="p-4 md:flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
         <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">Recently Enrolled
           Students

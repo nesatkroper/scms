@@ -29,32 +29,38 @@ class FeeController extends BaseController
 
   // public function index(Request $request)
   // {
-  //   $search = $request->input('search');
-  //   $feeTypeId = $request->input('fee_type_id');
-  //   $status = $request->input('status');
-  //   $perPage = $request->input('per_page', 8);
+  //   $search     = $request->input('search');
+  //   $feeTypeId  = $request->input('fee_type_id');
+  //   $status     = $request->input('status');
+  //   $perPage    = $request->input('per_page', 8);
 
   //   $fees = Fee::query()
   //     ->with(['student:id,name,email', 'feeType:id,name'])
+  //     ->withSum('payments as paid_total', 'amount')
   //     ->when($feeTypeId, fn($q) => $q->where('fee_type_id', $feeTypeId))
-  //     ->when($status, fn($q) => $q->where('status', $status))
+  //     ->when($status, fn($q) => $q->status($status))
   //     ->when($search, function ($query) use ($search) {
   //       $query->where(function ($q) use ($search) {
   //         $q->where('remarks', 'like', "%{$search}%")
   //           ->orWhere('amount', 'like', "%{$search}%")
-  //           ->orWhereHas('student', fn($q2) => $q2->where('name', 'like', "%{$search}%")
+  //           ->orWhereHas('student', fn($s) =>
+  //           $s->where('name', 'like', "%{$search}%")
   //             ->orWhere('email', 'like', "%{$search}%"))
-  //           ->orWhereHas('feeType', fn($q2) => $q2->where('name', 'like', "%{$search}%"));
+  //           ->orWhereHas('feeType', fn($ft) =>
+  //           $ft->where('name', 'like', "%{$search}%"));
   //       });
   //     })
+
   //     ->orderBy('due_date', 'desc')
   //     ->orderBy('created_at', 'desc')
+
   //     ->paginate($perPage)
   //     ->appends($request->query());
 
   //   $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
   //   $selectedFeeType = $feeTypeId ? $feeTypes->firstWhere('id', $feeTypeId) : null;
-  //   $statuses = ['unpaid', 'partially_paid', 'paid'];
+
+  //   $statuses = ['unpaid', 'partially_paid', 'paid', 'overpaid'];
 
   //   return view('admin.fees.index', compact(
   //     'fees',
@@ -62,22 +68,9 @@ class FeeController extends BaseController
   //     'feeTypeId',
   //     'selectedFeeType',
   //     'statuses',
-  //     'status'
+  //     'status',
   //   ));
   // }
-
-  private function generateTransactionId()
-  {
-    do {
-      $id = 'SCMS-' .
-        strtoupper(Str::random(3)) . '-' .
-        strtoupper(Str::random(3)) . '-' .
-        strtoupper(Str::random(3));
-    } while (Payment::where('transaction_id', $id)->exists());
-
-    return $id;
-  }
-
 
   public function index(Request $request)
   {
@@ -85,7 +78,6 @@ class FeeController extends BaseController
     $feeTypeId  = $request->input('fee_type_id');
     $status     = $request->input('status');
     $perPage    = $request->input('per_page', 8);
-    $transaction_id = $this->GenerateTransactionId();
 
     $fees = Fee::query()
       ->with(['student:id,name,email', 'feeType:id,name'])
@@ -103,6 +95,18 @@ class FeeController extends BaseController
             $ft->where('name', 'like', "%{$search}%"));
         });
       })
+
+      ->orderByRaw("
+            CASE
+                WHEN COALESCE((SELECT SUM(p.amount) FROM payments p WHERE p.fee_id = fees.id), 0) = 0
+                    THEN 1   -- unpaid
+                WHEN COALESCE((SELECT SUM(p.amount) FROM payments p WHERE p.fee_id = fees.id), 0) < fees.amount
+                    THEN 2   -- partially paid
+                WHEN COALESCE((SELECT SUM(p.amount) FROM payments p WHERE p.fee_id = fees.id), 0) > fees.amount
+                    THEN 3   -- overpaid
+                ELSE 4        -- paid (last)
+            END
+        ")
 
       ->orderBy('due_date', 'desc')
       ->orderBy('created_at', 'desc')
@@ -122,25 +126,7 @@ class FeeController extends BaseController
       'selectedFeeType',
       'statuses',
       'status',
-      'transaction_id'
     ));
-  }
-
-
-  public function markPaid(Fee $fee)
-  {
-    if ($fee->status === 'paid') {
-      return back()->with('error', 'This fee is already marked as paid.');
-    }
-
-    $fee->update([
-      'status' => 'paid',
-      'paid_date' => now(),
-    ]);
-
-
-
-    return back()->with('success', 'Fee successfully marked as paid.');
   }
 
   public function create(Request $request)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\CourseOffering;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -18,12 +19,14 @@ class HomeController extends Controller
     $teachers = User::role('Teacher')->count();
     $students = User::role('Student')->count();
     $course = CourseOffering::count();
+    $fee = Payment::sum('amount');
+
 
     $data = [
       'totalStudents' => $students,
       'totalTeachers' => $teachers,
       'activeCourse' => $course,
-      'feesCollected' => 87550.00,
+      'feesCollected' => $fee,
       'recentStudents' => [
         [
           'id' => 138,

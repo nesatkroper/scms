@@ -20,7 +20,6 @@ class Fee extends Model
 
   protected $casts = [
     'due_date' => 'date',
-    // 'paid_date' => 'date',
   ];
 
   public function student()
@@ -48,16 +47,6 @@ class Fee extends Model
     return $this->payments()->latest('payment_date')->value('payment_date');
   }
 
-  // public function getStatusAttribute()
-  // {
-  //   $paid = $this->payments->sum('amount');
-
-  //   if ($paid == 0) return 'unpaid';
-  //   if ($paid < $this->amount) return 'partially_paid';
-  //   if ($paid == $this->amount) return 'paid';
-  //   if ($paid > $this->amount) return 'overpaid';
-  // }
-
   public function getStatusAttribute()
   {
     $paid = $this->payments->sum('amount');
@@ -75,7 +64,6 @@ class Fee extends Model
   {
     return $query->where(function ($q) use ($status) {
 
-      // unpaid = no payments OR payments sum = 0
       if ($status === 'unpaid') {
         $q->whereDoesntHave('payments')
           ->orWhereHas('payments', function ($sub) {
@@ -85,7 +73,6 @@ class Fee extends Model
           });
       }
 
-      // partially paid
       if ($status === 'partially_paid') {
         $q->whereHas('payments', function ($sub) {
           $sub->selectRaw('fee_id, SUM(amount) as total_paid')
@@ -94,7 +81,6 @@ class Fee extends Model
         });
       }
 
-      // fully paid
       if ($status === 'paid') {
         $q->whereHas('payments', function ($sub) {
           $sub->selectRaw('fee_id, SUM(amount) as total_paid')
@@ -103,7 +89,6 @@ class Fee extends Model
         });
       }
 
-      // overpaid
       if ($status === 'overpaid') {
         $q->whereHas('payments', function ($sub) {
           $sub->selectRaw('fee_id, SUM(amount) as total_paid')

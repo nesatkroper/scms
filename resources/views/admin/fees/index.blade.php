@@ -42,14 +42,14 @@
         </a>
 
         <div class="lg:col-span-2 xl:col-span-3 flex items-center mt-3 lg:mt-0 gap-2 flex">
-          <select name="status"
+          {{-- <select name="status"
             class="border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg py-1.5 px-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
             <option value="">All Statuses</option>
             @foreach ($statuses as $s)
               <option value="{{ $s }}" @selected(request('status') == $s) class="capitalize">{{ $s }}
               </option>
             @endforeach
-          </select>
+          </select> --}}
 
           <div class="relative w-full flex-grow">
             <input type="search" name="search" id="searchInput"
@@ -68,11 +68,7 @@
           <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
             title="Reset Filters">
-            <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 4v5h.582m15.356-2A8.98 8.98 0 0020 12a9 9 0 11-8-9.98l-7.9 7.9M2 12h2"></path>
-            </svg>
+            <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
       </div>
@@ -82,7 +78,7 @@
       x-data="paymentsModal()">
       @forelse ($fees as $fee)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($fee->status == 'paid') border-3 border-dashed dark:border-green-700 @endif">
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
@@ -172,7 +168,7 @@
             @if ($fee->status != 'paid')
               <a href="#"
                 @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.payments.store') }}')"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Add Payment">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
@@ -181,7 +177,7 @@
               </a>
             @else
               <a href="#"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Paid">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
@@ -190,28 +186,30 @@
               </a>
             @endif
 
-            <div class="flex">
-              <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-pen-to-square me-2"></i>
-                  Edit
-                </span>
-              </a>
+            @if ($fee->status != 'paid')
+              <div class="flex">
+                <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>
+                    Edit
+                  </span>
+                </a>
 
-              <form action="{{ route('admin.fees.destroy', $fee->id) }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete this fee record?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Delete">
-                  <i class="fa-regular fa-trash-can me-2"></i>
-                  Delete
-                </button>
-              </form>
-            </div>
+                {{-- <form action="{{ route('admin.fees.destroy', $fee->id) }}" method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete this fee record?');">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                    class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Delete">
+                    <i class="fa-regular fa-trash-can me-2"></i>
+                    Delete
+                  </button>
+                </form> --}}
+              </div>
+            @endif
           </div>
         </div>
       @empty

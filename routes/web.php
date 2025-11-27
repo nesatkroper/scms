@@ -126,7 +126,6 @@ Route::prefix('admin')
 
 
     Route::post('expenses/{expense}/approve', [App\Http\Controllers\Admin\ExpenseController::class, 'approve'])->name('expenses.approve');
-    Route::post('fees/{fee}/mark-paid', [App\Http\Controllers\Admin\FeeController::class, 'markPaid'])->name('fees.markPaid');
 
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');

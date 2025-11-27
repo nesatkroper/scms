@@ -122,44 +122,6 @@
       @endif
     </div>
 
-    {{-- Action Buttons --}}
-    <div class="mt-6 flex justify-end gap-3">
-
-      @if ($fee->status != 'paid')
-        {{-- Action to Mark as Paid --}}
-        {{-- You need to create a route and controller method for this, e.g., fees.markPaid --}}
-        <form action="{{ route('admin.fees.markPaid', $fee->id) }}" method="POST"
-          onsubmit="return confirm('Confirm marking this fee as paid in full?');">
-          @csrf
-          <button type="submit"
-            class="p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-teal-600 text-white hover:bg-teal-700 transition-colors"
-            title="Mark as Paid">
-            <i class="fa-solid fa-check-to-slot mr-2"></i>
-            Mark as Paid
-          </button>
-        </form>
-      @endif
-
-      <a href="{{ route('admin.fees.edit', $fee->id) }}"
-        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
-        title="Edit Fee Record">
-        <i class="fa-solid fa-pen-to-square mr-2"></i>
-        Edit Record
-      </a>
-
-      <form action="{{ route('admin.fees.destroy', $fee->id) }}" method="POST"
-        onsubmit="return confirm('Are you sure you want to permanently delete this fee record?');">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
-          title="Delete Fee Record">
-          <i class="fa-regular fa-trash-can mr-2"></i>
-          Delete
-        </button>
-      </form>
-    </div>
-
   </div>
 
 @endsection
