@@ -131,8 +131,8 @@
              dark:border-gray-700 shadow-sm relative">
         <div class="flex justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Classes</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $activeClasses }}</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Course</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $activeCourse }}</h3>
           </div>
           <div class="h-12 w-12 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
             <i class="fas fa-book text-green-100 dark:text-green-200 text-xl"></i>

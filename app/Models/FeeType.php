@@ -9,7 +9,10 @@ class FeeType extends Model
 {
   use SoftDeletes;
 
-  protected $fillable = ['name', 'description'];
+  protected $fillable = [
+    'name',
+    'description'
+  ];
 
   public function fees()
   {

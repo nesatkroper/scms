@@ -15,8 +15,8 @@ class Fee extends Model
     'fee_type_id',
     'amount',
     'due_date',
-    'paid_date',
-    'status',
+    // 'paid_date',
+    // 'status',
     'remarks'
   ];
 
@@ -43,5 +43,20 @@ class Fee extends Model
   public function creator()
   {
     return $this->belongsTo(User::class, 'created_by');
+  }
+
+  public function getStatusAttribute()
+  {
+    $paid = $this->payments->sum('amount');
+
+    if ($paid == 0) return 'unpaid';
+    if ($paid < $this->amount) return 'partially_paid';
+    if ($paid == $this->amount) return 'paid';
+    if ($paid > $this->amount) return 'overpaid';
+  }
+
+  public function getPaidDateAttribute()
+  {
+    return $this->payments()->latest('payment_date')->value('payment_date');
   }
 }
