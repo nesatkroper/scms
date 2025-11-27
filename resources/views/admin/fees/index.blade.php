@@ -150,16 +150,9 @@
 
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
-            {{-- <a href="{{ route('admin.payments.create', ['fee_id' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-              class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-              title="View Payments">
-              <span class="btn-content flex items-center justify-center">
-                <i class="fa-solid fa-money-bill-transfer me-2"></i>
-                Payments
-              </span>
-            </a> --}}
 
-            <a href="#" @click.prevent="openModal({{ $fee->id }}, '{{ route('admin.payments.store') }}')"
+            <a href="#"
+              @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.payments.store') }}')"
               {{-- Pass fee ID for context --}}
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
               title="Add Payment">
@@ -211,7 +204,168 @@
         </div>
       @endforelse
 
-      @include('admin.fees.payment-modal')
+      {{-- This modal requires Alpine.js and Tailwind CSS --}}
+      <div x-show="isOpen" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+        <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.7);"
+          @click="closeModal()"></div>
+
+        {{-- Modal Panel --}}
+        <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center sm:p-0">
+          <div x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="relative inline-block align-middle bg-white dark:bg-gray-800 rounded-xl text-left shadow-2xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
+
+            <form :action="actionUrl" method="POST">
+              @csrf
+              {{-- Hidden Fee ID --}}
+              <input type="hidden" name="fee_id" :value="feeId">
+
+              <template x-if="isEdit">
+                @method('PUT')
+              </template>
+
+              {{-- Modal Header --}}
+              <div class="px-6 py-4 bg-indigo-600 dark:bg-indigo-900 rounded-t-xl flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-white" id="modal-title" x-text="modalTitle"></h3>
+                <p class="text-sm text-indigo-200 dark:text-indigo-400 font-medium" x-text="'Fee ID: ' + feeId"></p>
+              </div>
+
+              {{-- Modal Body - Form Fields --}}
+              <div class="px-6 py-6 space-y-5">
+
+                {{-- Field Group: Amount & Date --}}
+                <div class="grid grid-cols-2 gap-4">
+
+                  {{-- Amount Field --}}
+                  <div>
+                    <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Amount Paid ($) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" step="0.01" min="0.01" id="amount" name="amount"
+                      x-model="formData.amount" required
+                      class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 text-base transition duration-150">
+                  </div>
+
+                  {{-- Payment Date Field --}}
+                  <div>
+                    <label for="payment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Payment Date <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="payment_date" name="payment_date" x-model="formData.payment_date"
+                      required
+                      class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 text-base transition duration-150">
+                  </div>
+                </div>
+
+                {{-- Field Group: Method & Transaction ID --}}
+                <div class="grid grid-cols-2 gap-4">
+
+                  {{-- Payment Method Field --}}
+                  <div>
+                    <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Payment Method
+                    </label>
+                    <select id="payment_method" name="payment_method" x-model="formData.payment_method"
+                      class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 text-base transition duration-150">
+                      <option value="Cash">Cash</option>
+                      <option value="Bank Transfer">Bank Transfer</option>
+                      <option value="Card">Card</option>
+                      <option value="Mobile Payment">Mobile Payment</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  {{-- Transaction ID Field --}}
+                  <div>
+                    <label for="transaction_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Transaction ID <span class="text-gray-500 text-xs">(Optional)</span>
+                    </label>
+                    <input type="text" id="transaction_id" name="transaction_id" x-model="formData.transaction_id"
+                      class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 text-base transition duration-150">
+                  </div>
+                </div>
+
+                {{-- Remarks Field --}}
+                <div>
+                  <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Remarks <span class="text-gray-500 text-xs">(Optional)</span>
+                  </label>
+                  <textarea id="remarks" name="remarks" x-model="formData.remarks" rows="3"
+                    class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 text-base transition duration-150"></textarea>
+                </div>
+              </div>
+
+              {{-- Modal Footer - Actions --}}
+              <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 rounded-b-xl flex justify-end gap-3">
+                <button type="button" @click="closeModal()"
+                  class="inline-flex justify-center rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm transition duration-150">
+                  Cancel
+                </button>
+                <button type="submit"
+                  class="inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm transition duration-150"
+                  x-text="isEdit ? 'Update Payment' : 'Save Payment'">
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener('alpine:init', () => {
+          Alpine.data('paymentsModal', () => ({
+            // Modal state
+            isOpen: false,
+            isEdit: false,
+            modalTitle: 'Add New Payment',
+            actionUrl: '{{ route('admin.payments.store') }}', // Default to store route
+
+            // Data passed from the button
+            feeId: null,
+            paymentId: null, // For update actions
+
+            // Form data
+            formData: {
+              amount: '',
+              payment_date: new Date().toISOString().substring(0, 10), // Default to today
+              payment_method: 'Cash',
+              transaction_id: '',
+              remarks: '',
+            },
+
+            // Opens the modal for C(reate)
+            openModal(fee, feeType, student, storeRoute) {
+              this.feeId = fee.id;
+              this.isEdit = false;
+              this.modalTitle = `${feeType.name} Payment for ${student.name}`;
+              this.actionUrl = storeRoute;
+
+              // Reset form data for creation
+              this.formData = {
+                amount: '',
+                payment_date: new Date().toISOString().substring(0, 10),
+                payment_method: 'Cash',
+                transaction_id: '',
+                remarks: '',
+              };
+
+              this.isOpen = true;
+            },
+
+            closeModal() {
+              this.isOpen = false;
+            }
+          }));
+        });
+      </script>
+
+      {{-- @include('admin.fees.payment-modal') --}}
     </div>
 
     <div class="mt-6">
