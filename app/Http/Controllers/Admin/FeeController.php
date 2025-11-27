@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FeeRequest;
 use App\Models\Fee;
 use App\Models\FeeType;
+use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\FeeAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class FeeController extends BaseController
 {
@@ -64,12 +66,26 @@ class FeeController extends BaseController
   //   ));
   // }
 
+  private function generateTransactionId()
+  {
+    do {
+      $id = 'SCMS-' .
+        strtoupper(Str::random(3)) . '-' .
+        strtoupper(Str::random(3)) . '-' .
+        strtoupper(Str::random(3));
+    } while (Payment::where('transaction_id', $id)->exists());
+
+    return $id;
+  }
+
+
   public function index(Request $request)
   {
     $search     = $request->input('search');
     $feeTypeId  = $request->input('fee_type_id');
     $status     = $request->input('status');
     $perPage    = $request->input('per_page', 8);
+    $transaction_id = $this->GenerateTransactionId();
 
     $fees = Fee::query()
       ->with(['student:id,name,email', 'feeType:id,name'])
@@ -105,7 +121,8 @@ class FeeController extends BaseController
       'feeTypeId',
       'selectedFeeType',
       'statuses',
-      'status'
+      'status',
+      'transaction_id'
     ));
   }
 

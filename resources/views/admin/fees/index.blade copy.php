@@ -153,6 +153,7 @@
 
             <a href="#"
               @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.payments.store') }}')"
+              {{-- Pass fee ID for context --}}
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
               title="Add Payment">
               <span class="btn-content flex items-center justify-center">
@@ -203,12 +204,14 @@
         </div>
       @endforelse
 
+      {{-- This modal requires Alpine.js and Tailwind CSS --}}
       <div x-show="isOpen" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto"
         aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
         <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.7);"
           @click="closeModal()"></div>
 
+        {{-- Modal Panel --}}
         <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center sm:p-0">
           <div x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -219,21 +222,26 @@
 
             <form :action="actionUrl" method="POST">
               @csrf
+              {{-- Hidden Fee ID --}}
               <input type="hidden" name="fee_id" :value="feeId">
 
               <template x-if="isEdit">
                 @method('PUT')
               </template>
 
+              {{-- Modal Header --}}
               <div class="px-6 py-4 bg-indigo-600 dark:bg-indigo-900 rounded-t-xl flex items-center justify-between">
                 <h3 class="text-xl font-semibold text-white" id="modal-title" x-text="modalTitle"></h3>
                 <p class="text-sm text-indigo-200 dark:text-indigo-400 font-medium" x-text="'Fee ID: ' + feeId"></p>
               </div>
 
+              {{-- Modal Body - Form Fields --}}
               <div class="px-6 py-6 space-y-5">
 
+                {{-- Field Group: Amount & Date --}}
                 <div class="grid grid-cols-2 gap-4">
 
+                  {{-- Amount Field --}}
                   <div>
                     <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Amount Paid ($) <span class="text-red-500">*</span>
@@ -243,6 +251,7 @@
                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 text-base transition duration-150">
                   </div>
 
+                  {{-- Payment Date Field --}}
                   <div>
                     <label for="payment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Payment Date <span class="text-red-500">*</span>
@@ -253,8 +262,10 @@
                   </div>
                 </div>
 
+                {{-- Field Group: Method & Transaction ID --}}
                 <div class="grid grid-cols-2 gap-4">
 
+                  {{-- Payment Method Field --}}
                   <div>
                     <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Payment Method
@@ -269,6 +280,7 @@
                     </select>
                   </div>
 
+                  {{-- Transaction ID Field --}}
                   <div>
                     <label for="transaction_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Transaction ID <span class="text-gray-500 text-xs">(Optional)</span>
@@ -278,6 +290,7 @@
                   </div>
                 </div>
 
+                {{-- Remarks Field --}}
                 <div>
                   <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Remarks <span class="text-gray-500 text-xs">(Optional)</span>
@@ -287,6 +300,7 @@
                 </div>
               </div>
 
+              {{-- Modal Footer - Actions --}}
               <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 rounded-b-xl flex justify-end gap-3">
                 <button type="button" @click="closeModal()"
                   class="inline-flex justify-center rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm transition duration-150">
