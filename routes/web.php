@@ -26,33 +26,26 @@ use App\Http\Controllers\Admin\{
 };
 
 
-Route::get('/home', fn() => view('web.home'))->name('web.home');
-Route::get('/about-us', fn() => view('web.about'))->name('web.about');
-Route::get('/contact', fn() => view('web.contact'))->name('web.contact');
-Route::get('/what-we-do', fn() => view('web.whatwedo'))->name('web.whatwedo');
-Route::get('/donation', fn() => view('web.donation'))->name('web.donation');
+Route::get('/home', fn() => view('app.home'))->name('app.home');
+Route::get('/about-us', fn() => view('app.about'))->name('app.about');
+Route::get('/contact', fn() => view('app.contact'))->name('app.contact');
+Route::get('/what-we-do', fn() => view('app.whatwedo'))->name('app.whatwedo');
+Route::get('/donation', fn() => view('app.donation'))->name('app.donation');
 
 Route::get('/', fn() => redirect('/home'));
 
 
 
-Auth::routes();
+Route::middleware('guest')->group(function () {
+  Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+  Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
 
-
-
-
-// Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-//   ->middleware('guest')
-//   ->name('login');
-
-// Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-//   ->middleware('guest');
-
-// Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-//   ->middleware('auth')
-//   ->name('logout');
-
-
+Route::middleware('auth')->group(function () {
+  Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+});
 
 Route::get('/', function () {
   if (Auth::check()) {
