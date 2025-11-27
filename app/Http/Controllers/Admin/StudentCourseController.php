@@ -45,7 +45,6 @@ class StudentCourseController extends BaseController
     if ($search) {
       $query->where(function ($q) use ($search) {
         $q->where('status', 'like', "%{$search}%")
-          ->orWhere('payment_status', 'like', "%{$search}%")
           ->orWhereHas('student', function ($q2) use ($search) {
             $q2->where('name', 'like', "%{$search}%");
           })

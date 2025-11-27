@@ -59,7 +59,6 @@ class CourseOffering extends Model
       ->withPivot([
         'grade_final',
         'status',
-        'payment_status',
         'remarks'
       ])
       ->withTimestamps();

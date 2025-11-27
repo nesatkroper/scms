@@ -67,9 +67,6 @@ class CourseOfferingController extends BaseController
   }
 
 
-
-
-
   public function create()
   {
     $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);

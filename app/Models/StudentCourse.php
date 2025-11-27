@@ -14,7 +14,6 @@ class StudentCourse extends Pivot
     'course_offering_id',
     'grade_final',
     'status',
-    'payment_status',
     'remarks',
   ];
 

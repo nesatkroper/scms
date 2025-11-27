@@ -18,7 +18,6 @@ class StudentCourseRequest extends FormRequest
       'course_offering_id' => 'required|exists:course_offerings,id',
       'grade_final' => 'nullable|numeric|min:0|max:100',
       'status'            => 'required|string|in:studying,suspended,dropped,completed',
-      'payment_status'    => 'required|string|in:pending,paid,overdue,free',
       'remarks'           => 'nullable|string|max:500',
     ];
   }
@@ -34,8 +33,6 @@ class StudentCourseRequest extends FormRequest
       'grade_final.between'          => 'Grade must be between 0 and 100.',
       'status.required'              => 'Status is required.',
       'status.in'                    => 'Invalid student status.',
-      'payment_status.required'      => 'Payment status is required.',
-      'payment_status.in'            => 'Invalid payment status value.',
       'remarks.max'                  => 'Remarks must not exceed 500 characters.',
     ];
   }

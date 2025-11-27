@@ -102,7 +102,6 @@ class User extends Authenticatable
       ->withPivot([
         'grade_final',
         'status',
-        'payment_status',
         'remarks',
       ])
       ->withTimestamps();
