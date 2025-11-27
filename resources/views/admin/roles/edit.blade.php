@@ -59,14 +59,18 @@
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 border p-2 rounded-md border-gray-300 dark:border-gray-700">
 
           @php
-            // This array stores the IDs of permissions already assigned to the role
             $rolePermissionIds = $role->permissions->pluck('id')->toArray();
+
+            function humanizePermission(string $str): string
+            {
+                $str = str_replace(['_', '-'], ' ', $str);
+                return ucwords($str);
+            }
           @endphp
           @foreach ($permissions as $permission)
-            {{-- Added class permission-item --}}
             <div class="flex items-center space-x-2 permission-item">
               <input id="permission-{{ $permission->id }}-edit" name="permissions[]" type="checkbox"
-                value="{{ $permission->id }}" {{-- Added class permission-checkbox --}}
+                value="{{ $permission->id }}"
                 class="permission-checkbox appearance-none size-4
                                 border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
                                 checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
@@ -76,10 +80,9 @@
                                 before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100"
                 {{ in_array($permission->id, old('permissions', $rolePermissionIds)) ? 'checked' : '' }}>
 
-              {{-- Added class permission-label --}}
               <label for="permission-{{ $permission->id }}-edit"
                 class="text-sm font-medium text-gray-900 dark:text-gray-300 capitalize permission-label">
-                {{ $permission->name }}
+                {{ humanizePermission($permission->name) }}
               </label>
             </div>
           @endforeach

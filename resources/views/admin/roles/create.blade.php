@@ -62,24 +62,32 @@
         </div>
         {{-- *** END: Check All Option *** --}}
 
+        @php
+          function humanizePermission(string $str): string
+          {
+              $str = str_replace(['_', '-'], ' ', $str);
+              return ucwords($str);
+          }
+
+        @endphp
+
         <div id="permissionsGrid"
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
           @foreach ($permissions as $permission)
-            <div
-              class="flex items-center space-x-2 p-1.5 permission-item rounded-md hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+            <div class="flex items-center space-x-2 permission-item">
               <input id="permission-{{ $permission->id }}-create" name="permissions[]" type="checkbox"
                 value="{{ $permission->id }}"
                 class="permission-checkbox appearance-none size-4
-                            border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
-                            checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
-                            hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
-                            focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
-                            before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L29seWxpbmU+PC9zdmc+')]
-                            before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100"
+                                border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
+                                checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
+                                hover:border-indigo-400 dark:hover:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700
+                                focus:ring-offset-2 focus:outline-none before:content-[''] before:absolute before:inset-0 before:bg-no-repeat before:bg-center
+                                before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
+                                before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100"
                 {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}>
               <label for="permission-{{ $permission->id }}-create"
                 class="text-sm font-medium text-gray-900 dark:text-gray-300 capitalize permission-label cursor-pointer">
-                {{ str_replace(['-', '_'], ' ', $permission->name) }}
+                {{ humanizePermission($permission->name) }}
               </label>
             </div>
           @endforeach
