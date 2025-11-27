@@ -15,7 +15,6 @@ class NotificationController extends Controller
 {
   public function index()
   {
-    // Get all notifications for the authenticated user
     $notifications = Auth::user()->notifications()->paginate(15);
 
     return view('admin.notifications.index', compact('notifications'));

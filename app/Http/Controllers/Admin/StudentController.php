@@ -18,8 +18,19 @@ use Spatie\Permission\Models\Role;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
-class StudentController extends Controller
+class StudentController extends BaseController
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Student';
+  }
+
   public function index(Request $request)
   {
     $studentRole = Role::where('name', 'student')->first();

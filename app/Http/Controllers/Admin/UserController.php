@@ -30,7 +30,7 @@ class UserController extends BaseController
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 9);
+    $perPage = $request->input('per_page', 6);
     $roleFilter = $request->input('role_filter');
 
     $roles = Role::all();
