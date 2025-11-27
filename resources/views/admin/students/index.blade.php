@@ -4,6 +4,10 @@
 
 @section('content')
 
+  {{-- @php
+    dd($students);
+  @endphp --}}
+
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -75,7 +79,8 @@
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
 
             <div class="flex items-center gap-3">
-              <img src="{{ $student->avatar_url }}" class="w-12 h-12 rounded-full object-cover">
+              <img src="{{ $student->avatar_url }}"
+                class="w-14 h-14 rounded-full object-cover border-3 border-white shadow @if ($student->deleted_at) border-red-600 @endif">
 
               <a href="{{ route('admin.students.show', $student->id) }}"
                 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize truncate hover:text-blue-600 dark:hover:text-blue-400">

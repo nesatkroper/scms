@@ -13,15 +13,27 @@ class PaymentRequest extends FormRequest
 
   public function rules(): array
   {
+    $feeId = $this->route('fee_id') ?? $this->input('fee_id');
+
     return [
-      'amount' => 'required|numeric|min:0',
-      'payment_date' => 'required|date',
-      'payment_method' => 'required|string|max:255',
-      'transaction_id' => 'nullable|string|max:255',
-      'remarks' => 'nullable|string',
-      'received_by' => 'required|exists:users,id',
-      'student_id' => 'required|exists:users,id',
-      'fee_id' => 'nullable|exists:fees,id',
+      'fee_id' => ['required', 'integer', 'exists:fees,id'],
+
+      'amount' => ['required', 'numeric', 'min:0.01'],
+
+      'payment_date' => ['required', 'date'],
+
+      'payment_method' => ['nullable', 'string', 'max:50'],
+
+      'transaction_id' => [
+        'nullable',
+        'string',
+        'max:100',
+        \Illuminate\Validation\Rule::unique('payments')->ignore($this->route('payment')),
+      ],
+
+      'remarks' => ['nullable', 'string'],
+
+      'received_by' => ['nullable', 'integer', 'exists:users,id'],
     ];
   }
 }

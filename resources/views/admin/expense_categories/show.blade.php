@@ -17,11 +17,20 @@
         </svg>
         Expense Category Details
       </h3>
-      {{-- Back Button (Update route name) --}}
-      <a href="{{ route('admin.expense_categories.index') }}"
-        class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
-        <i class="fas fa-arrow-left text-xs"></i> Back to Categories
-      </a>
+
+      <div class="flex gap-4">
+        <a href="{{ route('admin.students.fees.index', $expenseCategory->id) }}"
+          class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+          title="Export {{ $expenseCategory->name ?? 'N/A' }}">
+          <i class="fa-solid fa-download me-2"></i>
+          Export {{ $expenseCategory->name ?? 'N/A' }}
+        </a>
+        {{-- Back Button (Update route name) --}}
+        <a href="{{ route('admin.expense_categories.index') }}"
+          class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
+          <i class="fas fa-arrow-left text-xs"></i> Back to Categories
+        </a>
+      </div>
     </div>
 
     {{-- Main Detail Card --}}

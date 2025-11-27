@@ -78,7 +78,8 @@
       </div>
     </form>
 
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
+      x-data="paymentsModal()">
       @forelse ($fees as $fee)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -149,12 +150,22 @@
 
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
-            <a href="{{ route('admin.payments.index', ['fee_id' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
+            {{-- <a href="{{ route('admin.payments.create', ['fee_id' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
               title="View Payments">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-money-bill-transfer me-2"></i>
                 Payments
+              </span>
+            </a> --}}
+
+            <a href="#" @click.prevent="openModal({{ $fee->id }}, '{{ route('admin.payments.store') }}')"
+              {{-- Pass fee ID for context --}}
+              class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+              title="Add Payment">
+              <span class="btn-content flex items-center justify-center">
+                <i class="fa-solid fa-money-bill-transfer me-2"></i>
+                Add Payment
               </span>
             </a>
 
@@ -199,6 +210,8 @@
           </div>
         </div>
       @endforelse
+
+      @include('admin.fees.payment-modal')
     </div>
 
     <div class="mt-6">

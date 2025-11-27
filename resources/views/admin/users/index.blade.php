@@ -85,7 +85,8 @@
           {{-- Card Header: Avatar, Name, and Roles --}}
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex items-start gap-4">
-            <img src="{{ $user->avatar_url }}" class="w-12 h-12 rounded-full object-cover">
+            <img src="{{ $user->avatar_url }}"
+              class="w-14 h-14 rounded-full object-cover border-3 border-white shadow @if ($user->deleted_at) border-red-600 @endif">
 
             <div class="flex-grow">
               <h4 class="font-bold text-xl text-gray-800 dark:text-gray-200">{{ $user->name }}</h4>

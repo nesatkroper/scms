@@ -81,7 +81,7 @@ Route::prefix('admin')
     Route::resource('expenses', ExpenseController::class);
     Route::resource('fee_types', FeeTypeController::class);
     Route::resource('fees', FeeController::class);
-    Route::resource('payments', PaymentController::class);
+    // Route::resource('payments', PaymentController::class);
     Route::resource('students', StudentController::class);
     Route::resource('subjects', SubjectController::class);
     Route::resource('teachers', TeacherController::class);
@@ -127,6 +127,9 @@ Route::prefix('admin')
 
     Route::post('expenses/{expense}/approve', [App\Http\Controllers\Admin\ExpenseController::class, 'approve'])->name('expenses.approve');
     Route::post('fees/{fee}/mark-paid', [App\Http\Controllers\Admin\FeeController::class, 'markPaid'])->name('fees.markPaid');
+
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
 
 
     Route::prefix('students')->name('students.')->group(function () {

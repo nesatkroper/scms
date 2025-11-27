@@ -4,93 +4,53 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
-use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Fee;
 use App\Models\Payment;
-use App\Models\StudentFee;
-use App\Models\User;
-use App\Notifications\PaymentConfirmed;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
-class PaymentController extends BaseController
+class PaymentController extends Controller
 {
-  public function __construct()
+  public function store(PaymentRequest $request): RedirectResponse
   {
-    parent::__construct();
-    $this->applyPermissions();
-  }
+    $fee = Fee::findOrFail($request->fee_id);
 
-  protected function ModelPermissionName(): string
-  {
-    return 'Payment';
-  }
-
-  public function index()
-  {
-    $payments = Payment::with(['studentFee', 'receiver'])->paginate(10);
-    return view('payments.index', compact('payments'));
-  }
-
-  public function create()
-  {
-    $studentFees = Fee::all();
-    $receivers = User::all();
-    return view('payments.create', compact('studentFees', 'receivers'));
-  }
-
-  public function store(PaymentRequest $request)
-  {
     try {
-      $data = $request->validated();
-      $data['received_by'] = Auth::id();
-      if (empty($data['transaction_id'])) {
-        $data['transaction_id'] = strtoupper(uniqid('PAY'));
-      }
+      $payment = new Payment($request->validated());
 
-      $payment = Payment::create($data);
+      $payment->received_by = $request->received_by ?? Auth::id();
 
-      if ($payment->fee_id) {
-        $fee = Fee::find($payment->fee_id);
-        if ($fee && $payment->amount >= $fee->amount) {
-          $fee->update(['status' => 'paid', 'paid_date' => $payment->payment_date ?? now()]);
-        }
-      }
-
-      $payment->student->notify(new PaymentConfirmed($payment));
+      $fee->payments()->save($payment);
 
 
-      return redirect()->route('admin.payments.index')->with('success', 'Payment recorded and student notified!');
+      return redirect()->route('admin.fees.show', $fee->id)
+        ->with('success', 'Payment for Fee #' . $fee->id . ' added successfully.');
     } catch (\Exception $e) {
-      Log::error('Error creating Payment: ' . $e->getMessage());
-      return back()->with('error', 'Error recording payment.')->withInput();
+      return back()->withInput()
+        ->with('error', 'Failed to add payment. Error: ' . $e->getMessage());
     }
   }
 
-  public function show(Payment $payment)
+  public function update(PaymentRequest $request, Payment $payment): RedirectResponse
   {
-    $payment->load(['studentFee', 'receiver']);
-    return view('payments.show', compact('payment'));
-  }
+    if ($request->fee_id != $payment->fee_id) {
+      return back()->with('error', 'Cannot change the associated fee for this payment.');
+    }
 
-  public function edit(Payment $payment)
-  {
-    $payment->load(['studentFee', 'receiver']);
-    $studentFees = Fee::all();
-    $receivers = User::all();
-    return view('payments.edit', compact('payment', 'studentFees', 'receivers'));
-  }
+    try {
+      $payment->fill($request->validated());
 
-  public function update(PaymentRequest $request, Payment $payment)
-  {
-    $payment->update($request->validated());
-    return redirect()->route('payments.show', $payment)->with('success', 'Payment updated successfully!');
-  }
+      $payment->received_by = $request->received_by ?? $payment->received_by;
 
-  public function destroy(Payment $payment)
-  {
-    $payment->delete();
-    return redirect()->route('payments.index')->with('success', 'Payment deleted successfully!');
+      $payment->save();
+
+      $fee = $payment->fee;
+
+      return redirect()->route('admin.fees.show', $fee->id)
+        ->with('success', 'Payment #' . $payment->id . ' updated successfully.');
+    } catch (\Exception $e) {
+      return back()->withInput()
+        ->with('error', 'Failed to update payment. Error: ' . $e->getMessage());
+    }
   }
 }

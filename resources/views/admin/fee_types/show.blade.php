@@ -16,13 +16,22 @@
             d="M12 6v12m-2.25 1.5h4.5a.75.75 0 00.75-.75V6.75a.75.75 0 00-.75-.75h-4.5a.75.75 0 00-.75.75V18.75a.75.75 0 00.75.75z" />
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12h-6" />
         </svg>
-        Fee Type Details
+        {{ $feeType->name ?? 'N/A' }} Details
       </h3>
-      {{-- Back Button --}}
-      <a href="{{ route('admin.fee_types.index') }}"
-        class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
-        <i class="fas fa-arrow-left text-xs"></i> Back to Fee Types
-      </a>
+
+      <div class="flex gap-4">
+        <a href="{{ route('admin.students.fees.index', $feeType->id) }}"
+          class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+          title="Export {{ $feeType->name ?? 'N/A' }}">
+          <i class="fa-solid fa-download me-2"></i>
+          Export {{ $feeType->name ?? 'N/A' }}
+        </a>
+        {{-- Back Button --}}
+        <a href="{{ route('admin.fee_types.index') }}"
+          class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
+          <i class="fas fa-arrow-left text-xs"></i> Back to Fee Types
+        </a>
+      </div>
     </div>
 
     {{-- Main Detail Card --}}
