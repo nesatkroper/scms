@@ -17,11 +17,10 @@ class PaymentController extends Controller
 
     try {
       $payment = new Payment($request->validated());
-
       $payment->received_by = $request->received_by ?? Auth::id();
 
       $fee->payments()->save($payment);
-
+      $fee->status = '';
 
       return redirect()->route('admin.fees.show', $fee->id)
         ->with('success', 'Payment for Fee #' . $fee->id . ' added successfully.');
@@ -39,9 +38,7 @@ class PaymentController extends Controller
 
     try {
       $payment->fill($request->validated());
-
       $payment->received_by = $request->received_by ?? $payment->received_by;
-
       $payment->save();
 
       $fee = $payment->fee;
