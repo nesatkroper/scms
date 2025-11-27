@@ -54,8 +54,6 @@ class User extends Authenticatable
     ];
   }
 
-
-
   public function fees()
   {
     return $this->hasMany(Fee::class, 'student_id');
@@ -89,6 +87,11 @@ class User extends Authenticatable
   public function scopeTeachers($query)
   {
     return $query->role('teacher');
+  }
+
+  public function teachingCourses()
+  {
+    return $this->hasMany(\App\Models\CourseOffering::class, 'teacher_id');
   }
 
   public function courseOfferings()

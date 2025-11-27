@@ -39,9 +39,7 @@
         <div
           class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center">
           <div class="mb-4">
-            <img
-              src="{{ $student->avatar ? Storage::url($student->avatar) : 'https://placehold.co/100x100/d1d5db/4b5563?text=S' }}"
-              alt="{{ $student->name }}"
+            <img src="{{ $student->avatar_url }}" alt="{{ $student->name }}"
               class="size-28 mx-auto rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-700 shadow-md">
           </div>
           <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $student->name }}</h2>

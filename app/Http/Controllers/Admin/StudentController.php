@@ -171,8 +171,6 @@ class StudentController extends Controller
     }
   }
 
-
-
   public function storeFee(Request $request, User $student)
   {
     $validated = $request->validate([
@@ -205,7 +203,6 @@ class StudentController extends Controller
   {
     $student = $student->load([
       'fees.feeType',
-      'payments.receiver',
       'attendances.courseOffering.subject',
       'scores.exam',
       'courseOfferings.subject',
