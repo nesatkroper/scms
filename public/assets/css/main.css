@@ -69,6 +69,9 @@ nav ul li .submenu .submenu {
 nav ul > li > div.submenu {
   margin-left: 2rem;
 }
+nav ul > li > div.submenu>ul li {
+  margin-top: 2px;
+}
 
 .sidebar-collapsed nav ul > li > div.submenu {
   margin-left: 1rem;
