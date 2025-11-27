@@ -53,6 +53,26 @@
               <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Student <span class="text-red-500">*</span>
               </label>
+
+              <select name="student_id" id="student_id" required
+                class="w-full px-3 py-2 border rounded-md
+      dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
+                <option value="">Select Student</option>
+
+                @foreach ($students as $student)
+                  <option value="{{ $student->id }}">{{ $student->name }} (ID: {{ $student->id }})</option>
+                @endforeach
+              </select>
+
+              @error('student_id')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+
+            {{-- <div>
+              <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Student <span class="text-red-500">*</span>
+              </label>
               <select name="student_id" id="student_id" required
                 class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('student_id') border-red-500 @enderror">
                 <option value="" disabled>Select Student</option>
@@ -65,7 +85,7 @@
               @error('student_id')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
-            </div>
+            </div> --}}
 
             {{-- 4. Payment Status Field (Select) --}}
             <div>
@@ -129,3 +149,40 @@
   </div>
 
 @endsection
+
+@push('script')
+  <script>
+    new SlimSelect({
+      select: '#student_id',
+      settings: {
+        placeholderText: 'Search student…',
+        searchPlaceholder: 'Type to search...',
+        searchHighlight: true,
+      }
+    })
+  </script>
+@endpush
+
+@push('style')
+  <style>
+    .ss-main {
+      @apply w-full px-3 py-[6px] border rounded-md bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300;
+    }
+
+    .ss-main .ss-values .ss-placeholder {
+      @apply text-gray-500 dark:text-gray-300;
+    }
+
+    .ss-list {
+      @apply bg-white dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg mt-1;
+    }
+
+    .ss-option {
+      @apply px-3 py-2 hover:bg-indigo-50 dark:hover:bg-gray-600 cursor-pointer;
+    }
+
+    .ss-option.selected {
+      @apply bg-indigo-100 dark:bg-gray-600;
+    }
+  </style>
+@endpush

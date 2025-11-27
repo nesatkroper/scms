@@ -97,10 +97,10 @@ Route::prefix('admin')
     Route::put('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'update'])->name('student_courses.update');
     Route::delete('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'destroy'])->name('student_courses.destroy');
 
-    Route::prefix('student-courses')->as('student_courses.')->group(function () {
-      Route::get('/create-new-student', [StudentCourseController::class, 'createNewStudent'])->name('create.new_student');
-      Route::post('/store-new-student', [StudentCourseController::class, 'storeNewStudent'])->name('store.new_student');
-    });
+    // Route::prefix('student-courses')->as('student_courses.')->group(function () {
+    //   Route::get('/create-new-student', [StudentCourseController::class, 'createNewStudent'])->name('create.new_student');
+    //   Route::post('/store-new-student', [StudentCourseController::class, 'storeNewStudent'])->name('store.new_student');
+    // });
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

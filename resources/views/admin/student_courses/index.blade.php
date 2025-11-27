@@ -51,7 +51,7 @@
               Create Admission (Existed Student)
             </a>
 
-            <a href="{{ route('admin.student_courses.create.new_student', ['course_offering_id' => $courseOffering->id]) }}"
+            <a href="{{ route('admin.students.create') }}"
               class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd"
