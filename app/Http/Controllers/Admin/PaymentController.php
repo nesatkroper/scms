@@ -8,6 +8,10 @@ use App\Models\Fee;
 use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\PaymentReceived;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+
 
 class PaymentController extends Controller
 {
@@ -21,6 +25,9 @@ class PaymentController extends Controller
 
       $fee->payments()->save($payment);
       $fee->status = '';
+
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new PaymentReceived($payment));
 
       return redirect()->route('admin.fees.show', $fee->id)
         ->with('success', 'Payment for Fee #' . $fee->id . ' added successfully.');
