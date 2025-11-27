@@ -116,7 +116,6 @@
           <div class="p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
             {{-- Status and Payment Status (Flex for alignment) --}}
             <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
-
               {{-- Admission Status --}}
               <p class="flex items-center gap-1 font-medium">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>

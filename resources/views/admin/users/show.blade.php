@@ -49,7 +49,7 @@
           class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center">
           <div class="mb-4">
             <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}"
-              class="size-28 mx-auto rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-700 shadow-md">
+              class="size-56 mx-auto rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-700 shadow-md">
           </div>
           <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $user->name }}</h2>
           <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $user->email }}</p>
@@ -122,7 +122,8 @@
         </div>
 
         {{-- Delete Button Card --}}
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+        <div
+          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-6">
           <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
             Permanently delete this user and all associated records.

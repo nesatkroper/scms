@@ -79,10 +79,10 @@
 
               <a href="{{ route('admin.scores.export', $exam->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Attendance">
+                title="Eport Result">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-download me-2"></i>
-                  Eport Score
+                  Eport Result
                 </span>
               </a>
             </div>
