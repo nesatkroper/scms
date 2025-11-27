@@ -349,7 +349,8 @@
       @endif
 
       {{-- Generic: Attendance Log --}}
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+      <div
+        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log
           ({{ $user->attendances_count }})</h3>
 

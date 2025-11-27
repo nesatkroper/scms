@@ -201,17 +201,17 @@ class StudentController extends Controller
 
   public function show(User $student)
   {
-    $student = $student->load([
-      'fees.feeType',
-      'attendances.courseOffering.subject',
-      'scores.exam',
-      'courseOfferings.subject',
-      'courseOfferings.teacher',
-    ]);
 
-    $student = User::withCount(['fees', 'attendances'])
-      ->findOrFail($student->id);
-
+    $student->loadCount(['fees', 'attendances', 'scores'])
+      ->load([
+        'courseOfferings' => function ($query) {
+          $query->with(['subject', 'teacher']);
+        },
+        'fees.feeType',
+        'fees.payments',
+        'scores.exam.courseOffering.subject',
+        'attendances.courseOffering.subject',
+      ]);
 
     return view('admin.students.show', compact('student'));
   }
