@@ -95,7 +95,16 @@
     <div class="lg:col-span-2">
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-4">Personal & Contact Info</h3>
+        <div class="flex justify-between items-center pb-2">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Personal & Contact Info</h3>
+
+          <a href="{{ route('admin.students.fees.index', $student->id) }}"
+            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+            title="Export Information">
+            <i class="fa-solid fa-download me-2"></i>
+            Export Information
+          </a>
+        </div>
 
         {{-- Details Grid --}}
         <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-4">
@@ -169,7 +178,18 @@
 
       {{-- Assigned Courses --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Assigned Courses</h3>
+
+        <div class="flex justify-between items-center pb-2">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Assigned Courses</h3>
+
+          <a href="{{ route('admin.students.fees.index', $student->id) }}"
+            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+            title="Export Courses">
+            <i class="fa-solid fa-download me-2"></i>
+            Export Courses
+          </a>
+        </div>
+
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
           Details about courses this student is currently enrolled in.
         </p>
@@ -236,7 +256,17 @@
 
       {{-- Fee Records (Invoices/Bills) --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Fee Records</h3>
+        <div class="flex justify-between items-center pb-2">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Fee Records</h3>
+
+          <a href="{{ route('admin.students.fees.index', $student->id) }}"
+            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+            title="Export Payment">
+            <i class="fa-solid fa-download me-2"></i>
+            Export Payment
+          </a>
+        </div>
+
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
           List of fees billed to this student, including payment status.
         </p>
@@ -309,7 +339,17 @@
 
       {{-- Exam Scores --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Exam Scores</h3>
+        <div class="flex justify-between items-center pb-2">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Exam Scores</h3>
+
+          <a href="{{ route('admin.students.fees.index', $student->id) }}"
+            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+            title="Export Result">
+            <i class="fa-solid fa-download me-2"></i>
+            Export Result
+          </a>
+        </div>
+
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
           Individual scores recorded for exams in various courses.
         </p>
@@ -385,7 +425,17 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
       {{-- Attendance Log --}}
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log</h3>
+        <div class="flex justify-between items-center pb-2">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Attendance Log</h3>
+
+          <a href="{{ route('admin.students.fees.index', $student->id) }}"
+            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
+            title="Export Attendance">
+            <i class="fa-solid fa-download me-2"></i>
+            Export Attendance
+          </a>
+        </div>
+
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
           Daily attendance status for enrolled courses.
         </p>
