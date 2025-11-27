@@ -14,10 +14,40 @@ class ProfileController extends Controller
 
   public function show(Request $request)
   {
+    $user = User::with([
+      'roles',
+
+      'courseOfferings.subject',
+      'fees.feeType',
+      'scores.exam',
+      'attendances.courseOffering.subject',
+
+      'teachingCourses.subject',
+      'teachingCourses.courseOfferingsStudents',
+    ])
+      ->withCount([
+        'fees',
+        'attendances',
+        'courseOfferings',
+        'teachingCourses',
+        'approvedExpenses',
+      ])
+      ->find(Auth::id());
+
+    $taughtStudentsCount = 0;
+    if ($user->hasRole('teacher')) {
+      $taughtStudentsCount = $user->teachingCourses
+        ->flatMap(fn($course) => $course->students->pluck('id'))
+        ->unique()
+        ->count();
+    }
+
     return view('admin.profile.show', [
-      'user' => $user = User::with('roles')->find(Auth::id())
+      'user' => $user,
+      'taughtStudentsCount' => $taughtStudentsCount,
     ]);
   }
+
 
   public function update(Request $request)
   {
