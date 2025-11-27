@@ -5,7 +5,7 @@
 @section('content')
 
   <div
-    class="box px-2 py-4 md:p-6 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm max-w-4xl mx-auto">
+    class="box px-2 py-4 md:p-6 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto">
 
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-100 dark:border-gray-700/50">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">

@@ -152,6 +152,15 @@
           {{-- Actions --}}
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            <a href="{{ route('admin.expenses.show', $expense->id) }}"
+              class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+              title="Edit Expense">
+              <span class="btn-content flex items-center justify-center">
+                <i class="fa-solid fa-eye me-2"></i>
+                Show
+              </span>
+            </a>
+
             <a href="{{ route('admin.expenses.edit', $expense->id) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
               title="Edit Expense">

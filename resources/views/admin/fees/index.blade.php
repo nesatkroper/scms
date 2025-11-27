@@ -78,7 +78,7 @@
       </div>
     </form>
 
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
       @forelse ($fees as $fee)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -86,12 +86,12 @@
             <div class="flex justify-between items-start gap-2">
               <div>
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">
-                  {{ $fee->feeType->name ?? 'Deleted Type' }} - {{ $fee->student->name ?? 'Student Deleted' }} -
+                  {{ $fee->student->name ?? 'Student Deleted' }} -
                   ${{ number_format($fee->amount, 2) }}
                 </h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  Student: <span
-                    class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $fee->student->name ?? 'Student Deleted' }}</span>
+                  Category: <span
+                    class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $fee->feeType->name ?? 'Fee Type Deleted' }}</span>
                 </p>
               </div>
               <a href="{{ route('admin.fees.show', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
