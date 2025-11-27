@@ -98,7 +98,7 @@
               </a>
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ Str::limit($category->description, 100, '...') }}
+              {{ Str::limit($category->description, 100, '...') ?? 'N/A' }}
             </p>
           </div>
 

@@ -64,6 +64,10 @@ class FeeTypeController extends BaseController
 
   public function show(FeeType $feeType)
   {
+    $feeType->load(['fees' => function ($query) {
+      $query->with(['student', 'payments']);
+    }]);
+
     return view('admin.fee_types.show', compact('feeType'));
   }
 

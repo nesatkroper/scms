@@ -17,8 +17,6 @@ class Payment extends Model
     'transaction_id',
     'remarks',
     'received_by',
-    // 'course_offering_id',
-    // 'student_id',
   ];
 
   protected $casts = [

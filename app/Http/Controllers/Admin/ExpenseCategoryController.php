@@ -64,6 +64,8 @@ class ExpenseCategoryController extends BaseController
 
   public function show(ExpenseCategory $expenseCategory)
   {
+    $expenseCategory->load('expenses.creator', 'expenses.approver');
+
     return view('admin.expense_categories.show', compact('expenseCategory'));
   }
 

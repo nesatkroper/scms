@@ -15,8 +15,6 @@ class Fee extends Model
     'fee_type_id',
     'amount',
     'due_date',
-    // 'paid_date',
-    // 'status',
     'remarks'
   ];
 
