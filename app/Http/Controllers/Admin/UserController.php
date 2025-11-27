@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -41,7 +39,11 @@ class UserController extends BaseController
         return $query->where(function ($q) use ($search) {
           $q->where('name', 'like', "%{$search}%")
             ->orWhere('email', 'like', "%{$search}%")
-            ->orWhere('phone', 'like', "%{$search}%");
+            ->orWhere(
+              'phone',
+              'like',
+              "%{$search}%"
+            );
         });
       })
       ->when($roleFilter, function ($query) use ($roleFilter) {
@@ -125,7 +127,7 @@ class UserController extends BaseController
       'approvedExpenses',
     ]);
 
-    $allRoles = \Spatie\Permission\Models\Role::all();
+    $allRoles = Role::all();
 
     $taughtStudentsCount = 0;
     if ($user->hasRole('teacher')) {
