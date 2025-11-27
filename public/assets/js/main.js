@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!sidebar || !toggleSidebarBtn) return;
 
   // --- STATE ---
-  let sidebarCollapsed = false; // Start with expanded sidebar (w-56)
+  let sidebarCollapsed = false; // Start with expanded sidebar (w-64)
   let activeDropdown = null;
   let footerDropdownActive = false;
 
@@ -37,8 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update Desktop Sidebar View: Toggles classes for collapsed/expanded state
   const updateDesktopSidebar = () => {
     if (!sidebar || !mainContent) return;
-
-    sidebar.classList.toggle('w-56', !sidebarCollapsed);
+    sidebar.classList.toggle('w-64', !sidebarCollapsed);
     sidebar.classList.toggle('w-16', sidebarCollapsed);
     sidebar.classList.toggle('sidebar-collapsed', sidebarCollapsed);
     mainContent.classList.toggle('md:ml-64', !sidebarCollapsed);
@@ -191,8 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1080) { // Desktop
+    if (window.innerWidth >= 1080) { 
+      // Desktop
       if (sidebar && sidebar.classList.contains('-translate-x-full')) {
+        sidebarBackdrop.classList.add('hidden', 'opacity-0');
         sidebar.classList.remove('-translate-x-full');
       }
     } else { // Mobile
