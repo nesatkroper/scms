@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentCourseRequest;
 use App\Models\StudentCourse;
 use App\Models\CourseOffering;
+use App\Models\Fee;
+use App\Models\FeeType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -97,33 +99,84 @@ class StudentCourseController extends BaseController
     ));
   }
 
-  public function store(StudentCourseRequest $request)
+  // public function store(Request $input, StudentCourseRequest $request)
+  // {
+  //   $data = $request->validated();
+
+  //   $exists = StudentCourse::where('student_id', $data['student_id'])
+  //     ->where('course_offering_id', $data['course_offering_id'])
+  //     ->exists();
+
+  //   if ($exists) {
+  //     return redirect()->route('admin.student_courses.create', ['course_offering_id' => $data['course_offering_id']])
+  //       ->with('error', 'This student is already enrolled in this course offering.')
+  //       ->withInput();
+  //   }
+
+  //   try {
+
+  //     return redirect()
+  //       ->route('admin.student_courses.index', ['course_offering_id' => $data['course_offering_id']])
+  //       ->with('success', 'Enrollment created successfully!');
+  //   } catch (\Exception $e) {
+  //     Log::error('Error creating StudentCourse: ' . $e->getMessage());
+  //     return redirect()->route('admin.student_courses.create', ['course_offering_id' => $data['course_offering_id']])
+  //       ->with('error', 'Error creating enrollment.')->withInput();
+  //   }
+  // }
+
+  public function store(Request $input, StudentCourseRequest $request)
   {
     $data = $request->validated();
-
 
     $exists = StudentCourse::where('student_id', $data['student_id'])
       ->where('course_offering_id', $data['course_offering_id'])
       ->exists();
 
     if ($exists) {
-      return redirect()->route('admin.student_courses.create', ['course_offering_id' => $data['course_offering_id']])
+      return back()
         ->with('error', 'This student is already enrolled in this course offering.')
         ->withInput();
     }
 
+    DB::beginTransaction();
+
     try {
-      StudentCourse::create($data);
+      $enrollment = StudentCourse::create([
+        'student_id'        => $data['student_id'],
+        'course_offering_id' => $data['course_offering_id'],
+        'status'            => $data['status'] ?? 'active',
+        'remarks'           => $data['remarks'] ?? null,
+      ]);
+
+      $course = CourseOffering::findOrFail($data['course_offering_id']);
+
+      $feeType = FeeType::firstOrCreate(
+        ['name' => 'Tuition'],
+        ['description' => 'Default tuition fee type']
+      );
+
+      Fee::create([
+        'student_id'        => $data['student_id'],
+        'student_course_id' => $enrollment->id,
+        'fee_type_id'       => $feeType->id,
+        'amount'            => $course->fee ?? 0,
+        'created_by'        => Auth::id() ?? 1,
+      ]);
+
+      DB::commit();
 
       return redirect()
-        ->route('admin.student_courses.index', ['course_offering_id' => $data['course_offering_id']])
-        ->with('success', 'Enrollment created successfully!');
+        ->route('admin.student_courses.index', ['course_offering_id' => $course->id])
+        ->with('success', 'Enrollment & fee created successfully!');
     } catch (\Exception $e) {
-      Log::error('Error creating StudentCourse: ' . $e->getMessage());
-      return redirect()->route('admin.student_courses.create', ['course_offering_id' => $data['course_offering_id']])
-        ->with('error', 'Error creating enrollment.')->withInput();
+      DB::rollBack();
+      Log::error('Error creating enrollment: ' . $e->getMessage());
+
+      return back()->with('error', 'Error creating enrollment.')->withInput();
     }
   }
+
 
   public function edit($student_id, $course_offering_id)
   {

@@ -16,7 +16,8 @@
         Admission Register for {{ $courseOffering->subject?->name }} -
         {{ $courseOffering->teacher->name }} -
         {{ $courseOffering->classroom->name }}
-        ({{ $courseOffering->time_slot }})
+        ({{ $courseOffering->time_slot }}) -
+        ($ {{ $courseOffering->fee }})
       @endif
     </h3>
 

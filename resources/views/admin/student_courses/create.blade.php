@@ -47,6 +47,7 @@
 
             <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
             <input type="hidden" name="status" value="studying">
+            <input type="hidden" name="fee" value="{{ $courseOffering->fee }}">
 
             {{-- 1. Student Field (Select) --}}
             <div>
