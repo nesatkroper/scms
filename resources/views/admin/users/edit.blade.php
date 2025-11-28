@@ -138,7 +138,11 @@
                 class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600 @error('type') border-red-500 @enderror @error('type.*') border-red-500 @enderror">
                 @foreach ($allRoles as $role)
                   <label
-                    class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 capitalize cursor-pointer">
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg border 
+           border-gray-300 dark:border-gray-600 cursor-pointer
+           bg-white dark:bg-gray-800
+           hover:border-indigo-400 dark:hover:border-indigo-500
+           hover:bg-indigo-50 dark:hover:bg-gray-700 shadow-sm">
                     <input type="checkbox" name="type[]" value="{{ $role->name }}" @checked(in_array($role->name, $selectedRoles))
                       x-model="selectedRoles"
                       class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-offset-gray-800">

@@ -15,7 +15,8 @@ class CheckBox extends Component
     $value,
     $required,
     $readonly,
-    $disabled;
+    $disabled,
+    $checked;
 
   public function __construct(
     $id = null,
@@ -26,9 +27,11 @@ class CheckBox extends Component
     $required = false,
     $readonly = false,
     $disabled = false,
+    $checked = false,
   ) {
     $this->id = $id;
     $this->name = $name;
+    $this->checked = $checked;
     $this->class = $class;
     $this->value = $value;
     $this->required = $required;
