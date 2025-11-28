@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\CourseOffering;
 use App\Models\Payment;
-use App\Models\StudentCourse;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -22,7 +22,7 @@ class HomeController extends Controller
     $course = CourseOffering::count();
     $fee = Payment::sum('amount');
 
-    $recentEnrollments = StudentCourse::latest()
+    $recentEnrollments = Enrollment::latest()
       ->with(['student', 'courseOffering', 'fee'])
       ->take(5)
       ->get();

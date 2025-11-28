@@ -107,7 +107,7 @@ return new class extends Migration
       $table->softDeletes();
     });
 
-    Schema::create('student_courses', function (Blueprint $table) {
+    Schema::create('enrollments', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
@@ -174,7 +174,7 @@ return new class extends Migration
     Schema::create('fees', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-      $table->foreignId('student_course_id')->constrained('student_courses')->onDelete('cascade');
+      $table->foreignId('enrollment_id')->constrained('enrollments')->onDelete('cascade');
       $table->foreignId('fee_type_id')->constrained('fee_types')->onDelete('cascade');
       $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
       $table->decimal('amount', 10, 2);
@@ -228,7 +228,7 @@ return new class extends Migration
     Schema::dropIfExists('fee_types');
     Schema::dropIfExists('exams');
     Schema::dropIfExists('attendances');
-    Schema::dropIfExists('student_courses');
+    Schema::dropIfExists('enrollments');
     Schema::dropIfExists('course_offerings');
     Schema::dropIfExists('expenses');
     Schema::dropIfExists('expense_categories');

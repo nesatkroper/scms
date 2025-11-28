@@ -13,7 +13,7 @@ class Fee extends Model
     'student_id',
     'created_by',
     'fee_type_id',
-    'student_course_id',
+    'enrollment_id',
     'amount',
     'due_date',
     'remarks'
@@ -45,7 +45,7 @@ class Fee extends Model
 
   public function studentCourse()
   {
-    return $this->belongsTo(StudentCourse::class, 'student_course_id');
+    return $this->belongsTo(Enrollment::class, 'enrollment_id');
   }
 
 

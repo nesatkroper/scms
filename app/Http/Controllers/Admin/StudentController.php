@@ -8,7 +8,7 @@ use App\Http\Requests\StudentRequest;
 use App\Models\CourseOffering;
 use App\Models\Fee;
 use App\Models\FeeType;
-use App\Models\StudentCourse;
+use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -157,7 +157,7 @@ class StudentController extends BaseController
       $data['payment_status'] = 'free';
     }
 
-    $exists = StudentCourse::where('student_id', $student->id)
+    $exists = Enrollment::where('student_id', $student->id)
       ->where('course_offering_id', $data['course_offering_id'])
       ->exists();
 
@@ -168,13 +168,13 @@ class StudentController extends BaseController
     }
 
     try {
-      StudentCourse::create($data);
+      Enrollment::create($data);
 
       return redirect()
         ->route('admin.students.enrollments.index', $student)
         ->with('success', 'Enrollment created successfully!');
     } catch (\Exception $e) {
-      Log::error('Error creating StudentCourse: ' . $e->getMessage());
+      Log::error('Error creating Enrollment: ' . $e->getMessage());
 
       return back()
         ->with('error', 'Error creating enrollment.' . $e->getMessage())

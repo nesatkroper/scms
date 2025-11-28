@@ -29,8 +29,13 @@ class AttendanceController extends BaseController
     $date = $request->input('date', date('Y-m-d'));
 
     $courseOffering = CourseOffering::with('students')->findOrFail($courseOfferingId);
-
     $studentsQuery = $courseOffering->students();
+
+    if ($studentsQuery->count() === 0) {
+      return redirect()
+        ->route('admin.enrollments.create', ['course_offering_id' => $courseOfferingId])
+        ->with('error', 'You need to enroll student first.');
+    }
 
     if ($search) {
       $studentsQuery = $studentsQuery->where(function ($q) use ($search) {

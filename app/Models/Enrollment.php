@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class StudentCourse extends Model
+class Enrollment extends Model
 {
 
   protected $fillable = [
@@ -21,7 +21,7 @@ class StudentCourse extends Model
 
   public function fee()
   {
-    return $this->hasOne(Fee::class, 'student_course_id');
+    return $this->hasOne(Fee::class, 'enrollment_id');
   }
 
   public function student()
@@ -36,13 +36,13 @@ class StudentCourse extends Model
 
   protected static function booted()
   {
-    static::created(function (StudentCourse $enrollment) {
+    static::created(function (Enrollment $enrollment) {
 
       DB::transaction(function () use ($enrollment) {
         $course = $enrollment->courseOffering()->first();
 
         if (! $course) {
-          Log::warning("CourseOffering not found for StudentCourse ID {$enrollment->id}");
+          Log::warning("CourseOffering not found for Enrollment ID {$enrollment->id}");
           return;
         }
 
@@ -57,7 +57,7 @@ class StudentCourse extends Model
 
         Fee::create([
           'student_id'        => $enrollment->student_id,
-          'student_course_id' => $enrollment->id,
+          'enrollment_id' => $enrollment->id,
           'fee_type_id'       => $feeType->id,
           'created_by'        => Auth::id() ?? 1,
           'amount'            => $course->fee ?? 0,

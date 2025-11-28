@@ -37,7 +37,7 @@
     @endif
 
     {{-- Search Form --}}
-    <form action="{{ route('admin.student_courses.index') }}" method="GET">
+    <form action="{{ route('admin.enrollments.index') }}" method="GET">
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
@@ -45,7 +45,7 @@
           <div></div>
         @else
           <div class="flex gap-4">
-            <a href="{{ route('admin.student_courses.create', ['course_offering_id' => $courseOffering->id]) }}"
+            <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
               class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd"
@@ -82,7 +82,7 @@
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
-          <a href="{{ route('admin.student_courses.index') }}" id="resetSearch"
+          <a href="{{ route('admin.enrollments.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
             title="Reset Search">
             <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
@@ -212,7 +212,7 @@
             </div>
 
             <div class="flex">
-              <a href="{{ route('admin.student_courses.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+              <a href="{{ route('admin.enrollments.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit Admission">
                 <span class="btn-content flex items-center justify-center">
@@ -222,7 +222,7 @@
               </a>
 
               <form
-                action="{{ route('admin.student_courses.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+                action="{{ route('admin.enrollments.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
                 method="POST" onsubmit="return confirm('Are you sure you want to delete this admission record?');">
                 @csrf
                 @method('DELETE')

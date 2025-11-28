@@ -5,15 +5,15 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\DatabaseMessage;
-use App\Models\StudentCourse;
+use App\Models\Enrollment;
 
 class NewCourseEnrollment extends Notification
 {
   use Queueable;
 
-  public StudentCourse $enrollment;
+  public Enrollment $enrollment;
 
-  public function __construct(StudentCourse $enrollment)
+  public function __construct(Enrollment $enrollment)
   {
     $this->enrollment = $enrollment;
   }
@@ -33,7 +33,7 @@ class NewCourseEnrollment extends Notification
     return [
       'title' => "New Enrollment: {$studentName} in {$courseName}",
       'body' => "{$studentName} has successfully enrolled in the course '{$courseName}'. The fee is \${$this->enrollment->courseOffering->fee}.",
-      'link' => route('admin.student_courses.show', $this->enrollment->id),
+      'link' => route('admin.enrollments.show', ['student_id' => $this->enrollment->student->id, 'course_offering_id' => $this->enrollment->courseOffering->id]),
       'date' => $this->enrollment->created_at?->format('M d, Y H:i A'),
     ];
   }

@@ -34,7 +34,7 @@ class ScoreController extends BaseController
 
     if ($studentsQuery->count() === 0) {
       return redirect()
-        ->route('admin.student_courses.create', ['course_offering_id' => $exam->courseOffering->id])
+        ->route('admin.enrollments.create', ['course_offering_id' => $exam->courseOffering->id])
         ->with('error', 'You need to enroll student first.');
     }
 

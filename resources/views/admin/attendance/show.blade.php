@@ -18,9 +18,10 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M3 6.75a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6.75v10.5A2.25 2.25 0 0 1 18.75 19.5H5.25A2.25 2.25 0 0 1 3 17.25V6.75Z" />
         </svg>
-        {{ __('message.attendance_history_for') }}<span class="ml-1 text-indigo-600 dark:text-indigo-400">{{ $student->name }}</span>
+        {{ __('message.attendance_history_for') }}<span
+          class="ml-1 text-indigo-600 dark:text-indigo-400">{{ $student->name }}</span>
       </h3>
-      <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $courseOffering->id]) }}"
+      <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOffering->id]) }}"
         class="px-4 py-2 text-sm bg-gray-200 text-gray-800 rounded shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
         &larr; {{ __('message.back_to_register') }}
       </a>
@@ -32,7 +33,8 @@
     <div
       class="mb-6 p-4 grid grid-cols-1 md:grid-cols-3 gap-y-2 gap-x-4 border rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
       <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
-        <span class="font-bold">{{ __('message.course') }}</span> {{ $courseOffering?->subject?->name }} ({{ $courseOffering->time_slot }})
+        <span class="font-bold">{{ __('message.course') }}</span> {{ $courseOffering?->subject?->name }}
+        ({{ $courseOffering->time_slot }})
       </p>
       <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
         <span class="font-bold">{{ __('message.teacher') }}</span> {{ $courseOffering?->teacher?->name }}

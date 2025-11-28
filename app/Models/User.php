@@ -96,14 +96,14 @@ class User extends Authenticatable
 
   public function studentCourses()
   {
-    return $this->hasMany(StudentCourse::class, 'student_id');
+    return $this->hasMany(Enrollment::class, 'student_id');
   }
 
   public function courseOfferings()
   {
     return $this->hasManyThrough(
       CourseOffering::class,
-      StudentCourse::class,
+      Enrollment::class,
       'student_id',
       'id',
       'id',

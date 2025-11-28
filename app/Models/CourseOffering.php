@@ -59,7 +59,7 @@ class CourseOffering extends Model
   {
     return $this->hasManyThrough(
       User::class,
-      StudentCourse::class,
+      Enrollment::class,
       'course_offering_id',
       'id',
       'id',

@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\{
   RoleController,
   ProfileController,
   CourseOfferingController,
-  StudentCourseController,
+  EnrollmentController,
   FeeTypeController,
   FeeController,
   NotificationController,
@@ -89,18 +89,13 @@ Route::prefix('admin')
 
     Route::get('/students/profile/{student}', [StudentController::class, 'profile'])->name('students.profile');
 
-    Route::get('/student_courses', [StudentCourseController::class, 'index'])->name('student_courses.index');
-    Route::get('/student_courses/create', [StudentCourseController::class, 'create'])->name('student_courses.create');
-    Route::post('/student_courses', [StudentCourseController::class, 'store'])->name('student_courses.store');
-    Route::get('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'show'])->name('student_courses.show');
-    Route::get('/student_courses/{student_id}/{course_offering_id}/edit', [StudentCourseController::class, 'edit'])->name('student_courses.edit');
-    Route::put('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'update'])->name('student_courses.update');
-    Route::delete('/student_courses/{student_id}/{course_offering_id}', [StudentCourseController::class, 'destroy'])->name('student_courses.destroy');
-
-    // Route::prefix('student-courses')->as('student_courses.')->group(function () {
-    //   Route::get('/create-new-student', [StudentCourseController::class, 'createNewStudent'])->name('create.new_student');
-    //   Route::post('/store-new-student', [StudentCourseController::class, 'storeNewStudent'])->name('store.new_student');
-    // });
+    Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::get('/enrollments/create', [EnrollmentController::class, 'create'])->name('enrollments.create');
+    Route::post('/enrollments', [EnrollmentController::class, 'store'])->name('enrollments.store');
+    Route::get('/enrollments/{student_id}/{course_offering_id}', [EnrollmentController::class, 'show'])->name('enrollments.show');
+    Route::get('/enrollments/{student_id}/{course_offering_id}/edit', [EnrollmentController::class, 'edit'])->name('enrollments.edit');
+    Route::put('/enrollments/{student_id}/{course_offering_id}', [EnrollmentController::class, 'update'])->name('enrollments.update');
+    Route::delete('/enrollments/{student_id}/{course_offering_id}', [EnrollmentController::class, 'destroy'])->name('enrollments.destroy');
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

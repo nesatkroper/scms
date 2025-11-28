@@ -136,14 +136,14 @@
               </a>
 
               @if ($offering->students->count() >= $offering->classroom->capacity)
-                <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
+                <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
                   class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <i class="fa-solid fa-check me-2"></i>
                   Class Full
                 </a>
               @else
-                <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
+                <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
                   class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <i class="fa-solid fa-book-atlas me-2"></i>
