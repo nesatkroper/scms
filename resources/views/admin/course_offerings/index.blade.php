@@ -7,18 +7,9 @@
     <div
         class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-            <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-                <path d="M12 14h.01"></path>
-                <path d="M16 14h.01"></path>
-                <path d="M8 18h.01"></path>
-                <path d="M12 18h.01"></path>
-            </svg>
+            <div class="size-8 p-1 rounded-full  flex items-center justify-center bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900">
+                <i class="ri-calendar-todo-fill"></i>
+            </div>
             Course Offerings List
         </h3>
 
@@ -71,22 +62,23 @@
             </div>
         </form>
 
-        <div id="CardContainer" class="my-5 grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             @forelse ($courseOfferings as $offering)
                 <div
                     class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
                     <div
-                        class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
+                        class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
                         <div class="flex flex-col">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
-                                    <h4
-                                        class="font-bold text-lg text-gray-800 dark:text-gray-200 @if ($offering->students->count() >= $offering->classroom->capacity) dark:text-red-600 @endif">
-                                        {{ $offering->subject->name ?? 'Subject Deleted' }} 
-                                        @if ($offering->students->count() >= $offering->classroom->capacity)
-                                            -(Full)
-                                        @endif
+                                    <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
+                                        {{ $offering->subject->name ?? 'Subject Deleted' }}
+                                        <span class="text-sm @if ($offering->students->count() >= $offering->classroom->capacity) dark:text-red-500 @endif">
+                                            @if ($offering->students->count() >= $offering->classroom->capacity)
+                                                (Full)
+                                            @endif
+                                        </span>
                                     </h4>
                                 </div>
                             </div>
@@ -100,23 +92,22 @@
                         </div>
 
                         <div class="flex">
-                            <a href="{{ route('admin.attendances.export', $offering->id) }}"
-                                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                            <a title="Eport Attendance" href="{{ route('admin.attendances.export', $offering->id) }}"
+                                class="btn p-2 size-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                                 title="Attendance">
-                                <span class="btn-content flex items-center justify-center">
-                                    <i class="fa-solid fa-file-export me-2"></i>
-                                    Eport Attendance
-                                </span>
+                                <i class="fa-solid fa-right-from-bracket "></i>
                             </a>
                         </div>
                     </div>
 
                     <div class="p-4 space-y-3">
-                       <x-info.item name="{{ $offering->teacher->name ?? 'Unassigned' }}" icon="fa-solid fa-user-tie text-xl"
-                            label="Teacher" labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
+                        <x-info.item name="{{ $offering->teacher->name ?? 'Unassigned' }}"
+                            icon="fa-solid fa-user-tie text-xl" label="Teacher"
+                            labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
                         {{-- <x-info.item name="{{ $offering->teacher->name ?? 'Unassigned' }}" icon="fa-solid fa-user text-xl"
                             label="Student" labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" /> --}}
-                        <x-info.item name="{{ $offering->classroom->name ?? 'Location TBD' }}
+                        <x-info.item
+                            name="{{ $offering->classroom->name ?? 'Location TBD' }}
                                         ({{ $offering->classroom->capacity }}
                                         Seats)"
                             icon="ri-door-open-fill text-xl" label="Classroom" labelcolor="text-gray-500 dark:text-gray-400"
@@ -126,44 +117,36 @@
                     </div>
 
                     <div
-                        class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+                        class="items-center px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
                         <div class="flex">
                             <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                                class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                                 title="Attendance">
-                                <span class="btn-content flex items-center justify-center">
-                                    <i class="fa-regular fa-calendar-days me-2"></i>
-                                    Attendance
-                                </span>
+                                <i class="fa-regular fa-calendar-days me-2"></i>
+                                Attendance
                             </a>
 
                             <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
-                                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                                class="h-8  btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                                 title="Exam">
-                                <span class="btn-content flex items-center justify-center">
-                                    <i class="fa-solid fa-toolbox me-2"></i>
-                                    Exam
-                                </span>
+                                <i class="ri-contract-fill text-lg me-2"></i>
+                                Exam
                             </a>
 
                             @if ($offering->students->count() >= $offering->classroom->capacity)
                                 <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
-                                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                                    class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                                     title="Admission Register">
-                                    <span class="btn-content flex items-center justify-center">
-                                        <i class="fa-solid fa-check me-2"></i>
-                                        Class Full
-                                    </span>
+                                    <i class="fa-solid fa-check me-2"></i>
+                                    Class Full
                                 </a>
                             @else
                                 <a href="{{ route('admin.student_courses.index', ['course_offering_id' => $offering->id]) }}"
-                                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                                    class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                                     title="Admission Register">
-                                    <span class="btn-content flex items-center justify-center">
-                                        <i class="fa-solid fa-book-atlas me-2"></i>
-                                        Register
-                                    </span>
+                                    <i class="fa-solid fa-book-atlas me-2"></i>
+                                    Register
                                 </a>
                             @endif
 
@@ -171,18 +154,15 @@
 
                         <div class="flex">
                             <a href="{{ route('admin.course_offerings.show', $offering->id) }}"
-                                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                                class="btn size-8 p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                                 title="Show Details">
-                                <span class="btn-content flex items-center justify-center">
-                                    <i class="fa-regular fa-eye me-2"></i></span>
+                                <i class="fa-regular fa-eye"></i>
                             </a>
 
                             <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
-                                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                                class="btn size-8 p-2 rounded-full flex justify-center items-center cursor-pointer text-indigo-500 dark:text-indigo-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                                 title="Edit">
-                                <span class="btn-content flex items-center justify-center">
-                                    <i class="fa-solid fa-pen-to-square me-2"></i>
-                                </span>
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </a>
 
                             <form action="{{ route('admin.course_offerings.destroy', $offering->id) }}" method="POST"
@@ -190,9 +170,9 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                                    class="delete-btn size-8 p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                                     title="Delete">
-                                    <i class="fa-regular fa-trash-can me-2"></i>
+                                    <i class="fa-regular fa-trash-can"></i>
                                 </button>
                             </form>
                         </div>

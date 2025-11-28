@@ -1,192 +1,308 @@
 @extends('layouts.admin')
-
 @section('title', 'Course Details: ' . $courseOffering->subject->name . ' - ' . $courseOffering->time_slot)
 
 @section('content')
-
-  <div
-    class="box px-2 py-4 md:p-6 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto">
-
-    <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-100 dark:border-gray-700/50">
-      <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-        <svg class="size-8 p-1 rounded-full bg-blue-50 text-blue-600 dark:text-blue-50 dark:bg-blue-900"
-          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M4.26 10.147a60.854 60.854 0 0115.48 0M10.5 13.5h.008v.008h-.008v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 0h.008v.008h-.008v-.008zm1.5 0h.008v.008h-.008v-.008zM12 15.75c-3.1 0-5.787-1.125-7.5-3v4.5A2.25 2.25 0 006.75 18h10.5a2.25 2.25 0 002.25-2.25v-4.5c-1.713 1.875-4.4 3-7.5 3z" />
-        </svg>
-        Course Offering Details
-      </h3>
-      {{-- Back Button --}}
-      <a href="{{ route('admin.course_offerings.index') }}"
-        class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
-        <i class="fas fa-arrow-left text-xs"></i> Back to Offerings
-      </a>
-    </div>
-
-    {{-- Main Detail Card --}}
-    <div class="bg-blue-50 dark:bg-slate-700/30 rounded-lg p-6 space-y-6">
-
-      {{-- Subject Title & Fee --}}
-      <div
-        class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200 dark:border-gray-700">
-        <div class="flex flex-col">
-          <h2 class="text-2xl font-extrabold text-blue-700 dark:text-blue-300">
-            {{ $courseOffering->subject->name ?? 'N/A' }}
-          </h2>
-          <p class="text-sm font-semibold text-blue-500 dark:text-blue-400">
-            Subject Code: {{ $courseOffering->subject->code ?? 'N/A' }}
-          </p>
+    <div
+        class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto">
+        <!-- Header Section -->
+        <div class="mb-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="size-10 p-1 rounded-full  flex items-center justify-center bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900">
+                        <i class="ri-calendar-todo-fill text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Course Offering Details</h1>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1">Complete information about this course offering</p>
+                    </div>
+                </div>
+                <div>
+                    <a href="{{ route('admin.course_offerings.index') }}"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 dark:bg-gray-800 border border-gray-300
+                     dark:border-gray-600 rounded-lg dark:hover:bg-gray-700 transition-colors text-gray-800
+                     text-sm font-medium dark:text-gray-300">
+                        <i class="fas fa-arrow-left text-xs"></i>
+                        Back to Offerings
+                    </a>
+                </div>
+            </div>
         </div>
-        <span class="text-3xl font-extrabold text-green-700 dark:text-green-400 mt-2 sm:mt-0">
-          Fee: ${{ number_format($courseOffering->fee, 2) }}
-        </span>
-      </div>
 
-      {{-- Core Details Grid (Teacher, Classroom, Schedule) --}}
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm border-b pb-4 border-gray-200 dark:border-gray-700/50">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div>
+                <!-- Course Title & Fee Card -->
+                <div
+                    class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-sm border border-blue-100 dark:border-blue-800 p-3 mb-4">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div class="mb-4 lg:mb-0">
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                                {{ $courseOffering->subject->name ?? 'N/A' }}</h2>
+                            <div class="flex items-center gap-4 mt-2">
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-sm font-medium">
+                                   
+                                    Subject code<i class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? 'N/A' }}
+                                </span>
+                                <span
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-sm font-medium">
+                                    <i class="fas fa-star text-xs"></i>
+                                    {{ $courseOffering->subject->credit_hours ?? 'N/A' }} Credit Hours
+                                </span>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-green-200 dark:border-green-800">
+                            <div class="text-center">
+                                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Course Fee</p>
+                                <p class="text-xl font-bold text-green-600 dark:text-green-400 mt-1">
+                                    ${{ number_format($courseOffering->fee, 2) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        {{-- Teacher --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-chalkboard-user text-purple-500"></i> Teacher:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1 text-base">
-            {{ $courseOffering->teacher->name ?? 'Unassigned' }}
-          </span>
-        </p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Course Details Card -->
+                    <div class="lg:col-span-2 space-y-4">
+                        <!-- Basic Information Card -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-slate-700 overflow-hidden">
+                            <div
+                                class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                    <i class="fas fa-info-circle text-blue-500"></i>
+                                    Course Information
+                                </h3>
+                            </div>
+                            <div class="p-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <!-- Teacher -->
+                                    <div
+                                        class="flex items-start gap-4 p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                        <div
+                                            class="p-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300">
+                                            <i class="fas fa-chalkboard-user"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Teacher</p>
+                                            <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
+                                                {{ $courseOffering->teacher->name ?? 'Unassigned' }}</p>
+                                        </div>
+                                    </div>
 
-        {{-- Classroom --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-school text-red-500"></i> Classroom:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1 text-base">
-            {{ $courseOffering->classroom->name ?? 'Unassigned' }}
-          </span>
-        </p>
+                                    <!-- Classroom -->
+                                    <div
+                                        class="flex items-start gap-4 p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                        <div
+                                            class="p-2 rounded-lg bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300">
+                                            <i class="fas fa-school"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Classroom</p>
+                                            <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
+                                                {{ $courseOffering->classroom->name ?? 'Unassigned' }}</p>
+                                        </div>
+                                    </div>
 
-        {{-- Schedule Type --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-check text-indigo-500"></i> Schedule Type:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1 text-base capitalize">
-            {{ $courseOffering->schedule ?? 'N/A' }}
-          </span>
-        </p>
+                                    <!-- Schedule Type -->
+                                    <div
+                                        class="flex items-start gap-4 p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                        <div
+                                            class="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Schedule Type
+                                            </p>
+                                            <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
+                                                {{ $courseOffering->schedule ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
 
-        {{-- Time Slot --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-clock text-orange-500"></i> Time Slot:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1 text-base capitalize">
-            {{ $courseOffering->time_slot ?? 'N/A' }}
-          </span>
-        </p>
-      </div>
+                                    <!-- Time Slot -->
+                                    <div
+                                        class="flex items-start gap-4 p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                        <div
+                                            class="p-2 rounded-lg bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Time Slot</p>
+                                            <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
+                                                {{ $courseOffering->time_slot ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
 
-      {{-- Time and Enrollment Details --}}
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
-        {{-- Class Time --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-hourglass-start text-teal-500"></i> Class Time:
-          </span>
-          <span class="font-bold text-gray-800 dark:text-gray-200 block mt-1 text-base">
-            {{ $courseOffering->start_time }} - {{ $courseOffering->end_time }}
-          </span>
-        </p>
+                                    <!-- Class Time -->
+                                    <div
+                                        class="flex items-start gap-4 p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                        <div
+                                            class="p-2 rounded-lg bg-teal-100 dark:bg-teal-900 text-teal-600 dark:text-teal-300">
+                                            <i class="fas fa-hourglass-start"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Class Time</p>
+                                            <p class="text-md font-semibold text-gray-900 dark:text-white mt-1">
+                                                {{ $courseOffering->start_time }} - {{ $courseOffering->end_time }}</p>
+                                        </div>
+                                    </div>
 
-        {{-- Total Credit Hours --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-star text-yellow-500"></i> Credit Hours:
-          </span>
-          <span class="font-bold text-gray-800 dark:text-gray-200 block mt-1 text-base">
-            {{ $courseOffering->subject->credit_hours ?? 'N/A' }}
-          </span>
-        </p>
+                                    <!-- Credit Hours -->
+                                    <div
+                                        class="flex items-start gap-4 p-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                        <div
+                                            class="p-2 rounded-lg bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300">
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Credit Hours</p>
+                                            <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
+                                                {{ $courseOffering->subject->credit_hours ?? 'N/A' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        {{-- Join Start --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-alt text-cyan-500"></i> Enrollment Opens:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $courseOffering->join_start?->format('M d, Y') ?? 'N/A' }}
-          </span>
-        </p>
+                        <!-- Enrollment Period Card -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-slate-700 overflow-hidden">
+                            <div
+                                class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                    <i class="fas fa-calendar-alt text-cyan-500"></i>
+                                    Enrollment Period
+                                </h3>
+                            </div>
+                            <div class="p-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Enrollment Opens -->
+                                    <div
+                                        class="flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 border border-cyan-100 dark:border-cyan-800">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900 text-cyan-600 dark:text-cyan-300">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Enrollment
+                                                    Opens
+                                                </p>
+                                                <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                    {{ $courseOffering->join_start?->format('M d, Y') ?? 'N/A' }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-cyan-600 dark:text-cyan-400">
+                                            <i class="fas fa-door-open text-xl"></i>
+                                        </div>
+                                    </div>
 
-        {{-- Join End --}}
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-times text-pink-500"></i> Enrollment Closes:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $courseOffering->join_end?->format('M d, Y') ?? 'N/A' }}
-          </span>
-        </p>
-      </div>
+                                    <!-- Enrollment Closes -->
+                                    <div
+                                        class="flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 border border-pink-100 dark:border-pink-800">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="p-2 rounded-lg bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300">
+                                                <i class="fas fa-calendar-times"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Enrollment
+                                                    Closes
+                                                </p>
+                                                <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                    {{ $courseOffering->join_end?->format('M d, Y') ?? 'N/A' }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-pink-600 dark:text-pink-400">
+                                            <i class="fas fa-door-closed text-xl"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-      {{-- Student Enrollment Section --}}
-      <div class="pt-4 border-t border-gray-200 dark:border-gray-700/50">
-        <span class="font-bold text-lg text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-3">
-          <i class="fa-solid fa-users text-blue-500"></i> Enrolled Students
-          <span
-            class="ml-2 px-3 py-0.5 rounded-full text-xs font-extrabold bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-            Total: {{ $courseOffering->students->count() }}
-          </span>
-        </span>
-        <div
-          class="max-h-60 overflow-y-auto bg-white dark:bg-gray-700 p-3 rounded-md border border-gray-100 dark:border-gray-600">
-          @if ($courseOffering->students->isNotEmpty())
-            <ul class="space-y-1 text-sm text-gray-700 dark:text-gray-300">
-              @foreach ($courseOffering->students as $student)
-                <li
-                  class="flex justify-between items-center py-1 px-2 border-b border-gray-50 dark:border-gray-600/50 hover:bg-gray-50 dark:hover:bg-gray-600/50 rounded-sm">
-                  <span>{{ $student->name }} ({{ $student->id }})</span>
-                  {{-- You might link to the student's detail page here --}}
-                  <span class="text-xs font-mono text-gray-500 dark:text-gray-400">
-                    {{ $student->email }}
-                  </span>
-                </li>
-              @endforeach
-            </ul>
-          @else
-            <p class="text-center text-sm italic text-gray-500 dark:text-gray-400">
-              No students are currently enrolled in this course offering.
-            </p>
-          @endif
+                </div>
+
+            </div>
+            <!-- Enrolled Students Card -->
+            <div class="lg:col-span-1">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-slate-700 overflow-hidden h-full">
+                    <div class="px-4 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                <i class="fas fa-users text-blue-500"></i>
+                                Enrolled Students
+                            </h3>
+                            <span
+                                class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-bold">
+                                Total: {{ $courseOffering->students->count() }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-2 max-h-145 overflow-y-auto">
+                        @if ($courseOffering->students->isNotEmpty())
+                            <div class="space-y-1">
+                                @foreach ($courseOffering->students as $student)
+                                    <div
+                                        class="flex items-center justify-between p-2 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-medium text-sm">
+                                                {{ $loop->iteration }}
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">{{ $student->name }}
+                                                </p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                                                    ID:{{ $student->id }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                {{ $student->email }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-8">
+                                <div
+                                    class="mx-auto w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
+                                    <i class="fas fa-user-slash text-gray-400 text-xl"></i>
+                                </div>
+                                <p class="text-gray-500 dark:text-gray-400 font-medium">No students enrolled</p>
+                                <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Students will appear here once
+                                    they enroll</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
+
+        <!-- Action Buttons -->
+        <div class="my-4 flex flex-col sm:flex-row justify-end gap-4">
+            <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
+                class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
+                <i class="fas fa-edit"></i>
+                Edit Offering
+            </a>
+
+            <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
+                onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');"
+                class="inline-block">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
+                    <i class="fas fa-trash-can"></i>
+                    Delete Offering
+                </button>
+            </form>
+        </div>
     </div>
-
-    {{-- Action Buttons --}}
-    <div class="mt-6 flex justify-end gap-3">
-
-      <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
-        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
-        title="Edit Course Offering">
-        <i class="fa-solid fa-pen-to-square mr-2"></i>
-        Edit Offering
-      </a>
-
-      <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
-        onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
-          title="Delete Course Offering">
-          <i class="fa-regular fa-trash-can mr-2"></i>
-          Delete
-        </button>
-      </form>
-    </div>
-
-  </div>
-
 @endsection
