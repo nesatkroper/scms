@@ -18,6 +18,21 @@ class StudentCourse extends Model
     'remarks',
   ];
 
+  public function fee()
+  {
+    return $this->hasOne(Fee::class, 'student_course_id');
+  }
+
+  public function student()
+  {
+    return $this->belongsTo(User::class, 'student_id');
+  }
+
+  public function courseOffering()
+  {
+    return $this->belongsTo(CourseOffering::class, 'course_offering_id');
+  }
+
   protected static function booted()
   {
     static::created(function (StudentCourse $enrollment) {
@@ -49,20 +64,5 @@ class StudentCourse extends Model
         ]);
       });
     });
-  }
-
-  public function fee()
-  {
-    return $this->hasOne(Fee::class, 'student_course_id');
-  }
-
-  public function student()
-  {
-    return $this->belongsTo(User::class, 'student_id');
-  }
-
-  public function courseOffering()
-  {
-    return $this->belongsTo(CourseOffering::class, 'course_offering_id');
   }
 }

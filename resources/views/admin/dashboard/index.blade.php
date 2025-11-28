@@ -1,5 +1,11 @@
 @extends('layouts.admin')
+
 @section('content')
+
+  {{-- @php
+    dd($recentStudents);
+  @endphp --}}
+
   <div class="p-4 sm:p-0">
     <div class="box grid sm:grid-cols-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <!-- Total Students -->
@@ -56,6 +62,7 @@
           </div>
         </div>
       </div>
+
       <!-- Total Teachers -->
       <div
         class="bg-white dark:bg-gray-800 dark:hover:bg-blue-950 rounded-xl p-5 border border-gray-200
@@ -221,6 +228,7 @@
         </div>
       </div>
     </div>
+
     <!-- Charts and Activity Section -->
     <div class="box grid grid-cols-1 lg:grid-cols-3 gap-4">
       <!-- Attendance Chart -->
@@ -293,7 +301,6 @@
           <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
             <tr>
               <th scope="col" class="px-6 py-3">Student</th>
-              <th scope="col" class="px-6 py-3">Grade</th>
               <th scope="col" class="px-6 py-3">Status</th>
               <th scope="col" class="px-6 py-3">Join Date</th>
               <th scope="col" class="px-6 py-3"><span class="sr-only">Actions</span></th>
@@ -304,32 +311,31 @@
             @if (count($recentStudents) > 0)
               <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <tbody>
-                  @foreach ($recentStudents as $student)
+                  @foreach ($recentStudents as $recent)
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                       <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                         <div class="flex items-center">
-                          <img class="w-9 h-9 rounded-full"
-                            src="{{ $student['user']['profile_photo_path'] ? asset('storage/' . $student['user']['profile_photo_path']) : 'https://placehold.co/40x40/FFC107/000000?text=' . substr($student['user']['name'], 0, 2) }}"
-                            alt="{{ $student['user']['name'] }} image">
+                          <img class="w-9 h-9 rounded-full" src="{{ $recent->student->avatar_url }}"
+                            alt="{{ $recent->student->name }} image">
                           <div class="pl-3">
                             <div class="text-base font-semibold">
-                              {{ $student['user']['name'] }}
+                              {{ $recent->student->name }}
                             </div>
                             <div class="font-normal text-gray-500">
-                              {{ $student['user']['email'] }}
+                              {{ $recent->student->email }}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td class="px-6 py-4">{{ $student['class_id'] }}</td>
                       <td class="px-6 py-4">
                         <span
                           class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
                       </td>
                       <td class="px-6 py-4">
-                        {{ \Carbon\Carbon::parse($student['created_at'])->format('Y-m-d') }}</td>
+                        {{ \Carbon\Carbon::parse($recent->created_at)->format('Y-m-d') }}</td>
                       <td class="px-6 py-4 text-right">
-                        <button class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</button>
+                        <a href="{{ route('admin.students.show', $recent->student->id) }}"
+                          class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</a>
                       </td>
                     </tr>
                   @endforeach

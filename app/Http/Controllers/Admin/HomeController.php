@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\CourseOffering;
 use App\Models\Payment;
+use App\Models\StudentCourse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -21,84 +22,18 @@ class HomeController extends Controller
     $course = CourseOffering::count();
     $fee = Payment::sum('amount');
 
+    $recentEnrollments = StudentCourse::latest()
+      ->with(['student', 'courseOffering', 'fee'])
+      ->take(5)
+      ->get();
+
 
     $data = [
       'totalStudents' => $students,
       'totalTeachers' => $teachers,
       'activeCourse' => $course,
       'feesCollected' => $fee,
-      'recentStudents' => [
-        [
-          'id' => 138,
-          'user_id' => 315,
-          'admission_number' => 'STU2023142',
-          'class_id' => 8,
-          'section_id' => 3,
-          'created_at' => '2023-11-15 08:45:00',
-          'user' => [
-            'id' => 315,
-            'name' => 'Emma Wilson',
-            'email' => 'emma.w@example.com',
-            'profile_photo_path' => null
-          ]
-        ],
-        [
-          'id' => 137,
-          'user_id' => 314,
-          'admission_number' => 'STU2023141',
-          'class_id' => 5,
-          'section_id' => 2,
-          'created_at' => '2023-11-14 14:20:00',
-          'user' => [
-            'id' => 314,
-            'name' => 'Raj Patel',
-            'email' => 'raj.p@example.com',
-            'profile_photo_path' => null
-          ]
-        ],
-        [
-          'id' => 136,
-          'user_id' => 313,
-          'admission_number' => 'STU2023140',
-          'class_id' => 7,
-          'section_id' => 1,
-          'created_at' => '2023-11-12 10:15:00',
-          'user' => [
-            'id' => 313,
-            'name' => 'Sophia Chen',
-            'email' => 'sophia.c@example.com',
-            'profile_photo_path' => null
-          ]
-        ],
-        [
-          'id' => 135,
-          'user_id' => 312,
-          'admission_number' => 'STU2023139',
-          'class_id' => 6,
-          'section_id' => 4,
-          'created_at' => '2023-11-10 16:30:00',
-          'user' => [
-            'id' => 312,
-            'name' => 'Michael Brown',
-            'email' => 'michael.b@example.com',
-            'profile_photo_path' => null
-          ]
-        ],
-        [
-          'id' => 134,
-          'user_id' => 311,
-          'admission_number' => 'STU2023138',
-          'class_id' => 8,
-          'section_id' => 3,
-          'created_at' => '2023-11-08 09:00:00',
-          'user' => [
-            'id' => 311,
-            'name' => 'Olivia Garcia',
-            'email' => 'olivia.g@example.com',
-            'profile_photo_path' => null
-          ]
-        ]
-      ],
+      'recentStudents' => $recentEnrollments,
       'recentActivities' => [
         [
           'type' => 'enrollment',
