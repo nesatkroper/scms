@@ -155,18 +155,20 @@
 
             <div class="flex">
               <a href="{{ route('admin.course_offerings.show', $offering->id) }}"
-                class="btn size-8 p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Show Details">
-                <i class="fa-regular fa-eye"></i>
+                <i class="fa-regular fa-eye me-2"></i>
+                Detail
               </a>
 
               <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
-                class="btn size-8 p-2 rounded-full flex justify-center items-center cursor-pointer text-indigo-500 dark:text-indigo-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-pen-to-square me-2"></i>
+                Edit
               </a>
 
-              <form action="{{ route('admin.course_offerings.destroy', $offering->id) }}" method="POST"
+              {{-- <form action="{{ route('admin.course_offerings.destroy', $offering->id) }}" method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this course offering? This action cannot be undone.');">
                 @csrf
                 @method('DELETE')
@@ -175,7 +177,7 @@
                   title="Delete">
                   <i class="fa-regular fa-trash-can"></i>
                 </button>
-              </form>
+              </form> --}}
             </div>
           </div>
         </div>

@@ -112,7 +112,7 @@
                 </span>
               </a>
 
-              <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST"
+              {{-- <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this subject? This action cannot be undone.');">
                 @csrf
                 @method('DELETE')
@@ -122,7 +122,7 @@
                   <i class="fa-regular fa-trash-can me-2"></i>
                   Delete
                 </button>
-              </form>
+              </form> --}}
             </div>
           </div>
         @endforeach

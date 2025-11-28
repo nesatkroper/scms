@@ -137,7 +137,7 @@
             </a>
 
             {{-- Delete Button (Full form submission) --}}
-            <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"
+            {{-- <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"
               onsubmit="return confirm('Are you sure you want to delete the classroom {{ $classroom->name }}?');">
               @csrf
               @method('DELETE')
@@ -147,7 +147,7 @@
                 <i class="fa-regular fa-trash-can me-2"></i>
                 {{ __('message.delete') }}
               </button>
-            </form>
+            </form> --}}
           </div>
         </div>
       @empty

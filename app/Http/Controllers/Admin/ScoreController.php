@@ -9,6 +9,8 @@ use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ScoreController extends BaseController
 {
   public function __construct()
@@ -26,10 +28,15 @@ class ScoreController extends BaseController
   {
     $examId = $request->input('exam_id');
     $search = $request->input('search');
-
     $exam = Exam::with('courseOffering.students')->findOrFail($examId);
 
     $studentsQuery = $exam->courseOffering->students();
+
+    if ($studentsQuery->count() === 0) {
+      return redirect()
+        ->route('admin.student_courses.create', ['course_offering_id' => $exam->courseOffering->id])
+        ->with('error', 'You need to enroll student first.');
+    }
 
     if ($search) {
       $studentsQuery = $studentsQuery->where(function ($q) use ($search) {
