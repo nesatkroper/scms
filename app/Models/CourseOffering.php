@@ -60,22 +60,10 @@ class CourseOffering extends Model
     return $this->hasManyThrough(
       User::class,
       StudentCourse::class,
-      'course_offering_id', // FK on student_courses
-      'id',                 // FK on users
-      'id',                 // local key on course_offerings
-      'student_id'          // local key on student_courses
+      'course_offering_id',
+      'id',
+      'id',
+      'student_id'
     );
   }
-  // public function students()
-  // {
-  //   return $this->belongsToMany(User::class, 'student_courses', 'course_offering_id', 'student_id')
-  //     ->using(StudentCourse::class)
-  //     ->as('enrollment')
-  //     ->withPivot([
-  //       'grade_final',
-  //       'status',
-  //       'remarks'
-  //     ])
-  //     ->withTimestamps();
-  // }
 }

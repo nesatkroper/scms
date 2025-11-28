@@ -117,18 +117,4 @@ class User extends Authenticatable
       ? asset($this->avatar)
       : asset('assets/images/cambodia.png');
   }
-
-
-  // public function courseOfferings()
-  // {
-  //   return $this->belongsToMany(CourseOffering::class, 'student_courses', 'student_id', 'course_offering_id')
-  //     ->using(StudentCourse::class)
-  //     ->as('enrollment')
-  //     ->withPivot([
-  //       'grade_final',
-  //       'status',
-  //       'remarks',
-  //     ])
-  //     ->withTimestamps();
-  // }
 }
