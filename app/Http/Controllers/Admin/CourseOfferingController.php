@@ -66,7 +66,6 @@ class CourseOfferingController extends BaseController
     return view('admin.course_offerings.index', compact('courseOfferings'));
   }
 
-
   public function create()
   {
     $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);

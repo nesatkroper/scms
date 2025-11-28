@@ -140,7 +140,7 @@
                 <i class="fa-solid fa-wallet text-teal-500"></i>
                 Payment:
 
-                {{-- <p class="text-sm">
+              <p class="text-sm">
                 @if ($admission->fee->status == 'paid')
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
@@ -158,9 +158,9 @@
                     {{ ucfirst($admission->fee->status) }}
                   </span>
                 @endif
-              </p> --}}
+              </p>
 
-                {{-- <span
+              {{-- <span
                   class="font-semibold px-2 py-0.5 rounded-full text-xs
                   @if ($admission->payment_status === 'Paid') bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300
                   @elseif ($admission->payment_status === 'Pending')

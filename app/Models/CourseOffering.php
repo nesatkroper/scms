@@ -57,7 +57,7 @@ class CourseOffering extends Model
 
   public function students()
   {
-    return $this->belongsToMany(User::class, 'student_course', 'course_offering_id', 'student_id')
+    return $this->belongsToMany(User::class, 'student_courses', 'course_offering_id', 'student_id')
       ->using(StudentCourse::class)
       ->as('enrollment')
       ->withPivot([
