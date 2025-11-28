@@ -4,7 +4,7 @@
 @section('content')
 
   {{-- @php
-    dd($studentCourses);
+    dd($enrollments);
   @endphp --}}
 
   <div
@@ -41,7 +41,7 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        @if ($studentCourses->count() >= $courseOffering->classroom->capacity)
+        @if ($enrollments->count() >= $courseOffering->classroom->capacity)
           <div></div>
         @else
           <div class="flex gap-4">
@@ -97,7 +97,7 @@
 
     {{-- Admission Register Cards --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-      @forelse($studentCourses as $admission)
+      @forelse($enrollments as $admission)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 

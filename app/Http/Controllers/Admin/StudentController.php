@@ -66,13 +66,30 @@ class StudentController extends BaseController
     return view('admin.students.fees.index', compact('student', 'fees'));
   }
 
+  // public function coursesIndex(User $student)
+  // {
+  //   $courses = $student->courseOfferings()
+  //     ->with(['subject', 'teacher', 'classroom'])
+  //     ->paginate(15);
+
+  //   return view('admin.students.enrollments.index', compact('student', 'courses'));
+  // }
+
+  // In App\Http\Controllers\Admin\StudentController
+
   public function coursesIndex(User $student)
   {
-    $courses = $student->courseOfferings()
-      ->with(['subject', 'teacher', 'classroom'])
+    // Eager load the courseOffering and its related subject/teacher
+    $enrollments = $student->enrollments()
+      ->with([
+        'courseOffering' => function ($query) {
+          $query->with(['subject', 'teacher', 'classroom']);
+        }
+      ])
       ->paginate(15);
 
-    return view('admin.students.enrollments.index', compact('student', 'courses'));
+    // Pass the collection of Enrollments to the view
+    return view('admin.students.enrollments.index', compact('student', 'enrollments'));
   }
 
   public function create()

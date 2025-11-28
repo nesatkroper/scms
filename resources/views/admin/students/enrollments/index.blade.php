@@ -48,18 +48,18 @@
 
     {{-- Course Cards Container (Clones Role Card Structure) --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-      @forelse ($courses as $course)
+      @forelse ($enrollments as $enrollment)
         @php
 
-          $enrollment = $course->enrollment;
-
           $gradeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-          if (in_array($enrollment->grade_final, ['A', 'B', 'C'])) {
+          if (in_array($enrollment?->grade_final, ['A', 'B', 'C'])) {
               $gradeColor = 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
-          } elseif (in_array($enrollment->grade_final, ['D', 'E'])) {
+          } elseif (in_array($enrollment?->grade_final, ['D', 'E'])) {
               $gradeColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
-          } elseif ($enrollment->grade_final === 'F') {
+          } elseif ($enrollment?->grade_final === 'F') {
               $gradeColor = 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+          } else {
+              $gradeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
           }
         @endphp
 
@@ -70,8 +70,8 @@
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
             <h4 class="font-bold text-xl text-gray-800 dark:text-gray-200 capitalize truncate"
-              title="{{ $course->subject->name ?? 'N/A Subject' }}">
-              {{ $course->subject->name ?? 'N/A Subject' }}
+              title="{{ $enrollment->subject->name ?? 'N/A Subject' }}">
+              {{ $enrollment->subject->name ?? 'N/A Subject' }}
             </h4>
             <span class="p-1 rounded text-lg font-bold {{ $gradeColor }}">
               {{ $enrollment->grade_final ?? 'Pending' }}
@@ -88,7 +88,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Teacher</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $course->teacher->name ?? 'Unassigned' }}
+                  {{ $enrollment->teacher->name ?? 'Unassigned' }}
                 </p>
               </div>
             </div>
@@ -101,7 +101,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Classroom / Schedule</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $course->classroom->name ?? 'N/A' }} ({{ $course->schedule ?? 'TBA' }})
+                  {{ $enrollment->classroom->name ?? 'N/A' }} ({{ $enrollment->schedule ?? 'TBA' }})
                 </p>
               </div>
             </div>
@@ -124,7 +124,7 @@
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
-            <a href="{{ route('admin.course_offerings.show', $course) }}"
+            <a href="{{ route('admin.course_offerings.show', $enrollment) }}"
               class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
               title="View Course Details">
               <i class="fa-solid fa-eye me-2"></i>
@@ -150,7 +150,7 @@
     {{-- END: Card View for Courses --}}
 
     <div class="mt-6">
-      {{ $courses->links() }}
+      {{ $enrollments->links() }}
     </div>
 
   </div>
