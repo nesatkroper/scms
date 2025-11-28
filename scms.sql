@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 27, 2025 at 08:25 AM
+-- Generation Time: Nov 28, 2025 at 04:55 AM
 -- Server version: 8.0.44-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -38,6 +38,13 @@ CREATE TABLE `attendances` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attendances`
+--
+
+INSERT INTO `attendances` (`id`, `student_id`, `course_offering_id`, `date`, `status`, `remarks`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(286, 64, 6, '2025-11-28', 'attending', NULL, '2025-11-27 21:54:18', '2025-11-27 21:54:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -79,6 +86,13 @@ CREATE TABLE `classrooms` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `classrooms`
+--
+
+INSERT INTO `classrooms` (`id`, `name`, `room_number`, `capacity`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4, 'Abraham Chase', 'B 101', 30, '2025-11-27 21:40:46', '2025-11-27 21:40:46', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +116,13 @@ CREATE TABLE `course_offerings` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `course_offerings`
+--
+
+INSERT INTO `course_offerings` (`id`, `subject_id`, `teacher_id`, `classroom_id`, `time_slot`, `schedule`, `start_time`, `end_time`, `join_start`, `join_end`, `fee`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(6, 7, 63, 4, 'morning', 'mon-wed', '07:00:00', '09:00:00', '2025-12-30', '2026-05-12', 15.00, '2025-11-27 21:43:47', '2025-11-27 21:43:47', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -120,6 +141,13 @@ CREATE TABLE `exams` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `exams`
+--
+
+INSERT INTO `exams` (`id`, `type`, `description`, `course_offering_id`, `date`, `total_marks`, `passing_marks`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(6, 'reading', 'Unde sint harum ulla', 6, '2027-02-24', 89, 16, '2025-11-27 21:53:25', '2025-11-27 21:53:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -175,6 +203,13 @@ CREATE TABLE `fees` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `fees`
+--
+
+INSERT INTO `fees` (`id`, `student_id`, `fee_type_id`, `created_by`, `amount`, `due_date`, `remarks`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(204, 64, 7, 1, 15.00, NULL, NULL, '2025-11-27 21:54:04', '2025-11-27 21:54:04', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -189,6 +224,13 @@ CREATE TABLE `fee_types` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `fee_types`
+--
+
+INSERT INTO `fee_types` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(7, 'Tuition', 'Default tuition fee type', '2025-11-27 21:54:04', '2025-11-27 21:54:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -245,7 +287,9 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(1, 'App\\Models\\User', 1);
+(1, 'App\\Models\\User', 1),
+(2, 'App\\Models\\User', 63),
+(3, 'App\\Models\\User', 64);
 
 -- --------------------------------------------------------
 
@@ -263,6 +307,14 @@ CREATE TABLE `notifications` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
+('25576988-a510-4aa3-94c5-59775a8d2263', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #204\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/204\"}', NULL, '2025-11-27 21:55:01', '2025-11-27 21:55:01'),
+('60a7a8c4-ee4c-4ffe-b42c-16b962a1f115', 'App\\Notifications\\CourseAssigned', 'App\\Models\\User', 63, '{\"title\":\"New Course Assigned: Office Word I\",\"body\":\"You have been assigned to teach Office Word I in room Abraham Chase. Schedule: mon-wed (2025-11-28 07:00:00 - 2025-11-28 09:00:00).\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/course_offerings\\/6\",\"start_date\":\"2025-12-30T00:00:00.000000Z\"}', NULL, '2025-11-27 21:43:47', '2025-11-27 21:43:47');
 
 -- --------------------------------------------------------
 
@@ -295,6 +347,13 @@ CREATE TABLE `payments` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `amount`, `payment_date`, `payment_method`, `transaction_id`, `remarks`, `received_by`, `fee_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 15.00, '2025-11-28', 'Cash', 'SCMS-ESH2-YHB4-UFNW-6345', NULL, 1, 204, '2025-11-27 21:55:01', '2025-11-27 21:55:01', NULL);
 
 -- --------------------------------------------------------
 
@@ -592,7 +651,9 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('6X97XoIDVTrgJr0b0DMNde6yn8cBPdtGUyOPw3t9', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiT0hzOEhTRWZnQThBNzVvMlNGdzBidmhySVFaZnZUcG04SkJycFVIcyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly9sb2NhbGhvc3Q6ODEwMi9hZG1pbi9zdWJqZWN0cyI7czo1OiJyb3V0ZSI7czoyMDoiYWRtaW4uc3ViamVjdHMuaW5kZXgiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1764231948),
-('PDzuE4ltb3KE6JE5irvg85JCmZU6tPc96ZxSJrxP', 3, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUGZKQUcwOE03Wm1ubFN3dUUwY3R4S0ZxYTFJZVVCQnVNc0x4V2NaVyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9mZWVfdHlwZXMiO3M6NToicm91dGUiO3M6MjE6ImFkbWluLmZlZV90eXBlcy5pbmRleCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjM7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzY0MTgxNjU4O319', 1764182257);
+('811hvRDbL85cb6XQSGlhpT0uldv2CHwJnNu53k9s', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSmJnd0E2TmJNRHc0OU5uYVBBdkdHbDhFUjU4RGsydUtxNEtwVXg0TiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjM2OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vc3ViamVjdHMiO3M6NToicm91dGUiO3M6MjA6ImFkbWluLnN1YmplY3RzLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1764305731),
+('lJjUCPH2jQKGXfBtOePxghctxM5kMyJ6BxWIl8k1', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoibWxQR1V0NEc3aW9jY3VVenk3S3BaVUJlOW43SGRqSDhCQWVoRFlmMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi91c2VycyI7czo1OiJyb3V0ZSI7czoxNzoiYWRtaW4udXNlcnMuaW5kZXgiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6NDoiYXV0aCI7YToxOntzOjIxOiJwYXNzd29yZF9jb25maXJtZWRfYXQiO2k6MTc2NDE4MTY1ODt9czozOiJ1cmwiO2E6MDp7fX0=', 1764238948),
+('xrW07Vngl7TH56llPSZtC6H46Wvr6SDLZKReqmEm', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiVUJVdWhDMDBWWjh4b0NtZUtZck9vcmowckNnanVBdmZHUDM1U3hjSyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjc2OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vYXR0ZW5kYW5jZXM/Y291cnNlX29mZmVyaW5nX2lkPTYmZGF0ZT0yMDI1LTExLTEyIjtzOjU6InJvdXRlIjtzOjIzOiJhZG1pbi5hdHRlbmRhbmNlcy5pbmRleCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764305428);
 
 -- --------------------------------------------------------
 
@@ -610,6 +671,13 @@ CREATE TABLE `student_course` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `student_course`
+--
+
+INSERT INTO `student_course` (`student_id`, `course_offering_id`, `grade_final`, `status`, `payment_status`, `remarks`, `created_at`, `updated_at`) VALUES
+(64, 6, NULL, 'studying', 'pending', NULL, '2025-11-27 21:54:04', '2025-11-27 21:54:04');
 
 -- --------------------------------------------------------
 
@@ -633,7 +701,8 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`id`, `name`, `code`, `description`, `credit_hours`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(6, 'Andrew Graham', 'Voluptate reprehende', 'Ipsa rerum sit mole', 15, '2025-11-27 01:25:01', '2025-11-27 01:25:24', '2025-11-27 01:25:24');
+(6, 'Andrew Graham', 'Voluptate reprehende', 'Ipsa rerum sit mole', 15, '2025-11-27 01:25:01', '2025-11-27 01:25:24', '2025-11-27 01:25:24'),
+(7, 'Office Word I', 'CS101', NULL, 1, '2025-11-27 21:39:22', '2025-11-27 21:39:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -675,7 +744,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `address`, `date_of_birth`, `gender`, `joining_date`, `qualification`, `experience`, `specialization`, `salary`, `cv`, `blood_group`, `nationality`, `religion`, `admission_date`, `occupation`, `company`, `avatar`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Admin User', 'admin@example.com', '2025-11-23 03:56:15', '$2y$12$8KSkfrAsJ3hOa6E1e1zHHeu57YZrNZX18c8./R.9iFpdyW9WJB8D2', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-23 03:56:15', '2025-11-23 03:56:15', NULL);
+(1, 'Admin User', 'admin@example.com', '2025-11-23 03:56:15', '$2y$12$8KSkfrAsJ3hOa6E1e1zHHeu57YZrNZX18c8./R.9iFpdyW9WJB8D2', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-23 03:56:15', '2025-11-23 03:56:15', NULL),
+(63, 'MacKensie Mcbride', 'bicilo@mailinator.com', NULL, '$2y$12$bKhfUOx9fjvtBHSZeRWjTe2p17OU62R326MPUkfB75tTiLjJTW/9u', '+1 (707) 871-3434', 'Veritatis reprehende', '1977-06-15', 'other', NULL, NULL, NULL, NULL, NULL, NULL, 'A+', 'Minima ut quisquam e', 'Autem consectetur fa', NULL, NULL, NULL, NULL, NULL, '2025-11-27 21:42:44', '2025-11-27 21:42:44', NULL),
+(64, 'Christine Meyer', 'jaceqeno@mailinator.com', NULL, '$2y$12$BBL2gWsLny.NGHGuvvfmK.A6k16uVUdJz61GhTpsSdwwsRXjJ6sRy', '+1 (969) 664-7856', 'Nobis doloribus id c', '2007-06-21', 'female', NULL, NULL, NULL, NULL, NULL, NULL, 'B-', 'Voluptatem Fugiat d', 'Ipsum duis est sap', NULL, NULL, NULL, NULL, NULL, '2025-11-27 21:53:47', '2025-11-27 21:53:47', NULL);
 
 --
 -- Indexes for dumped tables
@@ -871,25 +942,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendances`
 --
 ALTER TABLE `attendances`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=286;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=287;
 
 --
 -- AUTO_INCREMENT for table `classrooms`
 --
 ALTER TABLE `classrooms`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `course_offerings`
 --
 ALTER TABLE `course_offerings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `expenses`
@@ -907,13 +978,13 @@ ALTER TABLE `expense_categories`
 -- AUTO_INCREMENT for table `fees`
 --
 ALTER TABLE `fees`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
 
 --
 -- AUTO_INCREMENT for table `fee_types`
 --
 ALTER TABLE `fee_types`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -925,7 +996,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -955,13 +1026,13 @@ ALTER TABLE `scores`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- Constraints for dumped tables
