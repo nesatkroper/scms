@@ -50,6 +50,10 @@ class CourseOffering extends Model
   {
     return $this->hasMany(Exam::class, 'course_offering_id');
   }
+  public function attendances()
+  {
+    return $this->hasMany(Attendance::class, 'course_offering_id');
+  }
 
   public function students()
   {

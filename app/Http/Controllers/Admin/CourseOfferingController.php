@@ -34,7 +34,7 @@ class CourseOfferingController extends BaseController
     $user = Auth::user();
 
     $courseOfferings = CourseOffering::query()
-      ->with(['subject', 'teacher', 'classroom'])
+      ->with(['subject', 'teacher', 'classroom', 'attendances'])
 
       ->when($user->hasRole('teacher'), function ($query) use ($user) {
         $query->where('teacher_id', $user->id);
@@ -77,17 +77,19 @@ class CourseOfferingController extends BaseController
 
     $classrooms = Classroom::orderBy('name')->get(['id', 'name']);
 
+    if ($classrooms->isEmpty()) {
+      return redirect()->route('admin.classrooms.create')->with('error', 'No classrooms found. Please create a classroom first.');
+    }
+
     if ($subjects->isEmpty()) {
       return redirect()->route('admin.subjects.create')->with('error', 'No subjects found. Please create a subject first.');
     }
 
     if ($teachers->isEmpty()) {
-      return redirect()->route('admin.teachers.create')->with('error', 'No teachers found. Please create a teacher first.');
+      return redirect()->route('admin.teachers.index')->with('error', 'No teachers found. Please create a teacher first.');
     }
 
-    if ($classrooms->isEmpty()) {
-      return redirect()->route('admin.classrooms.create')->with('error', 'No classrooms found. Please create a classroom first.');
-    }
+
 
     return view('admin.course_offerings.create', compact('subjects', 'teachers', 'classrooms'));
   }
