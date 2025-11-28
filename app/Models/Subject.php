@@ -23,9 +23,7 @@ class Subject extends Model
 
   public function students()
   {
-    return $this->belongsToMany(User::class, 'student_course')
-      ->withPivot('grade_final')
-      ->withTimestamps();
+    return $this->belongsToMany(User::class, 'enrollments');
   }
 
   public function exams()

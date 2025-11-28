@@ -43,7 +43,7 @@ class Fee extends Model
     return $this->belongsTo(User::class, 'created_by');
   }
 
-  public function studentCourse()
+  public function enrollment()
   {
     return $this->belongsTo(Enrollment::class, 'enrollment_id');
   }

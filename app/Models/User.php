@@ -94,7 +94,7 @@ class User extends Authenticatable
     return $this->hasMany(\App\Models\CourseOffering::class, 'teacher_id');
   }
 
-  public function studentCourses()
+  public function enrollments()
   {
     return $this->hasMany(Enrollment::class, 'student_id');
   }

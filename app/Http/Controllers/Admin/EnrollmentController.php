@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StudentCourseRequest;
+use App\Http\Requests\EnrollmentRequest;
 use App\Models\Enrollment;
 use App\Models\CourseOffering;
 use App\Models\Fee;
@@ -58,10 +58,9 @@ class EnrollmentController extends BaseController
       });
     }
 
-    $studentCourses = $query->orderBy('created_at', 'desc')->get();
+    $enrollments = $query->orderBy('created_at', 'desc')->get();
 
-
-    return view('admin.enrollments.index', compact('studentCourses', 'courseOffering'));
+    return view('admin.enrollments.index', compact('enrollments', 'courseOffering'));
   }
 
 
@@ -101,7 +100,7 @@ class EnrollmentController extends BaseController
     ));
   }
 
-  // public function store(Request $input, StudentCourseRequest $request)
+  // public function store(Request $input, EnrollmentRequest $request)
   // {
   //   $data = $request->validated();
 
@@ -127,7 +126,7 @@ class EnrollmentController extends BaseController
   //   }
   // }
 
-  public function store(StudentCourseRequest $request)
+  public function store(EnrollmentRequest $request)
   {
     $data = $request->validated();
 
@@ -175,7 +174,7 @@ class EnrollmentController extends BaseController
 
   public function edit($student_id, $course_offering_id)
   {
-    $studentCourse = Enrollment::where('student_id', $student_id)
+    $enrollment = Enrollment::where('student_id', $student_id)
       ->where('course_offering_id', $course_offering_id)
       ->firstOrFail();
 
@@ -188,7 +187,7 @@ class EnrollmentController extends BaseController
     $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];
 
     return view('admin.enrollments.edit', compact(
-      'studentCourse',
+      'enrollment',
       'student',
       'courseOffering',
       'statuses',
@@ -196,16 +195,16 @@ class EnrollmentController extends BaseController
     ));
   }
 
-  public function update(StudentCourseRequest $request, $student_id, $course_offering_id)
+  public function update(EnrollmentRequest $request, $student_id, $course_offering_id)
   {
-    $studentCourse = Enrollment::where('student_id', $student_id)
+    $enrollment = Enrollment::where('student_id', $student_id)
       ->where('course_offering_id', $course_offering_id)
       ->firstOrFail();
 
     $safe = collect($request->validated())->except(['student_id', 'course_offering_id'])->toArray();
 
     try {
-      $studentCourse->update($safe);
+      $enrollment->update($safe);
 
       return redirect()->route('admin.enrollments.index', ['course_offering_id' => $course_offering_id])
         ->with('success', 'Enrollment updated successfully');
@@ -217,14 +216,14 @@ class EnrollmentController extends BaseController
 
   public function destroy($student_id, $course_offering_id)
   {
-    $studentCourse = Enrollment::where('student_id', $student_id)
+    $enrollment = Enrollment::where('student_id', $student_id)
       ->where('course_offering_id', $course_offering_id)
       ->firstOrFail();
 
-    $courseOfferingId = $studentCourse->course_offering_id;
+    $courseOfferingId = $enrollment->course_offering_id;
 
     try {
-      $studentCourse->delete();
+      $enrollment->delete();
 
       return redirect()->route('admin.enrollments.index', ['course_offering_id' => $courseOfferingId])
         ->with('success', 'Enrollment deleted successfully');

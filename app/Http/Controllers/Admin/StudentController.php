@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StudentCourseRequest;
+use App\Http\Requests\EnrollmentRequest;
 use App\Http\Requests\StudentRequest;
 use App\Models\CourseOffering;
 use App\Models\Fee;
@@ -70,7 +70,6 @@ class StudentController extends BaseController
   {
     $courses = $student->courseOfferings()
       ->with(['subject', 'teacher', 'classroom'])
-      ->latest('pivot_created_at')
       ->paginate(15);
 
     return view('admin.students.enrollments.index', compact('student', 'courses'));
@@ -98,7 +97,7 @@ class StudentController extends BaseController
       ->get();
 
     if ($availableCourses->isEmpty()) {
-      return redirect()->route('admin.students.courses.index', $student->id)
+      return redirect()->route('admin.students.enrollments.index', $student->id)
         ->with('error', 'This student is already enrolled in all available courses.');
     }
 
@@ -146,7 +145,7 @@ class StudentController extends BaseController
     }
   }
 
-  public function storeEnrollment(StudentCourseRequest $request, User $student)
+  public function storeEnrollment(EnrollmentRequest $request, User $student)
   {
     $data = $request->validated();
     $data['student_id'] = $student->id;
