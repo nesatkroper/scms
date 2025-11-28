@@ -94,19 +94,22 @@ class User extends Authenticatable
     return $this->hasMany(\App\Models\CourseOffering::class, 'teacher_id');
   }
 
-  public function courseOfferings()
+  public function studentCourses()
   {
-    return $this->belongsToMany(CourseOffering::class, 'student_courses', 'student_id', 'course_offering_id')
-      ->using(StudentCourse::class)
-      ->as('enrollment')
-      ->withPivot([
-        'grade_final',
-        'status',
-        'remarks',
-      ])
-      ->withTimestamps();
+    return $this->hasMany(StudentCourse::class, 'student_id');
   }
 
+  public function courseOfferings()
+  {
+    return $this->hasManyThrough(
+      CourseOffering::class,
+      StudentCourse::class,
+      'student_id',
+      'id',
+      'id',
+      'course_offering_id'
+    );
+  }
 
   public function getAvatarUrlAttribute()
   {
@@ -114,4 +117,18 @@ class User extends Authenticatable
       ? asset($this->avatar)
       : asset('assets/images/cambodia.png');
   }
+
+
+  // public function courseOfferings()
+  // {
+  //   return $this->belongsToMany(CourseOffering::class, 'student_courses', 'student_id', 'course_offering_id')
+  //     ->using(StudentCourse::class)
+  //     ->as('enrollment')
+  //     ->withPivot([
+  //       'grade_final',
+  //       'status',
+  //       'remarks',
+  //     ])
+  //     ->withTimestamps();
+  // }
 }
