@@ -16,6 +16,7 @@ class FeeRequest extends FormRequest
     return [
       'student_id' => 'required|exists:users,id',
       'fee_type_id' => 'required|exists:fee_types,id',
+      'student_course_id' => 'required|exists:student_course,id',
       'amount' => 'required|numeric|min:0',
       'due_date' => 'nullable|date',
       'status' => 'required|in:unpaid,partially_paid,paid',
@@ -29,6 +30,7 @@ class FeeRequest extends FormRequest
       'student_id.required' => 'Student is required.',
       'student_id.exists' => 'Selected student does not exist.',
       'fee_type_id.required' => 'Fee type is required.',
+      'student_course_id.required' => 'Fee type is required.',
       'fee_type_id.exists' => 'Selected fee type does not exist.',
       'amount.required' => 'Amount is required.',
       'amount.numeric' => 'Amount must be a number.',

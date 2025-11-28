@@ -41,7 +41,7 @@ class StudentCourseController extends BaseController
     $courseOffering = CourseOffering::with('subject:id,name')->findOrFail($courseOfferingId);
 
     $query = StudentCourse::query()
-      ->with(['student:id,name', 'courseOffering.subject:id,name'])
+      ->with(['student:id,name', 'courseOffering.subject:id,name', 'fee'])
       ->where('course_offering_id', $courseOfferingId);
 
     if ($search) {
@@ -125,7 +125,7 @@ class StudentCourseController extends BaseController
   //   }
   // }
 
-  public function store(Request $input, StudentCourseRequest $request)
+  public function store(StudentCourseRequest $request)
   {
     $data = $request->validated();
 
@@ -151,18 +151,18 @@ class StudentCourseController extends BaseController
 
       $course = CourseOffering::findOrFail($data['course_offering_id']);
 
-      $feeType = FeeType::firstOrCreate(
-        ['name' => 'Tuition'],
-        ['description' => 'Default tuition fee type']
-      );
+      // $feeType = FeeType::firstOrCreate(
+      //   ['name' => 'Tuition'],
+      //   ['description' => 'Default tuition fee type']
+      // );
 
-      Fee::create([
-        'student_id'        => $data['student_id'],
-        'student_course_id' => $enrollment->id,
-        'fee_type_id'       => $feeType->id,
-        'amount'            => $course->fee ?? 0,
-        'created_by'        => Auth::id() ?? 1,
-      ]);
+      // Fee::create([
+      //   'student_id'        => $data['student_id'],
+      //   'student_course_id' => $enrollment->id,
+      //   'fee_type_id'       => $feeType->id,
+      //   'amount'            => $course->fee ?? 0,
+      //   'created_by'        => Auth::id() ?? 1,
+      // ]);
 
       DB::commit();
 

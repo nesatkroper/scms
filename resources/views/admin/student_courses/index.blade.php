@@ -1,8 +1,11 @@
 @extends('layouts.admin')
 
 @section('title', 'Admission Register')
-
 @section('content')
+
+  {{-- @php
+    dd($studentCourses);
+  @endphp --}}
 
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
@@ -136,7 +139,28 @@
               <p class="flex items-center gap-1 font-medium">
                 <i class="fa-solid fa-wallet text-teal-500"></i>
                 Payment:
-                <span
+
+                {{-- <p class="text-sm">
+                @if ($admission->fee->status == 'paid')
+                  <span
+                    class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
+                    Paid on
+                    {{ $admission->fee->paid_date ? \Carbon\Carbon::parse($admission->fee->paid_date)->format('M d, Y') : 'N/A' }}
+                  </span>
+                @elseif ($admission->fee->status == 'pending' && $admission->fee->due_date && $admission->fee->due_date->isPast())
+                  <span
+                    class="font-bold px-3 py-0.5 rounded-full text-xs bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300">
+                    Overdue
+                  </span>
+                @else
+                  <span
+                    class="font-bold px-3 py-0.5 rounded-full text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
+                    {{ ucfirst($admission->fee->status) }}
+                  </span>
+                @endif
+              </p> --}}
+
+                {{-- <span
                   class="font-semibold px-2 py-0.5 rounded-full text-xs
                   @if ($admission->payment_status === 'Paid') bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300
                   @elseif ($admission->payment_status === 'Pending')
@@ -144,7 +168,7 @@
                   @else
                     bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
                   {{ $admission->payment_status ?? 'N/A' }}
-                </span>
+                </span> --}}
               </p>
             </div>
 

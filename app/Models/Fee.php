@@ -13,6 +13,7 @@ class Fee extends Model
     'student_id',
     'created_by',
     'fee_type_id',
+    'student_course_id',
     'amount',
     'due_date',
     'remarks'

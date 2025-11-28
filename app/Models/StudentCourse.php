@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class StudentCourse extends Pivot
+class StudentCourse extends Model
 {
-  public $timestamps = true;
-  protected $table = 'student_course';
 
   protected $fillable = [
     'student_id',
@@ -20,44 +18,43 @@ class StudentCourse extends Pivot
     'remarks',
   ];
 
-  // protected static function booted()
-  // {
-  //   static::created(function (StudentCourse $enrollment) {
+  protected static function booted()
+  {
+    static::created(function (StudentCourse $enrollment) {
 
-  //     DB::transaction(function () use ($enrollment) {
-  //       $course = $enrollment->courseOffering()->first();
+      DB::transaction(function () use ($enrollment) {
+        $course = $enrollment->courseOffering()->first();
 
-  //       if (! $course) {
-  //         Log::warning("CourseOffering not found for StudentCourse ID {$enrollment->id}");
-  //         return;
-  //       }
+        if (! $course) {
+          Log::warning("CourseOffering not found for StudentCourse ID {$enrollment->id}");
+          return;
+        }
 
-  //       $feeType = FeeType::where('name', 'Course Fee')->first();
+        $feeType = FeeType::where('name', 'Course Fee')->first();
 
-  //       if (! $feeType) {
-  //         $feeType = FeeType::create([
-  //           'name' => 'Course Fee',
-  //           'description' => 'Automatically generated fee type for course enrollment'
-  //         ]);
-  //       }
+        if (! $feeType) {
+          $feeType = FeeType::create([
+            'name' => 'Course Fee',
+            'description' => 'Automatically generated fee type for course enrollment'
+          ]);
+        }
 
-  //       Fee::create([
-  //         'student_id'        => $enrollment->student_id,
-  //         'student_course_id' => $enrollment->id,
-  //         'fee_type_id'       => $feeType->id,
-  //         'created_by'        => Auth::id() ?? 1,
-  //         'amount'            => $course->fee ?? 0,
-  //         'description'       => "Enrollment fee for {$course->subject->name}",
-  //       ]);
-  //     });
-  //   });
-  // }
+        Fee::create([
+          'student_id'        => $enrollment->student_id,
+          'student_course_id' => $enrollment->id,
+          'fee_type_id'       => $feeType->id,
+          'created_by'        => Auth::id() ?? 1,
+          'amount'            => $course->fee ?? 0,
+          'description'       => "Enrollment fee for {$course->subject->name}",
+        ]);
+      });
+    });
+  }
 
   public function fee()
   {
     return $this->hasOne(Fee::class, 'student_course_id');
   }
-
 
   public function student()
   {

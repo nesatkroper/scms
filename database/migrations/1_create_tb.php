@@ -107,12 +107,17 @@ return new class extends Migration
       $table->softDeletes();
     });
 
-    Schema::create('student_course', function (Blueprint $table) {
+    Schema::create('student_courses', function (Blueprint $table) {
+      $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
       $table->decimal('grade_final', 5, 2)->nullable();
-      $table->enum('status', ['studying', 'suspended', 'dropped', 'completed'])->default('studying');
-      $table->enum('payment_status', ['pending', 'paid', 'overdue', 'free'])->default('pending');
+      $table->enum('status', [
+        'studying',
+        'suspended',
+        'dropped',
+        'completed'
+      ])->default('studying');
       $table->text('remarks')->nullable();
       $table->timestamps();
       $table->unique(['student_id', 'course_offering_id']);
@@ -123,7 +128,7 @@ return new class extends Migration
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('course_offering_id')->nullable()->constrained();
       $table->date('date');
-      $table->enum('status', ['present', 'absent', 'late', 'excused']);
+      $table->enum('status', ['attending', 'absence', 'permission']);
       $table->text('remarks')->nullable();
       $table->timestamps();
       $table->softDeletes();
@@ -133,7 +138,22 @@ return new class extends Migration
 
     Schema::create('exams', function (Blueprint $table) {
       $table->id();
-      $table->enum('type', ['lab', 'quiz', 'homework1', 'homework2', 'homework3', 'midterm', 'final']);
+      $table->enum('type', [
+        'midterm',
+        'final',
+        'speaking',
+        'listening',
+        'reading',
+        'lab1',
+        'lab2',
+        'lab3',
+        'quiz1',
+        'quiz2',
+        'quiz3',
+        'homework1',
+        'homework2',
+        'homework3',
+      ]);
       $table->text('description')->nullable();
       $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
       $table->date('date');
@@ -154,12 +174,11 @@ return new class extends Migration
     Schema::create('fees', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
+      $table->foreignId('student_course_id')->constrained('student_courses')->onDelete('cascade');
       $table->foreignId('fee_type_id')->constrained('fee_types')->onDelete('cascade');
       $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
       $table->decimal('amount', 10, 2);
       $table->date('due_date')->nullable();
-      $table->date('paid_date')->nullable(); // quick check
-      $table->enum('status', ['unpaid', 'partially_paid', 'paid'])->default('unpaid');
       $table->text('remarks')->nullable();
       $table->timestamps();
       $table->softDeletes();
@@ -172,9 +191,7 @@ return new class extends Migration
       $table->string('payment_method');
       $table->string('transaction_id')->nullable();
       $table->text('remarks')->nullable();
-      $table->foreignId('course_offering_id')->constrained('course_offerings')->onDelete('restrict');
       $table->foreignId('received_by')->constrained('users')->onDelete('restrict');
-      $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('fee_id')->nullable()->constrained('fees')->onDelete('cascade');
       $table->timestamps();
       $table->softDeletes();
@@ -191,17 +208,27 @@ return new class extends Migration
       $table->softDeletes();
       $table->unique(['student_id', 'exam_id']);
     });
+
+    Schema::create('notifications', function (Blueprint $table) {
+      $table->uuid('id')->primary();
+      $table->string('type');
+      $table->morphs('notifiable');
+      $table->text('data');
+      $table->timestamp('read_at')->nullable();
+      $table->timestamps();
+    });
   }
 
   public function down(): void
   {
+    Schema::dropIfExists('notifications');
     Schema::dropIfExists('scores');
     Schema::dropIfExists('payments');
     Schema::dropIfExists('fees');
     Schema::dropIfExists('fee_types');
     Schema::dropIfExists('exams');
     Schema::dropIfExists('attendances');
-    Schema::dropIfExists('student_course');
+    Schema::dropIfExists('student_courses');
     Schema::dropIfExists('course_offerings');
     Schema::dropIfExists('expenses');
     Schema::dropIfExists('expense_categories');

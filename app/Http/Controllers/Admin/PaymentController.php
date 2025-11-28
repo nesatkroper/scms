@@ -24,7 +24,6 @@ class PaymentController extends Controller
       $payment->received_by = $request->received_by ?? Auth::id();
 
       $fee->payments()->save($payment);
-      $fee->status = '';
 
       $notifiableUsers = User::role(['admin', 'staff'])->get();
       Notification::send($notifiableUsers, new PaymentReceived($payment));
