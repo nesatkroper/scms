@@ -9,11 +9,13 @@ use App\Models\CourseOffering;
 use App\Models\Fee;
 use App\Models\FeeType;
 use App\Models\User;
+use App\Notifications\NewCourseEnrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class StudentCourseController extends BaseController
 {
@@ -149,31 +151,19 @@ class StudentCourseController extends BaseController
         'remarks'           => $data['remarks'] ?? null,
       ]);
 
-      $course = CourseOffering::findOrFail($data['course_offering_id']);
-
-      // $feeType = FeeType::firstOrCreate(
-      //   ['name' => 'Tuition'],
-      //   ['description' => 'Default tuition fee type']
-      // );
-
-      // Fee::create([
-      //   'student_id'        => $data['student_id'],
-      //   'student_course_id' => $enrollment->id,
-      //   'fee_type_id'       => $feeType->id,
-      //   'amount'            => $course->fee ?? 0,
-      //   'created_by'        => Auth::id() ?? 1,
-      // ]);
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new NewCourseEnrollment($enrollment));
 
       DB::commit();
 
       return redirect()
-        ->route('admin.student_courses.index', ['course_offering_id' => $course->id])
+        ->route('admin.student_courses.index', ['course_offering_id' => $data['course_offering_id']])
         ->with('success', 'Enrollment & fee created successfully!');
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error('Error creating enrollment: ' . $e->getMessage());
 
-      return back()->with('error', 'Error creating enrollment.')->withInput();
+      return back()->with('error', 'Error creating enrollment.' . $e->getMessage())->withInput();
     }
   }
 
