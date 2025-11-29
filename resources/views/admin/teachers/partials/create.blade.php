@@ -23,15 +23,13 @@
                     :required="true" />
                 <x-fields.input type="tel" label="Phone" name="phone" placeholder="Enter phone number"
                     :required="true" />
-                {{-- <x-fields.select name="department_id" label="Department" :options="$departments" :value="old('department_id')"
-                        :required="true" searchable="true" /> --}}
                 
                 <x-fields.input type="date" label="Joining Date" name="joining_date"
                     placeholder="Enter joining date" :required="true" />
 
                 <x-fields.input label="Qualification" name="qualification" placeholder="Enter qualification"
                     :required="true" />
-                <x-fields.input type="number" label="Experience" name="experience" placeholder="Enter experience"
+                <x-fields.input type="number" min="0" max="60" label="Experience" name="experience" placeholder="Enter experience"
                     :required="true" />
                 <x-fields.input label="Specialization" name="specialization" placeholder="Enter specialization" />
                 <x-fields.input type="number" label="Salary" name="salary" placeholder="Enter salary" />

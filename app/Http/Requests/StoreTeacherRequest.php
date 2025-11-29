@@ -23,7 +23,7 @@ class StoreTeacherRequest extends FormRequest
             'date_of_birth' => ['required', 'date', 'before_or_equal:today'],
             
             // Professional Information
-            'department_id' => ['required', 'exists:departments,id'],
+            // 'department_id' => ['required', 'exists:departments,id'],
             'joining_date' => ['required', 'date'],
             'qualification' => ['required', 'string', 'max:255'],
             'experience' => ['required', 'integer', 'min:0', 'max:50'],
@@ -50,8 +50,8 @@ class StoreTeacherRequest extends FormRequest
             'gender.required' => 'Please select gender.',
             'date_of_birth.required' => 'Date of birth is required.',
             'date_of_birth.before_or_equal' => 'Date of birth cannot be in the future.',
-            'department_id.required' => 'Please select a department.',
-            'department_id.exists' => 'The selected department is invalid.',
+            // 'department_id.required' => 'Please select a department.',
+            // 'department_id.exists' => 'The selected department is invalid.',
             'joining_date.required' => 'Joining date is required.',
             'qualification.required' => 'Qualification is required.',
             'experience.required' => 'Experience is required.',
@@ -77,7 +77,7 @@ class StoreTeacherRequest extends FormRequest
             'email' => 'email address',
             'phone' => 'phone number',
             'date_of_birth' => 'date of birth',
-            'department_id' => 'department',
+            // 'department_id' => 'department',
             'joining_date' => 'joining date',
         ];
     }

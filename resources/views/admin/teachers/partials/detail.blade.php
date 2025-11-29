@@ -18,7 +18,7 @@
                 </svg>
                 Teacher <span class="title"></span>
             </h3>
-            <x-button.btnclose id="closeDetailModal"/>
+            {{-- <x-button.btnclose id="close"/> --}}
         </div>
 
         <!-- Content -->
@@ -29,7 +29,7 @@
                 <div class="absolute -bottom-12">
                     <div
                         class="size-35 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-700 overflow-hidden shadow-lg">
-                        <img id="detail_photo" src="" alt="" class="w-full h-full object-cover">
+                        <img id="detail_avatar" src="" alt="" class="w-full h-full object-cover">
                         <div id="detail_initials"
                             class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
                             <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
@@ -41,14 +41,14 @@
             <!-- Profile Body -->
             <div class="pt-16 pb-5 px-5">
                 <!-- Name and Title -->
-                <div class="text-center mb-4">
+                {{-- <div class="text-center mb-4">
                     <h3 id="detail_name" class="text-xl font-bold text-gray-800 dark:text-white"></h3>
                     <p id="detail_specialization" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
                     </p>
                     <span id="detail_department"
                         class="inline-block mt-1 px-3 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 hidden">
                     </span>
-                </div>
+                </div> --}}
 
                 <!-- Stats -->
                 <div
