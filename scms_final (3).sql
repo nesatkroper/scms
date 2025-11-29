@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 29, 2025 at 03:20 PM
+-- Generation Time: Nov 29, 2025 at 03:48 PM
 -- Server version: 8.0.44-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -595,7 +595,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('iSMSv3QYCvaie37PfnHso2HnkL1otS11vhiz94Wv', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiaGpBeXRiQlNhUjljS3VzMXgwZkVJNURiSkJ2YXd1YXN3N21kaEhSUyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjUzOiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vZmVlcz9mZWVfdHlwZV9pZD0xJnBhZ2U9MiI7czo1OiJyb3V0ZSI7czoxNjoiYWRtaW4uZmVlcy5pbmRleCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764429602);
+('iSMSv3QYCvaie37PfnHso2HnkL1otS11vhiz94Wv', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiaGpBeXRiQlNhUjljS3VzMXgwZkVJNURiSkJ2YXd1YXN3N21kaEhSUyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjM2OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vc3R1ZGVudHMiO3M6NToicm91dGUiO3M6MjA6ImFkbWluLnN0dWRlbnRzLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1764431271);
 
 -- --------------------------------------------------------
 
@@ -661,7 +661,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `address`, `date_of_birth`, `gender`, `joining_date`, `qualification`, `experience`, `specialization`, `salary`, `cv`, `blood_group`, `nationality`, `religion`, `admission_date`, `occupation`, `company`, `avatar`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Admin User', 'admin@example.com', '2025-11-29 08:20:17', '$2y$12$tbKiBfJHpaecneBrJOYjSOj5pPV5/IqdGZwOdTvt5LzQ6NXPg/UG2', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-29 07:50:20', '2025-11-29 08:20:17', NULL),
+(1, 'Admin User', 'admin@example.com', '2025-11-29 08:40:16', '$2y$12$ivyi5VT0uQN4uph9NrQwtOfXUwRVEnJY82L95PK5c2wvC3KY1xjeW', NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-11-29 07:50:20', '2025-11-29 08:40:16', NULL),
 (2, 'Andrew Brock', 'qepixuru@mailinator.com', NULL, '$2y$12$yA6wrURXK/SpdMQDrmnN0.ova7QFiUxVg/5FDbNb9GujYtbAU1H9i', '+1 (152) 148-9403', 'Debitis eligendi ali', '2007-06-23', 'male', NULL, NULL, NULL, NULL, NULL, NULL, 'B+', 'Occaecat nisi fugiat', 'Mollit sit eum prov', NULL, NULL, NULL, NULL, NULL, '2025-11-29 08:00:58', '2025-11-29 08:00:58', NULL),
 (3, 'Amena English', 'hyjy@mailinator.com', NULL, '$2y$12$UthRTKwV43soXLtsPkf.B.PRc7yxaFz9jDonVCSyewV4Qgq1uPY.m', '+1 (404) 878-7048', 'Laborum Veniam sun', '1985-02-24', 'other', NULL, NULL, NULL, NULL, NULL, NULL, 'AB+', 'Dolorum et deserunt', 'Illum porro ipsam q', NULL, NULL, NULL, NULL, NULL, '2025-11-29 08:04:00', '2025-11-29 08:04:00', NULL),
 (4, 'Amal Aguirre', 'farati@mailinator.com', NULL, '$2y$12$//.l3e98FmK508Hfdpd/ru9Q9GvNN41dzdsepQsjsOHevZUCGxHBK', '+1 (259) 321-3248', 'Laboris quae harum q', '2017-09-18', 'male', NULL, NULL, NULL, NULL, NULL, NULL, 'AB-', 'Dolores ea repudiand', 'Qui culpa dolorum u', NULL, NULL, NULL, NULL, NULL, '2025-11-29 08:04:10', '2025-11-29 08:04:10', NULL);

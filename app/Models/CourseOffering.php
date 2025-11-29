@@ -56,6 +56,11 @@ class CourseOffering extends Model
     return $this->hasMany(Attendance::class, 'course_offering_id');
   }
 
+  public function enrollments()
+  {
+    return $this->hasMany(Enrollment::class, 'course_offering_id');
+  }
+
   public function students()
   {
     return $this->hasManyThrough(

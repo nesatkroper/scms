@@ -59,11 +59,6 @@ class User extends Authenticatable
     return $this->hasMany(Fee::class, 'student_id');
   }
 
-  public function payments()
-  {
-    return $this->hasMany(Payment::class, 'student_id');
-  }
-
   public function attendances()
   {
     return $this->hasMany(Attendance::class, 'student_id');
@@ -81,7 +76,7 @@ class User extends Authenticatable
 
   public function receivedPayments()
   {
-    return $this->hasMany(Payment::class, 'received_by');
+    return $this->hasMany(Fee::class, 'received_by');
   }
 
   public function scopeTeachers($query)

@@ -22,14 +22,24 @@
       </a>
     </div>
 
+    @if (session('success'))
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
+      </div>
+    @endif
+    @if (session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span class="block sm:inline">{{ session('error') }}</span>
+      </div>
+    @endif
+
     {{-- Form submits to the store method --}}
     <form action="{{ route('admin.fee_types.store') }}" method="POST" id="createForm" class="p-0">
       @csrf
 
-      <div class="grid grid-cols-1 gap-4 mb-4">
+      <div class="grid grid-cols-3 gap-4 mb-4">
 
-        {{-- Fee Type Name Field --}}
-        <div>
+        <div class="col-span-2">
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Fee Type Name <span class="text-red-500">*</span>
           </label>
@@ -44,6 +54,55 @@
           @enderror
         </div>
 
+        <div class="">
+          <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Fee Cost <span class="text-red-500">*</span>
+          </label>
+          <input type="number" id="amount" name="amount" value="{{ old('amount') }}"
+            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
+                    @error('amount') border-red-500 @else border-gray-400 @enderror"
+            placeholder="e.g., 15.00" step="0.01" required>
+          @error('amount')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold text-gray-800 dark:text-gray-200">
+          Apply Fee Type to Courses (multiple):
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+          @foreach ($courseOfferings as $course)
+            <div class="flex items-center space-x-2 relative">
+              <div class="relative flex items-center justify-center">
+                <input id="course-{{ $course->id }}" type="checkbox" name="course_offering_ids[]"
+                  value="{{ $course->id }}"
+                  class="peer size-5 appearance-none rounded-md cursor-pointer
+                        border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800
+                        transition-all duration-200
+                        checked:bg-indigo-600 checked:border-indigo-600
+                        hover:border-indigo-400 dark:hover:border-indigo-500
+                        focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-700
+                        focus:ring-offset-2 dark:focus:ring-offset-gray-800 relative z-10">
+                <svg
+                  class="pointer-events-none absolute w-4 h-4 text-white
+                        opacity-0 scale-75 transition-all duration-200
+                        peer-checked:opacity-100 peer-checked:scale-100 z-20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <label for="course-{{ $course->id }}" class="cursor-pointer text-sm text-gray-900 dark:text-gray-300">
+                {{ $course->subject->name }} — ({{ $course->teacher->name }})
+              </label>
+            </div>
+          @endforeach
+        </div>
       </div>
 
       {{-- Fee Type Description Field --}}

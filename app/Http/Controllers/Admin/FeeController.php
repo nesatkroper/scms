@@ -10,6 +10,7 @@ use App\Notifications\FeeAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class FeeController extends BaseController
 {
@@ -100,6 +101,9 @@ class FeeController extends BaseController
 
       $fee = Fee::create($data);
       $fee->student->notify(new FeeAssigned($fee));
+
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new FeeAssigned($fee));
 
       return redirect()
         ->route('admin.fees.index', ['fee_type_id' => $data['fee_type_id']])
