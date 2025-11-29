@@ -22,7 +22,7 @@ use App\Http\Controllers\Admin\{
   EnrollmentController,
   FeeTypeController,
   FeeController,
-  NotificationController,
+  NotificationController
 };
 
 
@@ -31,7 +31,6 @@ Route::get('/about-us', fn() => view('app.about'))->name('app.about');
 Route::get('/contact', fn() => view('app.contact'))->name('app.contact');
 Route::get('/what-we-do', fn() => view('app.whatwedo'))->name('app.whatwedo');
 Route::get('/donation', fn() => view('app.donation'))->name('app.donation');
-
 Route::get('/', fn() => redirect('/home'));
 
 
@@ -81,64 +80,90 @@ Route::prefix('admin')
     Route::resource('expenses', ExpenseController::class);
     Route::resource('fee_types', FeeTypeController::class);
     Route::resource('fees', FeeController::class);
-    // Route::resource('payments', PaymentController::class);
     Route::resource('students', StudentController::class);
     Route::resource('subjects', SubjectController::class);
     Route::resource('teachers', TeacherController::class);
     Route::resource('course_offerings', CourseOfferingController::class);
 
-    Route::get('/students/profile/{student}', [StudentController::class, 'profile'])->name('students.profile');
+    Route::prefix('enrollments')
+      ->as('enrollments.')
+      ->group(function () {
+        Route::get('/', [EnrollmentController::class, 'index'])->name('index');
+        Route::get('/create', [EnrollmentController::class, 'create'])->name('create');
+        Route::post('/', [EnrollmentController::class, 'store'])->name('store');
+        Route::get('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'show'])->name('show');
+        Route::get('/{student_id}/{course_offering_id}/edit', [EnrollmentController::class, 'edit'])->name('edit');
+        Route::put('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'update'])->name('update');
+        Route::delete('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'destroy'])->name('destroy');
+      });
 
-    Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
-    Route::get('/enrollments/create', [EnrollmentController::class, 'create'])->name('enrollments.create');
-    Route::post('/enrollments', [EnrollmentController::class, 'store'])->name('enrollments.store');
-    Route::get('/enrollments/{student_id}/{course_offering_id}', [EnrollmentController::class, 'show'])->name('enrollments.show');
-    Route::get('/enrollments/{student_id}/{course_offering_id}/edit', [EnrollmentController::class, 'edit'])->name('enrollments.edit');
-    Route::put('/enrollments/{student_id}/{course_offering_id}', [EnrollmentController::class, 'update'])->name('enrollments.update');
-    Route::delete('/enrollments/{student_id}/{course_offering_id}', [EnrollmentController::class, 'destroy'])->name('enrollments.destroy');
+    Route::prefix('profile')
+      ->as('profile.')
+      ->group(function () {
+        Route::get('/', [ProfileController::class, 'show'])->name('show');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+      });
 
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::prefix('notifications')
+      ->as('notifications.')
+      ->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::post('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
+        Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('readAll');
+      });
 
-    Route::prefix('scores')->name('scores.')->group(function () {
-      Route::get('/', [ScoreController::class, 'index'])->name('index');
-      Route::post('/save-all', [ScoreController::class, 'saveAll'])->name('saveAll');
-      Route::get('/export/{exam_id}', [ScoreController::class, 'exportExamScores'])
-        ->name('export');
-    });
+    Route::prefix('payments')
+      ->as('payments.')
+      ->group(function () {
+        Route::post('/', [PaymentController::class, 'store'])->name('store');
+        Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
+      });
 
-    Route::prefix('attendances')->name('attendances.')->group(function () {
-      Route::get('/', [AttendanceController::class, 'index'])->name('index');
-      Route::post('/save-all', [AttendanceController::class, 'saveAll'])->name('saveAll');
-      Route::get('/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('show');
-      Route::get('/export/{course_offering_id}', [AttendanceController::class, 'exportCourseAttendance'])
-        ->name('export');
-    });
+    Route::prefix('scores')
+      ->as('scores.')
+      ->group(function () {
+        Route::get('/', [ScoreController::class, 'index'])->name('index');
+        Route::post('/save-all', [ScoreController::class, 'saveAll'])->name('saveAll');
+        Route::get('/export/{exam_id}', [ScoreController::class, 'exportExamScores'])
+          ->name('export');
+      });
 
-    Route::get('notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('notifications/{id}/read', [App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('notifications.read');
-    Route::post('notifications/read-all', [App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::prefix('attendances')
+      ->as('attendances.')
+      ->group(function () {
+        Route::get('/', [AttendanceController::class, 'index'])->name('index');
+        Route::post('/save-all', [AttendanceController::class, 'saveAll'])->name('saveAll');
+        Route::get('/{courseOfferingId}/student/{studentId}', [AttendanceController::class, 'show'])->name('show');
+        Route::get('/export/{course_offering_id}', [AttendanceController::class, 'exportCourseAttendance'])
+          ->name('export');
+      });
 
-
-    Route::post('expenses/{expense}/approve', [App\Http\Controllers\Admin\ExpenseController::class, 'approve'])->name('expenses.approve');
-
-    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
-    Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
-
-
-    Route::prefix('students')->name('students.')->group(function () {
-      Route::get('fees/{student}', [StudentController::class, 'feesIndex'])->name('fees.index');
-      Route::get('enrollments/{student}', [StudentController::class, 'coursesIndex'])->name('enrollments.index');
-      Route::get('enrollments/create/{student}', [StudentController::class, 'createEnrollment'])->name('enrollments.create');
-      Route::post('enrollments/{student}', [StudentController::class, 'storeEnrollment'])->name('enrollments.store');
-      Route::get('fees/create/{student}', [StudentController::class, 'createFee'])->name('fees.create');
-      Route::post('fees/{student}', [StudentController::class, 'storeFee'])->name('fees.store');
-    });
+    Route::prefix('students')
+      ->as('students.')
+      ->group(function () {
+        Route::get('fees/{student}', [StudentController::class, 'feesIndex'])->name('fees.index');
+        Route::get('enrollments/{student}', [StudentController::class, 'coursesIndex'])->name('enrollments.index');
+        Route::get('enrollments/create/{student}', [StudentController::class, 'createEnrollment'])->name('enrollments.create');
+        Route::post('enrollments/{student}', [StudentController::class, 'storeEnrollment'])->name('enrollments.store');
+        Route::get('fees/create/{student}', [StudentController::class, 'createFee'])->name('fees.create');
+        Route::post('fees/{student}', [StudentController::class, 'storeFee'])->name('fees.store');
+      });
 
     Route::prefix('users')->name('users.')->group(function () {
       Route::put('/password/{user}', [UserController::class, 'changePassword'])->name('password.update');
       Route::put('/role/{user}', [UserController::class, 'changeRole'])->name('role.update');
     });
+
+    Route::post('expenses/{expense}/approve', [ExpenseController::class, 'approve'])->name('expenses.approve');
+
+    // Route::prefix('enrollments')
+    //   ->as('enrollments.')
+    //   ->group(function () {});
+
+    // Route::prefix('enrollments')
+    //   ->as('enrollments.')
+    //   ->group(function () {});
+
 
 
     Route::prefix('teachers')->name('teachers.')->group(function () {

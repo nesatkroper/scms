@@ -100,32 +100,6 @@ class EnrollmentController extends BaseController
     ));
   }
 
-  // public function store(Request $input, EnrollmentRequest $request)
-  // {
-  //   $data = $request->validated();
-
-  //   $exists = Enrollment::where('student_id', $data['student_id'])
-  //     ->where('course_offering_id', $data['course_offering_id'])
-  //     ->exists();
-
-  //   if ($exists) {
-  //     return redirect()->route('admin.enrollments.create', ['course_offering_id' => $data['course_offering_id']])
-  //       ->with('error', 'This student is already enrolled in this course offering.')
-  //       ->withInput();
-  //   }
-
-  //   try {
-
-  //     return redirect()
-  //       ->route('admin.enrollments.index', ['course_offering_id' => $data['course_offering_id']])
-  //       ->with('success', 'Enrollment created successfully!');
-  //   } catch (\Exception $e) {
-  //     Log::error('Error creating Enrollment: ' . $e->getMessage());
-  //     return redirect()->route('admin.enrollments.create', ['course_offering_id' => $data['course_offering_id']])
-  //       ->with('error', 'Error creating enrollment.')->withInput();
-  //   }
-  // }
-
   public function store(EnrollmentRequest $request)
   {
     $data = $request->validated();
