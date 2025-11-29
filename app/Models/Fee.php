@@ -18,8 +18,8 @@ class Fee extends Model
     'payment_date',
     'payment_method',
     'transaction_id',
-    'remarks',
     'received_by',
+    'remarks',
     'due_date',
     'remarks'
   ];

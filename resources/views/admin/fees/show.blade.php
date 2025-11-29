@@ -93,17 +93,17 @@
       </div>
 
       {{-- Payments History (Optional, based on payments() relationship) --}}
-      @if ($fee->payments->count() > 0)
+      @if ($fee->count() > 0)
         <div class="pt-4 border-t border-gray-200 dark:border-gray-700/50">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
             <i class="fa-solid fa-receipt text-indigo-500"></i> Payments Received:
           </span>
           <ul class="space-y-1">
-            @foreach ($fee->payments as $payment)
-              <li class="text-xs text-gray-600 dark:text-gray-400">
+            @foreach ($fee as $payment)
+              {{-- <li class="text-xs text-gray-600 dark:text-gray-400">
                 - ${{ number_format($payment->amount, 2) }} on {{ $payment->payment_date->format('M d, Y') }}
                 ({{ $payment->method }})
-              </li>
+              </li> --}}
             @endforeach
           </ul>
         </div>

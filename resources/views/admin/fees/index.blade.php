@@ -167,7 +167,7 @@
 
             @if ($fee->status != 'paid')
               <a href="#"
-                @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.payments.store') }}')"
+                @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.fees.pay', $fee->id) }}')"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Add Payment">
                 <span class="btn-content flex items-center justify-center">
@@ -355,8 +355,8 @@
             isOpen: false,
             isEdit: false,
             modalTitle: 'Add New Payment',
-            actionUrl: '{{ route('admin.payments.store') }}',
             feeId: null,
+            actionUrl: '',
             paymentId: null,
 
             formData: {

@@ -7,6 +7,7 @@ use App\Models\Fee;
 use App\Models\FeeType;
 use App\Models\User;
 use App\Notifications\FeeAssigned;
+use App\Notifications\FeePaidNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -113,6 +114,28 @@ class FeeController extends BaseController
       return back()->with('error', 'Error creating fee record.')->withInput();
     }
   }
+
+  public function paid(Request $request, Fee $fee)
+  {
+    $validated = $request->validate([
+      'payment_method'  => 'required|string|max:50',
+      'transaction_id'  => 'nullable|string|max:100',
+      'payment_date'    => 'nullable|date',
+    ]);
+
+    $validated['payment_date'] = $validated['payment_date'] ?? now();
+    $validated['received_by'] = Auth::id();
+
+    $fee->update($validated);
+
+    $notifiableUsers = User::role(['admin', 'staff'])->get();
+    Notification::send($notifiableUsers, new FeePaidNotification($fee));
+
+    return redirect()
+      ->route('admin.fees.show', $fee->id)
+      ->with('success', 'Payment has been recorded successfully!');
+  }
+
 
   public function show(Fee $fee)
   {

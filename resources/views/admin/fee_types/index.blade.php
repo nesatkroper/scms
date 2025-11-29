@@ -70,7 +70,7 @@
       </div>
     </form>
 
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4">
       @forelse ($feeTypes as $feeType)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -141,7 +141,7 @@
               </a>
 
               {{-- Delete Button (Full form submission) --}}
-              <form action="{{ route('admin.fee_types.destroy', $feeType->id) }}" method="POST"
+              {{-- <form action="{{ route('admin.fee_types.destroy', $feeType->id) }}" method="POST"
                 onsubmit="return confirm('Are you sure you want to delete this Fee Type? This action cannot be undone.');">
                 @csrf
                 @method('DELETE')
@@ -151,7 +151,7 @@
                   <i class="fa-regular fa-trash-can me-2"></i>
                   Delete
                 </button>
-              </form>
+              </form> --}}
             </div>
           </div>
         </div>

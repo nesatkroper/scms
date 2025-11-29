@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\{
   ExamController,
   ExpenseController,
   ExpenseCategoryController,
-  PaymentController,
   StudentController,
   SubjectController,
   TeacherController,
@@ -112,13 +111,6 @@ Route::prefix('admin')
         Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('readAll');
       });
 
-    Route::prefix('payments')
-      ->as('payments.')
-      ->group(function () {
-        Route::post('/', [PaymentController::class, 'store'])->name('store');
-        Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
-      });
-
     Route::prefix('scores')
       ->as('scores.')
       ->group(function () {
@@ -155,6 +147,9 @@ Route::prefix('admin')
     });
 
     Route::post('expenses/{expense}/approve', [ExpenseController::class, 'approve'])->name('expenses.approve');
+    Route::post('/fees/{fee}/pay', [FeeController::class, 'paid'])
+      ->name('fees.pay');
+
 
     // Route::prefix('enrollments')
     //   ->as('enrollments.')
