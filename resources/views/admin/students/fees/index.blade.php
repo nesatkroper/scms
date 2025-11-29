@@ -24,8 +24,8 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
       @forelse ($fees as $fee)
         @php
-          $totalPaid = $fee->payments->sum('amount');
-          $amountDue = $fee->amount - $totalPaid;
+          $totalPaid = $fee->payment_date ? $fee->amount : 0;
+          $amountDue = $fee->amount;
 
           // Status Color Logic
           $statusColor = [

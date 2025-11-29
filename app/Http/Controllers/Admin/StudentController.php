@@ -61,7 +61,7 @@ class StudentController extends BaseController
   public function feesIndex(User $student)
   {
     $fees = $student->fees()
-      ->with(['payments', 'feeType', 'creator'])
+      ->with(['feeType', 'creator'])
       ->latest()
       ->paginate(15);
 
@@ -70,7 +70,6 @@ class StudentController extends BaseController
 
   public function coursesIndex(User $student)
   {
-    // Eager load the courseOffering and its related subject/teacher
     $enrollments = $student->enrollments()
       ->with([
         'courseOffering' => function ($query) {

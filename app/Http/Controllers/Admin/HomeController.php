@@ -8,12 +8,9 @@ use App\Models\Enrollment;
 use App\Models\Expense;
 use App\Models\Fee;
 use App\Models\User;
-use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-
-
   public function index()
   {
     $students = User::role('student')->count();
@@ -28,7 +25,6 @@ class HomeController extends Controller
       ->with(['student', 'courseOffering', 'fee'])
       ->take(5)
       ->get();
-
 
     $data = [
       'totalStudents' => $students,
