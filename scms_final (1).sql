@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 28, 2025 at 05:32 PM
+-- Generation Time: Nov 29, 2025 at 05:04 AM
 -- Server version: 8.0.44-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -38,6 +38,16 @@ CREATE TABLE `attendances` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attendances`
+--
+
+INSERT INTO `attendances` (`id`, `student_id`, `course_offering_id`, `date`, `status`, `remarks`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, 1, '2025-11-29', 'attending', NULL, '2025-11-28 19:55:17', '2025-11-28 19:55:17', NULL),
+(2, 4, 1, '2025-11-29', 'attending', NULL, '2025-11-28 19:55:17', '2025-11-28 19:55:17', NULL),
+(3, 5, 1, '2025-11-29', 'permission', NULL, '2025-11-28 19:55:17', '2025-11-28 19:55:17', NULL),
+(4, 6, 1, '2025-11-29', 'attending', NULL, '2025-11-28 19:55:17', '2025-11-28 19:55:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -104,6 +114,7 @@ CREATE TABLE `course_offerings` (
   `join_start` date DEFAULT NULL,
   `join_end` date DEFAULT NULL,
   `fee` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `payment_type` enum('course','monthly') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'course',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -113,8 +124,9 @@ CREATE TABLE `course_offerings` (
 -- Dumping data for table `course_offerings`
 --
 
-INSERT INTO `course_offerings` (`id`, `subject_id`, `teacher_id`, `classroom_id`, `time_slot`, `schedule`, `start_time`, `end_time`, `join_start`, `join_end`, `fee`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 2, 1, 'morning', 'wed-fri', '08:00:00', '10:00:00', '2025-06-30', '2026-01-26', 15.00, '2025-11-28 10:12:53', '2025-11-28 10:12:53', NULL);
+INSERT INTO `course_offerings` (`id`, `subject_id`, `teacher_id`, `classroom_id`, `time_slot`, `schedule`, `start_time`, `end_time`, `join_start`, `join_end`, `fee`, `payment_type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 2, 1, 'morning', 'wed-fri', '08:00:00', '10:00:00', '2025-06-30', '2026-01-26', 15.00, 'course', '2025-11-28 10:12:53', '2025-11-28 10:12:53', NULL),
+(2, 1, 2, 1, 'evening', 'mon-fri', '09:22:00', '13:56:00', '2026-02-21', '2027-03-30', 15.00, 'monthly', '2025-11-28 22:01:06', '2025-11-28 22:01:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -141,7 +153,8 @@ INSERT INTO `enrollments` (`id`, `student_id`, `course_offering_id`, `grade_fina
 (2, 3, 1, NULL, 'studying', NULL, '2025-11-28 10:21:42', '2025-11-28 10:21:42'),
 (3, 4, 1, NULL, 'studying', NULL, '2025-11-28 10:24:48', '2025-11-28 10:24:48'),
 (4, 5, 1, NULL, 'studying', NULL, '2025-11-28 10:31:18', '2025-11-28 10:31:18'),
-(5, 6, 1, NULL, 'studying', NULL, '2025-11-28 10:31:38', '2025-11-28 10:31:38');
+(5, 6, 1, NULL, 'studying', NULL, '2025-11-28 10:31:38', '2025-11-28 10:31:38'),
+(6, 3, 2, NULL, 'studying', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17');
 
 -- --------------------------------------------------------
 
@@ -161,6 +174,13 @@ CREATE TABLE `exams` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `exams`
+--
+
+INSERT INTO `exams` (`id`, `type`, `description`, `course_offering_id`, `date`, `total_marks`, `passing_marks`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'final', 'Aliqua Praesentium', 1, '2026-06-09', 76, 38, '2025-11-28 10:57:32', '2025-11-28 10:57:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -182,6 +202,13 @@ CREATE TABLE `expenses` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `title`, `description`, `amount`, `date`, `expense_category_id`, `approved_by`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Electricity', 'លួចលុយ', 89.00, '2025-11-29', 1, 1, 1, '2025-11-28 21:22:18', '2025-11-28 21:22:35', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -196,6 +223,14 @@ CREATE TABLE `expense_categories` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `expense_categories`
+--
+
+INSERT INTO `expense_categories` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Utility', 'Electriciry, ....', '2025-11-28 21:18:07', '2025-11-28 21:18:07', NULL),
+(2, 'Payroll', 'Payroll of Teacher, ....', '2025-11-28 21:19:52', '2025-11-28 21:19:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -225,7 +260,22 @@ INSERT INTO `fees` (`id`, `student_id`, `enrollment_id`, `fee_type_id`, `created
 (2, 3, 2, 2, 1, 15.00, NULL, NULL, '2025-11-28 10:21:42', '2025-11-28 10:21:42', NULL),
 (3, 4, 3, 2, 1, 15.00, NULL, NULL, '2025-11-28 10:24:48', '2025-11-28 10:24:48', NULL),
 (4, 5, 4, 2, 1, 15.00, NULL, NULL, '2025-11-28 10:31:18', '2025-11-28 10:31:18', NULL),
-(5, 6, 5, 2, 1, 15.00, NULL, NULL, '2025-11-28 10:31:38', '2025-11-28 10:31:38', NULL);
+(5, 6, 5, 2, 1, 15.00, NULL, NULL, '2025-11-28 10:31:38', '2025-11-28 10:31:38', NULL),
+(6, 3, 6, 2, 1, 15.00, '2026-02-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(7, 3, 6, 2, 1, 15.00, '2026-03-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(8, 3, 6, 2, 1, 15.00, '2026-04-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(9, 3, 6, 2, 1, 15.00, '2026-05-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(10, 3, 6, 2, 1, 15.00, '2026-06-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(11, 3, 6, 2, 1, 15.00, '2026-07-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(12, 3, 6, 2, 1, 15.00, '2026-08-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(13, 3, 6, 2, 1, 15.00, '2026-09-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(14, 3, 6, 2, 1, 15.00, '2026-10-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(15, 3, 6, 2, 1, 15.00, '2026-11-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(16, 3, 6, 2, 1, 15.00, '2026-12-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(17, 3, 6, 2, 1, 15.00, '2027-01-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(18, 3, 6, 2, 1, 15.00, '2027-02-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(19, 3, 6, 2, 1, 15.00, '2027-03-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL),
+(20, 3, 6, 2, 1, 15.00, '2027-04-16', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -269,7 +319,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '1_create_tb', 1),
 (2, '2_create_cache_table', 1),
 (3, '3_create_personal_access_tokens_table', 1),
-(4, '4_create_permission_tables', 1);
+(4, '4_create_permission_tables', 1),
+(5, '2025_11_29_044028_add_payment_type_to_course_offerings_table', 2);
 
 -- --------------------------------------------------------
 
@@ -329,10 +380,24 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
-('19d3a431-1be5-41c7-8c93-b2cb98c5f54d', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Scarlett Spears in Althea Kirkland\",\"body\":\"Scarlett Spears has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/enrollments\\/4\\/1\",\"date\":\"Nov 28, 2025 17:24 PM\"}', NULL, '2025-11-28 10:24:48', '2025-11-28 10:24:48'),
+('19d3a431-1be5-41c7-8c93-b2cb98c5f54d', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Scarlett Spears in Althea Kirkland\",\"body\":\"Scarlett Spears has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/students\\/enrollments\\/4\\/1\",\"date\":\"Nov 28, 2025 17:24 PM\"}', '2025-11-28 20:53:51', '2025-11-28 10:24:48', '2025-11-28 20:53:51'),
+('33fff875-98af-4edd-bd0d-bb989d43dacc', 'App\\Notifications\\ExpenseCreated', 'App\\Models\\User', 1, '{\"title\":\"New Expense Submitted\",\"body\":\"A new expense of $89.00 was submitted for category: Utility\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/expenses\\/1\"}', NULL, '2025-11-28 21:22:18', '2025-11-28 21:22:18'),
+('4d866cfe-5721-487b-9341-52853a67c2d1', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #5\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/5\"}', NULL, '2025-11-28 10:33:03', '2025-11-28 10:33:03'),
+('545129ac-1936-4c33-b4f7-9a12c629aff9', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #2\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/2\"}', NULL, '2025-11-28 10:33:38', '2025-11-28 10:33:38'),
+('80434332-2526-43e4-906c-46e4f073c296', 'App\\Notifications\\CourseAssigned', 'App\\Models\\User', 2, '{\"title\":\"New Course Assigned: Althea Kirkland\",\"body\":\"You have been assigned to teach Althea Kirkland in room Scott Curry. Schedule: mon-fri (2025-11-29 09:22:00 - 2025-11-29 13:56:00).\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/course_offerings\\/2\",\"start_date\":\"2026-02-21T00:00:00.000000Z\"}', NULL, '2025-11-28 22:01:06', '2025-11-28 22:01:06'),
+('94698d7b-4814-4cc1-ba03-2aa85b064f12', 'App\\Notifications\\ExpenseCategoryModified', 'App\\Models\\User', 1, '{\"title\":\"Expense Category Created\",\"body\":\"The expense category \\\"Utility\\\" has been created.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/expense_categories\\/1\",\"category_id\":1,\"action\":\"created\"}', NULL, '2025-11-28 21:18:07', '2025-11-28 21:18:07'),
+('a8f69843-05e7-497e-9b6b-233a679fb03e', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #8\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/8\"}', NULL, '2025-11-28 22:03:06', '2025-11-28 22:03:06'),
+('aa92dc92-b623-4c3e-b41a-16ec1586800c', 'App\\Notifications\\ExpenseCategoryModified', 'App\\Models\\User', 1, '{\"title\":\"Expense Category Created\",\"body\":\"The expense category \\\"Payroll\\\" has been created.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/expense_categories\\/2\",\"category_id\":2,\"action\":\"created\"}', NULL, '2025-11-28 21:19:52', '2025-11-28 21:19:52'),
+('aaa56fba-e3b5-4b33-bd52-bf124f2cd356', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #6\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/6\"}', NULL, '2025-11-28 22:02:53', '2025-11-28 22:02:53'),
 ('ac345496-582f-411b-8530-fa7c0dbf38dc', 'App\\Notifications\\CourseAssigned', 'App\\Models\\User', 2, '{\"title\":\"New Course Assigned: Althea Kirkland\",\"body\":\"You have been assigned to teach Althea Kirkland in room Scott Curry. Schedule: wed-fri (2025-11-28 08:00:00 - 2025-11-28 10:00:00).\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/course_offerings\\/1\",\"start_date\":\"2025-06-30T00:00:00.000000Z\"}', NULL, '2025-11-28 10:12:53', '2025-11-28 10:12:53'),
-('cc1158ea-ad80-4533-875d-6036b3435f69', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Joan Hale in Althea Kirkland\",\"body\":\"Joan Hale has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/enrollments\\/6\\/1\",\"date\":\"Nov 28, 2025 17:31 PM\"}', NULL, '2025-11-28 10:31:38', '2025-11-28 10:31:38'),
-('f707f8be-9e18-4ce3-80a2-8e9731d7ab7b', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Cailin Vazquez in Althea Kirkland\",\"body\":\"Cailin Vazquez has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/enrollments\\/5\\/1\",\"date\":\"Nov 28, 2025 17:31 PM\"}', NULL, '2025-11-28 10:31:18', '2025-11-28 10:31:18');
+('c16e2b44-d979-428c-b8be-178865bdfb2f', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #4\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/4\"}', NULL, '2025-11-28 10:59:04', '2025-11-28 10:59:04'),
+('cb903e6d-afc0-4648-a415-a95c7fea3b9b', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #9\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/9\"}', NULL, '2025-11-28 22:03:10', '2025-11-28 22:03:10'),
+('cc1158ea-ad80-4533-875d-6036b3435f69', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Joan Hale in Althea Kirkland\",\"body\":\"Joan Hale has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/students\\/enrollments\\/6\\/1\",\"date\":\"Nov 28, 2025 17:31 PM\"}', '2025-11-28 20:55:53', '2025-11-28 10:31:38', '2025-11-28 20:55:53'),
+('cf46910f-ad3b-4231-92ed-7537d39e0565', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #3\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/3\"}', NULL, '2025-11-28 10:33:43', '2025-11-28 10:33:43'),
+('d281a403-6f18-4458-ae8c-ed10fd361a7c', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #13\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/13\"}', NULL, '2025-11-28 22:03:01', '2025-11-28 22:03:01'),
+('e6fd7140-b6ae-46ca-ac25-8643ae03cebb', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Clinton Vincent in Althea Kirkland\",\"body\":\"Clinton Vincent has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/enrollments\\/3\\/2\",\"date\":\"Nov 29, 2025 05:01 AM\"}', NULL, '2025-11-28 22:01:17', '2025-11-28 22:01:17'),
+('e992fec2-ab1a-4134-8a59-704ffa42ba6c', 'App\\Notifications\\PaymentReceived', 'App\\Models\\User', 1, '{\"title\":\"New Payment Received (Admin User)\",\"body\":\"Payment of $15.00 was received for Fee #7\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/fees\\/7\"}', NULL, '2025-11-28 22:02:56', '2025-11-28 22:02:56'),
+('f707f8be-9e18-4ce3-80a2-8e9731d7ab7b', 'App\\Notifications\\NewCourseEnrollment', 'App\\Models\\User', 1, '{\"title\":\"New Enrollment: Cailin Vazquez in Althea Kirkland\",\"body\":\"Cailin Vazquez has successfully enrolled in the course \'Althea Kirkland\'. The fee is $15.00.\",\"link\":\"http:\\/\\/127.0.0.1:8102\\/admin\\/students\\/enrollments\\/5\\/1\",\"date\":\"Nov 28, 2025 17:31 PM\"}', '2025-11-28 20:55:55', '2025-11-28 10:31:18', '2025-11-28 20:55:55');
 
 -- --------------------------------------------------------
 
@@ -365,6 +430,21 @@ CREATE TABLE `payments` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `amount`, `payment_date`, `payment_method`, `transaction_id`, `remarks`, `received_by`, `fee_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 15.00, '2025-11-28', 'Cash', 'SCMS-VLPR-1NHN-CKLI-TDG6', NULL, 1, 5, '2025-11-28 10:33:03', '2025-11-28 10:33:03', NULL),
+(2, 15.00, '2025-11-28', 'Cash', 'SCMS-Y6SP-KZX8-M2CB-2ME8', NULL, 1, 2, '2025-11-28 10:33:38', '2025-11-28 10:33:38', NULL),
+(3, 15.00, '2025-11-28', 'Cash', 'SCMS-AK66-2V7W-VEKN-TEBX', NULL, 1, 3, '2025-11-28 10:33:43', '2025-11-28 10:33:43', NULL),
+(4, 15.00, '2025-11-28', 'Cash', 'SCMS-F9C9-6CO7-51JV-6PBC', NULL, 1, 4, '2025-11-28 10:59:03', '2025-11-28 10:59:03', NULL),
+(5, 15.00, '2025-11-29', 'Cash', 'SCMS-LOHA-9MOP-R1HQ-HY3Z', NULL, 1, 6, '2025-11-28 22:02:53', '2025-11-28 22:02:53', NULL),
+(6, 15.00, '2025-11-29', 'Cash', 'SCMS-FIOK-SW4O-8D4P-FHHX', NULL, 1, 7, '2025-11-28 22:02:56', '2025-11-28 22:02:56', NULL),
+(7, 15.00, '2025-11-29', 'Cash', 'SCMS-C8IN-VLMS-LJ9B-S0UR', NULL, 1, 13, '2025-11-28 22:03:01', '2025-11-28 22:03:01', NULL),
+(8, 15.00, '2025-11-29', 'Cash', 'SCMS-9LSU-8EPE-2LAK-TFTJ', NULL, 1, 8, '2025-11-28 22:03:06', '2025-11-28 22:03:06', NULL),
+(9, 15.00, '2025-11-29', 'Cash', 'SCMS-UD64-T838-YBFD-FKQ4', NULL, 1, 9, '2025-11-28 22:03:10', '2025-11-28 22:03:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -620,7 +700,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('VAIoZf3fmWIxeXjdGVg0q8CQcD7VP20OIAOLDDbl', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZUlnVlh3MzFHUU1uWk5mc3dEOGxYa2lzM014Nk9kOFNRbHZNU3psZCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9mZWVzP2ZlZV90eXBlX2lkPTIiO3M6NToicm91dGUiO3M6MTY6ImFkbWluLmZlZXMuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1764351098);
+('VAIoZf3fmWIxeXjdGVg0q8CQcD7VP20OIAOLDDbl', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZUlnVlh3MzFHUU1uWk5mc3dEOGxYa2lzM014Nk9kOFNRbHZNU3psZCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9ub3RpZmljYXRpb25zIjtzOjU6InJvdXRlIjtzOjI1OiJhZG1pbi5ub3RpZmljYXRpb25zLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1764392608);
 
 -- --------------------------------------------------------
 
@@ -889,7 +969,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendances`
 --
 ALTER TABLE `attendances`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `classrooms`
@@ -901,37 +981,37 @@ ALTER TABLE `classrooms`
 -- AUTO_INCREMENT for table `course_offerings`
 --
 ALTER TABLE `course_offerings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `enrollments`
 --
 ALTER TABLE `enrollments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `expense_categories`
 --
 ALTER TABLE `expense_categories`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `fees`
 --
 ALTER TABLE `fees`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `fee_types`
@@ -943,13 +1023,13 @@ ALTER TABLE `fee_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `permissions`
