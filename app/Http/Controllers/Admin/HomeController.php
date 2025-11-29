@@ -7,6 +7,7 @@ use App\Models\Classroom;
 use App\Models\CourseOffering;
 use App\Models\Payment;
 use App\Models\Enrollment;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,10 +18,10 @@ class HomeController extends Controller
 
   public function index()
   {
-    $teachers = User::role('Teacher')->count();
-    $students = User::role('Student')->count();
+    $students = User::role('student')->count();
     $course = CourseOffering::count();
     $fee = Payment::sum('amount');
+    $expense = Expense::sum('amount');
 
     $recentEnrollments = Enrollment::latest()
       ->with(['student', 'courseOffering', 'fee'])
@@ -30,7 +31,7 @@ class HomeController extends Controller
 
     $data = [
       'totalStudents' => $students,
-      'totalTeachers' => $teachers,
+      'totalExpense' => $expense,
       'activeCourse' => $course,
       'feesCollected' => $fee,
       'recentStudents' => $recentEnrollments,

@@ -9,6 +9,118 @@
 
   <div class="p-4 sm:p-0">
     <div class="box grid sm:grid-cols-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <!-- Fees Collected -->
+      <div
+        class="bg-white dark:bg-gray-800 dark:hover:bg-amber-950 rounded-xl p-5 border border-gray-200
+             dark:border-gray-700 shadow-sm relative">
+        <div class="flex justify-between">
+          <div>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Fees Collected</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+              ${{ number_format($feesCollected, 2) }}</h3>
+          </div>
+          <div class="h-12 w-12 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center">
+            <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <div>
+            <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
+              <i class="fas fa-arrow-down mr-1"></i> 2.8%
+            </span>
+            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+          </div>
+
+          <!-- Dropdown button -->
+          <div class="relative inline-block text-left">
+            <div>
+              <button
+                class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-amber-500 transition-colors"
+                aria-expanded="true" aria-haspopup="true">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+
+            <!-- Dropdown menu -->
+            <div
+              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+              role="menu" aria-orientation="vertical" tabindex="-1">
+              <div class="py-1" role="none">
+                <a href="{{ route('admin.fees.index') }}"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  role="menuitem">
+                  <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
+                  View Details
+                </a>
+                <a href="#"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  role="menuitem">
+                  <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
+                  Export Data
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fees Collected -->
+      <div
+        class="bg-white dark:bg-gray-800 dark:hover:bg-amber-950 rounded-xl p-5 border border-gray-200
+             dark:border-gray-700 shadow-sm relative">
+        <div class="flex justify-between">
+          <div>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Expense Cost</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+              ${{ number_format($totalExpense, 2) }}</h3>
+          </div>
+          <div class="h-12 w-12 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center">
+            <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <div>
+            <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
+              <i class="fas fa-arrow-down mr-1"></i> 2.8%
+            </span>
+            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+          </div>
+
+          <!-- Dropdown button -->
+          <div class="relative inline-block text-left">
+            <div>
+              <button
+                class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-amber-500 transition-colors"
+                aria-expanded="true" aria-haspopup="true">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+
+            <!-- Dropdown menu -->
+            <div
+              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+              role="menu" aria-orientation="vertical" tabindex="-1">
+              <div class="py-1" role="none">
+                <a href="{{ route('admin.expenses.index') }}"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  role="menuitem">
+                  <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
+                  View Details
+                </a>
+                <a href="#"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  role="menuitem">
+                  <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
+                  Export Data
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Total Students -->
       <div
         class="bg-white dark:hover:bg-blue-950 dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm relative"
@@ -46,61 +158,6 @@
               role="menu">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.students.index') }}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
-                  View Details
-                </a>
-                <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
-                  Export Data
-                </a>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Teachers -->
-      <div
-        class="bg-white dark:bg-gray-800 dark:hover:bg-blue-950 rounded-xl p-5 border border-gray-200
-             dark:border-gray-700 shadow-sm relative">
-        <div class="flex justify-between">
-          <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Teachers</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalTeachers }}</h3>
-          </div>
-          <div class="h-12 w-12 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center">
-            <i class="fas fa-chalkboard-teacher text-purple-100 dark:text-purple-200 text-xl"></i>
-          </div>
-        </div>
-        <div class="flex items-center justify-between mt-4">
-          <div>
-            <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
-              <i class="fas fa-arrow-up mr-1"></i> 5.2%
-            </span>
-            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
-          </div>
-
-          <!-- Dropdown button -->
-          <div class="relative inline-block text-left">
-            <div>
-              <button type="button"
-                class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-purple-100 dark:hover:bg-gray-900 hover:text-purple-500 transition-colors"
-                aria-expanded="true" aria-haspopup="true">
-                <i class="fas fa-ellipsis-v"></i>
-              </button>
-            </div>
-
-            <!-- Dropdown menu -->
-            <div
-              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
-              role="menu">
-              <div class="py-1" role="none">
-                <a href="{{ route('admin.teachers.index') }}"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
@@ -173,61 +230,6 @@
         </div>
       </div>
 
-      <!-- Fees Collected -->
-      <div
-        class="bg-white dark:bg-gray-800 dark:hover:bg-amber-950 rounded-xl p-5 border border-gray-200
-             dark:border-gray-700 shadow-sm relative">
-        <div class="flex justify-between">
-          <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Fees Collected</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
-              ${{ number_format($feesCollected, 2) }}</h3>
-          </div>
-          <div class="h-12 w-12 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center">
-            <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
-          </div>
-        </div>
-        <div class="flex items-center justify-between mt-4">
-          <div>
-            <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
-              <i class="fas fa-arrow-down mr-1"></i> 2.8%
-            </span>
-            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
-          </div>
-
-          <!-- Dropdown button -->
-          <div class="relative inline-block text-left">
-            <div>
-              <button
-                class="btn-toggle-dropdown inline-flex items-center justify-center rounded-full size-8 cursor-pointer text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-amber-500 transition-colors"
-                aria-expanded="true" aria-haspopup="true">
-                <i class="fas fa-ellipsis-v"></i>
-              </button>
-            </div>
-
-            <!-- Dropdown menu -->
-            <div
-              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
-              role="menu" aria-orientation="vertical" tabindex="-1">
-              <div class="py-1" role="none">
-                <a href="{{ route('admin.fees.index') }}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
-                  View Details
-                </a>
-                <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem">
-                  <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
-                  Export Data
-                </a>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Charts and Activity Section -->

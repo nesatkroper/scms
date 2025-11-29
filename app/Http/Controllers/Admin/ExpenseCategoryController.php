@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExpenseCategory;
+use App\Models\User;
+use App\Notifications\ExpenseCategoryModified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Notification;
 
 class ExpenseCategoryController extends BaseController
 {
@@ -54,7 +56,11 @@ class ExpenseCategoryController extends BaseController
     ]);
 
     try {
-      ExpenseCategory::create($validatedData);
+      $cate = ExpenseCategory::create($validatedData);
+
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new ExpenseCategoryModified($cate, 'created'));
+
       return redirect()->route('admin.expense_categories.index')->with('success', 'Expense Category created successfully!');
     } catch (\Exception $e) {
       Log::error('Error creating expense category: ' . $e->getMessage());
