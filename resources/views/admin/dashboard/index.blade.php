@@ -23,14 +23,12 @@
             <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
           </div>
         </div>
-        <div class="flex items-center justify-between mt-4">
-          <div>
-            <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
-              <i class="fas fa-arrow-down mr-1"></i> 2.8%
-            </span>
-            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
-          </div>
-
+        <div>
+          <p class="text-red-500 dark:text-red-400 text-sm font-medium">Fees Pending</p>
+          <h3 class="text-xl font-bold text-red-800 dark:text-white mt-1">
+            - ${{ number_format($feesUnpaid, 2) }}</h3>
+        </div>
+        <div class="flex items-center justify-end mt-4">
           <!-- Dropdown button -->
           <div class="relative inline-block text-left">
             <div>
@@ -78,14 +76,14 @@
           <div class="h-12 w-12 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center">
             <i class="fas fa-dollar-sign text-amber-100 dark:text-amber-200 text-xl"></i>
           </div>
+
         </div>
-        <div class="flex items-center justify-between mt-4">
-          <div>
-            <span class="text-red-500 dark:text-red-400 text-sm flex items-center">
-              <i class="fas fa-arrow-down mr-1"></i> 2.8%
-            </span>
-            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
-          </div>
+        <div>
+          <p class="text-red-500 dark:text-red-400 text-sm font-medium">Expense Pending</p>
+          <h3 class="text-xl font-bold text-red-800 dark:text-white mt-1">
+            - ${{ number_format($pendingExpense, 2) }}</h3>
+        </div>
+        <div class="flex items-center justify-end mt-4">
 
           <!-- Dropdown button -->
           <div class="relative inline-block text-left">
@@ -134,13 +132,11 @@
             <i class="fas fa-user-graduate text-blue-100 dark:text-blue-200 text-xl"></i>
           </div>
         </div>
-        <div class="flex items-center justify-between mt-4">
-          <div>
-            <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
-              <i class="fas fa-arrow-up mr-1"></i> 12.5%
-            </span>
-            <span class="text-gray-500 dark:text-gray-400 text-sm">vs last month</span>
-          </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Teachers</p>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalTeachers }}</h3>
+        </div>
+        <div class="flex items-center justify-end mt-4">
 
           <!-- Dropdown button -->
           <div class="relative inline-block text-left">

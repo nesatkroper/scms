@@ -79,9 +79,8 @@
 
       @forelse ($users as $user)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-300 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-slate-300 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col @if ($user->hasRole('admin')) dark:border-red-700 border-dashed @endif
 ">
-          {{-- Card Header: Avatar, Name, and Roles --}}
           <div
             class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-slate-300 dark:border-slate-600 flex items-center gap-4">
             <img src="{{ $user->avatar_url }}"
@@ -134,6 +133,7 @@
           </div>
 
           {{-- Card Footer: Actions --}}
+
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
 
@@ -146,12 +146,13 @@
                 Password
               </button>
 
-              <button type="button" @click="openRoleModal({{ $user->id }})"
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors">
-                <i class="fa-solid fa-fingerprint me-2"></i>
-                Role
-              </button>
-
+              @if (!$user->hasRole('admin'))
+                <button type="button" @click="openRoleModal({{ $user->id }})"
+                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors">
+                  <i class="fa-solid fa-fingerprint me-2"></i>
+                  Role
+                </button>
+              @endif
             </div>
 
             <div class="flex">
@@ -163,28 +164,33 @@
                 Show
               </a>
 
-              {{-- Edit Button --}}
-              <a href="{{ route('admin.users.edit', $user->id) }}"
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit User">
-                <i class="fa-solid fa-pen-to-square me-2"></i>
-                Edit
-              </a>
+              @if (!$user->hasRole('admin'))
+                {{-- Edit Button --}}
+                <a href="{{ route('admin.users.edit', $user->id) }}"
+                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit User">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  Edit
+                </a>
+              @endif
 
-              {{-- Delete Form/Button --}}
-              <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete the user \'{{ $user->name }}\'? This action cannot be undone.');">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                  class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Delete User">
-                  <i class="fa-regular fa-trash-can me-2"></i>
-                  Delete
-                </button>
-              </form>
+              @if (!$user->hasRole('admin'))
+                {{-- Delete Form/Button --}}
+                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete the user \'{{ $user->name }}\'? This action cannot be undone.');">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                    class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Delete User">
+                    <i class="fa-regular fa-trash-can me-2"></i>
+                    Delete
+                  </button>
+                </form>
+              @endif
             </div>
           </div>
+
         </div>
       @empty
         <div class="col-span-full py-12 text-center">

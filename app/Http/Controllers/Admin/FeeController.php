@@ -28,7 +28,7 @@ class FeeController extends BaseController
   {
     $search     = $request->input('search');
     $feeTypeId  = $request->input('fee_type_id');
-    $status     = $request->input('status'); // unpaid or paid
+    $status     = $request->input('status');
     $perPage    = $request->input('per_page', 8);
 
     $fees = Fee::query()

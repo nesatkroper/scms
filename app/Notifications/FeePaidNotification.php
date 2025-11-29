@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use App\Models\Fee;
 
-class PaymentConfirmed extends Notification
+class FeePaidNotification extends Notification
 {
   use Queueable;
 

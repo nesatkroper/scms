@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Classroom;
 use App\Models\CourseOffering;
-use App\Models\Payment;
 use App\Models\Enrollment;
 use App\Models\Expense;
-use Illuminate\Http\Request;
+use App\Models\Fee;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -19,9 +17,12 @@ class HomeController extends Controller
   public function index()
   {
     $students = User::role('student')->count();
+    $teachers = User::role('teacher')->count();
     $course = CourseOffering::count();
-    $fee = Payment::sum('amount');
-    $expense = Expense::sum('amount');
+    $totalPaid = Fee::whereNotNull('payment_date')->sum('amount');
+    $totalUnpaid = Fee::whereNull('payment_date')->sum('amount');
+    $totalExpense = Expense::whereNotNull('approved_by')->sum('amount');
+    $pendingExpense = Expense::whereNull('approved_by')->sum('amount');
 
     $recentEnrollments = Enrollment::latest()
       ->with(['student', 'courseOffering', 'fee'])
@@ -31,9 +32,12 @@ class HomeController extends Controller
 
     $data = [
       'totalStudents' => $students,
-      'totalExpense' => $expense,
+      'totalTeachers' => $teachers,
+      'totalExpense' => $totalExpense,
+      'pendingExpense' => $pendingExpense,
       'activeCourse' => $course,
-      'feesCollected' => $fee,
+      'feesCollected' => $totalPaid,
+      'feesUnpaid' => $totalUnpaid,
       'recentStudents' => $recentEnrollments,
       'recentActivities' => [
         [

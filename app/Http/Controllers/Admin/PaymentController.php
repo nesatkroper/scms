@@ -5,55 +5,30 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Fee;
-use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\PaymentReceived;
-use App\Models\User;
 use Illuminate\Support\Facades\Notification;
-
+use App\Models\User;
+use App\Notifications\FeePaidNotification;
 
 class PaymentController extends Controller
 {
-  public function store(PaymentRequest $request): RedirectResponse
+  public function store(Fee $fee, PaymentRequest $request): RedirectResponse
   {
-    $fee = Fee::findOrFail($request->fee_id);
-
     try {
-      $payment = new Payment($request->validated());
-      $payment->received_by = $request->received_by ?? Auth::id();
-
-      $fee->payments()->save($payment);
-
+      $data = $request->validated();
+      $data['received_by'] = $data['received_by'] ?? Auth::id();
+      $fee->update($data);
       $notifiableUsers = User::role(['admin', 'staff'])->get();
-      Notification::send($notifiableUsers, new PaymentReceived($payment));
+      Notification::send($notifiableUsers, new FeePaidNotification($fee));
 
-      return redirect()->route('admin.fees.show', $fee->id)
-        ->with('success', 'Payment for Fee #' . $fee->id . ' added successfully.');
+      return redirect()
+        ->route('admin.fees.show', $fee->id)
+        ->with('success', 'Fee marked as paid successfully.');
     } catch (\Exception $e) {
-      return back()->withInput()
-        ->with('error', 'Failed to add payment. Error: ' . $e->getMessage());
-    }
-  }
-
-  public function update(PaymentRequest $request, Payment $payment): RedirectResponse
-  {
-    if ($request->fee_id != $payment->fee_id) {
-      return back()->with('error', 'Cannot change the associated fee for this payment.');
-    }
-
-    try {
-      $payment->fill($request->validated());
-      $payment->received_by = $request->received_by ?? $payment->received_by;
-      $payment->save();
-
-      $fee = $payment->fee;
-
-      return redirect()->route('admin.fees.show', $fee->id)
-        ->with('success', 'Payment #' . $payment->id . ' updated successfully.');
-    } catch (\Exception $e) {
-      return back()->withInput()
-        ->with('error', 'Failed to update payment. Error: ' . $e->getMessage());
+      return back()
+        ->withInput()
+        ->with('error', 'Failed to process payment. Error: ' . $e->getMessage());
     }
   }
 }
