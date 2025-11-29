@@ -62,10 +62,8 @@ class FeeController extends BaseController
                 ELSE 4        -- paid (last)
             END
         ")
-
       ->orderBy('due_date', 'desc')
       ->orderBy('created_at', 'desc')
-
       ->paginate($perPage)
       ->appends($request->query());
 

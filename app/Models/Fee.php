@@ -66,7 +66,6 @@ class Fee extends Model
     return 'unknown';
   }
 
-
   public function scopeStatus($query, $status)
   {
     return $query->where(function ($q) use ($status) {
