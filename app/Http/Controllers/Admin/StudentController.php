@@ -10,10 +10,12 @@ use App\Models\Fee;
 use App\Models\FeeType;
 use App\Models\Enrollment;
 use App\Models\User;
+use App\Notifications\NewCourseEnrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Role;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -66,17 +68,6 @@ class StudentController extends BaseController
     return view('admin.students.fees.index', compact('student', 'fees'));
   }
 
-  // public function coursesIndex(User $student)
-  // {
-  //   $courses = $student->courseOfferings()
-  //     ->with(['subject', 'teacher', 'classroom'])
-  //     ->paginate(15);
-
-  //   return view('admin.students.enrollments.index', compact('student', 'courses'));
-  // }
-
-  // In App\Http\Controllers\Admin\StudentController
-
   public function coursesIndex(User $student)
   {
     // Eager load the courseOffering and its related subject/teacher
@@ -88,7 +79,6 @@ class StudentController extends BaseController
       ])
       ->paginate(15);
 
-    // Pass the collection of Enrollments to the view
     return view('admin.students.enrollments.index', compact('student', 'enrollments'));
   }
 
@@ -184,7 +174,10 @@ class StudentController extends BaseController
     }
 
     try {
-      Enrollment::create($data);
+      $enrollment = Enrollment::create($data);
+
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new NewCourseEnrollment($enrollment));
 
       return redirect()
         ->route('admin.students.enrollments.index', $student)
