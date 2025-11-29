@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\FeeRequest;
 use App\Models\Fee;
 use App\Models\FeeType;
-use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\FeeAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class FeeController extends BaseController
 {
@@ -31,14 +28,19 @@ class FeeController extends BaseController
   {
     $search     = $request->input('search');
     $feeTypeId  = $request->input('fee_type_id');
-    $status     = $request->input('status');
+    $status     = $request->input('status'); // unpaid or paid
     $perPage    = $request->input('per_page', 8);
 
     $fees = Fee::query()
       ->with(['student:id,name,email', 'feeType:id,name'])
-      ->withSum('payments as paid_total', 'amount')
       ->when($feeTypeId, fn($q) => $q->where('fee_type_id', $feeTypeId))
-      ->when($status, fn($q) => $q->status($status))
+      ->when($status, function ($q) use ($status) {
+        if ($status === 'paid') {
+          $q->whereNotNull('payment_date');
+        } elseif ($status === 'unpaid') {
+          $q->whereNull('payment_date');
+        }
+      })
       ->when($search, function ($query) use ($search) {
         $query->where(function ($q) use ($search) {
           $q->where('remarks', 'like', "%{$search}%")
@@ -50,18 +52,6 @@ class FeeController extends BaseController
             $ft->where('name', 'like', "%{$search}%"));
         });
       })
-
-      ->orderByRaw("
-            CASE
-                WHEN COALESCE((SELECT SUM(p.amount) FROM payments p WHERE p.fee_id = fees.id), 0) = 0
-                    THEN 1   -- unpaid
-                WHEN COALESCE((SELECT SUM(p.amount) FROM payments p WHERE p.fee_id = fees.id), 0) < fees.amount
-                    THEN 2   -- partially paid
-                WHEN COALESCE((SELECT SUM(p.amount) FROM payments p WHERE p.fee_id = fees.id), 0) > fees.amount
-                    THEN 3   -- overpaid
-                ELSE 4        -- paid (last)
-            END
-        ")
       ->orderBy('due_date', 'desc')
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
@@ -70,7 +60,7 @@ class FeeController extends BaseController
     $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
     $selectedFeeType = $feeTypeId ? $feeTypes->firstWhere('id', $feeTypeId) : null;
 
-    $statuses = ['unpaid', 'partially_paid', 'paid', 'overpaid'];
+    $statuses = ['unpaid', 'paid'];
 
     return view('admin.fees.index', compact(
       'fees',
@@ -86,7 +76,7 @@ class FeeController extends BaseController
   {
     $students = User::role('student')->get(['id', 'name']);
     $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
-    $feeTypeId = $request->input('fee_type_id'); // define this variable
+    $feeTypeId = $request->input('fee_type_id');
     $selectedFeeType = $feeTypeId ? FeeType::find($feeTypeId) : null;
 
     if ($students->isEmpty()) {
@@ -122,7 +112,7 @@ class FeeController extends BaseController
 
   public function show(Fee $fee)
   {
-    $fee->load(['student', 'feeType', 'payments', 'creator']);
+    $fee->load(['student', 'feeType', 'creator']);
     return view('admin.fees.show', compact('fee'));
   }
 

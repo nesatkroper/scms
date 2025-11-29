@@ -98,6 +98,7 @@ return new class extends Migration
       $table->foreignId('classroom_id')->nullable()->constrained()->onDelete('set null');
       $table->enum('time_slot', ['morning', 'afternoon', 'evening'])->default('morning');
       $table->enum('schedule', ['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'])->default('mon-fri');
+      $table->enum('payment_type', ['course', 'monthly'])->default('course');
       $table->time('start_time')->nullable();
       $table->time('end_time')->nullable();
       $table->date('join_start')->nullable();
@@ -180,22 +181,14 @@ return new class extends Migration
       $table->decimal('amount', 10, 2);
       $table->date('due_date')->nullable();
       $table->text('remarks')->nullable();
+      $table->date('payment_date')->nullable();
+      $table->string('payment_method')->nullable();
+      $table->string('transaction_id')->nullable();
+      $table->foreignId('received_by')->nullable()->constrained('users')->onDelete('set null');
       $table->timestamps();
       $table->softDeletes();
     });
 
-    Schema::create('payments', function (Blueprint $table) {
-      $table->id();
-      $table->decimal('amount', 10, 2);
-      $table->date('payment_date');
-      $table->string('payment_method');
-      $table->string('transaction_id')->nullable();
-      $table->text('remarks')->nullable();
-      $table->foreignId('received_by')->constrained('users')->onDelete('restrict');
-      $table->foreignId('fee_id')->nullable()->constrained('fees')->onDelete('cascade');
-      $table->timestamps();
-      $table->softDeletes();
-    });
 
     Schema::create('scores', function (Blueprint $table) {
       $table->id();

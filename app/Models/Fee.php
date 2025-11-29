@@ -15,12 +15,18 @@ class Fee extends Model
     'fee_type_id',
     'enrollment_id',
     'amount',
+    'payment_date',
+    'payment_method',
+    'transaction_id',
+    'remarks',
+    'received_by',
     'due_date',
     'remarks'
   ];
 
   protected $casts = [
     'due_date' => 'date',
+    'payment_date' => 'datetime',
   ];
 
   public function student()
@@ -33,11 +39,6 @@ class Fee extends Model
     return $this->belongsTo(FeeType::class);
   }
 
-  public function payments()
-  {
-    return $this->hasMany(Payment::class);
-  }
-
   public function creator()
   {
     return $this->belongsTo(User::class, 'created_by');
@@ -48,60 +49,13 @@ class Fee extends Model
     return $this->belongsTo(Enrollment::class, 'enrollment_id');
   }
 
-
-  public function getPaidDateAttribute()
+  public function receiver()
   {
-    return $this->payments()->latest('payment_date')->value('payment_date');
+    return $this->belongsTo(User::class, 'received_by');
   }
 
   public function getStatusAttribute()
   {
-    $paid = $this->payments->sum('amount');
-
-    if ($paid <= 0) return 'unpaid';
-    if ($paid < $this->amount) return 'partially_paid';
-    if ($paid == $this->amount) return 'paid';
-    if ($paid > $this->amount) return 'overpaid';
-
-    return 'unknown';
-  }
-
-  public function scopeStatus($query, $status)
-  {
-    return $query->where(function ($q) use ($status) {
-
-      if ($status === 'unpaid') {
-        $q->whereDoesntHave('payments')
-          ->orWhereHas('payments', function ($sub) {
-            $sub->selectRaw('fee_id, SUM(amount) as total_paid')
-              ->groupBy('fee_id')
-              ->havingRaw('SUM(amount) <= 0');
-          });
-      }
-
-      if ($status === 'partially_paid') {
-        $q->whereHas('payments', function ($sub) {
-          $sub->selectRaw('fee_id, SUM(amount) as total_paid')
-            ->groupBy('fee_id')
-            ->havingRaw('SUM(amount) > 0 AND SUM(amount) < fees.amount');
-        });
-      }
-
-      if ($status === 'paid') {
-        $q->whereHas('payments', function ($sub) {
-          $sub->selectRaw('fee_id, SUM(amount) as total_paid')
-            ->groupBy('fee_id')
-            ->havingRaw('SUM(amount) = fees.amount');
-        });
-      }
-
-      if ($status === 'overpaid') {
-        $q->whereHas('payments', function ($sub) {
-          $sub->selectRaw('fee_id, SUM(amount) as total_paid')
-            ->groupBy('fee_id')
-            ->havingRaw('SUM(amount) > fees.amount');
-        });
-      }
-    });
+    return $this->payment_date ? 'paid' : 'unpaid';
   }
 }
