@@ -89,7 +89,7 @@
         {{-- Payment Type Select --}}
         <div>
           <label for="payment_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Payment Type <span class="text-red-500">*</span>
+           {{ __('message.payment_type') }} <span class="text-red-500">*</span>
           </label>
 
           <select id="payment_type" name="payment_type" required
@@ -97,14 +97,14 @@
            dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300
            @error('payment_type') border-red-500 @enderror">
 
-            <option value="">Select Payment Type</option>
+            <option value="">{{ __('message.select_payment_type') }}</option>
 
             <option value="course" @selected(old('payment_type', $courseOffering->payment_type ?? 'course') == 'course')>
-              Pay Full Course
+              {{ __('message.pay_full_course') }}
             </option>
 
             <option value="monthly" @selected(old('payment_type', $courseOffering->payment_type ?? 'course') == 'monthly')>
-              Pay Monthly
+             {{ __('message.pay_monthly') }}
             </option>
 
           </select>
