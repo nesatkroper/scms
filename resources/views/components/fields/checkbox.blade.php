@@ -1,4 +1,4 @@
-<input id="{{ $id ?? $name }}" type="checkbox" name="{{ $name }}" value="{{$value}}" @checked($checked)
+<input id="{{ $id ?? $name }}" type="checkbox" name="{{ $name }}" value="{{$value}}" @checked($checked??false)
     class="{{ $class }} appearance-none size-4 
     border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all ease-in-out relative
     checked:bg-indigo-500 dark:checked:bg-indigo-600 checked:border-indigo-500 dark:checked:border-indigo-600
