@@ -5,6 +5,8 @@
       'admin.scores.*',
       'admin.course_offerings.*',
       'admin.classrooms.*',
+      'admin.attendances.*',
+      'admin.enrollments.*',
   ];
   $isAcademicsActive = request()->routeIs($academicsRoutes);
 

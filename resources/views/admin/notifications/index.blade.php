@@ -11,14 +11,12 @@
       My Notifications
     </h3>
 
-    {{-- Success/Error Messages --}}
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         {{ session('success') }}
       </div>
     @endif
 
-    {{-- Mark All Read Button --}}
     @if (Auth::user()->unreadNotifications->count() > 0)
       <form action="{{ route('admin.notifications.readAll') }}" method="POST" class="mb-4">
         @csrf
@@ -29,11 +27,9 @@
       </form>
     @endif
 
-    {{-- Notifications List --}}
-    <div class="space-y-3">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
       @forelse ($notifications as $notification)
         @php
-          // Notification data from the toDatabase() method
           $data = $notification->data;
           $isRead = !is_null($notification->read_at);
         @endphp
@@ -42,7 +38,6 @@
           class="flex items-start p-4 rounded-lg border shadow-sm transition-colors
                            {{ $isRead ? 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-700 opacity-80' : 'bg-white dark:bg-gray-800 border-indigo-200 dark:border-indigo-700 ring-2 ring-indigo-500/30' }}">
 
-          {{-- Icon/Dot --}}
           <div class="flex-shrink-0 mr-4 mt-1">
             @if (!$isRead)
               <span class="size-2 rounded-full bg-indigo-500 block"></span>
@@ -51,7 +46,6 @@
             @endif
           </div>
 
-          {{-- Content --}}
           <div class="flex-grow">
             <div class="flex justify-between items-start">
               <h4
@@ -68,16 +62,13 @@
               {{ $data['body'] ?? 'Click to view details.' }}
             </p>
 
-            {{-- Actions --}}
             <div class="mt-3 flex items-center space-x-3">
-              {{-- View Link --}}
               <a href="{{ $data['link'] ?? '#' }}"
                 class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition-colors">
                 View Details
               </a>
 
               @if (!$isRead)
-                {{-- Mark Read Button --}}
                 <form action="{{ route('admin.notifications.read', $notification->id) }}" method="POST">
                   @csrf
                   <button type="submit"
@@ -97,7 +88,6 @@
       @endforelse
     </div>
 
-    {{-- Pagination Links --}}
     <div class="mt-6">
       {{ $notifications->links() }}
     </div>

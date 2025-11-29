@@ -134,13 +134,26 @@
                   {{ $admission->status ?? 'N/A' }}
                 </span>
               </p>
+            </div>
 
-              {{-- Payment Status --}}
+            {{-- Final Grade --}}
+            <div class="flex justify-between items-center">
+              <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                <i class="fa-solid fa-graduation-cap text-purple-500"></i>
+                Final Grade:
+              </span>
+              <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
+                {{ $admission->grade_final ?? 'N/A' }}
+              </span>
+            </div>
+
+            {{-- Payment Status --}}
+            <div class="flex justify-between items-center">
               <p class="flex items-center gap-1 font-medium">
                 <i class="fa-solid fa-wallet text-teal-500"></i>
                 Payment:
 
-              <p class="text-sm">
+              <p class="text-sm ">
                 @if ($admission->fee->status == 'paid')
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
@@ -159,29 +172,7 @@
                   </span>
                 @endif
               </p>
-
-              {{-- <span
-                  class="font-semibold px-2 py-0.5 rounded-full text-xs
-                  @if ($admission->payment_status === 'Paid') bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300
-                  @elseif ($admission->payment_status === 'Pending')
-                    bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300
-                  @else
-                    bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
-                  {{ $admission->payment_status ?? 'N/A' }}
-                </span> --}}
-              </p>
             </div>
-
-            {{-- Final Grade --}}
-            <p class="flex justify-between items-center">
-              <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                <i class="fa-solid fa-graduation-cap text-purple-500"></i>
-                Final Grade:
-              </span>
-              <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
-                {{ $admission->grade_final ?? 'N/A' }}
-              </span>
-            </p>
 
             {{-- Remarks --}}
             @if ($admission->remarks)
