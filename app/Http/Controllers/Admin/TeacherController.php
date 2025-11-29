@@ -12,19 +12,19 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
-class TeacherController extends Controller
+class TeacherController extends BaseController
 {
 
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    //     $this->applyPermissions();
-    // }
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyPermissions();
+    }
 
-    // protected function ModelPermissionName(): string
-    // {
-    //     return 'Teacher';
-    // }
+    protected function ModelPermissionName(): string
+    {
+        return 'Teacher';
+    }
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -111,7 +111,7 @@ class TeacherController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Teacher created successfully!',
+                'message' => 'Teacher created successfully 🎅!',
                 'teacher' => $teacher
             ]);
         } catch (\Exception $e) {
@@ -191,7 +191,7 @@ class TeacherController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Teacher updated successfullywww',
+                'message' => 'Teacher updated successfully 🎅',
                 'teacher' => $teacher
             ]);
         } catch (\Exception $e) {

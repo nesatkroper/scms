@@ -132,6 +132,7 @@
                     $(this).addClass('was-validated');
                     return;
                 }
+                $(this).removeClass('was-validated');
                 const submitBtn = $('#createSubmitBtn');
                 const originalBtnHtml = submitBtn.html();
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
@@ -149,7 +150,7 @@
                             ShowTaskMessage('success', response.message);
                             refreshContent();
                             form.trigger('reset');
-                            // Reset photo preview
+                            // Reset preview
                             $('#photoPreview').addClass('hidden');
                             $('#dropArea').removeClass('hidden');
                             // Reset CV preview
@@ -176,6 +177,7 @@
 
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
+                        $(this).removeClass('was-validated');
                     }
                 });
             }
@@ -204,22 +206,22 @@
                             $('#edit_gender').val(teacher.gender);
                             $('#edit_date_of_birth').val(datedob);
                             $('#edit_teacher_id').val(teacher.teacher_id);
-                            $('#edit_depid').val(teacher.department_id);
+                            // $('#edit_depid').val(teacher.department_id);
                             $('#edit_joining_date').val(date);
                             $('#edit_qualification').val(teacher.qualification);
                             $('#edit_specialization').val(teacher.specialization);
                             $('#edit_salary').val(teacher.salary);
                             $('#edit_address').val(teacher.address);
                             $('#edit_experience').val(teacher.experience);
-                            // Handle photo display
-                            if (teacher.photo) {
-                                $('#edit_photo').attr('src', '/' + teacher.photo).removeClass('hidden');
+                            // Handle display
+                            if (teacher.avatar) {
+                                $('#edit_avatar').attr('src', '/' + teacher.avatar).removeClass('hidden');
                                 $('#edit_initials').addClass('hidden');
                             } else {
-                                $('#edit_photo').addClass('hidden');
+                                $('#edit_avatar').addClass('hidden');
                                 const initials = teacher.name.split(' ').map(n => n[0]).join('').toUpperCase();
                                 $('#edit_initials').removeClass('hidden').find('span').text(initials);
-                                $('#edit_photo').removeClass('hidden');
+                                $('#edit_avatar').removeClass('hidden');
                             }
                             // Handle CV display
                             if (teacher.cv) {
@@ -254,6 +256,7 @@
                     $(this).addClass('was-validated');
                     return;
                 }
+                $(this).removeClass('was-validated');
                 const formData = new FormData(form[0]);
                 formData.append('_method', 'PUT');
                 submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
@@ -288,6 +291,7 @@
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
+                        $(this).removeClass('was-validated');
                     }
                 });
             }
@@ -344,7 +348,7 @@
                     .done(function(response) {
                         if (response.success) {
                             const teach = response.teacher;
-                            const departmentName = teach.department?.name ?? "Unknown";
+                            // const departmentName = teach.department?.name ?? "Unknown";
                             const updatedAt = teach.updated_at ? teach.updated_at.substring(0, 10) : '';
                             // Set basic info
                             $('#detail_name').text(teach.name ?? '');
@@ -352,7 +356,7 @@
                             $('#detail_user').val(teach.user_id);
                             $('#detail_gender').val(teach.gender);
                             $('#detail_salary').text(teach.salary);
-                            $('#detail_department').text(departmentName).toggleClass('hidden', !departmentName);
+                            // $('#detail_department').text(departmentName).toggleClass('hidden', !departmentName);
                             $('#detail_specialization').text(teach.specialization ?? '');
                             $('#detail_experience').text(teach.experience ?? '0');
                             $('#detail_qualification').text(teach.qualification ?? '');
@@ -364,18 +368,18 @@
                                 '');
                             $('#detail_address').text(teach.address ?? '');
 
-                            // Handle photo display
-                            const photoContainer = $('#detail_photo');
+                            // Handle display
+                            const avatarContainer = $('#detail_avatar');
                             const initialsContainer = $('#detail_initials');
                             const initialsSpan = initialsContainer.find('span');
 
-                            if (teach.photo) {
-                                photoContainer.attr('src', `${window.location.origin}/${teach.photo}`)
+                            if (teach.avatar) {
+                                avatarContainer.attr('src', `${window.location.origin}/${teach.avatar}`)
                                     .removeClass('hidden');
                                 initialsContainer.addClass('hidden');
                             } else {
-                                // Display initials if no photo
-                                photoContainer.addClass('hidden');
+                                // Display initials if no avatar
+                                avatarContainer.addClass('hidden');
                                 initialsContainer.removeClass('hidden');
                                 const nameParts = teach.name.split(' ');
                                 const initials = nameParts.map(part => part[0]).join('').toUpperCase();
