@@ -44,6 +44,7 @@ class CourseOfferingController extends BaseController
         $query->where(function ($q) use ($search) {
           $q->where('time_slot', 'like', "%{$search}%")
             ->orWhere('fee', 'like', "%{$search}%")
+            ->orWhere('payment_type', 'like', "%{$search}%")
             ->orWhereHas('subject', function ($q2) use ($search) {
               $q2->where('name', 'like', "%{$search}%");
             })

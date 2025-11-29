@@ -20,6 +20,7 @@ class CourseOffering extends Model
     'join_start',
     'join_end',
     'fee',
+    'payment_type',
   ];
 
 

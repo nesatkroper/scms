@@ -32,7 +32,7 @@ class CourseOfferingRequest extends FormRequest
       'join_start' => ['nullable', 'date'],
       'join_end' => ['nullable', 'date', 'after_or_equal:join_start'],
       'fee' => ['required', 'numeric', 'min:0'],
-
+      'payment_type'   => ['required', 'in:course,monthly'],
     ];
   }
 }

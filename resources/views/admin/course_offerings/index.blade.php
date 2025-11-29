@@ -105,16 +105,17 @@
           <div class="p-4 space-y-3">
             <x-info.item name="{{ $offering->teacher->name ?? 'Unassigned' }}" icon="fa-solid fa-user-tie text-xl"
               label="Teacher" labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
-            {{-- <x-info.item name="{{ $offering->teacher->name ?? 'Unassigned' }}" icon="fa-solid fa-user text-xl"
-                            label="Student" labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" /> --}}
+
             <x-info.item
               name="{{ $offering->classroom->name ?? 'Location TBD' }}
                                         ({{ $offering->classroom->capacity }}
                                         Seats)"
               icon="ri-door-open-fill text-xl" label="Classroom" labelcolor="text-gray-500 dark:text-gray-400"
               color="" position="left" />
-            <x-info.item name="${{ number_format($offering->fee, 2) }}" icon="ri-currency-fill text-xl" label="Fee"
-              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
+            <x-info.item
+              name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
+              icon="ri-currency-fill text-xl" label="Fee" labelcolor="text-gray-500 dark:text-gray-400" color=""
+              position="left" />
           </div>
 
           <div
@@ -167,17 +168,6 @@
                 <i class="fa-solid fa-pen-to-square me-2"></i>
                 Edit
               </a>
-
-              {{-- <form action="{{ route('admin.course_offerings.destroy', $offering->id) }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete this course offering? This action cannot be undone.');">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                  class="delete-btn size-8 p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Delete">
-                  <i class="fa-regular fa-trash-can"></i>
-                </button>
-              </form> --}}
             </div>
           </div>
         </div>
