@@ -34,7 +34,7 @@ class UpdateTeacherRequest extends FormRequest
             // 'department_id' => ['required', 'exists:departments,id'],
             'joining_date' => ['required', 'date'],
             'qualification' => ['required', 'string', 'max:255'],
-            'experience' => ['required', 'integer', 'min:0', 'max:50'],
+            'experience' => ['required', 'integer', 'min:0', 'max:60'],
             'specialization' => ['nullable', 'string', 'max:255'],
             'salary' => ['nullable', 'numeric', 'min:0'],
             
