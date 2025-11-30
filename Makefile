@@ -24,6 +24,16 @@ git:
 	@echo "================================================="
 	@echo "✅ Git Workflow Complete."
 
+commit:
+	@echo "================================================="
+	@echo "💾 Running Git Workflow..."
+	@echo "-------------------------------------------------"
+	@echo "--- 1. Adding all changed and untracked files (git add .)..."
+	git add .
+	@echo "--- 2. Committing changes with message 'modified'..."
+	git commit -m 'modified'
+	@echo "✅ Git Workflow Complete."
+
 clear:
 	@echo "================================================="
 	@echo "🚀 Clearing Laravel logs, cache, and fixing permissions..."
@@ -67,37 +77,3 @@ m-seed:
 	@echo "================================================="
 	@echo "✅ Database Setup Complete."
 
-model:
-	@if [ -z "$(n)" ]; then \
-		echo "ERROR: You must provide a model name using n=<ModelName>."; \
-		echo "Example: make model n=Post"; \
-		exit 1; \
-	fi
-	@echo "================================================="
-	@echo "Creating model: $(n)..."
-	@MODEL_ARGS=""; \
-	if [ "$(m)" = "t" ]; then MODEL_ARGS="$$MODEL_ARGS -m"; fi; \
-	if [ "$(r)" = "t" ]; then \
-		MODEL_ARGS="$$MODEL_ARGS -r"; \
-	elif [ "$(c)" = "t" ]; then \
-		MODEL_ARGS="$$MODEL_ARGS -c"; \
-	fi; \
-	php artisan make:model $(n) $$MODEL_ARGS;
-	@echo "✅ Model $(n) and related files created successfully."
-	@echo "================================================="
-
-model1:
-	@if [ -z "$(n)" ]; then \
-		echo "ERROR: You must provide a model name using n=<ModelName>."; \
-		echo "Example: make model n=Post"; \
-		exit 1; \
-	fi
-	@echo "================================================="
-	@echo "Creating model: $(n)..."
-	@if [ "$(m)" = "t" ]; then \
-		php artisan make:model $(n) -m; \
-	else \
-		php artisan make:model $(n); \
-	fi
-	@echo "✅ Model $(n) created successfully."
-	@echo "================================================="
