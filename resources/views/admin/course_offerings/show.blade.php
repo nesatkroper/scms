@@ -23,7 +23,7 @@
                      dark:border-gray-600 rounded-lg dark:hover:bg-gray-700 transition-colors text-gray-800
                      text-sm font-medium dark:text-gray-300">
             <i class="fas fa-arrow-left text-xs"></i>
-            Back to Offerings
+            {{ __('message.back_to_offerings') }}
           </a>
         </div>
       </div>
@@ -42,18 +42,18 @@
                 <span
                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-sm font-medium">
 
-                  Subject code<i class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? 'N/A' }}
+                  {{ __('message.subject_code') }}<i class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? 'N/A' }}
                 </span>
                 <span
                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-sm font-medium">
                   <i class="fas fa-star text-xs"></i>
-                  {{ $courseOffering->subject->credit_hours ?? 'N/A' }} Credit Hours
+                  {{ $courseOffering->subject->credit_hours ?? 'N/A' }} {{ __('message.credit_hours') }}
                 </span>
               </div>
             </div>
             <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-green-200 dark:border-green-800">
               <div class="text-center">
-                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Course Fee</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">{{ __('message.course_fee') }}</p>
                 <p class="text-4xl font-bold text-green-600 dark:text-green-400 mt-1">
                   ${{ number_format($courseOffering->fee, 2) }}</p>
               </div>
@@ -70,7 +70,7 @@
               <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <i class="fas fa-info-circle text-blue-500"></i>
-                  Course Information
+                  {{ __('message.course_information') }}
                 </h3>
               </div>
               <div class="p-2">
@@ -82,7 +82,7 @@
                       <i class="fas fa-chalkboard-user"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Teacher</p>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.teacher') }}</p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
                         {{ $courseOffering->teacher->name ?? 'Unassigned' }}</p>
                     </div>
@@ -95,7 +95,7 @@
                       <i class="fas fa-school"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Classroom</p>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.classroom') }}</p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
                         {{ $courseOffering->classroom->name ?? 'Unassigned' }}</p>
                     </div>
@@ -108,7 +108,7 @@
                       <i class="fas fa-calendar-check"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Schedule Type
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.schedule_type') }}
                       </p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
                         {{ $courseOffering->schedule ?? 'N/A' }}</p>
@@ -122,7 +122,7 @@
                       <i class="fas fa-clock"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Time Slot</p>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.time_slot') }}</p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
                         {{ $courseOffering->time_slot ?? 'N/A' }}</p>
                     </div>
@@ -135,7 +135,7 @@
                       <i class="fas fa-hourglass-start"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Class Time</p>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.class_time') }}</p>
                       <p class="text-md font-semibold text-gray-900 dark:text-white mt-1">
                         {{ $courseOffering->start_time }} - {{ $courseOffering->end_time }}</p>
                     </div>
@@ -148,7 +148,7 @@
                       <i class="fas fa-star"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Credit Hours</p>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.credit_hours') }}</p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
                         {{ $courseOffering->subject->credit_hours ?? 'N/A' }}</p>
                     </div>
@@ -163,7 +163,7 @@
               <div class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <i class="fas fa-calendar-alt text-cyan-500"></i>
-                  Enrollment Period
+                  {{ __('message.enrollment_period') }}
                 </h3>
               </div>
               <div class="p-2">
@@ -176,8 +176,7 @@
                         <i class="fas fa-calendar-alt"></i>
                       </div>
                       <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Enrollment
-                          Opens
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.enrollment_opens') }}
                         </p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                           {{ $courseOffering->join_start?->format('M d, Y') ?? 'N/A' }}</p>
@@ -196,8 +195,7 @@
                         <i class="fas fa-calendar-times"></i>
                       </div>
                       <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Enrollment
-                          Closes
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.enrollment_closes') }}
                         </p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                           {{ $courseOffering->join_end?->format('M d, Y') ?? 'N/A' }}</p>
@@ -223,11 +221,11 @@
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <i class="fas fa-users text-blue-500"></i>
-                Enrolled Students
+                {{ __('message.enrolled_students') }}
               </h3>
               <span
                 class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-bold">
-                Total: {{ $courseOffering->students->count() }}
+                {{ __('message.total') }}: {{ $courseOffering->students->count() }}
               </span>
             </div>
           </div>
@@ -262,9 +260,8 @@
                   class="mx-auto w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
                   <i class="fas fa-user-slash text-gray-400 text-xl"></i>
                 </div>
-                <p class="text-gray-500 dark:text-gray-400 font-medium">No students enrolled</p>
-                <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Students will appear here once
-                  they enroll</p>
+                <p class="text-gray-500 dark:text-gray-400 font-medium">{{ __('message.no_students_enrolled') }}</p>
+                <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">{{ __('message.students_will_appear_here_once_they_enroll') }}</p>
               </div>
             @endif
           </div>
@@ -277,7 +274,7 @@
       <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
         class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
         <i class="fas fa-edit"></i>
-        Edit Offering
+        {{ __('message.edit_offering') }}
       </a>
 
       <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
@@ -288,7 +285,7 @@
         <button type="submit"
           class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
           <i class="fas fa-trash-can"></i>
-          Delete Offering
+          {{ __('message.delete_offering') }}
         </button>
       </form>
     </div>

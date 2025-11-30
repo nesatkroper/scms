@@ -11,7 +11,7 @@
         class="size-8 p-1 rounded-full  flex items-center justify-center bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900">
         <i class="ri-calendar-todo-fill"></i>
       </div>
-      Course Offerings List
+      {{ __('message.course_offerings_list') }}
     </h3>
 
     @if (session('success'))
@@ -36,7 +36,7 @@
               d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
               clip-rule="evenodd" />
           </svg>
-          Create New Offering
+          {{ __('message.create_new_offering') }}
         </a>
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
@@ -126,14 +126,14 @@
                 class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Attendance">
                 <i class="fa-regular fa-calendar-days me-2"></i>
-                Attendance
+                {{ __('message.attendance') }}
               </a>
 
               <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
                 class="h-8  btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Exam">
                 <i class="ri-contract-fill text-lg me-2"></i>
-                Exam
+                {{ __('message.exam') }}
               </a>
 
               @if ($offering->students->count() >= $offering->classroom->capacity)
@@ -141,14 +141,14 @@
                   class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <i class="fa-solid fa-check me-2"></i>
-                  Class Full
+                  {{ __('message.class_full') }}
                 </a>
               @else
                 <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
                   class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <i class="fa-solid fa-book-atlas me-2"></i>
-                  Register
+                  {{ __('message.register') }}
                 </a>
               @endif
 
@@ -159,14 +159,14 @@
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Show Details">
                 <i class="fa-regular fa-eye me-2"></i>
-                Detail
+                {{ __('message.detail') }}
               </a>
 
               <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
                 <i class="fa-solid fa-pen-to-square me-2"></i>
-                Edit
+                {{ __('message.edit') }}
               </a>
             </div>
           </div>
@@ -182,9 +182,8 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Course Offerings Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first course offering to
-              schedule a class.
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_course_offerings_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_course_offering_to_schedule_a_class') }}
             </p>
           </div>
         </div>
