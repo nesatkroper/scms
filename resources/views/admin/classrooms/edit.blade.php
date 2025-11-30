@@ -8,11 +8,10 @@
     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
         {{-- Icon for Classrooms (Using Cyan theme for differentiation) --}}
-        <svg class="size-8 rounded-full p-1 bg-cyan-50 text-cyan-600 dark:text-cyan-50 dark:bg-cyan-900"
-          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.28-8.28z" />
-        </svg>
+       <div
+                    class="size-8 rounded-full flex justify-center items-center p-1 bg-cyan-50 text-cyan-600 dark:text-cyan-50 dark:bg-cyan-900">
+                    <i class="ri-door-closed-fill"></i>
+                </div>
          {{ __('message.edit_classroom') }}<span class="text-indigo-600 dark:text-indigo-400">{{ $classroom->name }}</span>
       </h3>
       {{-- Back button updated for classrooms --}}

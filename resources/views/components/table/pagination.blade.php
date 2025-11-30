@@ -1,4 +1,4 @@
-@if ($paginator->hasPages())
+@if ($paginator->hasPages() && $paginator->total() > 0)
     <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 pt-3 sm:px-6">
         {{-- Desktop Pagination Controls --}}
         <div class="sm:flex sm:flex-1 sm:items-center sm:justify-between">
