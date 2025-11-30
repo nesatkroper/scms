@@ -17,7 +17,7 @@
                 <x-fields.select name="gender" label="Gender" :required="true" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
 
                 <x-fields.input type="date" label="Date of Birth" name="date_of_birth"
-                    placeholder="Enter Date of Birth" :required="true" max="{{ date('Y-m-d') }}" />
+                    placeholder="Enter Date of Birth" :required="true" max="{{ date('Y-m-d') }}"  value="{{ date('Y-m-d') }}"/>
                 <!-- Email Field -->
                 <x-fields.input label="Email Address" type="email" name="email"
                     placeholder="Enter email: example@gmail.com" required
@@ -26,7 +26,7 @@
                     placeholder="+855 889820067 or +855 889 820 067" :required="true" max="20" maxlength="20"
                     pattern="^(?:\+855|0)\s?\d{2,3}\s?\d{3}\s?\d{3}$" />
                 <x-fields.input type="date" label="Joining Date" name="joining_date" placeholder="Enter joining date"
-                    :required="true" />
+                    :required="true" value="{{ date('Y-m-d') }}"/>
 
                 <x-fields.input label="Qualification" name="qualification" placeholder="Enter qualification"
                     :required="true" />
