@@ -20,28 +20,37 @@ class UpdateTeacherRequest extends FormRequest
             // Personal Information
             'name' => ['required', 'string', 'max:255'],
             'email' => [
-                'required', 
-                'string', 
-                'email', 
-                'max:255', 
-                Rule::unique('users', 'email')->ignore($teacherId)
+                'required',
+                'string',
+                'email:rfc,dns',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($teacherId),
             ],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['required', 'regex:/^(?:\+855|0)\s?(?:\d{2,3})(?:\s?\d{3})(?:\s?\d{3})$/', 'max:20'],
             'gender' => ['required', 'in:male,female,other'],
             'date_of_birth' => ['required', 'date', 'before_or_equal:today'],
-            
             // Professional Information
             // 'department_id' => ['required', 'exists:departments,id'],
             'joining_date' => ['required', 'date'],
             'qualification' => ['required', 'string', 'max:255'],
             'experience' => ['required', 'integer', 'min:0', 'max:60'],
             'specialization' => ['nullable', 'string', 'max:255'],
-            'salary' => ['nullable', 'numeric', 'min:0'],
-            
-            // Contact Information
+            'salary' => [
+                'nullable',
+                'numeric',        // must be a number
+                'min:0',          // minimum 0
+                'max:999.9',      // max value 999.9
+                function ($attribute, $value, $fail) {
+                    if (strpos($value, '.') !== false) {
+                        $decimals = strlen(substr(strrchr($value, "."), 1));
+                        if ($decimals > 1) {
+                            $fail('The ' . $attribute . ' may not have more than 1 decimal place.');
+                        }
+                    }
+                },
+            ],
+
             'address' => ['required', 'string', 'max:500'],
-            
-            // Files - note the field names match your form
             'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'cv' => ['sometimes', 'nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
         ];

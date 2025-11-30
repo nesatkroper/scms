@@ -42,7 +42,7 @@
                 or drag and drop</p>
             <p class="text-xs text-gray-500 dark:text-gray-400">PDF, DOC, DOCX (MAX. 5MB)</p>
         </div>
-        <input type="file" id="cv" name="cv" class="hidden" accept=".pdf,.doc,.docx">
+        <input type="file" id="cv" name="cv" class="hidden" accept=".pdf,.doc,.docx" max="5120">
     </div>
     <p class="error-cv mt-1 text-sm text-red-600"></p>
 </div>

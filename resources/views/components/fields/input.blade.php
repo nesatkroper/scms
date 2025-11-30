@@ -5,7 +5,7 @@
         @endif
     </label>
 
-    <input type="{{ $type }}" id="{{ $edit ? "edit_$name" : ($detail ? "detail_$name" : $name) }}" name="{{ $name }}" value="{{ old($name, $value) }}"
+    <input title="{{$title}}" oninput={{$oninput}} type="{{ $type }}" id="{{ $edit ? "edit_$name" : ($detail ? "detail_$name" : $name) }}" name="{{ $name }}" value="{{ old($name, $value) }}"
         class="form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700

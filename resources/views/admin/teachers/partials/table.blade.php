@@ -1,8 +1,8 @@
 <x-table.table :headers="[
     'Teacher',
     'Gender',
+    'phone',
     'Experience',
-    'Department',
     'Salary',
     'Qualification',
     'Specialization',
@@ -34,8 +34,8 @@
                     </div>
                 </x-table.td>
                 <x-table.td>{{ $teacher->gender ?? 'N/A' }}</x-table.td>
+                <x-table.td>{{ Str::limit($teacher->phone??'N/A', 20) }}</x-table.td>
                 <x-table.td>{{ Str::limit($teacher->experience ?? 'N/A', 20) }} Years</x-table.td>
-                <x-table.td>{{ Str::limit($teacher->department?->name ?? 'N/A', 20) }}</x-table.td>
                 <x-table.td>${{ $teacher->salary }}</x-table.td>
                 <x-table.td>{{ Str::limit($teacher->qualification, 20) }}</x-table.td>
                 <x-table.td>{{ Str::limit($teacher->specialization, 20) }}</x-table.td>

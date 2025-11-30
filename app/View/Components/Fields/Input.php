@@ -23,7 +23,9 @@ class Input extends Component
         $readonly,
         $disabled,
         $autocomplete,
-        $pattern;
+        $pattern,
+        $oninput,
+        $title;
 
     public function __construct(
         $label,
@@ -41,7 +43,9 @@ class Input extends Component
         $readonly = false,
         $disabled = false,
         $autocomplete = null,
-        $pattern = null
+        $pattern = null,
+        $oninput = null,
+        $title = null
     ) {
         $this->label = $label;
         $this->name = $name;
@@ -59,6 +63,8 @@ class Input extends Component
         $this->disabled = $disabled || $detail;
         $this->autocomplete = $autocomplete;
         $this->pattern = $pattern;
+        $this->oninput = $oninput;
+        $this->title = $title;
     }
 
     /**

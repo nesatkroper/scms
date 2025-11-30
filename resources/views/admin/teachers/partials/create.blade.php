@@ -11,30 +11,37 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 mb-2">
                 <!-- Personal Information -->
-                <x-fields.input label="Full Name" name="name" placeholder="Enter full name" :required="true" />
+                <x-fields.input label="Full Name" name="name" placeholder="Enter full name" maxlength="255"
+                    :required="true" />
                 <!-- Gender Select (Non-searchable) -->
-                <x-fields.select name="gender" label="Gender" :required="true" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']"
-                    :value="old('gender', 'male')" />
+                <x-fields.select name="gender" label="Gender" :required="true" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender', 'male')" />
 
                 <x-fields.input type="date" label="Date of Birth" name="date_of_birth"
-                    placeholder="Enter Date of Birth" :required="true" />
+                    placeholder="Enter Date of Birth" :required="true" max="{{ date('Y-m-d') }}" />
                 <!-- Email Field -->
-                <x-fields.input type="email" label="Email" name="email" placeholder="Enter email"
+                <x-fields.input label="Email Address" type="email" name="email"
+                    placeholder="Enter email: example@gmail.com" required
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" maxlength="255" />
+                <x-fields.input type="tel" label="Phone" name="phone"
+                    placeholder="+855 889820067 or +855 889 820 067" :required="true" max="20" maxlength="20"
+                    pattern="^(?:\+855|0)\s?\d{2,3}\s?\d{3}\s?\d{3}$" />
+                <x-fields.input type="date" label="Joining Date" name="joining_date" placeholder="Enter joining date"
                     :required="true" />
-                <x-fields.input type="tel" label="Phone" name="phone" placeholder="Enter phone number"
-                    :required="true" />
-                
-                <x-fields.input type="date" label="Joining Date" name="joining_date"
-                    placeholder="Enter joining date" :required="true" />
 
                 <x-fields.input label="Qualification" name="qualification" placeholder="Enter qualification"
                     :required="true" />
-                <x-fields.input type="number" min="0" max="60" label="Experience" name="experience" placeholder="Enter experience"
-                    :required="true" />
+                <x-fields.input type="text" min="0" max="60" maxlength="2" label="Experience"
+                    name="experience" placeholder="Enter number 0-60" pattern="^([0-9]|[1-5][0-9]|60)$"
+                    title="Enter a number between 0 and 60" :required="true"
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" />
                 <x-fields.input label="Specialization" name="specialization" placeholder="Enter specialization" />
-                <x-fields.input type="number" label="Salary" name="salary" placeholder="Enter salary" />
+                <x-fields.input :edit="true" type="text" label="Salary" name="salary"
+                    placeholder="Enter salary 0$-999.9$" maxlength="5"
+                    oninput="this.value=this.value.replace(/[^0-9.]/g,''); let parts = this.value.split('.'); 
+             if(parts.length > 2){ this.value = parts[0]+'.'+parts[1]; } 
+             else { this.value = parts[0]+(parts[1]?'.'+parts[1].slice(0,1):''); }" />
             </div>
-            <x-fields.input label="Address" name="address" placeholder="Enter address" required />
+            <x-fields.input label="Address" name="address" placeholder="Enter address" required maxlength="500" />
         </div>
         <!-- Form Actions -->
         <x-modal.footer-actions :create="true" class="pb-0" />

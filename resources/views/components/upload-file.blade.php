@@ -30,7 +30,7 @@
                 </p>
                 <p class="text-gray-500 dark:text-gray-400">JPG, PNG (MAX. 2MB)</p>
             </div>
-            <input type="file" id="avatar" name="avatar" class="hidden" accept="image/*">
+            <input type="file" id="avatar" name="avatar" class="hidden" accept="image/jpeg,image/png,image/webp,image/gif" max="2048">
 
             <!-- Cropper Modal -->
             <div id="cropModal"

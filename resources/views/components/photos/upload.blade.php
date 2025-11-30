@@ -7,7 +7,7 @@
             class="rounded-full absolute inset-0 w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 hidden">
             <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"></span>
         </div>
-        <input type="file" id="{{ $edit ? "upload_$name" : "$name" }}" name="{{ $name }}" accept="image/*"
+        <input type="file" id="{{ $edit ? "upload_$name" : "$name" }}" name="{{ $name }}" accept="image/jpeg,image/png,image/webp,image/gif" max="2048"
             class="hidden">
         <label for="{{ $edit ? "upload_$name" : "$name" }}"
             class="size-8 flex justify-center items-center absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600">
