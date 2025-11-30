@@ -30,7 +30,6 @@
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    // 'Accept': 'application/json'
                 }
             });
             // DOM Elements
@@ -42,6 +41,19 @@
             const tableContainer = $('#TableContainer');
             const cardContainer = $('#CardContainer');
 
+            $('#searchInput').on('input', debounce(() => {
+                const query = $('#searchInput').val();
+                searchData(query);
+            }));
+            $('#perPageSelect').on('change', debounce(() => {
+                const perPage = $(this).val();
+                searchData(perPage);
+            }));
+
+            $('#resetSearch').on('click', function() {
+                $('#searchInput').val('');
+                searchData('');
+            });
             $('#openCreateModal').on('click', function() {
                 showModal('Modalcreate');
             });
@@ -71,20 +83,28 @@
             }
 
             // Search and Pagination
-            function searchData(searchTerm) {
-                const currentView = localStorage.getItem('viewitem') || 'table';
+            function searchData(searchTerm = '') {
+                const perPage = $('#perPageSelect').val() || 8;
+                const currentView = localStorage.getItem('viewitem') || 'list';
+
                 $.ajax({
                     url: "{{ route('admin.teachers.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
+                        per_page: perPage,
                         view: currentView
                     },
                     success: function(response) {
                         if (response.success) {
-                            tableContainer.html(response.html.table);
-                            cardContainer.html(response.html.cards);
+                            $('#TableContainer').html(response.html.table);
+                            $('#CardContainer').html(response.html.cards);
                             $('.pagination').html(response.html.pagination);
+                            if (response.html.pagination) {
+                                $('.pagination').html(response.html.pagination);
+                            } else {
+                                $('.pagination').html(''); // Clear pagination if no items
+                            }
                             attachRowEventHandlers();
                         } else {
                             ShowTaskMessage('error', 'Failed to load data');
@@ -100,13 +120,14 @@
             function refreshContent() {
                 const currentView = localStorage.getItem('viewitem') || 'table';
                 const searchTerm = searchInput.val() || '';
-                
+                const perPage = $(this).val();
                 $.ajax({
                     url: "{{ route('admin.teachers.index') }}",
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        view: currentView
+                        view: currentView,
+                        per_page: perPage
                     },
                     success: function(response) {
                         if (response.success) {
@@ -124,6 +145,39 @@
                     }
                 });
             }
+            // AJAX pagination
+            $(document).on('click', '.pagination-link:not(.disabled)', function(e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                const perPage = $('#perPageSelect').val() || 8;
+                const searchTerm = $('#searchInput').val() || '';
+                const currentView = localStorage.getItem('viewitem') || 'list';
+
+                $.ajax({
+                    url: "{{ route('admin.teachers.index') }}",
+                    method: 'GET',
+                    data: {
+                        page: page,
+                        per_page: perPage,
+                        search: searchTerm,
+                        view: currentView
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#TableContainer').html(response.html.table);
+                            $('#CardContainer').html(response.html.cards);
+                            $('.pagination').html(response.html
+                                .pagination); // update pagination links
+                            attachRowEventHandlers(); // rebind edit/delete/detail
+                        } else {
+                            ShowTaskMessage('error', 'Failed to load page');
+                        }
+                    },
+                    error: function(xhr) {
+                        ShowTaskMessage('error', 'Error loading page');
+                    }
+                });
+            });
 
             function handleCreateSubmit(e) {
                 e.preventDefault();
@@ -364,7 +418,8 @@
                                 .toLocaleDateString() : '');
                             $('#detail_email').text(teach.email ?? '');
                             $('#detail_phone').text(teach.phone ?? 'Not provided');
-                            $('#detail_date_of_birth').text(teach.date_of_birth ? new Date(teach.date_of_birth).toLocaleDateString() :
+                            $('#detail_date_of_birth').text(teach.date_of_birth ? new Date(teach.date_of_birth)
+                                .toLocaleDateString() :
                                 '');
                             $('#detail_address').text(teach.address ?? '');
 
@@ -424,13 +479,11 @@
                 $('.detail-btn').off('click').on('click', handleDetailClick);
             }
 
-            function debounce(func, wait) {
+            function debounce(func, wait = 1000) {
                 let timeout;
-                return function() {
-                    const context = this,
-                        args = arguments;
+                return function(...args) {
                     clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(context, args), wait);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
                 };
             }
             // Event Listeners
