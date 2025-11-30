@@ -77,12 +77,6 @@
             <h4 class="font-bold text-xl text-gray-800 dark:text-gray-200 capitalize">
               {{ $role->name }}
             </h4>
-            <svg class="size-6 text-indigo-600 dark:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round">
-              <rect x="18" y="5" width="4" height="14"></rect>
-              <path d="M14 10V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-2"></path>
-            </svg>
           </div>
 
           {{-- Card Body: Stats --}}

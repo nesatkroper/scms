@@ -241,8 +241,8 @@ class UserController extends BaseController
     $user->password = Hash::make($request->password);
     $user->save();
 
-    return redirect()->route('admin.users.show', $user)
-      ->with('success', 'Password for ' . $user->name . ' has been successfully changed.');
+    return redirect()->back()
+      ->with('success', 'Password for ' . $user->name .  ' has been successfully changed to: ' . $request->password);
   }
 
   public function changeRole(Request $request, User $user)
@@ -258,7 +258,7 @@ class UserController extends BaseController
 
     $roleList = implode(', ', array_map('ucfirst', $newRoles));
 
-    return redirect()->route('admin.users.show', $user)
+    return redirect()->back()
       ->with('success', $user->name . ' roles successfully changed to: ' . $roleList);
   }
   public function destroy(User $user)
