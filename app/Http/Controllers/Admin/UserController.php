@@ -116,7 +116,7 @@ class UserController extends BaseController
       'attendances.courseOffering.subject',
 
       'teachingCourses.subject',
-      'teachingCourses.courseOfferingsStudents',
+      'teachingCourses.students',
     ]);
 
     $user->loadCount([
