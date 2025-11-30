@@ -89,6 +89,44 @@
 
       </div>
 
+      @if ($category->name === 'Payroll')
+        <div class="mb-3 mt-6">
+          <label class="form-label fw-bold text-gray-800 dark:text-gray-200">
+            Select Users for Payroll:
+          </label>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+            @foreach ($payrollUsers as $user)
+              <div class="flex items-center space-x-2 relative">
+                <div class="relative flex items-center justify-center">
+                  <input id="user-{{ $user->id }}" type="checkbox" name="payroll_user_ids[]"
+                    value="{{ $user->id }}"
+                    class="peer size-5 appearance-none rounded-md cursor-pointer
+                      border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800
+                      transition-all duration-200
+                      checked:bg-indigo-600 checked:border-indigo-600
+                      hover:border-indigo-400 dark:hover:border-indigo-500
+                      focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-700
+                      focus:ring-offset-2 dark:focus:ring-offset-gray-800 relative z-10">
+                  <svg
+                    class="pointer-events-none absolute w-4 h-4 text-white
+                        opacity-0 scale-75 transition-all duration-200
+                        peer-checked:opacity-100 peer-checked:scale-100 z-20"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+
+                <label for="user-{{ $user->id }}" class="cursor-pointer text-sm text-gray-900 dark:text-gray-300">
+                  {{ $user->name }} — ({{ implode(', ', $user->getRoleNames()->toArray()) }})
+                </label>
+              </div>
+            @endforeach
+          </div>
+        </div>
+      @endif
+
       {{-- 6. Description Field --}}
       <div class="mb-6">
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

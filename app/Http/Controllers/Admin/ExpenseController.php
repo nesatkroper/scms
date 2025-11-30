@@ -62,30 +62,87 @@ class ExpenseController extends BaseController
   }
 
 
+  // public function create(Request $request)
+  // {
+  //   $categoryId = $request->input('category_id');
+  //   $category = ExpenseCategory::findOrFail($categoryId);
+
+  //   return view('admin.expenses.create', compact('category'));
+  // }
+
   public function create(Request $request)
   {
     $categoryId = $request->input('category_id');
     $category = ExpenseCategory::findOrFail($categoryId);
 
+    $payrollUsers = null;
 
+    if ($category->name === 'Payroll') {
+      $payrollUsers = User::role(['teacher', 'staff'])->get();
+    }
 
-    return view('admin.expenses.create', compact('category'));
+    return view('admin.expenses.create', compact('category', 'payrollUsers'));
   }
 
+
+
+  // public function store(ExpenseRequest $request)
+  // {
+  //   $data = $request->validated();
+  //   $data['approved_by'] = null;
+  //   $data['created_by'] = Auth::id();
+  //   $expense =  Expense::create($data);
+
+  //   $notifiableUsers = User::role(['admin', 'staff'])->get();
+  //   Notification::send($notifiableUsers, new ExpenseCreated($expense));
+
+  //   return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
+  //     ->with('success', 'Expense record created successfully!');
+  // }
 
   public function store(ExpenseRequest $request)
   {
     $data = $request->validated();
-    $data['approved_by'] = null;
-    $data['created_by'] = Auth::id();
-    $expense =  Expense::create($data);
+    $category = ExpenseCategory::find($data['expense_category_id']);
 
-    $notifiableUsers = User::role(['admin', 'staff'])->get();
-    Notification::send($notifiableUsers, new ExpenseCreated($expense));
+    if ($category->name !== 'Payroll') {
 
-    return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
-      ->with('success', 'Expense record created successfully!');
+      $data['approved_by'] = null;
+      $data['created_by'] = Auth::id();
+
+      $expense = Expense::create($data);
+
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new ExpenseCreated($expense));
+
+      return redirect()
+        ->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
+        ->with('success', 'Expense record created successfully!');
+    }
+
+    $selectedUsers = $request->input('payroll_user_ids', []);
+
+    if (empty($selectedUsers)) {
+      return back()->withErrors(['payroll_user_ids' => 'Please select at least one user for payroll.']);
+    }
+
+    foreach ($selectedUsers as $userId) {
+
+      $row = $data;
+      $row['approved_by'] = null;
+      $row['created_by'] = $userId;
+
+      $expense = Expense::create($row);
+
+      $notifiableUsers = User::role(['admin', 'staff'])->get();
+      Notification::send($notifiableUsers, new ExpenseCreated($expense));
+    }
+
+    return redirect()
+      ->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
+      ->with('success', 'Payroll expenses created successfully!');
   }
+
 
   public function show(Expense $expense)
   {
