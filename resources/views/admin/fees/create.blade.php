@@ -57,56 +57,7 @@
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div> --}}
-                {{-- <x-fields.select  name="student" label="Student" :required="true" :options="$students" placeholder="Choose student"  searchable="true"/> --}}
-
-                <div x-data="studentSelect()" class="relative">
-                    <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Student <span class="text-red-500">*</span>
-                    </label>
-
-                    <!-- Trigger -->
-                    <div @click="open = !open"
-                        class="w-full px-3 py-2 border rounded-md cursor-pointer bg-white dark:bg-gray-700
-                border-slate-300 dark:border-gray-600 text-gray-900 dark:text-white flex justify-between items-center">
-
-                        <span x-text="selectedName || 'Select a Student'"></span>
-                        <span class="text-gray-500">▼</span>
-                    </div>
-
-                    <!-- Dropdown -->
-                    <div x-show="open" @click.outside="open = false"
-                        class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border border-slate-300 dark:border-gray-600 
-                rounded-md shadow-lg max-h-60 overflow-y-auto">
-
-                        <!-- Search Field -->
-                        <div class="p-2 border-b border-slate-200 dark:border-gray-600">
-                            <input x-model="search" type="text" placeholder="Search student..."
-                                class="w-full px-3 py-2 rounded-md border border-slate-300 dark:border-gray-600 
-                          bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-white">
-                        </div>
-
-                        <!-- Options -->
-                        <template x-for="student in filtered" :key="student.id">
-                            <div @click="selectStudent(student)"
-                                class="px-3 py-2 cursor-pointer hover:bg-indigo-50 dark:hover:bg-gray-600">
-                                <span x-text="student.name"></span>
-                                <span class="text-gray-500" x-text="'(' + student.email + ')'"></span>
-                            </div>
-                        </template>
-
-                        <!-- No Results -->
-                        <div x-show="filtered.length === 0" class="px-3 py-2 text-red-500 text-center">
-                            No results found
-                        </div>
-                    </div>
-
-                    <!-- Hidden input (REAL value submitted to backend) -->
-                    <input type="hidden" name="student_id" x-model="selectedId" />
-
-                    @error('student_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-fields.select  name="student" label="Student" :required="true" :options="$students" placeholder="Choose student"  searchable="true"/>
 
                 {{-- 2. Fee Type Field --}}
                 <div>
@@ -208,40 +159,73 @@
 
 @push('scripts')
     <script>
-        function studentSelect() {
-        return {
-            open: false,
-            search: "",
-            selectedId: "{{ old('student_id') }}",
-            selectedName: "",
-
-            students: @json($students->map(fn($s) => [
-                'id' => $s->id,
-                'name' => $s->name,
-                'email' => $s->email
-            ])),
-
-            get filtered() {
-                return this.students.filter(s =>
-                    s.name.toLowerCase().includes(this.search.toLowerCase()) ||
-                    s.email.toLowerCase().includes(this.search.toLowerCase())
-                );
-            },
-
-            selectStudent(student) {
-                this.selectedId = student.id;
-                this.selectedName = student.name + " (" + student.email + ")";
-                this.open = false;
-            },
-
-            init() {
-                // Pre-select old value for validation error
-                const found = this.students.find(s => s.id == this.selectedId);
-                if (found) {
-                    this.selectedName = found.name + " (" + found.email + ")";
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof $ !== 'undefined') {
+                $.ajaxSetup({
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        // 'Accept': 'application/json'
+                    }
+                });
             }
-        };
-    }
+            selectfields = function() {
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const header = select.querySelector('.select-header');
+                    const optionsBox = select.querySelector('.select-options');
+                    const searchInput = select.querySelector('.search-input');
+                    const selectedValue = select.querySelector('.selected-value');
+                    const noResults = select.querySelector('.no-results');
+                    const options = Array.from(select.querySelectorAll('.select-option'));
+                    const hiddenInput = select.querySelector(
+                        `input[name="${select.dataset.name}"]`);
+
+                    header.addEventListener('click', () => {
+                        select.classList.toggle('open');
+                        optionsBox.classList.toggle('hidden');
+                        if (select.classList.contains('open')) searchInput.focus();
+                    });
+
+                    searchInput.addEventListener('input', function() {
+                        const term = this.value.toLowerCase().trim();
+                        let hasMatch = false;
+                        options.forEach(option => {
+                            option.style.display = option.textContent
+                                .toLowerCase().includes(term) ? 'block' :
+                                'none';
+                            if (option.style.display === 'block') hasMatch =
+                                true;
+                        });
+                        noResults.style.display = hasMatch ? 'none' : 'block';
+                    });
+
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            options.forEach(opt => opt.classList.remove(
+                                'selected'));
+                            this.classList.add('selected');
+                            selectedValue.textContent = this.dataset.value;
+                            if (select.dataset.name == "type" || select.dataset.name ==
+                                "edit_type") {
+                                hiddenInput.value = this.dataset.value;
+                            } else {
+                                hiddenInput.value = this.dataset.id;
+                            }
+                            select.classList.remove('open');
+                            optionsBox.classList.add('hidden');
+                        });
+                    });
+
+                    document.addEventListener('click', function(e) {
+                        if (!select.contains(e.target)) {
+                            select.classList.remove('open');
+                            optionsBox.classList.add('hidden');
+                        }
+                    });
+                });
+            }
+            selectfields();
+        });
+        
     </script>
 @endpush
