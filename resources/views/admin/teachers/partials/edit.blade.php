@@ -47,7 +47,11 @@
                     <!-- Contact Information -->
                     <x-fields.input :edit="true" type="email" label="Email" name="email"
                         placeholder="Enter email: example@gmail.com" required
-                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" maxlength="255" />
+                        maxlength="255" />
+                        {{-- pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                         --}}
+
+
                     <x-fields.input :edit="true" type="tel" label="Phone" name="phone"
                         placeholder="+855 889820067 or +855 889 820 067" :required="true" max="20"
                         maxlength="20" pattern="^(?:\+855|0)\s?\d{2,3}\s?\d{3}\s?\d{3}$"
@@ -62,10 +66,10 @@
                         placeholder="Enter specialization" />
                     <!-- Salary Field -->
                     <x-fields.input :edit="true" type="text" label="Salary" name="salary"
-                        placeholder="Enter salary 0$-999.9$" maxlength="5"
+                        placeholder="Enter salary 0$-999.9$" maxlength="6" 
                         oninput="this.value=this.value.replace(/[^0-9.]/g,''); 
              let parts = this.value.split('.'); 
-             if(parts.length > 2){ this.value = parts[0]+'.'+parts[1]; } 
+             if(parts.length > 1){ this.value = parts[0]+'.'+parts[1]; } 
              else { this.value = parts[0]+(parts[1]?'.'+parts[1].slice(0,1):''); }" />
 
                     {{-- <x-fields.textarea :edit="true" label="Additional Information"

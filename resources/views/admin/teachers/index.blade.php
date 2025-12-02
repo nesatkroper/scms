@@ -41,23 +41,30 @@
             const tableContainer = $('#TableContainer');
             const cardContainer = $('#CardContainer');
 
-            $('#searchInput').on('input', debounce(() => {
-                const query = $('#searchInput').val();
+            // Search input handler - fixed
+            searchInput.on('input', debounce(function() {
+                const query = $(this).val().toLowerCase();
                 searchData(query);
-            }));
-            $('#perPageSelect').on('change', debounce(() => {
-                const perPage = $(this).val();
-                searchData(perPage);
-            }));
+            }, 500));
 
-            $('#resetSearch').on('click', function() {
-                $('#searchInput').val('');
+            // Per page select handler - fixed
+            $('#perPageSelect').on('change', function() {
+                const perPage = $(this).val();
+                searchData(searchInput.val().toLowerCase(), perPage);
+            });
+
+            // Reset search handler
+            resetSearch.on('click', function() {
+                searchInput.val('');
                 searchData('');
             });
+
+            // Create modal handler
             $('#openCreateModal').on('click', function() {
                 showModal('Modalcreate');
             });
 
+            // Bulk edit modal close handler
             $('#closeBulkEditModal, #cancelBulkEditModal').on('click', function() {
                 closeModal('bulkEditModal');
             });
@@ -83,8 +90,8 @@
             }
 
             // Search and Pagination
-            function searchData(searchTerm = '') {
-                const perPage = $('#perPageSelect').val() || 8;
+            function searchData(searchTerm = '', perPage = null) {
+                const currentPerPage = perPage || $('#perPageSelect').val() || 8;
                 const currentView = localStorage.getItem('viewitem') || 'list';
 
                 $.ajax({
@@ -92,14 +99,13 @@
                     method: 'GET',
                     data: {
                         search: searchTerm,
-                        per_page: perPage,
+                        per_page: currentPerPage,
                         view: currentView
                     },
                     success: function(response) {
                         if (response.success) {
-                            $('#TableContainer').html(response.html.table);
-                            $('#CardContainer').html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
+                            tableContainer.html(response.html.table);
+                            cardContainer.html(response.html.cards);
                             if (response.html.pagination) {
                                 $('.pagination').html(response.html.pagination);
                             } else {
@@ -118,9 +124,10 @@
             }
 
             function refreshContent() {
-                const currentView = localStorage.getItem('viewitem') || 'table';
-                const searchTerm = searchInput.val() || '';
-                const perPage = $(this).val();
+                const currentView = localStorage.getItem('viewitem') || 'list';
+                const searchTerm = searchInput.val().toLowerCase() || '';
+                const perPage = $('#perPageSelect').val() || 8; // Fixed: use selector directly
+
                 $.ajax({
                     url: "{{ route('admin.teachers.index') }}",
                     method: 'GET',
@@ -133,7 +140,9 @@
                         if (response.success) {
                             tableContainer.html(response.html.table);
                             cardContainer.html(response.html.cards);
-                            $('.pagination').html(response.html.pagination);
+                            if (response.html.pagination) {
+                                $('.pagination').html(response.html.pagination);
+                            }
                             attachRowEventHandlers();
                         } else {
                             ShowTaskMessage('error', 'Failed to refresh data');
@@ -145,12 +154,13 @@
                     }
                 });
             }
+
             // AJAX pagination
             $(document).on('click', '.pagination-link:not(.disabled)', function(e) {
                 e.preventDefault();
                 const page = $(this).data('page');
                 const perPage = $('#perPageSelect').val() || 8;
-                const searchTerm = $('#searchInput').val() || '';
+                const searchTerm = searchInput.val().toLowerCase() || '';
                 const currentView = localStorage.getItem('viewitem') || 'list';
 
                 $.ajax({
@@ -164,11 +174,12 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            $('#TableContainer').html(response.html.table);
-                            $('#CardContainer').html(response.html.cards);
-                            $('.pagination').html(response.html
-                                .pagination); // update pagination links
-                            attachRowEventHandlers(); // rebind edit/delete/detail
+                            tableContainer.html(response.html.table);
+                            cardContainer.html(response.html.cards);
+                            if (response.html.pagination) {
+                                $('.pagination').html(response.html.pagination);
+                            }
+                            attachRowEventHandlers();
                         } else {
                             ShowTaskMessage('error', 'Failed to load page');
                         }
@@ -202,8 +213,8 @@
                         if (response.success) {
                             closeModal('Modalcreate');
                             ShowTaskMessage('success', response.message);
-                            refreshContent();
                             form.trigger('reset');
+                            refreshContent();
                             // Reset preview
                             $('#photoPreview').addClass('hidden');
                             $('#dropArea').removeClass('hidden');
@@ -215,23 +226,29 @@
                         } else {
                             ShowTaskMessage('error', response.message || 'Error creating teacher');
                         }
+                        $('.error-remove').text('');
                     },
                     error: function(xhr) {
-                        if (xhr.status === 422 || xhr.status === 500) {
+                        if (xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
+
+                            // Clear all error messages first
+                            $('.error-remove').text('');
+                            // Show new error messages
                             for (const field in errors) {
                                 if (errors.hasOwnProperty(field)) {
-                                    const errorMessage = errors[field][0];
-                                    $(`#error-${field}`).text(errorMessage);
+                                    $(`#error-${field}`).text(errors[field][0]);
                                 }
                             }
-                            ShowTaskMessage('error', `Invalid field something was wrong!`);
+
+                            ShowTaskMessage('error', 'Invalid field. Something went wrong!');
+                        } else {
+                            ShowTaskMessage('error', 'Server error occurred!');
                         }
                     },
-
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
-                        $(this).removeClass('was-validated');
+                        form.removeClass('was-validated');
                     }
                 });
             }
@@ -244,7 +261,7 @@
                     .prop('disabled', true);
 
                 const Id = $(this).data('id');
-
+                $('.error-remove').text('');
                 $.get(`/admin/teachers/${Id}`)
                     .done(function(response) {
                         if (response.success && response.teacher) {
@@ -252,7 +269,7 @@
                             const date = teacher.joining_date ? teacher.joining_date.substring(0, 10) : '';
                             const datedob = teacher.date_of_birth ? teacher.date_of_birth.substring(0, 10) : '';
                             // Set form values
-                            // console.log(teacher)
+                            console.log(teacher)
                             $('#edit_name').val(teacher.name);
                             $('#edit_user').val(teacher.user_id);
                             $('#edit_phone').val(teacher.phone);
@@ -324,8 +341,8 @@
                         if (response.success) {
                             closeModal('Modaledit');
                             ShowTaskMessage('success', response.message);
-                            form.trigger('reset');
                             refreshContent();
+                            form.trigger('reset');
                         } else {
                             ShowTaskMessage('error', response.message || 'Error updating teacher');
                         }
@@ -345,7 +362,7 @@
                     },
                     complete: function() {
                         submitBtn.prop('disabled', false).html(originalBtnHtml);
-                        $(this).removeClass('was-validated');
+                        form.removeClass('was-validated');
                     }
                 });
             }
@@ -479,7 +496,7 @@
                 $('.detail-btn').off('click').on('click', handleDetailClick);
             }
 
-            function debounce(func, wait = 1000) {
+            function debounce(func, wait = 500) {
                 let timeout;
                 return function(...args) {
                     clearTimeout(timeout);
@@ -494,12 +511,7 @@
                 // View toggle
                 listViewBtn.on('click', () => setView('list'));
                 cardViewBtn.on('click', () => setView('card'));
-                // Search
-                searchInput.on('input', debounce(() => searchData(searchInput.val()), 500));
-                resetSearch.on('click', () => {
-                    searchInput.val('');
-                    searchData('');
-                });
+                // Search (already set up above)
                 // Form submissions
                 $('#Modalcreate form').off('submit').on('submit', handleCreateSubmit);
                 $('#Formedit').off('submit').on('submit', handleEditSubmit);

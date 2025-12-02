@@ -19,7 +19,7 @@
         @if ($autocomplete !== null) autocomplete="{{ $autocomplete }}" @endif
         @if ($pattern !== null) pattern="{{ $pattern }}" @endif>
 
-    <p id="{{ $edit ? "edit-error-$name" : ($detail ? "detail-error-$name" : "error-$name") }}" class="{{ $edit ? "edit-error-$name" : ($detail ? "detail-error-$name" : "error-$name") }} mt-1 text-sm text-red-600 dark:text-red-500">
+    <p id="{{ $edit ? "edit-error-$name" : ($detail ? "detail-error-$name" : "error-$name") }}" class="{{ $edit ? "edit-error-$name" : ($detail ? "detail-error-$name" : "error-$name") }} error-remove mt-1 text-sm text-red-600 dark:text-red-500">
     </p>
     <div class="invalid-feedback text-sm text-red-600 dark:text-red-500 mt-1">
         field {{ $label }} is required

@@ -112,4 +112,15 @@
 
         form.classList.add('was-validated');
     };
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Fix email pattern attributes with invalid /v flag
+    const emailInputs = document.querySelectorAll('input[type="email"][pattern*="/v"]');
+    emailInputs.forEach(input => {
+        const pattern = input.getAttribute('pattern');
+        if (pattern && pattern.endsWith('/v')) {
+            input.setAttribute('pattern', pattern.replace(/\/v$/, ''));
+        }
+    });
+});
 })();

@@ -22,7 +22,7 @@ class UpdateTeacherRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                'email:rfc,dns',
+                'email',
                 'max:255',
                 Rule::unique('users', 'email')->ignore($teacherId),
             ],
@@ -38,18 +38,9 @@ class UpdateTeacherRequest extends FormRequest
             'salary' => [
                 'nullable',
                 'numeric',        // must be a number
-                'min:0',          // minimum 0
-                'max:999.9',      // max value 999.9
-                function ($attribute, $value, $fail) {
-                    if (strpos($value, '.') !== false) {
-                        $decimals = strlen(substr(strrchr($value, "."), 1));
-                        if ($decimals > 1) {
-                            $fail('The ' . $attribute . ' may not have more than 1 decimal place.');
-                        }
-                    }
-                },
+                'min:0',          // minimum 
+                'regex:/^\d{1,8}(\.\d{1,2})?$/'
             ],
-
             'address' => ['required', 'string', 'max:500'],
             'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'cv' => ['sometimes', 'nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],

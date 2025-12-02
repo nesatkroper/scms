@@ -14,10 +14,16 @@ class StoreTeacherRequest extends FormRequest
 
     public function rules(): array
     {
+        $teacherId = $this->route('teacher');
         return [
             // Personal Information
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users,email'],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($this->$teacherId),
+            ],
             'phone' => ['required', 'regex:/^(?:\+855|0)\s?(?:\d{2,3})(?:\s?\d{3})(?:\s?\d{3})$/', 'max:20'],
             'gender' => ['required', 'in:male,female,other'],
             'date_of_birth' => ['required', 'date', 'before_or_equal:today'],
@@ -30,16 +36,8 @@ class StoreTeacherRequest extends FormRequest
             'salary' => [
                 'nullable',
                 'numeric',        // must be a number
-                'min:0',          // minimum 0
-                'max:999.9',      // max value 999.9
-                function ($attribute, $value, $fail) {
-                    if (strpos($value, '.') !== false) {
-                        $decimals = strlen(substr(strrchr($value, "."), 1));
-                        if ($decimals > 1) {
-                            $fail('The ' . $attribute . ' may not have more than 1 decimal place.');
-                        }
-                    }
-                },
+                'min:0',          // minimum 
+                'regex:/^\d{1,8}(\.\d{1,2})?$/'
             ],
             'address' => ['required', 'string', 'max:500'],
             // Files
