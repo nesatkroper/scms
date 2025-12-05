@@ -12,11 +12,11 @@
   <!-- Right side - User actions -->
   <div class="flex items-center space-x-4">
     <div class="ml-4 relative hidden lg:block" id="search-container">
-      <div class="relative">
+      {{-- <div class="relative">
         <input type="text" id="search-input" placeholder="Search..."
           class="bg-slate-50 border border-slate-300 dark:border-gray-500 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded-full pl-11 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-80">
         <i class="fas fa-search absolute left-4 top-3 text-gray-500 dark:text-gray-400"></i>
-      </div>
+      </div> --}}
 
       <!-- Dropdown results -->
       <div id="search-results"
