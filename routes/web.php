@@ -23,7 +23,7 @@ use App\Http\Controllers\Admin\{
   FeeController,
   NotificationController
 };
-
+use App\Http\Controllers\InvoiceCheckController;
 
 Route::get('/home', fn() => view('app.home'))->name('app.home');
 Route::get('/about-us', fn() => view('app.about'))->name('app.about');
@@ -62,6 +62,8 @@ Route::get('/lang/{locale}', function ($locale) {
   return back();
 })->name('lang.switch');
 
+
+Route::get('/invoice-check/{transactionId}', [InvoiceCheckController::class, 'show'])->name('invoice.check');
 
 
 Route::prefix('admin')

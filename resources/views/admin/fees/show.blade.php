@@ -78,7 +78,10 @@
         @if ($fee->transaction_id)
           <div
             class="mt-4 p-1 inline-block bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded-md">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode($fee->transaction_id) }}"
+            {{-- <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode($fee->transaction_id) }}"
+              alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-24 h-24 mx-auto" loading="lazy"> --}}
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
               alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-24 h-24 mx-auto" loading="lazy">
           </div>
         @endif
