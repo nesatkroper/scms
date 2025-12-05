@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
   {
     $faker = Faker::create();
 
-    // 1. Ensure Roles and Permissions are set up
     $roles = ['admin', 'teacher', 'student', 'staff'];
     foreach ($roles as $roleName) {
       Role::firstOrCreate(['name' => $roleName]);
@@ -23,12 +22,11 @@ class UserSeeder extends Seeder
 
     $adminRole = Role::where('name', 'admin')->first();
 
-    Permission::firstOrCreate(['name' => 'view dashboard']);
-    Permission::firstOrCreate(['name' => 'view report']);
+    Permission::firstOrCreate(['name' => 'view_dashboard']);
+    Permission::firstOrCreate(['name' => 'view_report']);
 
     $adminRole->syncPermissions(Permission::all());
 
-    // 2. Create Default Admin User
     $admin = User::updateOrCreate(
       ['email' => 'admin@example.com'],
       [
@@ -39,22 +37,12 @@ class UserSeeder extends Seeder
     );
     $admin->assignRole('admin');
 
-    // --- New Code for Seeding Teachers and Students ---
 
-    // 3. Seed 5 Teacher Users
     $this->seedTeachers($faker, 5);
 
-    // 4. Seed 100 Student Users
     $this->seedStudents($faker, 100);
   }
 
-  /**
-   * Seed a specified number of teacher users.
-   *
-   * @param \Faker\Generator $faker
-   * @param int $count
-   * @return void
-   */
   protected function seedTeachers($faker, int $count): void
   {
     $teacherRole = Role::where('name', 'teacher')->first();
@@ -83,13 +71,6 @@ class UserSeeder extends Seeder
     }
   }
 
-  /**
-   * Seed a specified number of student users.
-   *
-   * @param \Faker\Generator $faker
-   * @param int $count
-   * @return void
-   */
   protected function seedStudents($faker, int $count): void
   {
     $studentRole = Role::where('name', 'student')->first();
@@ -116,6 +97,7 @@ class UserSeeder extends Seeder
   }
 }
 
+
 // namespace Database\Seeders;
 
 // use App\Models\User;
@@ -136,8 +118,8 @@ class UserSeeder extends Seeder
 
 //     $adminRole = Role::where('name', 'admin')->first();
 
-//     Permission::create(['name' => 'view dashboard']);
-//     Permission::create(['name' => 'view report']);
+//     Permission::create(['name' => 'view_dashboard']);
+//     Permission::create(['name' => 'view_report']);
 
 //     $adminRole->syncPermissions(Permission::all());
 

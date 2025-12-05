@@ -9,8 +9,21 @@ use App\Models\Expense;
 use App\Models\Fee;
 use App\Models\User;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'Dashboard';
+  }
+
+
   public function index()
   {
     $students = User::role('student')->count();

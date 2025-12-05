@@ -15,8 +15,20 @@ use App\Models\Fee;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ReportController extends Controller
+class ReportController extends BaseController
 {
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->applyPermissions();
+  }
+
+  protected function ModelPermissionName(): string
+  {
+    return 'reports';
+  }
+
   public function index()
   {
     return view('admin.reports.index', [
@@ -26,13 +38,11 @@ class ReportController extends Controller
           $c->id => $c->subject->name . " ({$c->time_slot})"
         ]),
 
-      // Default when first loading page
       'reportType' => null,
       'data'       => null,
       'title'      => null,
       'reportView' => null,
 
-      // Prevent Blade errors
       'defaultStart' => null,
       'defaultEnd'   => null,
     ]);
@@ -63,11 +73,6 @@ class ReportController extends Controller
     $method = $reports[$type];
     $response = $this->$method($request);
 
-    /**
-     * ----------------------------------------------------
-     * AUTO-FILL DATE RANGE BASED ON REPORT TYPE
-     * ----------------------------------------------------
-     */
     $defaultStart = null;
     $defaultEnd = null;
 
@@ -104,20 +109,10 @@ class ReportController extends Controller
         break;
     }
 
-    /**
-     * ----------------------------------------------------
-     * EXPORT (PDF / Excel / CSV)
-     * ----------------------------------------------------
-     */
     if ($request->export) {
       return $this->exportReport($response, $request->export);
     }
 
-    /**
-     * ----------------------------------------------------
-     * RETURN VIEW WITH DEFAULT DATES
-     * ----------------------------------------------------
-     */
     return view('admin.reports.index', [
       'subjects'      => Subject::pluck('name', 'id'),
       'courses'       => CourseOffering::with('subject')->get()
@@ -129,7 +124,6 @@ class ReportController extends Controller
       'title'         => $response['title'],
       'reportView'    => $response['view'],
 
-      // AUTO DATES
       'defaultStart'  => $defaultStart,
       'defaultEnd'    => $defaultEnd,
     ]);
@@ -282,34 +276,4 @@ class ReportController extends Controller
       );
     }
   }
-
-  // public function exportGenericReport(Request $request)
-  // {
-  //   $data = YourModel::all();
-
-  //   $columns = [
-  //     'ID',
-  //     'Name',
-  //     'Email',
-  //     'Created At'
-  //   ];
-
-  //   return Excel::download(
-  //     new GenericReportExport($data, $columns),
-  //     'generic-report.xlsx'
-  //   );
-  // }
-
-  // public function exportCsv(Request $request)
-  // {
-  //   $data = YourModel::all();
-
-  //   $columns = ['ID', 'Name', 'Email', 'Created At'];
-
-  //   return Excel::download(
-  //     new GenericReportExport($data, $columns),
-  //     'report.csv',
-  //     \Maatwebsite\Excel\Excel::CSV
-  //   );
-  // }
 }
