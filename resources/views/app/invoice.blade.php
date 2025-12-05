@@ -164,13 +164,27 @@
           <p class="text-lg font-semibold text-blue-600">
             {{ $fee->transaction_id }}
           </p>
-          @if ($fee->transaction_id)
+          {{-- @if ($fee->transaction_id)
             <div class="mt-4 p-1 inline-block bg-white border border-gray-200 shadow-lg rounded-md">
               <img
                 src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
                 alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-24 h-24 mx-auto" loading="lazy">
             </div>
+          @endif --}}
+          @if ($fee->transaction_id)
+            <div
+              class="mt-4 p-1 inline-block bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded-md">
+              <div class="relative w-24 h-24 mx-auto">
+                <img
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
+                  alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-full h-full" loading="lazy">
+
+                <img src="{{ asset('assets/images/khmer.svg') }}" alt="Khmer Icon" {{-- Set size (e.g., 20px) and center it absolutely --}}
+                  class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-4" loading="lazy">
+              </div>
+            </div>
           @endif
+
         </div>
       </div>
 
