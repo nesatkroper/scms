@@ -3,7 +3,7 @@
         role="dialog" aria-modal="true">
 
         {{-- Backdrop --}}
-        <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.7);" @click="closeModal()">
+        <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.5);" @click="closeModal()">
         </div>
 
         <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center sm:p-0 min-w-4xl">

@@ -1,19 +1,19 @@
-{{-- <div x-data="invoiceModal()" x-show="invoiceOpen" style="display:none;" class="fixed inset-0 z-50 overflow-y-auto"> --}}
-<div x-show="invoiceOpen" x-cloak style="display:none;" class="fixed inset-0 z-50 overflow-y-auto">
-  <div class="fixed inset-0 bg-black bg-opacity-70" @click="closeInvoiceModal()"></div>
+<div x-show="invoiceOpen" x-cloak style="display:none;"
+  class="fixed inset-0 z-50 overflow-y-auto print:static print:block print:z-auto">
 
-  <div class="flex justify-center items-center min-h-screen p-4 print:hidden">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-8 relative">
+  <div class="fixed inset-0 transition-opacity **print:hidden**" style="background-color: rgba(0, 0, 0, 0.5);"
+    @click="closeInvoiceModal()">
+  </div>
 
-      <!-- HEADER -->
+  <div class="flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-8 relative **print:hidden**">
+
       <div class="text-center border-b pb-4 mb-6">
         <img src="{{ asset('assets/images/cambodia.png') }}" class="mx-auto h-20 mb-2">
-
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">INVOICE</h1>
         <p class="text-gray-500 dark:text-gray-300 text-sm">Official Payment Receipt</p>
       </div>
 
-      <!-- SCHOOL INFO -->
       <div class="mb-6">
         <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">G2 SCMS</p>
         <p class="text-sm text-gray-600 dark:text-gray-400">Siem Reap, Cambodia</p>
@@ -21,9 +21,7 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">Email: school@example.com</p>
       </div>
 
-      <!-- STUDENT + INVOICE INFO -->
       <div class="grid grid-cols-2 gap-4 mb-6 p-4 border rounded-lg bg-gray-50 dark:bg-gray-700">
-
         <div>
           <p class="text-xs text-gray-500 dark:text-gray-300 uppercase">Student</p>
           <p class="text-lg font-bold" x-text="invoice.student_name"></p>
@@ -39,10 +37,8 @@
           <p class="text-xs mt-3 text-gray-500 dark:text-gray-300 uppercase">Transaction ID</p>
           <p class="font-mono text-sm font-semibold" x-text="invoice.transaction_id"></p>
         </div>
-
       </div>
 
-      <!-- PAYMENT TABLE -->
       <table class="w-full text-sm mb-6 border-collapse">
         <thead>
           <tr class="bg-gray-100 dark:bg-gray-700">
@@ -50,6 +46,7 @@
             <th class="p-3 border dark:border-gray-600 w-32 text-right">Amount</th>
           </tr>
         </thead>
+
         <tbody>
           <tr>
             <td class="p-3 border dark:border-gray-700 font-medium" x-text="invoice.fee_type"></td>
@@ -69,67 +66,68 @@
         </tfoot>
       </table>
 
-      <!-- FOOTER -->
       <div class="text-center text-xs text-gray-500 border-t pt-4">
         <p>Thank you for your payment!</p>
         <p>This is a computer-generated invoice and does not require a signature.</p>
       </div>
 
-      <!-- BUTTONS -->
       <div class="mt-6 flex justify-end gap-3 print:hidden">
         <button @click="closeInvoiceModal()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg">
           Close
         </button>
 
-        <button onclick="window.print()" class="px-4 py-2 bg-green-600 text-white rounded-lg">
+        <button
+          @click="
+            document.body.classList.add('printing-invoice');
+            window.print();
+            document.body.classList.remove('printing-invoice');
+          "
+          class="px-4 py-2 bg-green-600 text-white rounded-lg">
           Print Invoice
         </button>
       </div>
 
     </div>
   </div>
+</div>
 
-  <!-- PRINT VERSION (A4 with 2 x A5 invoices) -->
-  <div class="hidden print:grid print-duplicate-wrapper">
+<div class="hidden print:grid print-duplicate-wrapper">
 
-    <template x-for="n in 2">
-      <div class="invoice-copy">
+  <template x-for="n in 2">
+    <div class="invoice-copy">
 
-        <div class="text-center border-b pb-2 mb-4">
-          <img src="{{ asset('assets/images/cambodia.png') }}" class="mx-auto h-16">
-          <h1 class="text-xl font-bold">INVOICE</h1>
-        </div>
-
-        <p><strong>Student:</strong> <span x-text="invoice.student_name"></span></p>
-        <p><strong>Fee Type:</strong> <span x-text="invoice.fee_type"></span></p>
-        <p><strong>Date:</strong> <span x-text="invoice.payment_date"></span></p>
-        <p><strong>Transaction ID:</strong> <span x-text="invoice.transaction_id"></span></p>
-
-        <table class="w-full text-sm mt-3 border">
-          <tr>
-            <td class="border p-2">Description</td>
-            <td class="border p-2 text-right" x-text="invoice.fee_type"></td>
-          </tr>
-          <tr>
-            <td class="border p-2 font-bold">Amount</td>
-            <td class="border p-2 text-right font-bold" x-text="'$' + parseFloat(invoice.amount).toFixed(2)"></td>
-          </tr>
-        </table>
-
-        <!-- SIGNATURE AREA -->
-        <div class="signature-area">
-          <div class="signature-box">
-            <div class="signature-line">Student Signature</div>
-          </div>
-          <div class="signature-box">
-            <div class="signature-line">Staff Signature</div>
-          </div>
-        </div>
-
+      <div class="text-center border-b pb-2 mb-4">
+        <img src="{{ asset('assets/images/cambodia.png') }}" class="mx-auto h-16">
+        <h1 class="text-xl font-bold">INVOICE</h1>
       </div>
-    </template>
 
-  </div>
+      <p><strong>Student:</strong> <span x-text="invoice.student_name"></span></p>
+      <p><strong>Fee Type:</strong> <span x-text="invoice.fee_type"></span></p>
+      <p><strong>Date:</strong> <span x-text="invoice.payment_date"></span></p>
+      <p><strong>Transaction ID:</strong> <span x-text="invoice.transaction_id"></span></p>
+
+      <table class="w-full text-sm mt-3 border">
+        <tr>
+          <td class="border p-2">Description</td>
+          <td class="border p-2 text-right" x-text="invoice.fee_type"></td>
+        </tr>
+        <tr>
+          <td class="border p-2 font-bold">Amount</td>
+          <td class="border p-2 text-right font-bold" x-text="'$' + parseFloat(invoice.amount).toFixed(2)"></td>
+        </tr>
+      </table>
+
+      <div class="signature-area">
+        <div class="signature-box">
+          <div class="signature-line">Student Signature</div>
+        </div>
+        <div class="signature-box">
+          <div class="signature-line">Staff Signature</div>
+        </div>
+      </div>
+
+    </div>
+  </template>
 
 </div>
 
@@ -169,6 +167,33 @@
       margin-top: 60px;
     }
   }
+
+  .printing-invoice,
+  .printing-invoice body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .printing-invoice * {
+    visibility: hidden;
+  }
+
+  /* This is the crucial part of your existing logic */
+  .printing-invoice .max-w-2xl,
+  .printing-invoice .print-duplicate-wrapper {
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    width: 100%;
+    display: block !important;
+  }
+
+  .printing-invoice .max-w-2xl *,
+  .printing-invoice .print-duplicate-wrapper * {
+    visibility: visible;
+  }
 </style>
 
 <script>
@@ -188,7 +213,6 @@
       formatDate(dateString) {
         if (!dateString) return "";
         const date = new Date(dateString);
-
         return date.toLocaleDateString("km-KH", {
           weekday: "long",
           day: "2-digit",
@@ -203,13 +227,13 @@
         this.invoice.amount = fee.amount;
         this.invoice.payment_date = this.formatDate(fee.payment_date);
         this.invoice.transaction_id = fee.transaction_id ?? "N/A";
-
         this.invoiceOpen = true;
       },
 
       closeInvoiceModal() {
         this.invoiceOpen = false;
       }
+
     }));
   });
 </script>
