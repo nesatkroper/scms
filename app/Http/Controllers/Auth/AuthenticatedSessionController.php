@@ -16,14 +16,33 @@ class AuthenticatedSessionController extends Controller
     return view('auth.login');
   }
 
+  // public function store(LoginRequest $request): RedirectResponse
+  // {
+  //   $request->authenticate();
+
+  //   $request->session()->regenerate();
+
+  //   return redirect()->intended(route('admin.deshboard', absolute: false));
+  // }
+
+
   public function store(LoginRequest $request): RedirectResponse
   {
     $request->authenticate();
+    $user = Auth::user();
+
+    if ($user->hasRole('student')) {
+      Auth::logout();
+      return back()->withErrors([
+        'email' => 'Your account does not have permission to access the admin system.',
+      ]);
+    }
 
     $request->session()->regenerate();
 
     return redirect()->intended(route('admin.deshboard', absolute: false));
   }
+
 
   public function destroy(Request $request): RedirectResponse
   {

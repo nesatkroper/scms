@@ -85,7 +85,7 @@ return [
   'update_offering' => "Update Offering",
   'course_offerings_list' => "Course Offerings List",
   'create_new_offering' => "Create New Offering",
-  'attendance' => "Attendance",
+  'attendance' => "Attending",
   'exam' => "Exam",
   'class_full' => "Class Full",
   'register' => "Register",
@@ -113,5 +113,5 @@ return [
   'students_will_appear_here_once_they_enroll' => "Students will appear here once they enroll",
   'edit_offering' => "Edit Offering",
   'delete_offering' => "Delete Offering",
-  
+
 ];

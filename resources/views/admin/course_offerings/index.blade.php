@@ -123,14 +123,14 @@
 
             <div class="flex">
               <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Attendance">
                 <i class="fa-regular fa-calendar-days me-2"></i>
                 {{ __('message.attendance') }}
               </a>
 
               <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
-                class="h-8  btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="h-8  btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Exam">
                 <i class="ri-contract-fill text-lg me-2"></i>
                 {{ __('message.exam') }}
@@ -159,14 +159,14 @@
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Show Details">
                 <i class="fa-regular fa-eye me-2"></i>
-                {{ __('message.detail') }}
+                {{-- {{ __('message.detail') }} --}}
               </a>
 
               <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit">
                 <i class="fa-solid fa-pen-to-square me-2"></i>
-                {{ __('message.edit') }}
+                {{-- {{ __('message.edit') }} --}}
               </a>
             </div>
           </div>
@@ -182,8 +182,10 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_course_offerings_found') }}</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_course_offering_to_schedule_a_class') }}
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">
+              {{ __('message.no_course_offerings_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_your_first_course_offering_to_schedule_a_class') }}
             </p>
           </div>
         </div>

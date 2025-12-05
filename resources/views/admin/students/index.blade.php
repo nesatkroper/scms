@@ -1,12 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Students List')
-
 @section('content')
-
-  {{-- @php
-    dd($students);
-  @endphp --}}
 
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
@@ -69,7 +64,7 @@
     </form>
 
     {{-- START: Card View for Students (Role Style) --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
       @forelse ($students as $student)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -88,21 +83,6 @@
               </a>
             </div>
 
-            <div class="flex items-center gap-1">
-              <a href="{{ route('admin.students.fees.index', $student->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Student">
-                <i class="fa-solid fa-dollar-sign me-2"></i>
-                Payment
-              </a>
-
-              <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Student">
-                <i class="fa-solid fa-file-circle-plus me-2"></i>
-                Addmission
-              </a>
-            </div>
           </div>
 
           {{-- Card Body: Stats --}}
@@ -167,26 +147,43 @@
 
           {{-- Card Footer: Primary Actions --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end">
+            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
 
-            {{-- View Details Button --}}
-            <a href="{{ route('admin.students.show', $student->id) }}"
-              class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-              title="View Student Details">
-              <i class="fa-regular fa-eye me-2"></i>
-              View
-            </a>
+            <div class="flex items-center">
+              <a href="{{ route('admin.students.fees.index', $student->id) }}"
+                class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit Student">
+                <i class="fa-solid fa-dollar-sign me-2"></i>
+                Payment
+              </a>
 
-            {{-- Edit Button --}}
-            <a href="{{ route('admin.students.edit', $student->id) }}"
-              class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit Student">
-              <i class="fa-solid fa-pen-to-square me-2"></i>
-              Edit
-            </a>
+              <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit Student">
+                <i class="fa-solid fa-file-circle-plus me-2"></i>
+                Enroll
+              </a>
+            </div>
 
-            {{-- Delete Form/Button --}}
-            <form action="{{ route('admin.students.destroy', $student->id) }}" method="POST"
+            <div class="flex items-center">
+              {{-- View Details Button --}}
+              <a href="{{ route('admin.students.show', $student->id) }}"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                title="View Student Details">
+                <i class="fa-regular fa-eye me-2"></i>
+                {{-- View --}}
+              </a>
+
+              {{-- Edit Button --}}
+              <a href="{{ route('admin.students.edit', $student->id) }}"
+                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit Student">
+                <i class="fa-solid fa-pen-to-square me-2"></i>
+                {{-- Edit --}}
+              </a>
+
+              {{-- Delete Form/Button --}}
+              {{-- <form action="{{ route('admin.students.destroy', $student->id) }}" method="POST"
               onsubmit="return confirm('Are you sure you want to delete the student \'{{ $student->name }}\'? This will soft-delete the user record.');">
               @csrf
               @method('DELETE')
@@ -196,7 +193,9 @@
                 <i class="fa-regular fa-trash-can me-2"></i>
                 Delete
               </button>
-            </form>
+            </form> --}}
+            </div>
+
           </div>
         </div>
       @empty

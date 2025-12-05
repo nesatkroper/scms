@@ -1,10 +1,18 @@
 @extends('layouts.auth')
 
 @section('content')
+  @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+      <span class="block sm:inline"> {{ $errors->first() }}</span>
+    </div>
+  @endif
+
   <div
     class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-900 min-h-screen flex items-center justify-center p-4">
+
     <div
       class="max-w-[800px] w-full mx-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform scale-100 opacity-100">
+
       <div class="grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-gray-900">
         <!-- Left Column - Login Form -->
         <div class="px-8 py-6">
