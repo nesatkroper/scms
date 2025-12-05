@@ -75,18 +75,33 @@
     <!-- Notifications -->
     <div class="relative" x-data="{ open: false }" @click.away="open = false" {{-- Closes the dropdown when clicking outside --}}>
       {{-- 1. Notification Button (Toggle) --}}
+
       <button @click="open = !open"
+        class="relative flex items-center justify-center size-10 rounded-full border border-indigo-200 dark:border-indigo-800
+           text-indigo-600 dark:text-indigo-300 bg-white dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-gray-700
+           transition">
+        <i class="fas fa-bell text-lg"></i>
+
+        @if (Auth::user()->unreadNotifications->count() > 0)
+          <span
+            class="absolute -top-1 -right-3 min-w-[18px] h-[18px] px-1.5 flex items-center justify-center bg-red-600 text-white
+               text-xs font-bold rounded-full shadow-md">
+            {{ Auth::user()->unreadNotifications->count() }}
+          </span>
+        @endif
+      </button>
+
+      {{-- <button @click="open = !open"
         class="rounded-full size-9 cursor-pointer border border-indigo-100 text-indigo-600 dark:text-indigo-300 dark:border-indigo-900
                hover:bg-indigo-50 dark:hover:bg-gray-700 focus:outline-none"
         aria-expanded="false" aria-controls="notification-dropdown">
         <i class="fas fa-bell text-xl"></i>
 
-        {{-- Dynamic Notification Dot (Only show if unread notifications exist) --}}
         @if (Auth::user()->unreadNotifications->count() > 0)
           <span class="notification-dot absolute top-0 right-0 text-sm text-red-500 rounded-full font-bold">
             {{ Auth::user()->unreadNotifications->count() }}</span>
         @endif
-      </button>
+      </button> --}}
 
       {{-- 2. Notification Dropdown (Content) --}}
       <div x-cloak {{-- Hide content initially until Alpine.js initializes --}} x-show="open" x-transition:enter="transition ease-out duration-200"
