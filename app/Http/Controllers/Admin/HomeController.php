@@ -8,6 +8,7 @@ use App\Models\Enrollment;
 use App\Models\Expense;
 use App\Models\Fee;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends BaseController
 {
@@ -48,48 +49,21 @@ class HomeController extends BaseController
       'feesCollected' => $totalPaid,
       'feesUnpaid' => $totalUnpaid,
       'recentStudents' => $recentEnrollments,
-      'recentActivities' => [
-        [
-          'type' => 'enrollment',
-          'title' => 'New student enrolled',
-          'description' => 'Emma Wilson joined Grade 8',
-          'time' => now()->subHours(2),
-          'icon' => 'user-plus',
-          'color' => 'green'
-        ],
-        [
-          'type' => 'payment',
-          'title' => 'Fee payment received',
-          'description' => '$1,250 from Michael Brown',
-          'time' => now()->subHours(5),
-          'icon' => 'money-bill-wave',
-          'color' => 'blue'
-        ],
-        [
-          'type' => 'assignment',
-          'title' => 'New assignment posted',
-          'description' => 'Math homework for Grade 7',
-          'time' => now()->subHours(8),
-          'icon' => 'book',
-          'color' => 'purple'
-        ],
-        [
-          'type' => 'attendance',
-          'title' => 'Attendance marked',
-          'description' => 'Grade 10 morning session',
-          'time' => now()->subHours(12),
-          'icon' => 'clipboard-check',
-          'color' => 'orange'
-        ],
-        [
-          'type' => 'attendance',
-          'title'  => 'Attendance alert',
-          'description' => '15 students absent in Grade 11-B',
-          'time'  => now()->subDay(),
-          'icon' => 'exclamation-triangle',
-          'color' => 'red'
-        ]
-      ]
+      'recentActivities' =>  Auth::user()->notifications()
+        ->take(5)
+        ->get()
+        ->map(function ($n) {
+          return [
+            'id'          => $n->id,
+            'title'       => $n->data['title'] ?? 'Notification',
+            'description' => $n->data['description'] ?? '',
+            'icon'        => $n->data['icon'] ?? 'info-circle',
+            'color'       => $n->data['color'] ?? 'blue',
+            'time'        => $n->created_at,
+          ];
+        })
+
+
     ];
 
     return view('admin.dashboard.index', $data);
