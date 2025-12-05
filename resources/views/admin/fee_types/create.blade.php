@@ -75,7 +75,7 @@
         <label class="form-label fw-bold text-gray-800 dark:text-gray-200">
           Apply Fee Type to Courses (multiple):
         </label>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
           @foreach ($courseOfferings as $course)
             <div class="flex items-center space-x-2 relative">
               <div class="relative flex items-center justify-center">

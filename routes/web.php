@@ -21,7 +21,8 @@ use App\Http\Controllers\Admin\{
   EnrollmentController,
   FeeTypeController,
   FeeController,
-  NotificationController
+  NotificationController,
+  ReportController
 };
 use App\Http\Controllers\InvoiceCheckController;
 
@@ -72,6 +73,9 @@ Route::prefix('admin')
   ->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('deshboard');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
