@@ -79,54 +79,7 @@ class FeeController extends BaseController
     ));
   }
 
-  // public function index(Request $request)
-  // {
-  //   $search     = $request->input('search');
-  //   $feeTypeId  = $request->input('fee_type_id');
-  //   $status     = $request->input('status');
-  //   $perPage    = $request->input('per_page', 8);
 
-  //   $fees = Fee::query()
-  //     ->with(['student:id,name,email', 'feeType:id,name'])
-  //     ->when($feeTypeId, fn($q) => $q->where('fee_type_id', $feeTypeId))
-  //     ->when($status, function ($q) use ($status) {
-  //       if ($status === 'paid') {
-  //         $q->whereNotNull('payment_date');
-  //       } elseif ($status === 'unpaid') {
-  //         $q->whereNull('payment_date');
-  //       }
-  //     })
-  //     ->when($search, function ($query) use ($search) {
-  //       $query->where(function ($q) use ($search) {
-  //         $q->where('remarks', 'like', "%{$search}%")
-  //           ->orWhere('amount', 'like', "%{$search}%")
-  //           ->orWhereHas('student', fn($s) =>
-  //           $s->where('name', 'like', "%{$search}%")
-  //             ->orWhere('email', 'like', "%{$search}%"))
-  //           ->orWhereHas('feeType', fn($ft) =>
-  //           $ft->where('name', 'like', "%{$search}%"));
-  //       });
-  //     })
-  //     ->orderBy('due_date', 'desc')
-  //     ->orderBy('created_at', 'desc')
-  //     ->paginate($perPage)
-  //     ->appends($request->query());
-
-
-  //   $feeTypes = FeeType::orderBy('name')->get(['id', 'name']);
-  //   $selectedFeeType = $feeTypeId ? $feeTypes->firstWhere('id', $feeTypeId) : null;
-
-  //   $statuses = ['unpaid', 'paid'];
-
-  //   return view('admin.fees.index', compact(
-  //     'fees',
-  //     'feeTypes',
-  //     'feeTypeId',
-  //     'selectedFeeType',
-  //     'statuses',
-  //     'status',
-  //   ));
-  // }
 
   public function create(Request $request)
   {

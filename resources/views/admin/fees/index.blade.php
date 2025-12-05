@@ -92,16 +92,6 @@
                 </p>
               </div>
               <div class="flex">
-                @if ($fee->status == 'paid')
-                  <a href="#"
-                    @click.prevent="openInvoiceModal({{ $fee }}, {{ $fee->feeType }}, {{ $fee->student }})"
-                    class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-green-500 hover:bg-green-100 dark:hover:bg-gray-900 transition-colors"
-                    title="Invoice">
-                    <span class="btn-content">
-                      <i class="fa-solid fa-print"></i>
-                    </span>
-                  </a>
-                @endif
 
                 <a href="{{ route('admin.fees.show', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
                   class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
@@ -234,7 +224,6 @@
       @endforelse
 
       @include('admin.fees.payment-modal')
-      @include('admin.fees.invoice-modal')
 
     </div>
 
