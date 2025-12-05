@@ -138,7 +138,7 @@
             },
 
             generateTransactionId() {
-              const segment = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+              const segment = () => Math.random().toString(36).substring(2, 7).toUpperCase();
               return `SCMS-${segment()}-${segment()}-${segment()}-${segment()}`;
             },
 
