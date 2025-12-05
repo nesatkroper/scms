@@ -20,7 +20,9 @@ return [
 
 
 
-  'timezone' => 'UTC',
+  // 'timezone' => 'UTC',
+  'timezone' => 'Asia/Phnom_Penh',
+
 
 
 

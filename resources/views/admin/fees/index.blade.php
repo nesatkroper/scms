@@ -75,7 +75,7 @@
     </form>
 
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
-      x-data="{ ...paymentsModal(), ...invoiceModal() }">
+      x-data="paymentsModal()">
       @forelse ($fees as $fee)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($fee->status == 'paid') border-dashed dark:border-green-600 @endif">
