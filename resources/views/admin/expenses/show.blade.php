@@ -1,122 +1,178 @@
 @extends('layouts.admin')
 
-@section('title', 'Expense Details: ' . $expense->title)
+@section('title', 'Expense Report: ' . $expense->title)
 
 @section('content')
 
-  <div
-    class="box px-2 py-4 md:p-6 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto">
+  @php
+    // Check if the expense is approved for the watermark logic
+    $isApproved = !empty($expense->approved_by);
+    $currency = $currency ?? '$'; // Assuming currency is available or default to $
+    $school_address = $school_address ?? '123 Finance Office, Central Admin, City';
+    $school_contact = $school_contact ?? 'Email: finance@school.com | Phone: (123) 456-7890';
+  @endphp
 
-    <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-100 dark:border-gray-700/50">
-      <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-        <svg class="size-8 p-1 rounded-full bg-red-50 text-red-600 dark:text-red-50 dark:bg-red-900"
-          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 6v12m-3-2.818l-.511-.274a.75.75 0 01-.152-.962L9.423 6.326m-3.1 8.783L7.33 12m10.237 2.818l.511-.274a.75.75 0 00.152-.962l-1.423-2.618M18.8 12L16.67 9.177M5 12h14" />
-        </svg>
-        Expense Details
+  <div
+    class="report-container max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg border border-gray-200 dark:border-gray-700 relative">
+
+    {{-- 1. APPROVED Watermark Implementation --}}
+    @if ($isApproved)
+      <div
+        class="report-watermark absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 z-10 text-teal-600 dark:text-teal-400">
+        <span
+          class="text-9xl font-extrabold transform rotate-[-45deg] border-8 border-teal-600 dark:border-teal-400 px-16 py-8 rounded-xl tracking-wider">
+          APPROVED
+        </span>
+      </div>
+    @endif
+    {{-- End Watermark --}}
+
+    {{-- Header & Actions --}}
+    <div
+      class="flex items-center justify-between mb-8 border-b pb-4 border-gray-100 dark:border-gray-700/50 print:hidden z-20">
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+        <i class="fa-solid fa-file-invoice-dollar text-red-600 dark:text-red-400"></i>
+        Expense Report Preview
       </h3>
-      {{-- Back Button --}}
-      <a href="{{ route('admin.expenses.index') }}"
-        class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
-        <i class="fas fa-arrow-left text-xs"></i> Back to Ledger
-      </a>
+      <div class="flex gap-2">
+        <button onclick="window.print()"
+          class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
+          <i class="fas fa-print"></i> Print Report
+        </button>
+        <a href="{{ route('admin.expenses.index', ['category_id' => $expense->expense_category_id]) }}"
+          class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
+          <i class="fas fa-arrow-left text-xs"></i> Back to Ledger
+        </a>
+      </div>
     </div>
 
-    {{-- Main Detail Card --}}
-    <div class="bg-red-50 dark:bg-slate-700/30 rounded-lg p-6 space-y-4">
-      {{-- Title & Amount --}}
-      <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-2xl font-extrabold text-red-700 dark:text-red-300">
-          {{ $expense->title ?? 'N/A' }}
-        </h2>
-        <span class="text-3xl font-extrabold text-red-700 dark:text-red-300">
-          ${{ number_format($expense->amount, 2) }}
+    {{-- Report Info Block (Top Left & Right) --}}
+    <div class="flex justify-between items-start mb-8 z-20">
+      <div>
+        <h1 class="text-3xl font-extrabold text-red-800 dark:text-red-400 mb-1">
+          {{ config('app.name') }}
+        </h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400">{{ $school_address }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          {{ $school_contact }}
+        </p>
+
+        <div class="mt-4">
+          <p class="font-semibold text-gray-900 dark:text-gray-100">Category: {{ $expense->category?->name ?? 'N/A' }}</p>
+          <p class="text-gray-600 dark:text-gray-400">Recorded By: {{ $expense->creator?->name ?? 'Unknown' }}</p>
+        </div>
+      </div>
+
+      <div class="text-right z-20">
+        <h2 class="text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-1">EXPENSE REPORT</h2>
+        <p class="text-lg font-semibold text-red-600 dark:text-red-400">
+          #EXP-{{ str_pad($expense->id, 6, '0', STR_PAD_LEFT) }}
+        </p>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">
+          Date: {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : 'N/A' }}
+        </p>
+      </div>
+    </div>
+
+    {{-- Status Block --}}
+    <div
+      class="flex justify-between gap-2 text-sm mb-8 p-3 py-6 bg-red-50 dark:bg-red-900/30 rounded-lg border border-l-4 border-red-500 dark:border-red-400 z-20">
+
+      <div>
+        <h4 class="font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">Expense Title:</h4>
+        <p class="text-xl font-extrabold text-red-700 dark:text-red-300">{{ $expense->title ?? 'N/A' }}</p>
+      </div>
+
+      <div class="text-right">
+        <h4 class="font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">Approval Status:</h4>
+        @php
+          $statusColor = $isApproved ? 'teal' : 'yellow';
+          $statusText = $isApproved ? 'APPROVED' : 'PENDING';
+        @endphp
+        <span
+          class="font-bold px-4 py-1 rounded-full text-md bg-{{ $statusColor }}-100 text-{{ $statusColor }}-700 dark:bg-{{ $statusColor }}-900 dark:text-{{ $statusColor }}-300">
+          {{ $statusText }}
         </span>
-      </div>
-
-      {{-- Key Metadata --}}
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-tag text-red-500"></i> Category:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $expense->category?->name ?? 'N/A' }}
-          </span>
-        </p>
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-alt text-blue-500"></i> Expense Date:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : 'N/A' }}
-          </span>
-        </p>
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-user-edit text-green-500"></i> Recorded By:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $expense->creator?->name ?? 'Unknown' }}
-          </span>
-        </p>
-        <p class="detail-item">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-clock text-orange-500"></i> Recorded At:
-          </span>
-          <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $expense->created_at->format('M d, Y h:i A') }}
-          </span>
+        <p class="text-gray-900 dark:text-gray-100 mt-2">
+          <span class="font-medium">Recorded At:</span> {{ $expense->created_at->format('M d, Y h:i A') }}
         </p>
       </div>
+    </div>
 
-      {{-- Approval Status --}}
-      <div class="pt-4 border-t border-gray-200 dark:border-gray-700/50">
-        <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
-          <i class="fa-solid fa-check-circle text-teal-500"></i> Approval Status:
-        </span>
-        <p class="text-sm">
-          @if ($expense->approved_by)
-            <span
-              class="font-bold px-3 py-1 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-              Approved by {{ $expense?->approver?->name }} on
-              {{ $expense->approved_at ? \Carbon\Carbon::parse($expense->approved_at)->format('M d, Y') : 'N/A' }}
-            </span>
-          @else
-            <span
-              class="font-bold px-3 py-1 rounded-full text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
-              Pending Approval
-            </span>
-          @endif
-        </p>
+    {{-- Expense Details Table (Simplified to single row) --}}
+    <div class="mb-8 overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg z-20">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-100 dark:bg-gray-700">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider dark:text-gray-300">
+              Description
+            </th>
+            <th class="px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider dark:text-gray-300">
+              Total Amount ({{ $currency }})
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          <tr>
+            <td class="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {{ $expense->title ?? 'General Expense' }}
+              <p class="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1">
+                Category: {{ $expense->category?->name ?? 'N/A' }}
+              </p>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-3xl font-extrabold text-red-700 dark:text-red-300">
+              {{ $currency }}{{ number_format($expense->amount, 2) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {{-- Approval and Description Blocks --}}
+    <div class="flex flex-col md:flex-row justify-between gap-8 z-20">
+
+      <div class="md:w-1/2 space-y-3">
+        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">Approval Details:</h4>
+        @if ($isApproved)
+          <div class="p-3 bg-teal-50 dark:bg-teal-900/50 border border-teal-200 dark:border-teal-700 rounded-lg">
+            <p class="text-sm text-teal-700 dark:text-teal-300">
+              <span class="font-semibold">Approved By:</span>
+              {{ $expense->approver?->name ?? 'System' }}
+            </p>
+            <p class="text-sm text-teal-700 dark:text-teal-300 mt-1">
+              <span class="font-semibold">Approval Date:</span>
+              {{ $expense->approved_at ? \Carbon\Carbon::parse($expense->approved_at)->format('M d, Y h:i A') : 'N/A' }}
+            </p>
+          </div>
+        @else
+          <div class="p-3 bg-yellow-50 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+            <p class="text-sm text-yellow-700 dark:text-yellow-300 font-medium">
+              This expense is currently pending review and approval.
+            </p>
+          </div>
+        @endif
       </div>
 
-      {{-- Description --}}
-      @if ($expense->description)
-        <div class="pt-4 border-t border-gray-200 dark:border-gray-700/50">
-          <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
-            <i class="fa-solid fa-file-alt text-orange-500"></i> Description / Remarks:
-          </span>
-          <p class="text-sm italic text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 p-3 rounded-md">
-            {{ $expense->description }}
+      <div class="md:w-1/2 space-y-1">
+        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">Description / Remarks:</h4>
+        <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg min-h-20">
+          <p class="text-sm italic text-gray-700 dark:text-gray-300">
+            {{ $expense->description ?? 'No detailed description provided for this expense.' }}
           </p>
         </div>
-      @endif
+      </div>
     </div>
 
-    {{-- Action Buttons --}}
-    <div class="mt-6 flex justify-end gap-3">
+    {{-- Action Buttons (Visible only on screen) --}}
+    <div class="mt-8 flex justify-end gap-3 print:hidden z-20">
 
-      @unless ($expense->approved_by)
-        {{-- 🟢 ADDED: Approval Button (Only visible if NOT approved) --}}
-        {{-- You would use Spatie middleware here to restrict this view to 'admin' or 'staff' --}}
+      @unless ($isApproved)
+        {{-- Approval Button (Only visible if NOT approved) --}}
         <form action="{{ route('admin.expenses.approve', $expense->id) }}" method="POST"
           onsubmit="return confirm('Are you sure you want to approve this expense?');">
           @csrf
-          {{-- Using POST method is standard for state changes --}}
           <button type="submit"
-            class="p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-teal-600 text-white hover:bg-teal-700 transition-colors"
+            class="p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-teal-600 text-white hover:bg-teal-700 transition-colors font-semibold"
             title="Approve Expense">
             <i class="fa-solid fa-thumbs-up mr-2"></i>
             Approve Expense
@@ -125,10 +181,10 @@
       @endunless
 
       <a href="{{ route('admin.expenses.edit', $expense->id) }}"
-        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
+        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors font-semibold"
         title="Edit Expense">
         <i class="fa-solid fa-pen-to-square mr-2"></i>
-        Edit Expense
+        Edit
       </a>
 
       <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
@@ -136,7 +192,7 @@
         @csrf
         @method('DELETE')
         <button type="submit"
-          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
+          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors font-semibold"
           title="Delete Expense">
           <i class="fa-regular fa-trash-can mr-2"></i>
           Delete
@@ -144,6 +200,100 @@
       </form>
     </div>
 
+    <div class="mt-10 pt-2 border-t border-gray-200 dark:border-gray-700/50 text-center z-20">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        Record ID: EXP-{{ $expense->id }} | Report Generated on {{ now()->format('M d, Y h:i A') }}
+      </p>
+    </div>
+
   </div>
 
 @endsection
+
+@push('styles')
+  <style>
+    @media print {
+
+      /* General Print Reset */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color: #000 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        border-color: #eee !important;
+      }
+
+      .sidebar,
+      .main-header,
+      .main-footer,
+      .admin-toolbar,
+      .print\:hidden {
+        display: none !important;
+      }
+
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+      }
+
+      body * {
+        visibility: hidden !important;
+      }
+
+      .report-container,
+      .report-container * {
+        visibility: visible !important;
+        z-index: 99 !important;
+        /* Ensure content is above everything */
+      }
+
+      /* Container Setup */
+      .report-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        padding: 10mm !important;
+        background: #fff !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-height: 297mm;
+      }
+
+      /* Watermark Specific Print Style */
+      .report-watermark {
+        opacity: 0.1 !important;
+        color: #047857 !important;
+        /* Teal for Approved */
+        border-color: #047857 !important;
+      }
+
+      /* Page Setup */
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+      }
+
+      /* Scale down slightly if needed */
+      .report-container {
+        transform: scale(0.92);
+        transform-origin: top left;
+      }
+
+      /* Ensure dark mode colors are converted to black on white for print */
+      .dark * {
+        color: #000 !important;
+        background: #fff !important;
+      }
+    }
+  </style>
+@endpush

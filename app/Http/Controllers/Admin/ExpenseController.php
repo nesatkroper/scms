@@ -151,6 +151,8 @@ class ExpenseController extends BaseController
 
   public function approve(Expense $expense)
   {
+    // dd($expense);
+
     if ($expense->approved_by) {
       return back()->with('error', 'This expense is already approved.');
     }
@@ -161,7 +163,7 @@ class ExpenseController extends BaseController
     ]);
 
 
-    return redirect()->route('admin.expenses.index')
+    return redirect()->route('admin.expenses.index', ['category_id' => $expense->expense_category_id])
       ->with('success', "Expense '{$expense->title}' has been successfully approved!");
   }
 
