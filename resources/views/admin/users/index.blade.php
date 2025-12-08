@@ -106,7 +106,7 @@
           {{-- Card Body: Key Details --}}
           <div class="p-4 space-y-3 flex-grow">
             {{-- Contact --}}
-            <x-info.item name="{{ $user->phone ?? 'N/A' }} | {{ $user->address ?? 'No Address' }}"
+            <x-info.item name="{{ $user->phone ?? 'N/A' }} | {{ Str::limit($user->address, 30) ?? 'No Address' }}"
               icon="fa-solid fa-phone text-xl" label="Contact" labelcolor="text-gray-500 dark:text-gray-400"
               color="" position="left" />
             {{-- Qualification (Teacher Only) --}}
@@ -158,7 +158,7 @@
                 class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="View User">
                 <i class="fa-regular fa-eye me-2"></i>
-                Show
+                {{-- Show --}}
               </a>
 
               @if (!$user->hasRole('admin'))
@@ -167,12 +167,11 @@
                   class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Edit User">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  Edit
+                  {{-- Edit --}}
                 </a>
               @endif
 
-              @if (!$user->hasRole('admin'))
-                {{-- Delete Form/Button --}}
+              {{-- @if (!$user->hasRole('admin'))
                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                   onsubmit="return confirm('Are you sure you want to delete the user \'{{ $user->name }}\'? This action cannot be undone.');">
                   @csrf
@@ -184,7 +183,7 @@
                     Delete
                   </button>
                 </form>
-              @endif
+              @endif --}}
             </div>
           </div>
 

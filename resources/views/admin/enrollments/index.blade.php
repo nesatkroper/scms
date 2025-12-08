@@ -175,7 +175,7 @@
             </div>
 
             {{-- Remarks --}}
-            @if ($admission->remarks)
+            {{-- @if ($admission->remarks)
               <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50">
                 <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
                   <i class="fa-solid fa-comment-dots text-yellow-500"></i>
@@ -185,7 +185,7 @@
                   {{ Str::limit($admission->remarks, 100) }}
                 </p>
               </div>
-            @endif
+            @endif --}}
           </div>
 
           <div
@@ -208,11 +208,11 @@
                 title="Edit Admission">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  Edit
+                  {{-- Edit --}}
                 </span>
               </a>
 
-              <form
+              {{-- <form
                 action="{{ route('admin.enrollments.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
                 method="POST" onsubmit="return confirm('Are you sure you want to delete this admission record?');">
                 @csrf
@@ -223,7 +223,7 @@
                   <i class="fa-regular fa-trash-can me-2"></i>
                   Delete
                 </button>
-              </form>
+              </form> --}}
             </div>
           </div>
         </div>

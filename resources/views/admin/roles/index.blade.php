@@ -123,7 +123,7 @@
             </a>
 
             {{-- Delete Form/Button --}}
-            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST"
+            {{-- <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST"
               onsubmit="return confirm('Are you sure you want to delete the role \'{{ $role->name }}\'? This action cannot be undone.');">
               @csrf
               @method('DELETE')
@@ -133,7 +133,7 @@
                 <i class="fa-regular fa-trash-can me-2"></i>
                 Delete
               </button>
-            </form>
+            </form> --}}
           </div>
         </div>
       @empty

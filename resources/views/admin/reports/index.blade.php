@@ -8,12 +8,7 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      <svg class="size-8 p-1 rounded-full bg-blue-50 text-blue-600 dark:text-blue-50 dark:bg-blue-900"
-        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 3v18h18" />
-        <path d="M18.7 8.3L12 15 7.1 10.1" />
-      </svg>
+      <i class="fa-solid fa-file-export"></i>
       Generate System Reports
     </h3>
 
@@ -28,19 +23,14 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <!-- Report Type -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Report Type <span class="text-red-500">*</span>
             </label>
             <select class="form-control-tailwind" id="report_type" name="report_type" required>
-              <option value="">Select a Report</option>
 
               <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
                 Student Enrollment</option>
-
-              <option value="financial_expenses" {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
-                Financial Expenses</option>
 
               <option value="attendance" {{ request('report_type') == 'attendance' ? 'selected' : '' }}>
                 Attendance Report</option>
@@ -48,12 +38,14 @@
               <option value="scores" {{ request('report_type') == 'scores' ? 'selected' : '' }}>
                 Score Report</option>
 
+              <option value="financial_expenses" {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
+                Financial Expenses</option>
+
               <option value="financial_summary" {{ request('report_type') == 'financial_summary' ? 'selected' : '' }}>
                 Financial Summary</option>
             </select>
           </div>
 
-          <!-- Start Date -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
             <input type="date" class="form-control-tailwind" name="start_date"
@@ -61,7 +53,6 @@
 
           </div>
 
-          <!-- End Date -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
             <input type="date" class="form-control-tailwind" name="end_date"
@@ -70,7 +61,6 @@
 
         </div>
 
-        <!-- DYNAMIC FILTERS -->
         <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
 
           <h5 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
@@ -173,7 +163,13 @@
         </div>
 
         <!-- GENERATE BUTTON -->
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-4">
+          <a href="{{ route('admin.reports') }}"
+            class="px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            <i class="fa-solid fa-rotate"></i>
+            Refresh
+          </a>
+
           <button type="submit"
             class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
@@ -215,7 +211,6 @@
       </div>
     @endif
 
-    <!-- Tailwind Form Control Styling -->
     <style>
       .form-control-tailwind {
         width: 100%;
