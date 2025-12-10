@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const userMenuButton = document.getElementById('user-menu-button');
   const userDropdown = document.getElementById('user-dropdown');
   const darkModeToggle = document.getElementById('dark-mode-toggle');
-  const attendanceChart = document.getElementById('attendanceChart');
 
   if (!sidebar || !toggleSidebarBtn) return;
 
@@ -190,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1080) { 
+    if (window.innerWidth >= 1080) {
       // Desktop
       if (sidebar && sidebar.classList.contains('-translate-x-full')) {
         sidebarBackdrop.classList.add('hidden', 'opacity-0');
@@ -207,86 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDesktopSidebar();
   });
 
-  // Initialize Chart only if it exists
-  if (attendanceChart) {
-    const chartColors = {
-      light: {
-        grid: 'rgba(0, 0, 0, 0.1)',
-        ticks: '#6b7280',
-        labels: '#1f2937'
-      },
-      dark: {
-        grid: 'rgba(255, 255, 255, 0.1)',
-        ticks: '#9ca3af',
-        labels: '#e5e7eb'
-      }
-    };
-
-    const ctx = attendanceChart.getContext('2d');
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        datasets: [{
-          label: 'Present',
-          data: [92, 88, 90, 85, 87, 94],
-          borderColor: '#4ade80',
-          backgroundColor: 'rgba(74, 222, 128, 0.1)',
-          tension: 0.4,
-          fill: true
-        }, {
-          label: 'Absent',
-          data: [8, 12, 10, 15, 13, 6],
-          borderColor: '#f87171',
-          backgroundColor: 'rgba(248, 113, 113, 0.1)',
-          tension: 0.4,
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'top',
-            labels: {
-              font: {
-                family: "'Poppins', sans-serif"
-              }
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            ticks: {
-              font: {
-                family: "'Poppins', sans-serif"
-              }
-            }
-          },
-          x: {
-            ticks: {
-              font: {
-                family: "'Poppins', sans-serif"
-              }
-            }
-          }
-        }
-      }
-    });
-
-    const updateChartTheme = (isDark) => {
-      const colors = isDark ? chartColors.dark : chartColors.light;
-      chart.options.scales.y.grid.color = colors.grid;
-      chart.options.scales.x.grid.color = colors.grid;
-      chart.options.scales.y.ticks.color = colors.ticks;
-      chart.options.scales.x.ticks.color = colors.ticks;
-      chart.options.plugins.legend.labels.color = colors.labels;
-      chart.update();
-    };
-  }
 
   // --- INITIALIZATION ---
   const savedSidebarState = localStorage.getItem('sidebar-collapsed');

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Attendance;
+use Carbon\Carbon;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
 use App\Models\Expense;
@@ -40,6 +41,90 @@ class HomeController extends BaseController
       ->take(5)
       ->get();
 
+    $statuses = ['attending', 'absence', 'permission'];
+
+    $dailyLabels = [];
+    $dailyCounts = [
+      'attending' => [],
+      'absence' => [],
+      'permission' => []
+    ];
+
+    for ($i = 6; $i >= 0; $i--) {
+      $d = Carbon::today()->subDays($i);
+      $dailyLabels[] = $d->format('D');
+
+      foreach ($statuses as $s) {
+        $dailyCounts[$s][] = Attendance::whereDate('date', $d)
+          ->where('status', $s)
+          ->count();
+      }
+    }
+
+    $weeklyLabels = [];
+    $weeklyCounts = [
+      'attending' => [],
+      'absence' => [],
+      'permission' => []
+    ];
+
+    for ($i = 3; $i >= 0; $i--) {
+      $start = Carbon::now()->startOfWeek()->subWeeks($i);
+      $end   = (clone $start)->endOfWeek();
+
+      $weeklyLabels[] = "Wk " . $start->weekOfYear;
+
+      foreach ($statuses as $s) {
+        $weeklyCounts[$s][] = Attendance::whereBetween('date', [$start, $end])
+          ->where('status', $s)
+          ->count();
+      }
+    }
+
+    $monthlyLabels = [];
+    $monthlyCounts = [
+      'attending' => [],
+      'absence' => [],
+      'permission' => []
+    ];
+
+    for ($i = 5; $i >= 0; $i--) {
+      $m = Carbon::now()->subMonths($i);
+      $monthlyLabels[] = $m->format('M');
+
+      $start = $m->copy()->startOfMonth();
+      $end   = $m->copy()->endOfMonth();
+
+      foreach ($statuses as $s) {
+        $monthlyCounts[$s][] = Attendance::whereBetween('date', [$start, $end])
+          ->where('status', $s)
+          ->count();
+      }
+    }
+
+    $attendance = [
+      'daily' => [
+        'labels' => $dailyLabels,
+        'attending' => $dailyCounts['attending'],
+        'absence' => $dailyCounts['absence'],
+        'permission' => $dailyCounts['permission'],
+      ],
+      'weekly' => [
+        'labels' => $weeklyLabels,
+        'attending' => $weeklyCounts['attending'],
+        'absence' => $weeklyCounts['absence'],
+        'permission' => $weeklyCounts['permission'],
+      ],
+      'monthly' => [
+        'labels' => $monthlyLabels,
+        'attending' => $monthlyCounts['attending'],
+        'absence' => $monthlyCounts['absence'],
+        'permission' => $monthlyCounts['permission'],
+      ],
+    ];
+
+
+
     $data = [
       'totalStudents' => $students,
       'totalTeachers' => $teachers,
@@ -49,6 +134,7 @@ class HomeController extends BaseController
       'feesCollected' => $totalPaid,
       'feesUnpaid' => $totalUnpaid,
       'recentStudents' => $recentEnrollments,
+      'attendance' => $attendance,
       'recentActivities' =>  Auth::user()->notifications()
         ->take(5)
         ->get()
@@ -67,27 +153,5 @@ class HomeController extends BaseController
     ];
 
     return view('admin.dashboard.index', $data);
-  }
-
-  protected function getRecentActivities()
-  {
-    return [
-      [
-        'type' => 'enrollment',
-        'title' => 'New student enrolled',
-        'description' => 'Sarah Johnson joined Grade 10',
-        'time' => now()->subHours(2),
-        'icon' => 'user-plus',
-        'color' => 'green'
-      ],
-      [
-        'type' => 'payment',
-        'title' => 'Fee payment received',
-        'description' => '$350 from Michael Brown',
-        'time' => now()->subHours(5),
-        'icon' => 'money-bill-wave',
-        'color' => 'blue'
-      ],
-    ];
   }
 }
