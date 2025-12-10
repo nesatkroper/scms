@@ -227,7 +227,6 @@ class StudentController extends BaseController
           $query->with(['subject', 'teacher']);
         },
         'fees.feeType',
-        'fees.payments',
         'scores.exam.courseOffering.subject',
         'attendances.courseOffering.subject',
       ]);

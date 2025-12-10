@@ -25,17 +25,6 @@
       </div>
     </div>
 
-    <!-- Mobile search button -->
-    <div class="lg:hidden">
-      <search>
-        <button id="searchall"
-          class="rounded-full size-9 cursor-pointer flex justify-center items-center border border-indigo-100 dark:border-indigo-900
-                dark:text-gray-300 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 focus:outline-none ">
-          <i class="ri-search-line text-xl"></i>
-        </button>
-      </search>
-    </div>
-
     <!-- Dark mode toggle -->
     <button id="dark-mode-toggle"
       class="rounded-full size-9 cursor-pointer flex justify-center items-center border border-indigo-100 dark:border-indigo-900
@@ -91,20 +80,7 @@
         @endif
       </button>
 
-      {{-- <button @click="open = !open"
-        class="rounded-full size-9 cursor-pointer border border-indigo-100 text-indigo-600 dark:text-indigo-300 dark:border-indigo-900
-               hover:bg-indigo-50 dark:hover:bg-gray-700 focus:outline-none"
-        aria-expanded="false" aria-controls="notification-dropdown">
-        <i class="fas fa-bell text-xl"></i>
-
-        @if (Auth::user()->unreadNotifications->count() > 0)
-          <span class="notification-dot absolute top-0 right-0 text-sm text-red-500 rounded-full font-bold">
-            {{ Auth::user()->unreadNotifications->count() }}</span>
-        @endif
-      </button> --}}
-
-      {{-- 2. Notification Dropdown (Content) --}}
-      <div x-cloak {{-- Hide content initially until Alpine.js initializes --}} x-show="open" x-transition:enter="transition ease-out duration-200"
+      <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95" id="notification-dropdown"
