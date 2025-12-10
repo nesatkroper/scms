@@ -26,6 +26,8 @@ class HomeController extends BaseController
   }
 
 
+
+
   public function index()
   {
     $students = User::role('student')->count();
