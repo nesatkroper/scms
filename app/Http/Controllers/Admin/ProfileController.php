@@ -21,9 +21,8 @@ class ProfileController extends Controller
       'fees.feeType',
       'scores.exam',
       'attendances.courseOffering.subject',
-
       'teachingCourses.subject',
-      'teachingCourses.courseOfferingsStudents',
+      'teachingCourses.enrollments',
     ])
       ->withCount([
         'fees',

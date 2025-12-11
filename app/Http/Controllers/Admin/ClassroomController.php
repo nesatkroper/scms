@@ -24,7 +24,7 @@ class ClassroomController extends BaseController
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 8);
+    $perPage = $request->input('per_page', 12);
 
     $classrooms = Classroom::query()
       ->when($search, function ($query) use ($search) {
