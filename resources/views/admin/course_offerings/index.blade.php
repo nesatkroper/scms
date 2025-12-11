@@ -29,15 +29,17 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        <a href="{{ route('admin.course_offerings.create') }}"
-          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clip-rule="evenodd" />
-          </svg>
-          {{ __('message.create_new_offering') }}
-        </a>
+        @if (Auth::user()->hasPermissionTo('create_course-offering'))
+          <a href="{{ route('admin.course_offerings.create') }}"
+            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+            </svg>
+            {{ __('message.create_new_offering') }}
+          </a>
+        @endif
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
           <div class="relative w-full">
@@ -122,36 +124,42 @@
             class="items-center px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <div class="flex gap-1">
-              <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Attendance">
-                <i class="fa-regular fa-calendar-days me-2"></i>
-                {{ __('message.attendance') }}
-              </a>
 
-              <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
-                class="h-8  btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                title="Exam">
-                <i class="ri-contract-fill text-lg me-2"></i>
-                {{ __('message.exam') }}
-              </a>
-
-              @if ($offering->students->count() >= $offering->classroom->capacity)
-                <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                  class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Admission Register">
-                  <i class="fa-solid fa-check me-2"></i>
-                  {{ __('message.class_full') }}
-                </a>
-              @else
-                <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                  class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Admission Register">
-                  <i class="fa-solid fa-book-atlas me-2"></i>
-                  {{ __('message.register') }}
+              @if (Auth::user()->hasPermissionTo('view_attendance'))
+                <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
+                  class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Attendance">
+                  <i class="fa-regular fa-calendar-days me-2"></i>
+                  {{ __('message.attendance') }}
                 </a>
               @endif
 
+              @if (Auth::user()->hasPermissionTo('view_exam'))
+                <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
+                  class="h-8  btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Exam">
+                  <i class="ri-contract-fill text-lg me-2"></i>
+                  {{ __('message.exam') }}
+                </a>
+              @endif
+
+              @if (Auth::user()->hasPermissionTo('view_enrollment'))
+                @if ($offering->students->count() >= $offering->classroom->capacity)
+                  <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
+                    class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Admission Register">
+                    <i class="fa-solid fa-check me-2"></i>
+                    {{ __('message.class_full') }}
+                  </a>
+                @else
+                  <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
+                    class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Admission Register">
+                    <i class="fa-solid fa-book-atlas me-2"></i>
+                    {{ __('message.register') }}
+                  </a>
+                @endif
+              @endif
             </div>
 
             <div class="flex">
@@ -162,12 +170,15 @@
                 {{-- {{ __('message.detail') }} --}}
               </a>
 
-              <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit">
-                <i class="fa-solid fa-pen-to-square me-2"></i>
-                {{-- {{ __('message.edit') }} --}}
-              </a>
+              @if (Auth::user()->hasPermissionTo('update_course-offering'))
+                <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  {{-- {{ __('message.edit') }} --}}
+                </a>
+              @endif
+
             </div>
           </div>
         </div>

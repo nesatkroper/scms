@@ -60,7 +60,7 @@
     {{-- Exam Cards --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       <div
-        class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
 
         <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
           <div class="flex justify-between items-start gap-2">
@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <div class="p-4 space-y-3">
+        <div class="p-4 space-y-3 flex">
 
           {{-- Total Marks / Passing Marks --}}
           <div class="flex items-center gap-3 text-sm">
@@ -113,7 +113,7 @@
 
         {{-- Actions (Edit Link + Delete Form) --}}
         <div
-          class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+          class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2 ">
 
           <a href="{{ route('admin.scores.index', ['exam_id' => 2]) }}"
             class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
@@ -128,7 +128,7 @@
 
       @forelse ($exams as $exam)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
 
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
