@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -93,6 +94,13 @@ class User extends Authenticatable
   {
     return $this->hasMany(Enrollment::class, 'student_id');
   }
+
+  public function notifications()
+  {
+    return $this->morphMany(DatabaseNotification::class, 'notifiable')
+      ->orderBy('created_at', 'desc');
+  }
+
 
   public function courseOfferings()
   {

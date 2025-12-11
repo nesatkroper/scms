@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -79,13 +83,20 @@ class AuthController extends Controller
   {
     try {
       $user = $request->user()->load([
-        'fees',
-        'attendances',
-        'scores',
-        'approvedExpenses',
-        'teachingCourses',
-        'enrollments.courseOffering',
-        'courseOfferings'
+        'notifications',
+        'unreadNotifications',
+        'readNotifications',
+        'scores.exam.courseOffering.subject',
+        'attendances.courseOffering.subject',
+        'fees.feeType',
+        'teachingCourses.subject',
+        'teachingCourses.classroom',
+        'teachingCourses.exams',
+        'teachingCourses.students',
+        'enrollments.courseOffering.subject',
+        'enrollments.courseOffering.teacher',
+        'enrollments.courseOffering.classroom',
+        'enrollments.courseOffering.exams',
       ]);
 
       return response()->json([
@@ -98,6 +109,89 @@ class AuthController extends Controller
         'message' => 'Failed to load user profile',
         'error'   => $e->getMessage(),
       ], 500);
+    }
+  }
+
+
+  public function changePassword(Request $request)
+  {
+    try {
+      $request->validate([
+        'current_password' => 'required|string|min:6',
+        'new_password'     => 'required|string|min:6|confirmed',
+      ]);
+
+      $user = $request->user();
+
+      if (!Hash::check($request->current_password, $user->password)) {
+        return response()->json([
+          'status'  => false,
+          'message' => 'Current password is incorrect',
+        ], 403);
+      }
+
+      $user->password = Hash::make($request->new_password);
+      $user->save();
+
+      return response()->json([
+        'status'  => true,
+        'message' => 'Password changed successfully',
+      ], 200);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json([
+        'status'  => false,
+        'message' => 'Validation failed',
+        'errors'  => $e->errors(),
+      ], 422);
+    } catch (\Exception $e) {
+      return response()->json([
+        'status'  => false,
+        'message' => 'Something went wrong while changing password',
+        'error'   => $e->getMessage(),
+      ], 500);
+    }
+  }
+
+
+  public function changeAvatar(Request $request)
+  {
+    $request->validate([
+      'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+    ]);
+
+    try {
+      $user = $request->user();
+
+      $avatarPath = public_path('uploads/avatars');
+      if (!file_exists($avatarPath)) {
+        mkdir($avatarPath, 0755, true);
+      }
+
+      $validatedData['avatar'] = $user->avatar;
+
+      if ($request->hasFile('avatar')) {
+        $manager = new ImageManager(new Driver());
+        $avatar = $request->file('avatar');
+        $avatarName = time() . '-' . date('d-m-Y') . '_user_avatar.' . $avatar->getClientOriginalExtension();
+
+        $image = $manager->read($avatar);
+        $image->resize(640, 640);
+        $image->save($avatarPath . '/' . $avatarName);
+
+        if ($user->avatar && file_exists(public_path($user->avatar))) {
+          unlink(public_path($user->avatar));
+        }
+
+        $validatedData['avatar'] = 'uploads/avatars/' . $avatarName;
+      }
+
+      $user->avatar = $validatedData['avatar'];
+      $user->save();
+
+      return redirect()->back()->with('success', 'Avatar updated successfully!');
+    } catch (\Exception $e) {
+      Log::error('Error updating avatar: ' . $e->getMessage());
+      return back()->withInput()->with('error', 'Error updating avatar: ' . $e->getMessage());
     }
   }
 }
