@@ -30,15 +30,17 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-slate-800">
 
-        <a href="{{ route('admin.students.create') }}"
-          class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clip-rule="evenodd" />
-          </svg>
-          Enroll New Student
-        </a>
+        @if (Auth::user()->hasPermissionTo('create_student'))
+          <a href="{{ route('admin.students.create') }}"
+            class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+            </svg>
+            Enroll New Student
+          </a>
+        @endif
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
           <div class="relative w-full">
@@ -150,19 +152,24 @@
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
 
             <div class="flex items-center">
-              <a href="{{ route('admin.students.fees.index', $student->id) }}"
-                class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Student">
-                <i class="fa-solid fa-dollar-sign me-2"></i>
-                Payment
-              </a>
+              @if (Auth::user()->hasPermissionTo('view_enrollment'))
+                <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit Student">
+                  <i class="fa-solid fa-file-circle-plus me-2"></i>
+                  Enroll
+                </a>
+              @endif
 
-              <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Student">
-                <i class="fa-solid fa-file-circle-plus me-2"></i>
-                Enroll
-              </a>
+              @if (Auth::user()->hasPermissionTo('view_fee'))
+                <a href="{{ route('admin.students.fees.index', $student->id) }}"
+                  class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit Student">
+                  <i class="fa-solid fa-dollar-sign me-2"></i>
+                  Payment
+                </a>
+              @endif
+
             </div>
 
             <div class="flex items-center">
@@ -174,13 +181,14 @@
                 {{-- View --}}
               </a>
 
-              {{-- Edit Button --}}
-              <a href="{{ route('admin.students.edit', $student->id) }}"
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Student">
-                <i class="fa-solid fa-pen-to-square me-2"></i>
-                {{-- Edit --}}
-              </a>
+              @if (Auth::user()->hasPermissionTo('update_student'))
+                <a href="{{ route('admin.students.edit', $student->id) }}"
+                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit Student">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  {{-- Edit --}}
+                </a>
+              @endif
 
               {{-- Delete Form/Button --}}
               {{-- <form action="{{ route('admin.students.destroy', $student->id) }}" method="POST"

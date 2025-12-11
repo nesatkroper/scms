@@ -14,20 +14,17 @@
       {{ $student->name }} Details
     </h3>
     <div class="flex space-x-3">
-      <a href="{{ route('admin.students.edit', $student) }}"
-        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path
-            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-7.5 7.5a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0L17 7.414V17a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1h6.586l-1-1H4z" />
-        </svg>
-        Edit
-      </a>
+      @if (Auth::user()->hasPermissionTo('update_student'))
+        <a href="{{ route('admin.students.edit', $student) }}"
+          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+          <i class="fa-solid fa-user-pen"></i>
+          Edit
+        </a>
+      @endif
+
       <a href="{{ route('admin.students.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path
-            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2.586l3-3V17a1 1 0 001 1h2a1 1 0 001-1v-6.586l1.293-1.293a1 1 0 000-1.414l-7-7z" />
-        </svg>
+        <i class="fa-regular fa-house"></i>
         Back to List
       </a>
     </div>
@@ -71,23 +68,25 @@
           </div>
         </div>
 
-        {{-- Delete Button Card --}}
-        <div
-          class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-6">
-          <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            Permanently delete this student and all associated records. This action cannot be undone.
-          </p>
-          <form action="{{ route('admin.students.destroy', $student) }}" method="POST"
-            onsubmit="return confirm('Are you sure you want to delete this student: {{ $student->name }}?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-              class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
-              Delete Student
-            </button>
-          </form>
-        </div>
+        @if (Auth::user()->hasPermissionTo('delete_student'))
+          <div
+            class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-6">
+            <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Permanently delete this student and all associated records. This action cannot be undone.
+            </p>
+            <form action="{{ route('admin.students.destroy', $student) }}" method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this student: {{ $student->name }}?');">
+              @csrf
+              @method('DELETE')
+              <button type="submit"
+                class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
+                Delete Student
+              </button>
+            </form>
+          </div>
+        @endif
+
       </div>
     </div>
 
