@@ -35,10 +35,13 @@
         Fee Invoice Preview
       </h3>
       <div class="flex gap-2">
-        <button onclick="window.print()"
-          class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
-          <i class="fas fa-print"></i> Print Invoice
-        </button>
+        @if ($fee->status == 'paid')
+          <button onclick="window.print()"
+            class="text-nowrap px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
+            <i class="fas fa-print"></i> Print Invoice
+          </button>
+        @endif
+
         <a href="{{ route('admin.fees.index') }}"
           class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
           <i class="fas fa-arrow-left text-xs"></i> Back to Fees

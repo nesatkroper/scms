@@ -39,17 +39,20 @@
   </div>
   <nav class="pt-4 flex-grow overflow-y-auto">
     <ul>
-      <li class="menu-item relative">
-        <a href="{{ route('admin.deshboard') }}"
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+      @if (Auth::user()->hasPermissionTo('view_dashboard'))
+        <li class="menu-item relative">
+          <a href="{{ route('admin.deshboard') }}"
+            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
           {{ request()->routeIs('admin.deshboard') ? 'bg-indigo-700' : '' }}">
-          <div class="wr-icon flex items-center">
-            <i class="fas fa-tachometer-alt text-center"></i>
-            <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
-          </div>
-          <span class="menu-tooltip">Dashboard</span>
-        </a>
-      </li>
+            <div class="wr-icon flex items-center">
+              <i class="fas fa-tachometer-alt text-center"></i>
+              <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
+            </div>
+            <span class="menu-tooltip">Dashboard</span>
+          </a>
+        </li>
+      @endif
+
       <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
 
       <li class="menu-item relative">
@@ -65,25 +68,34 @@
         </div>
         <div class="submenu {{ $isAcademicsActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
-            <li>
-              <a href="{{ route('admin.classrooms.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+            @if (Auth::user()->hasPermissionTo('view_classroom'))
+              <li>
+                <a href="{{ route('admin.classrooms.index') }}"
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Classrooms</a>
-            </li>
-            <li>
-              <a href="{{ route('admin.subjects.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+              </li>
+            @endif
+
+            @if (Auth::user()->hasPermissionTo('view_subject'))
+              <li>
+                <a href="{{ route('admin.subjects.index') }}"
+                  class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.subjects.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                subjects
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.course_offerings.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                  subjects
+                </a>
+              </li>
+            @endif
+
+            @if (Auth::user()->hasPermissionTo('view_course-offering'))
+              <li>
+                <a href="{{ route('admin.course_offerings.index') }}"
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course
-                offering
-              </a>
-            </li>
+                  offering
+                </a>
+              </li>
+            @endif
+
           </ul>
         </div>
       </li>
@@ -101,20 +113,26 @@
         </div>
         <div class="submenu {{ $isOrganizationActive ? 'active' : '' }}">
           <ul class="pl-4 pr-4">
-            <li>
-              <a href="{{ route('admin.teachers.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+            @if (Auth::user()->hasPermissionTo('view_teacher'))
+              <li>
+                <a href="{{ route('admin.teachers.index') }}"
+                  class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.teachers.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                <span class="ml-2">teachers</span>
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.students.index') }}"
-                class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
+                  <span class="ml-2">teachers</span>
+                </a>
+              </li>
+            @endif
+
+            @if (Auth::user()->hasPermissionTo('view_student'))
+              <li>
+                <a href="{{ route('admin.students.index') }}"
+                  class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.students.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                <span class="ml-2">Students</span>
-              </a>
-            </li>
+                  <span class="ml-2">Students</span>
+                </a>
+              </li>
+            @endif
+
           </ul>
         </div>
       </li>
@@ -137,35 +155,43 @@
         <div class="submenu {{ $isFinanceActive ? 'active' : '' }}">
           <ul class="pl-2 pr-2">
 
-            <li>
-              <a href="{{ route('admin.fee_types.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+            @if (Auth::user()->hasPermissionTo('view_fee-type'))
+              <li>
+                <a href="{{ route('admin.fee_types.index') }}"
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.fee_types.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                fee collection
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.expense_categories.index') }}"
-                class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                  fee collection
+                </a>
+              </li>
+            @endif
+
+            @if (Auth::user()->hasPermissionTo('view_expense-category'))
+              <li>
+                <a href="{{ route('admin.expense_categories.index') }}"
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.expense_categories.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                expense cost
-              </a>
-            </li>
+                  expense cost
+                </a>
+              </li>
+            @endif
+
           </ul>
         </div>
       </li>
 
-      <li class="menu-item relative">
-        <a href="{{ route('admin.reports') }}"
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+      @if (Auth::user()->hasPermissionTo('view_report'))
+        <li class="menu-item relative">
+          <a href="{{ route('admin.reports') }}"
+            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
           {{ request()->routeIs('admin.reports') ? 'bg-indigo-700' : '' }}">
-          <div class="wr-icon flex items-center">
-            <i class="fas fa-tachometer-alt text-center"></i>
-            <span class="ml-3 sidebar-text text-hidden">Report</span>
-          </div>
-          <span class="menu-tooltip">Report</span>
-        </a>
-      </li>
+            <div class="wr-icon flex items-center">
+              <i class="fas fa-tachometer-alt text-center"></i>
+              <span class="ml-3 sidebar-text text-hidden">Report</span>
+            </div>
+            <span class="menu-tooltip">Report</span>
+          </a>
+        </li>
+      @endif
 
       <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2">
       </li>
@@ -199,11 +225,9 @@
                   {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">roles</a>
                 </li>
               @endif
-
           </div>
         </li>
       @endif
-
     </ul>
   </nav>
 </aside>
