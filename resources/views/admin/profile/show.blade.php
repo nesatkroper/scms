@@ -28,18 +28,6 @@
         </span>
       @endif
     </h3>
-    <div class="flex space-x-3">
-      {{-- Change the route to your profile edit page. You'll need to implement this view. --}}
-      <a href="#"
-        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-          <path
-            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-7.5 7.5a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0L17 7.414V17a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1h6.586l-1-1H4z" />
-        </svg>
-        Edit Profile
-      </a>
-      {{-- Removed "Back to List" button since this is a profile page --}}
-    </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

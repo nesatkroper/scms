@@ -1,6 +1,6 @@
 <!-- Attendance Chart -->
 <div
-  class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
+  class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
   <div class="flex justify-between items-center mb-6">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Attendance Overview</h3>
 
