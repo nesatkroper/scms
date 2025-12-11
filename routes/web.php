@@ -124,6 +124,8 @@ Route::prefix('admin')
         Route::post('/save-all', [ScoreController::class, 'saveAll'])->name('saveAll');
         Route::get('/export/{exam_id}', [ScoreController::class, 'exportExamScores'])
           ->name('export');
+        Route::post('/final-grade', [ScoreController::class, 'assignFinalGrades'])
+          ->name('assignFinalGrades');
       });
 
     Route::prefix('attendances')

@@ -9,7 +9,14 @@ class Exam extends Model
 {
   use SoftDeletes;
 
-  protected $fillable = ['type', 'description', 'course_offering_id', 'date', 'total_marks', 'passing_marks'];
+  protected $fillable = [
+    'type',
+    'description',
+    'course_offering_id',
+    'date',
+    'total_marks',
+    'passing_marks'
+  ];
 
   public function courseOffering()
   {

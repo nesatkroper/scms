@@ -59,6 +59,16 @@
           <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
             Save All Scores
           </button>
+
+          <form action="{{ route('admin.scores.assignFinalGrades') }}" method="POST">
+            @csrf
+            <input type="hidden" name="course_offering_id" value="{{ $exam->course_offering_id }}">
+
+            <button type="submit" class="px-5 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700">
+              Calculate Final Grades
+            </button>
+          </form>
+
         </div>
       </div>
 
@@ -83,10 +93,15 @@
             {{-- Score Input --}}
             <div class="flex flex-col">
               <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Score</label>
-              <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
+              {{-- <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
                 name="fee" value="{{ old('fee') }}" value="{{ $scoreEntry->score ?? 0 }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
-                text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"> --}}
+              <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
+                value="{{ $scoreEntry->score ?? '' }}"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
+              text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+
             </div>
 
             {{-- Remarks Input --}}

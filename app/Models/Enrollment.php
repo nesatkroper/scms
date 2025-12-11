@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class Enrollment extends Model
 {
-
   protected $fillable = [
     'student_id',
     'course_offering_id',
@@ -89,38 +88,4 @@ class Enrollment extends Model
       });
     });
   }
-
-
-  // protected static function booted()
-  // {
-  //   static::created(function (Enrollment $enrollment) {
-
-  //     DB::transaction(function () use ($enrollment) {
-  //       $course = $enrollment->courseOffering()->first();
-
-  //       if (! $course) {
-  //         Log::warning("CourseOffering not found for Enrollment ID {$enrollment->id}");
-  //         return;
-  //       }
-
-  //       $feeType = FeeType::where('name', 'Course Fee')->first();
-
-  //       if (! $feeType) {
-  //         $feeType = FeeType::create([
-  //           'name' => 'Course Fee',
-  //           'description' => 'Automatically generated fee type for course enrollment'
-  //         ]);
-  //       }
-
-  //       Fee::create([
-  //         'student_id'        => $enrollment->student_id,
-  //         'enrollment_id' => $enrollment->id,
-  //         'fee_type_id'       => $feeType->id,
-  //         'created_by'        => Auth::id() ?? 1,
-  //         'amount'            => $course->fee ?? 0,
-  //         'description'       => "Enrollment fee for {$course->subject->name}",
-  //       ]);
-  //     });
-  //   });
-  // }
 }

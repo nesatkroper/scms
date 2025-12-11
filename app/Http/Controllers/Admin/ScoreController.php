@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\ScoreExport;
+use App\Models\CourseOffering;
+use App\Models\Enrollment;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Score;
 use App\Models\Exam;
@@ -63,8 +65,6 @@ class ScoreController extends BaseController
     return Excel::download(new ScoreExport($examId), $fileName);
   }
 
-
-
   public function saveAll(Request $request)
   {
     $examId = $request->exam_id;
@@ -94,5 +94,48 @@ class ScoreController extends BaseController
     }
 
     return back()->with('success', 'All scores saved successfully!');
+  }
+
+  public function assignFinalGrades(Request $request)
+  {
+    $courseOfferingId = $request->course_offering_id;
+
+    $courseOffering = CourseOffering::with([
+      'students',
+      'students.scores' => function ($q) use ($courseOfferingId) {
+        $q->whereHas('exam', function ($examQuery) use ($courseOfferingId) {
+          $examQuery->where('course_offering_id', $courseOfferingId);
+        });
+      }
+    ])->findOrFail($courseOfferingId);
+
+    foreach ($courseOffering->students as $student) {
+
+      $scores = $student->scores;
+
+      if ($scores->count() === 0) {
+        continue;
+      }
+
+      $finalScore = round($scores->avg('score'));
+
+      if ($finalScore >= 90) $finalGrade = 'A+';
+      elseif ($finalScore >= 80) $finalGrade = 'A';
+      elseif ($finalScore >= 70) $finalGrade = 'B+';
+      elseif ($finalScore >= 60) $finalGrade = 'B';
+      elseif ($finalScore >= 50) $finalGrade = 'C+';
+      elseif ($finalScore >= 40) $finalGrade = 'C';
+      elseif ($finalScore >= 30) $finalGrade = 'D';
+      else $finalGrade = 'F';
+
+      Enrollment::where('student_id', $student->id)
+        ->where('course_offering_id', $courseOfferingId)
+        ->update([
+          'grade_final' => $finalGrade,
+          'remarks'     => "Final grade auto-calculated",
+        ]);
+    }
+
+    return back()->with('success', 'Final grades assigned successfully!');
   }
 }
