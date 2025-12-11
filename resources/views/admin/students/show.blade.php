@@ -232,7 +232,7 @@
                       {{ $offering->teacher->name ?? 'Unassigned' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $offering->enrollment->status ? ucfirst(str_replace('_', ' ', $offering->enrollment->status)) : 'N/A' }}
+                      {{ $offering?->enrollment?->status ? ucfirst(str_replace('_', ' ', $offering->enrollment->status)) : 'N/A' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <span
@@ -301,10 +301,10 @@
                 </tr>
               </thead>
               <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach ($student->fees as $fee)
+                @foreach ($student?->fees as $fee)
                   @php
-                    $paidAmount = $fee->payments->sum('amount');
-                    $status = $fee->status; // Uses the getStatusAttribute accessor from the Fee model
+                    $paidAmount = $fee?->payments?->sum('amount');
+                    $status = $fee?->status; // Uses the getStatusAttribute accessor from the Fee model
                   @endphp
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
