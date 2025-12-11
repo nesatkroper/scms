@@ -187,6 +187,18 @@
         </li>
       @endif
 
+      <li class="menu-item relative">
+        <a href="{{ route('admin.notifications.create') }}"
+          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+          {{ request()->routeIs('admin.notifications*') ? 'bg-indigo-700' : '' }}">
+          <div class="wr-icon flex items-center">
+            <i class="fa-regular fa-bell"></i>
+            <span class="ml-3 sidebar-text text-hidden">Notification</span>
+          </div>
+          <span class="menu-tooltip">Notification</span>
+        </a>
+      </li>
+
       @if (Auth::user()->hasPermissionTo('view_report'))
         <li class="menu-item relative">
           <a href="{{ route('admin.reports') }}"

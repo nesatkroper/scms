@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamRequest;
 use App\Models\Exam;
 use App\Models\CourseOffering;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -37,5 +38,51 @@ class NotificationController extends Controller
     }
 
     return back();
+  }
+
+  public function create(Request $request)
+  {
+    $role = $request->role;
+    $courseOfferingId = $request->course_offering_id;
+
+    $users = User::query();
+
+    if ($role) {
+      $users->role($role);
+    }
+
+    if ($role === "student" && $courseOfferingId) {
+      $users->whereHas('enrollments', function ($q) use ($courseOfferingId) {
+        $q->where('course_offering_id', $courseOfferingId);
+      });
+    }
+
+    return view('admin.notifications.create', [
+      'users' => $users->get(),
+      'roles' => ['admin', 'teacher', 'staff', 'student'],
+      'courseOfferings' => CourseOffering::with('subject')->get(),
+      'selectedRole' => $role,
+      'selectedCourseOffering' => $courseOfferingId
+    ]);
+  }
+
+  public function send(Request $request)
+  {
+    $request->validate([
+      'user_ids' => 'required|array',
+      'title' => 'required|string|max:255',
+      'body' => 'required|string'
+    ]);
+
+    $users = User::whereIn('id', $request->user_ids)->get();
+
+    foreach ($users as $user) {
+      $user->notify(new \App\Notifications\CustomNotification(
+        $request->title,
+        $request->body
+      ));
+    }
+
+    return back()->with('success', 'Notification sent successfully!');
   }
 }

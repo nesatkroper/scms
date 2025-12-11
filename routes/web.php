@@ -115,6 +115,8 @@ Route::prefix('admin')
         Route::get('/', [NotificationController::class, 'index'])->name('index');
         Route::post('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
         Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('readAll');
+        Route::get('/create', [NotificationController::class, 'create'])->name('create');
+        Route::post('/send', [NotificationController::class, 'send'])->name('send');
       });
 
     Route::prefix('scores')
