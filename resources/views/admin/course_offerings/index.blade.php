@@ -119,9 +119,9 @@
           </div>
 
           <div
-            class="items-center px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+            class="items-center px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
-            <div class="flex">
+            <div class="flex gap-1">
               <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
                 class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Attendance">
