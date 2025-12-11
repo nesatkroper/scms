@@ -86,9 +86,9 @@ class AuthController extends Controller
         'notifications',
         'unreadNotifications',
         'readNotifications',
+        'fees.feeType',
         'scores.exam.courseOffering.subject',
         'attendances.courseOffering.subject',
-        'fees.feeType',
         'teachingCourses.subject',
         'teachingCourses.classroom',
         'teachingCourses.exams',
@@ -188,10 +188,19 @@ class AuthController extends Controller
       $user->avatar = $validatedData['avatar'];
       $user->save();
 
-      return redirect()->back()->with('success', 'Avatar updated successfully!');
+      return response()->json([
+        'status'  => true,
+        'message' => 'Avatar updated successfully!',
+        'avatar_url' => asset($user->avatar),
+      ], 200);
     } catch (\Exception $e) {
       Log::error('Error updating avatar: ' . $e->getMessage());
-      return back()->withInput()->with('error', 'Error updating avatar: ' . $e->getMessage());
+
+      return response()->json([
+        'status'  => false,
+        'message' => 'Error updating avatar',
+        'error'   => $e->getMessage(),
+      ], 500);
     }
   }
 }
