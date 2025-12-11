@@ -37,7 +37,7 @@
       {{-- Form action uses the pivot keys (student_id, course_offering_id) --}}
       <form
         action="{{ route('admin.enrollments.update', [
-            'student_id' => $studentCourse->student_id,
+            'student_id' => $enrollment->student_id,
             'course_offering_id' => $courseOfferingId,
         ]) }}"
         method="POST" class="p-0">
@@ -51,7 +51,7 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 border-t pt-6 border-gray-200 dark:border-gray-700">
 
-            <input type="hidden" name="student_id" value="{{ $studentCourse->student_id }}">
+            <input type="hidden" name="student_id" value="{{ $enrollment->student_id }}">
             <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
 
             {{-- 3. Status Field (Select) --}}
@@ -64,7 +64,7 @@
                 <option value="" disabled>Select Status</option>
                 @foreach ($statuses as $status)
                   <option value="{{ $status }}"
-                    {{ old('status', $studentCourse->status) == $status ? 'selected' : '' }}>
+                    {{ old('status', $enrollment->status) == $status ? 'selected' : '' }}>
                     {{ ucfirst($status) }}
                   </option>
                 @endforeach
@@ -84,7 +84,7 @@
                 <option value="" disabled>Select Payment Status</option>
                 @foreach ($paymentStatuses as $pStatus)
                   <option value="{{ $pStatus }}"
-                    {{ old('payment_status', $studentCourse->payment_status) == $pStatus ? 'selected' : '' }}>
+                    {{ old('payment_status', $enrollment->payment_status) == $pStatus ? 'selected' : '' }}>
                     {{ ucfirst($pStatus) }}
                   </option>
                 @endforeach
@@ -100,7 +100,7 @@
                 Final Grade (0-100)
               </label>
               <input type="number" step="0.01" min="0" max="100" name="grade_final" id="grade_final"
-                value="{{ old('grade_final', $studentCourse->grade_final) }}" placeholder="e.g., 95"
+                value="{{ old('grade_final', $enrollment->grade_final) }}" placeholder="e.g., 95"
                 class="w-full px-3 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('grade_final') border-red-500 @enderror">
               @error('grade_final')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -115,7 +115,7 @@
             </label>
             <textarea name="remarks" id="remarks" rows="5"
               placeholder="Any special notes about this student's admission or progress."
-              class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500 @error('remarks') border-red-500 @enderror">{{ old('remarks', $studentCourse->remarks) }}</textarea>
+              class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500 @error('remarks') border-red-500 @enderror">{{ old('remarks', $enrollment->remarks) }}</textarea>
             @error('remarks')
               <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
             @enderror

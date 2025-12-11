@@ -65,7 +65,7 @@
 
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
-              <div>
+              <div class="">
                 {{-- Main Exam Name --}}
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">{{ $exam->type }} -
                   {{ $exam->courseOffering?->teacher?->name }}</h4>
@@ -151,7 +151,7 @@
 
           {{-- Actions (Edit Link + Delete Form) --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+            class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <a href="{{ route('admin.scores.index', ['exam_id' => $exam->id]) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
@@ -170,7 +170,7 @@
                 title="Edit">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  Edit
+                  {{-- Edit --}}
                 </span>
               </a>
 

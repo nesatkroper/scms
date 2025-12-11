@@ -19,6 +19,7 @@ return [
   'edit_classroom' => "Edit Classroom:",
   'update_classroom' => "Update Classroom",
   'go_to_date' => "Go to Date",
+  'go' => "Go",
   'status_key' => "Status Key:",
   'attending_(1_score)' => "Attending (1 Score)",
   'permission_(05_score)' => "Permission (0.5 Score)",

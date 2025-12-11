@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\EnrollmentRequest;
 use App\Models\Enrollment;
 use App\Models\CourseOffering;
-use App\Models\Fee;
-use App\Models\FeeType;
 use App\Models\User;
 use App\Notifications\NewCourseEnrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 class EnrollmentController extends BaseController
