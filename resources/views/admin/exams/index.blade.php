@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('title', 'Exams List')
-
 @section('content')
 
   <div
@@ -27,11 +26,13 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        <a href="{{ route('admin.exams.create', ['course_offering_id' => $courseOfferingId]) }}"
-          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-          <i class="fa-solid fa-plus"></i>
-          Create New Exam
-        </a>
+        @if (Auth::user()->hasPermissionTo('create_exam'))
+          <a href="{{ route('admin.exams.create', ['course_offering_id' => $courseOfferingId]) }}"
+            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            Create New Exam
+          </a>
+        @endif
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
           <div class="relative w-full">
@@ -231,15 +232,16 @@
 
             <div class="flex">
 
-              {{-- Edit Button --}}
-              <a href="{{ route('admin.exams.edit', ['exam' => $exam->id, 'course_offering_id' => $courseOfferingId]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
-                </span>
-              </a>
+              @if (Auth::user()->hasPermissionTo('update_exam'))
+                <a href="{{ route('admin.exams.edit', ['exam' => $exam->id, 'course_offering_id' => $courseOfferingId]) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>
+                    {{-- Edit --}}
+                  </span>
+                </a>
+              @endif
 
               {{-- Delete Button --}}
               {{-- <form

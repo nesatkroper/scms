@@ -139,26 +139,29 @@
     {{-- Action Buttons (Update route names) --}}
     <div class="mt-6 flex justify-end gap-3">
 
-      <a href="{{ route('admin.expense_categories.edit', $expenseCategory->id) }}"
-        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
-        title="Edit Expense Category">
-        <i class="fa-solid fa-pen-to-square mr-2"></i>
-        Edit Category
-      </a>
+      @if (Auth::user()->hasPermissionTo('update_expense-category'))
+        <a href="{{ route('admin.expense_categories.edit', $expenseCategory->id) }}"
+          class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
+          title="Edit Expense Category">
+          <i class="fa-solid fa-pen-to-square mr-2"></i>
+          Edit Category
+        </a>
+      @endif
 
-      <form action="{{ route('admin.expense_categories.destroy', $expenseCategory->id) }}" method="POST"
-        onsubmit="return confirm('Are you sure you want to permanently delete this expense category? This will not delete associated expenses, but they will become uncategorized.');">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
-          title="Delete Expense Category">
-          <i class="fa-regular fa-trash-can mr-2"></i>
-          Delete
-        </button>
-      </form>
+      @if (Auth::user()->hasPermissionTo('delete_expense-category'))
+        <form action="{{ route('admin.expense_categories.destroy', $expenseCategory->id) }}" method="POST"
+          onsubmit="return confirm('Are you sure you want to permanently delete this expense category? This will not delete associated expenses, but they will become uncategorized.');">
+          @csrf
+          @method('DELETE')
+          <button type="submit"
+            class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
+            title="Delete Expense Category">
+            <i class="fa-regular fa-trash-can mr-2"></i>
+            Delete
+          </button>
+        </form>
+      @endif
     </div>
-
   </div>
 
 @endsection

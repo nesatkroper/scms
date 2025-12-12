@@ -180,24 +180,26 @@
         </form>
       @endunless
 
-      <a href="{{ route('admin.expenses.edit', $expense->id) }}"
-        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors font-semibold"
-        title="Edit Expense">
-        <i class="fa-solid fa-pen-to-square mr-2"></i>
-        Edit
-      </a>
+      @if (!$isApproved)
+        <a href="{{ route('admin.expenses.edit', $expense->id) }}"
+          class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors font-semibold"
+          title="Edit Expense">
+          <i class="fa-solid fa-pen-to-square mr-2"></i>
+          Edit
+        </a>
 
-      <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
-        onsubmit="return confirm('Are you sure you want to permanently delete this expense record?');">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors font-semibold"
-          title="Delete Expense">
-          <i class="fa-regular fa-trash-can mr-2"></i>
-          Delete
-        </button>
-      </form>
+        <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
+          onsubmit="return confirm('Are you sure you want to permanently delete this expense record?');">
+          @csrf
+          @method('DELETE')
+          <button type="submit"
+            class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors font-semibold"
+            title="Delete Expense">
+            <i class="fa-regular fa-trash-can mr-2"></i>
+            Delete
+          </button>
+        </form>
+      @endif
     </div>
 
     <div class="mt-10 pt-2 border-t border-gray-200 dark:border-gray-700/50 text-center z-20">

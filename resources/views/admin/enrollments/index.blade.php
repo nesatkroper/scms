@@ -10,11 +10,7 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-3-6h-3a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 007.5 21h4.5m-9-10.5h10.5m-10.5 0h10.5m-10.5 0v10.5A2.25 2.25 0 005.25 21h4.5m-9-10.5v10.5A2.25 2.25 0 005.25 21h4.5" />
-      </svg>
+      <i class="fa-solid fa-clipboard-user"></i>
       @if ($courseOffering)
         Admission Register for {{ $courseOffering->subject?->name }} -
         {{ $courseOffering->teacher->name }} -
@@ -44,27 +40,22 @@
         @if ($enrollments->count() >= $courseOffering->classroom->capacity)
           <div></div>
         @else
-          <div class="flex gap-4">
-            <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
-              class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                  clip-rule="evenodd" />
-              </svg>
-              Create Admission (Existed Student)
-            </a>
+          @if (Auth::user()->hasPermissionTo('create_enrollment'))
+            <div class="flex gap-4">
+              <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
+                <i class="fa-solid fa-plus"></i>
+                Admission (Existed)
+              </a>
 
-            <a href="{{ route('admin.students.create') }}"
-              class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                  clip-rule="evenodd" />
-              </svg>
-              Create Admission (New Student)
-            </a>
-          </div>
+              <a href="{{ route('admin.students.create') }}"
+                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
+                <i class="fa-solid fa-plus"></i>
+                Admission (New)
+              </a>
+            </div>
+          @endif
+
         @endif
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
@@ -192,25 +183,29 @@
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <div class="flex">
-              <a href="{{ route('admin.attendances.show', [$courseOffering->id, $admission->student->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Attendance">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-book-atlas me-2"></i>
-                  Attendance
-                </span>
-              </a>
+              @if (Auth::user()->hasPermissionTo('view_attendance'))
+                <a href="{{ route('admin.attendances.show', [$courseOffering->id, $admission->student->id]) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Attendance">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-book-atlas me-2"></i>
+                    Attendance
+                  </span>
+                </a>
+              @endif
             </div>
 
             <div class="flex">
-              <a href="{{ route('admin.enrollments.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Admission">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
-                </span>
-              </a>
+              @if (Auth::user()->hasPermissionTo('update_attendance'))
+                <a href="{{ route('admin.enrollments.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit Admission">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>
+                    {{-- Edit --}}
+                  </span>
+                </a>
+              @endif
 
               {{-- <form
                 action="{{ route('admin.enrollments.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"

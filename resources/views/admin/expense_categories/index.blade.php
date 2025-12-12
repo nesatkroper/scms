@@ -32,16 +32,17 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        {{-- Create Button (Redirects to Create Page) --}}
-        <a href="{{ route('admin.expense_categories.create') }}"
-          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clip-rule="evenodd" />
-          </svg>
-          Create New Category
-        </a>
+        @if (Auth::user()->hasPermissionTo('create_expense-category'))
+          <a href="{{ route('admin.expense_categories.create') }}"
+            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+            </svg>
+            Create New Category
+          </a>
+        @endif
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
           <div class="relative w-full">
@@ -110,14 +111,16 @@
             class="px-4 py-0 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <div class="flex">
-              <a href="{{ route('admin.expenses.index', ['category_id' => $category->id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Admission Register">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-book-atlas me-2"></i>
-                  Register
-                </span>
-              </a>
+              @if (Auth::user()->hasPermissionTo('view_expense'))
+                <a href="{{ route('admin.expenses.index', ['category_id' => $category->id]) }}"
+                  class="btn p-2 py-0.5 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Admission Register">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-book-atlas me-2"></i>
+                    Register
+                  </span>
+                </a>
+              @endif
             </div>
 
             <div class="flex">
@@ -131,15 +134,16 @@
                 </span>
               </a>
 
-              {{-- Edit Button (Redirects to Edit Page) --}}
-              <a href="{{ route('admin.expense_categories.edit', $category->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
-                </span>
-              </a>
+              @if (Auth::user()->hasPermissionTo('update_expense-category'))
+                <a href="{{ route('admin.expense_categories.edit', $category->id) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Edit">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>
+                    {{-- Edit --}}
+                  </span>
+                </a>
+              @endif
 
               {{-- Delete Button (Full form submission) --}}
               {{-- <form action="{{ route('admin.expense_categories.destroy', $category->id) }}" method="POST"
