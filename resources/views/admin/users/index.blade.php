@@ -137,11 +137,13 @@
             <div class="flex">
               {{-- Password Button: Triggers Password Modal --}}
 
-              <button type="button" @click="openPasswordModal({{ $user->id }})"
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors">
-                <i class="fa-solid fa-unlock-keyhole me-2"></i>
-                Password
-              </button>
+              @if (!$user->hasRole('admin'))
+                <button type="button" @click="openPasswordModal({{ $user->id }})"
+                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors">
+                  <i class="fa-solid fa-unlock-keyhole me-2"></i>
+                  Password
+                </button>
+              @endif
 
               @if (!$user->hasRole('admin'))
                 <button type="button" @click="openRoleModal({{ $user->id }})"
@@ -154,12 +156,14 @@
 
             <div class="flex">
               {{-- Show Button --}}
-              <a href="{{ route('admin.users.show', $user->id) }}"
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                title="View User">
-                <i class="fa-regular fa-eye me-2"></i>
-                {{-- Show --}}
-              </a>
+              @if (!$user->hasRole('admin'))
+                <a href="{{ route('admin.users.show', $user->id) }}"
+                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  title="View User">
+                  <i class="fa-regular fa-eye me-2"></i>
+                  {{-- Show --}}
+                </a>
+              @endif
 
               @if (!$user->hasRole('admin'))
                 {{-- Edit Button --}}
