@@ -57,8 +57,10 @@ class NotificationController extends Controller
       });
     }
 
+    // dd($users->with('roles')->get());
+
     return view('admin.notifications.create', [
-      'users' => $users->get(),
+      'users' => $users->with('roles')->get(),
       'roles' => ['admin', 'teacher', 'staff', 'student'],
       'courseOfferings' => CourseOffering::with('subject')->get(),
       'selectedRole' => $role,

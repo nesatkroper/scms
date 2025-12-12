@@ -3,7 +3,7 @@
 @section('content')
 
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
     <h2 class="text-2xl font-bold mb-4">Send Notification</h2>
 
@@ -84,8 +84,10 @@
         </button>
       </div>
 
-      <div class="mb-2">
-        <input type="checkbox" id="checkAllUsers" class="mr-2">
+      <div class="mb-4 flex gap-4">
+        <input type="checkbox" id="checkAllUsers"
+          class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
+            checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
         <label for="checkAllUsers" class="font-bold cursor-pointer">Select All / Unselect All (Visible)</label>
       </div>
 
@@ -95,10 +97,10 @@
         @forelse ($users as $u)
           <label for="user-{{ $u->id }}" class="flex items-center gap-2 user-item cursor-pointer">
             <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}"
-              class="user-checkbox appearance-none size-4 border-2 border-gray-300 dark:border-gray-600 rounded-sm
+              class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
             checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
-            <span class="text-sm text-gray-800 dark:text-gray-300">
-              {{ $u->name }}
+            <span class="text-sm text-gray-800 dark:text-gray-200 capitalize font-bold">
+              {{ $u->name }} ({{ $u->roles->pluck('name')->join(', ') }})
             </span>
           </label>
         @empty
