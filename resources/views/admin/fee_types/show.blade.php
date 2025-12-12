@@ -153,24 +153,28 @@
     {{-- Action Buttons --}}
     <div class="mt-6 flex justify-end gap-3">
 
-      <a href="{{ route('admin.fee_types.edit', $feeType->id) }}"
-        class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
-        title="Edit Fee Type">
-        <i class="fa-solid fa-pen-to-square mr-2"></i>
-        Edit Type
-      </a>
+      @if (Auth::user()->hasPermissionTo('update_fee-type'))
+        <a href="{{ route('admin.fee_types.edit', $feeType->id) }}"
+          class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
+          title="Edit Fee Type">
+          <i class="fa-solid fa-pen-to-square mr-2"></i>
+          Edit Type
+        </a>
+      @endif
 
-      <form action="{{ route('admin.fee_types.destroy', $feeType->id) }}" method="POST"
-        onsubmit="return confirm('Are you sure you want to permanently delete this fee type? This will not delete associated fees, but they will become uncategorized.');">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
-          title="Delete Fee Type">
-          <i class="fa-regular fa-trash-can mr-2"></i>
-          Delete
-        </button>
-      </form>
+      @if (Auth::user()->hasPermissionTo('delete_fee-type'))
+        <form action="{{ route('admin.fee_types.destroy', $feeType->id) }}" method="POST"
+          onsubmit="return confirm('Are you sure you want to permanently delete this fee type? This will not delete associated fees, but they will become uncategorized.');">
+          @csrf
+          @method('DELETE')
+          <button type="submit"
+            class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
+            title="Delete Fee Type">
+            <i class="fa-regular fa-trash-can mr-2"></i>
+            Delete
+          </button>
+        </form>
+      @endif
     </div>
 
   </div>

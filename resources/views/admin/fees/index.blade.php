@@ -31,15 +31,18 @@
       <input type="hidden" name="fee_type_id" value="{{ $feeTypeId }}">
       <div
         class="p-2 flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
-        <a href="{{ route('admin.fees.create', ['fee_type_id' => $feeTypeId]) }}"
-          class="lg:col-span-1 text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clip-rule="evenodd" />
-          </svg>
-          Create New Fee
-        </a>
+
+        @if (Auth::user()->hasPermissionTo('create_fee'))
+          <a href="{{ route('admin.fees.create', ['fee_type_id' => $feeTypeId]) }}"
+            class="lg:col-span-1 text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+            </svg>
+            Create New Fee
+          </a>
+        @endif
 
         <div class="lg:col-span-2 xl:col-span-3 flex items-center mt-3 lg:mt-0 gap-2 flex">
           <select name="status"
@@ -181,14 +184,16 @@
 
             @if ($fee->status != 'paid')
               <div class="flex">
-                <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit">
-                  <span class="btn-content flex items-center justify-center">
-                    <i class="fa-solid fa-pen-to-square me-2"></i>
-                    Edit
-                  </span>
-                </a>
+                @if (Auth::user()->hasPermissionTo('update_fee'))
+                  <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Edit">
+                    <span class="btn-content flex items-center justify-center">
+                      <i class="fa-solid fa-pen-to-square me-2"></i>
+                      Edit
+                    </span>
+                  </a>
+                @endif
 
                 {{-- <form action="{{ route('admin.fees.destroy', $fee->id) }}" method="POST"
                   onsubmit="return confirm('Are you sure you want to delete this fee record?');">

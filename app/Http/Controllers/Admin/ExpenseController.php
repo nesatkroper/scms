@@ -27,15 +27,21 @@ class ExpenseController extends BaseController
     return 'Expense';
   }
 
+
+
+
+
   public function index(Request $request)
   {
-    $search = $request->input('search');
-    $perPage = $request->input('per_page', 8);
-    $categoryId = $request->input('category_id');
-    $expense = Expense::where('category_id', '=', $categoryId);
+    $search      = $request->input('search');
+    $perPage     = $request->input('per_page', 8);
+    $categoryId  = $request->input('category_id');
+    $fromDate    = $request->input('from_date');
+    $toDate      = $request->input('to_date');
 
     $expenses = Expense::query()
       ->with(['category:id,name', 'creator:id,name'])
+
       ->when($search, function ($query) use ($search) {
         $query->where(function ($q) use ($search) {
           $q->where('title', 'like', "%{$search}%")
@@ -48,27 +54,32 @@ class ExpenseController extends BaseController
             });
         });
       })
+
       ->when($categoryId, function ($query) use ($categoryId) {
         $query->where('expense_category_id', $categoryId);
       })
+
+      ->when($fromDate, function ($query) use ($fromDate) {
+        $query->whereDate('date', '>=', $fromDate);
+      })
+      ->when($toDate, function ($query) use ($toDate) {
+        $query->whereDate('date', '<=', $toDate);
+      })
+
+      ->orderByRaw('approved_by IS NOT NULL')
+
       ->orderBy('date', 'desc')
       ->orderBy('created_at', 'desc')
+
       ->paginate($perPage)
       ->appends($request->query());
 
     $categories = ExpenseCategory::orderBy('name')->get(['id', 'name']);
 
-    return view('admin.expenses.index', compact('expenses', 'categories', 'expense'));
+    return view('admin.expenses.index', compact('expenses', 'categories'));
   }
 
 
-  // public function create(Request $request)
-  // {
-  //   $categoryId = $request->input('category_id');
-  //   $category = ExpenseCategory::findOrFail($categoryId);
-
-  //   return view('admin.expenses.create', compact('category'));
-  // }
 
   public function create(Request $request)
   {
@@ -83,22 +94,6 @@ class ExpenseController extends BaseController
 
     return view('admin.expenses.create', compact('category', 'payrollUsers'));
   }
-
-
-
-  // public function store(ExpenseRequest $request)
-  // {
-  //   $data = $request->validated();
-  //   $data['approved_by'] = null;
-  //   $data['created_by'] = Auth::id();
-  //   $expense =  Expense::create($data);
-
-  //   $notifiableUsers = User::role(['admin', 'staff'])->get();
-  //   Notification::send($notifiableUsers, new ExpenseCreated($expense));
-
-  //   return redirect()->route('admin.expenses.index', ['category_id' => $data['expense_category_id']])
-  //     ->with('success', 'Expense record created successfully!');
-  // }
 
   public function store(ExpenseRequest $request)
   {
@@ -151,7 +146,6 @@ class ExpenseController extends BaseController
 
   public function approve(Expense $expense)
   {
-    // dd($expense);
 
     if ($expense->approved_by) {
       return back()->with('error', 'This expense is already approved.');

@@ -142,15 +142,18 @@
           </svg>
           Cancel
         </a>
-        <button type="submit"
-          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-1.414 2.828L11 9.043V15h-6V4h7.586l.707-.707a2 2 0 012.828 0l1.414 1.414A2 2 0 0117.414 5l.707.707zM16 9.043l-3 3V16h3v-6.957zM5 16h6v-6H5v6z"
-              fill-rule="evenodd" clip-rule="evenodd" />
-          </svg>
-          Update Fee Record
-        </button>
+
+        @if (Auth::user()->hasPermissionTo('update_fee'))
+          <button type="submit"
+            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-1.414 2.828L11 9.043V15h-6V4h7.586l.707-.707a2 2 0 012.828 0l1.414 1.414A2 2 0 0117.414 5l.707.707zM16 9.043l-3 3V16h3v-6.957zM5 16h6v-6H5v6z"
+                fill-rule="evenodd" clip-rule="evenodd" />
+            </svg>
+            Update Fee Record
+          </button>
+        @endif
       </div>
     </form>
   </div>
