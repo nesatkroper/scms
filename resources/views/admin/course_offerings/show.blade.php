@@ -42,7 +42,8 @@
                 <span
                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-sm font-medium">
 
-                  {{ __('message.subject_code') }}<i class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? 'N/A' }}
+                  {{ __('message.subject_code') }}<i
+                    class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? 'N/A' }}
                 </span>
                 <span
                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-sm font-medium">
@@ -148,7 +149,8 @@
                       <i class="fas fa-star"></i>
                     </div>
                     <div>
-                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.credit_hours') }}</p>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.credit_hours') }}
+                      </p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
                         {{ $courseOffering->subject->credit_hours ?? 'N/A' }}</p>
                     </div>
@@ -176,7 +178,8 @@
                         <i class="fas fa-calendar-alt"></i>
                       </div>
                       <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.enrollment_opens') }}
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          {{ __('message.enrollment_opens') }}
                         </p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                           {{ $courseOffering->join_start?->format('M d, Y') ?? 'N/A' }}</p>
@@ -195,7 +198,8 @@
                         <i class="fas fa-calendar-times"></i>
                       </div>
                       <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.enrollment_closes') }}
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          {{ __('message.enrollment_closes') }}
                         </p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
                           {{ $courseOffering->join_end?->format('M d, Y') ?? 'N/A' }}</p>
@@ -261,7 +265,8 @@
                   <i class="fas fa-user-slash text-gray-400 text-xl"></i>
                 </div>
                 <p class="text-gray-500 dark:text-gray-400 font-medium">{{ __('message.no_students_enrolled') }}</p>
-                <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">{{ __('message.students_will_appear_here_once_they_enroll') }}</p>
+                <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">
+                  {{ __('message.students_will_appear_here_once_they_enroll') }}</p>
               </div>
             @endif
           </div>
@@ -271,23 +276,29 @@
 
     <!-- Action Buttons -->
     <div class="my-4 flex flex-col sm:flex-row justify-end gap-4">
-      <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
-        class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
-        <i class="fas fa-edit"></i>
-        {{ __('message.edit_offering') }}
-      </a>
 
-      <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
-        onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');"
-        class="inline-block">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-          class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
-          <i class="fas fa-trash-can"></i>
-          {{ __('message.delete_offering') }}
-        </button>
-      </form>
+      @if (Auth::user()->hasPermissionTo('update_course-offering'))
+        <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
+          class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
+          <i class="fas fa-edit"></i>
+          {{ __('message.edit_offering') }}
+        </a>
+      @endif
+
+      @if (Auth::user()->hasPermissionTo('delete_course-offering'))
+        <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
+          onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');"
+          class="inline-block">
+          @csrf
+          @method('DELETE')
+          <button type="submit"
+            class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
+            <i class="fas fa-trash-can"></i>
+            {{ __('message.delete_offering') }}
+          </button>
+        </form>
+      @endif
+
     </div>
   </div>
 @endsection

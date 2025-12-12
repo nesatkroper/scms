@@ -8,11 +8,11 @@
     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
         {{-- Icon for Classrooms (Using Cyan theme for differentiation) --}}
-       <div
-                    class="size-8 rounded-full flex justify-center items-center p-1 bg-cyan-50 text-cyan-600 dark:text-cyan-50 dark:bg-cyan-900">
-                    <i class="ri-door-closed-fill"></i>
-                </div>
-         {{ __('message.edit_classroom') }}<span class="text-indigo-600 dark:text-indigo-400">{{ $classroom->name }}</span>
+        <div
+          class="size-8 rounded-full flex justify-center items-center p-1 bg-cyan-50 text-cyan-600 dark:text-cyan-50 dark:bg-cyan-900">
+          <i class="ri-door-closed-fill"></i>
+        </div>
+        {{ __('message.edit_classroom') }}<span class="text-indigo-600 dark:text-indigo-400">{{ $classroom->name }}</span>
       </h3>
       {{-- Back button updated for classrooms --}}
       <a href="{{ route('admin.classrooms.index') }}"
@@ -90,16 +90,19 @@
           </svg>
           {{ __('message.cancel') }}
         </a>
-        {{-- Submit button text updated to reflect 'Update' action --}}
-        <button type="submit"
-          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd" />
-          </svg>
-          {{ __('message.update_classroom') }}
-        </button>
+
+        @if (Auth::user()->hasPermissionTo('update_classroom'))
+          <button type="submit"
+            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+            {{ __('message.update_classroom') }}
+          </button>
+        @endif
+
       </div>
     </form>
 

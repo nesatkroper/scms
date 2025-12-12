@@ -10,7 +10,7 @@
       {{-- Icon for Classrooms (using a location/room theme) --}}
       <div
         class="size-8 rounded-full flex justify-center items-center p-1 bg-cyan-50 text-cyan-600 dark:text-cyan-50 dark:bg-cyan-900">
-        <i class="ri-door-closed-fill"></i>
+        <i class="fa-solid fa-people-roof"></i>
       </div>
       {{ __('message.classrooms_list') }}
     </h3>
@@ -35,11 +35,7 @@
         @if (Auth::user()->hasPermissionTo('create_classroom'))
           <a href="{{ route('admin.classrooms.create') }}"
             class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clip-rule="evenodd" />
-            </svg>
+            <i class="fa-solid fa-plus"></i>
             {{ __('message.create_new') }}
           </a>
         @endif
@@ -127,15 +123,16 @@
           <div
             class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
-            {{-- Edit Button (Redirects to Edit Page) --}}
-            <a href="{{ route('admin.classrooms.edit', $classroom->id) }}"
-              class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit">
-              <span class="btn-content flex items-center justify-center">
-                <i class="fa-solid fa-pen-to-square me-2"></i>
-                {{-- {{ __('message.edit') }} --}}
-              </span>
-            </a>
+            @if (Auth::user()->hasPermissionTo('update_classroom'))
+              <a href="{{ route('admin.classrooms.edit', $classroom->id) }}"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="Edit">
+                <span class="btn-content flex items-center justify-center">
+                  <i class="fa-solid fa-pen-to-square me-2"></i>
+                  {{-- {{ __('message.edit') }} --}}
+                </span>
+              </a>
+            @endif
 
             {{-- Delete Button (Full form submission) --}}
             {{-- <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"

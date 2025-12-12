@@ -60,16 +60,7 @@
       {{-- Header --}}
       <div class="flex justify-between mb-4 items-center">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-          <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M16.5 6.75A.75.75 0 0 1 17.25 7.5v6A.75.75 0 0 1 16.5 15h-9a.75.75 0 0 1-.75-.75v-6A.75.75 0 0 1 7.5 6.75h9Z" />
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M13.5 10.5h-3m3 0a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5ZM17.25 15V7.5a.75.75 0 0 0-.75-.75h-9a.75.75 0 0 0-.75.75V15h10.5Z" />
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 6.75a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6.75v10.5A2.25 2.25 0 0 1 18.75 19.5H5.25A2.25 2.25 0 0 1 3 17.25V6.75Z" />
-          </svg>
+          <i class="fa-solid fa-clipboard-user"></i>
           {{ __('message.attendance_for') }}
           <span class="ml-1 text-indigo-600 dark:text-indigo-400 capitalize">
             {{ $courseOffering?->teacher?->name }} -
@@ -88,10 +79,13 @@
             </span>
           </a>
 
-          <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
-            <i class="fa-regular fa-floppy-disk me-2"></i>
-            {{ __('message.save_all_attendance') }}
-          </button>
+          @if (Auth::user()->hasPermissionTo('create_attendance'))
+            <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+              <i class="fa-regular fa-floppy-disk me-2"></i>
+              {{ __('message.save_all_attendance') }}
+            </button>
+          @endif
+
         </div>
       </div>
 

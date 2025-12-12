@@ -7,15 +7,7 @@
 
     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-        {{-- Icon for Course Offering (Calendar) --}}
-        <svg class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>
+        <i class="fa-solid fa-book-atlas"></i>
         {{ __('message.create_new_course_offering') }}
       </h3>
       <a href="{{ route('admin.course_offerings.index') }}"
@@ -89,7 +81,7 @@
         {{-- Payment Type Select --}}
         <div>
           <label for="payment_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-           {{ __('message.payment_type') }} <span class="text-red-500">*</span>
+            {{ __('message.payment_type') }} <span class="text-red-500">*</span>
           </label>
 
           <select id="payment_type" name="payment_type" required
@@ -104,7 +96,7 @@
             </option>
 
             <option value="monthly" @selected(old('payment_type', $courseOffering->payment_type ?? 'course') == 'monthly')>
-             {{ __('message.pay_monthly') }}
+              {{ __('message.pay_monthly') }}
             </option>
 
           </select>
@@ -239,15 +231,19 @@
           </svg>
           {{ __('message.cancel') }}
         </a>
-        <button type="submit"
-          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd" />
-          </svg>
-          {{ __('message.create_offering') }}
-        </button>
+
+        @if (Auth::user()->hasPermissionTo('create_course-offering'))
+          <button type="submit"
+            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd" />
+            </svg>
+            {{ __('message.create_offering') }}
+          </button>
+        @endif
+
       </div>
     </form>
   </div>
