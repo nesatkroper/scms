@@ -16,7 +16,26 @@ class Enrollment extends Model
     'grade_final',
     'status',
     'remarks',
+    'attendance_grade',
+    'listening_grade',
+    'writing_grade',
+    'reading_grade',
+    'speaking_grade',
+    'midterm_grade',
+    'final_grade',
   ];
+
+  protected $casts = [
+    'attendance_grade' => 'decimal:2',
+    'listening_grade'  => 'decimal:2',
+    'writing_grade'    => 'decimal:2',
+    'reading_grade'    => 'decimal:2',
+    'speaking_grade'   => 'decimal:2',
+    'midterm_grade'    => 'decimal:2',
+    'final_grade'      => 'decimal:2',
+    'grade_final'      => 'decimal:2',
+  ];
+
 
   public function fee()
   {
@@ -33,8 +52,18 @@ class Enrollment extends Model
     return $this->belongsTo(CourseOffering::class, 'course_offering_id');
   }
 
+  public function isPassed(): bool
+  {
+    return $this->final_grade >= 50;
+  }
+
+
   protected static function booted()
   {
+    static::saving(function (Enrollment $enrollment) {
+      $enrollment->final_grade = $enrollment->calculateFinalGrade();
+    });
+
     static::created(function (Enrollment $enrollment) {
 
       DB::transaction(function () use ($enrollment) {
@@ -85,5 +114,19 @@ class Enrollment extends Model
         }
       });
     });
+  }
+
+  public function calculateFinalGrade(): float
+  {
+    return round(
+      ($this->attendance_grade ?? 0) * 0.10 +
+        ($this->listening_grade  ?? 0) * 0.10 +
+        ($this->writing_grade    ?? 0) * 0.10 +
+        ($this->reading_grade    ?? 0) * 0.10 +
+        ($this->speaking_grade   ?? 0) * 0.10 +
+        ($this->midterm_grade    ?? 0) * 0.20 +
+        ($this->final_grade ?? 0) * 0.30,
+      2
+    );
   }
 }
