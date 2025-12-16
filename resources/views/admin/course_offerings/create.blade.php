@@ -128,7 +128,7 @@
         {{-- Join Start Date --}}
         <div>
           <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {{ __('message.enrollment_start_date') }}
+            {{ __('message.start_date') }}
           </label>
           <input type="date" id="join_start" name="join_start" value="{{ old('join_start') ?? '2025-01-01' }}"
             min="2025-01-01" max="2027-12-31"
@@ -141,7 +141,7 @@
         {{-- Join End Date --}}
         <div>
           <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {{ __('message.enrollment_end_date') }}
+            {{ __('message.end_date') }}
           </label>
           <input type="date" id="join_end" name="join_end" value="{{ old('join_end') ?? '2025-01-01' }}"
             min="2025-01-01" max="2027-12-31"

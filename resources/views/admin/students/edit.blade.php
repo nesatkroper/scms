@@ -126,7 +126,7 @@
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">
                 <option value="">Select Gender</option>
-                @foreach (['male' => 'Male', 'female' => 'Female', 'other' => 'Other'] as $key => $label)
+                @foreach (['male' => 'Male', 'female' => 'Female', 'monk' => 'Monk', 'other' => 'Other'] as $key => $label)
                   <option value="{{ $key }}" @selected(old('gender', strtolower($student->gender)) == $key)>{{ $label }}
                   </option>
                 @endforeach

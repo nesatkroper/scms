@@ -138,7 +138,7 @@
                 class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600 @error('type') border-red-500 @enderror @error('type.*') border-red-500 @enderror">
                 @foreach ($allRoles as $role)
                   <label
-                    class="flex items-center gap-3 px-4 py-2 rounded-lg border 
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg border
            border-gray-300 dark:border-gray-600 cursor-pointer
            bg-white dark:bg-gray-800
            hover:border-indigo-400 dark:hover:border-indigo-500
@@ -204,7 +204,7 @@
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">
-                @foreach (['male' => 'Male', 'female' => 'Female', 'other' => 'Other'] as $key => $label)
+                @foreach (['male' => 'Male', 'female' => 'Female', 'monk' => 'Monk', 'other' => 'Other'] as $key => $label)
                   <option value="{{ $key }}" @selected(old('gender', $user->gender) == $key)>{{ $label }}
                   </option>
                 @endforeach

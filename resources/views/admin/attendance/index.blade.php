@@ -25,13 +25,12 @@
       class="mb-4 flex justify-between items-center gap-4">
       <input type="hidden" name="course_offering_id" value="{{ $courseOffering->id }}">
 
-      {{-- <input type="date" name="date" value="{{ $date }}" min="2025-01-01" max="2027-01-01"
-        class="w-64 px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300"
-        onchange="this.form.submit()"> --}}
       <div class="flex items-center gap-3">
-        <input type="date" name="date" value="{{ $date }}" min="2025-01-01" max="2027-01-01"
+        <input type="date" name="date" value="{{ $date }}"
+          min="{{ $courseOffering->join_start->format('Y-m-d') }}" max="{{ $courseOffering->join_end->format('Y-m-d') }}"
           class="w-64 px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500
-                   dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
+         dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
+
         <button type="submit"
           class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700
                    dark:bg-indigo-500 dark:hover:bg-indigo-600">

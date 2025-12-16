@@ -136,7 +136,7 @@
         {{-- Join Start Date (Added min/max attributes for validation consistency) --}}
         <div>
           <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {{ __('message.enrollment_start_date') }}
+            {{ __('message.start_date') }}
           </label>
           <input type="date" id="join_start" name="join_start" min="2025-01-01" max="2027-12-31" {{-- Uses Carbon for proper Y-m-d format, handles null with fallback --}}
             value="{{ old('join_start', $courseOffering->join_start ? \Carbon\Carbon::parse($courseOffering->join_start)->format('Y-m-d') : null) }}"
@@ -149,7 +149,7 @@
         {{-- Join End Date (Added min/max attributes for validation consistency) --}}
         <div>
           <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {{ __('message.enrollment_end_date') }}
+            {{ __('message.end_date') }}
           </label>
           <input type="date" id="join_end" name="join_end" min="2025-01-01" max="2027-12-31" {{-- Uses Carbon for proper Y-m-d format, handles null with fallback --}}
             value="{{ old('join_end', $courseOffering->join_end ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d') : null) }}"
