@@ -88,6 +88,10 @@
                 {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }}) -
                 (Total Students: {{ $offering->students->count() }})
               </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize font-bold">
+                Start: {{ \Carbon\Carbon::parse($offering->join_start)->format('d M Y') }},
+                End: {{ \Carbon\Carbon::parse($offering->join_end)->format('d M Y') }}
+              </p>
             </div>
 
             @if ($offering->attendances->count())

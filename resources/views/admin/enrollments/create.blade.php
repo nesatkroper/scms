@@ -43,11 +43,12 @@
 
         <div class="space-y-6">
           {{-- Student and Course Selects (2 Columns) --}}
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="grid gap-6">
 
             <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
             <input type="hidden" name="status" value="studying">
             <input type="hidden" name="fee" value="{{ $courseOffering->fee }}">
+            <input type="hidden" name="payment_status" value="pending">
 
             {{-- 1. Student Field (Select) --}}
             <div>
@@ -89,7 +90,7 @@
             </div> --}}
 
             {{-- 4. Payment Status Field (Select) --}}
-            <div>
+            {{-- <div>
               <label for="payment_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Payment Status <span class="text-red-500">*</span>
               </label>
@@ -105,7 +106,7 @@
               @error('payment_status')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
-            </div>
+            </div> --}}
 
           </div>
 

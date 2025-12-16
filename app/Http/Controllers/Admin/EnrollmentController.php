@@ -129,9 +129,6 @@ class EnrollmentController extends BaseController
       return redirect()
         ->route('admin.fees.index', ['fee_type_id' => $type_id])
         ->with('success', 'Enrollment & fee created successfully!');
-      // return redirect()
-      //   ->route('admin.enrollments.index', ['course_offering_id' => $data['course_offering_id']])
-      //   ->with('success', 'Enrollment & fee created successfully!');
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error('Error creating enrollment: ' . $e->getMessage());

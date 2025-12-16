@@ -161,13 +161,6 @@ Route::prefix('admin')
       ->name('fees.pay');
 
 
-    // Route::prefix('enrollments')
-    //   ->as('enrollments.')
-    //   ->group(function () {});
-
-    // Route::prefix('enrollments')
-    //   ->as('enrollments.')
-    //   ->group(function () {});
 
 
 

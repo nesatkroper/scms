@@ -31,7 +31,7 @@ class FeeController extends BaseController
     $search     = $request->input('search');
     $feeTypeId  = $request->input('fee_type_id');
     $status     = $request->input('status');
-    $perPage    = $request->input('per_page', 8);
+    $perPage    = $request->input('per_page', 12);
 
     $fees = Fee::query()
       ->with(['student:id,name,email', 'feeType:id,name'])

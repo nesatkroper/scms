@@ -66,23 +66,21 @@ class Enrollment extends Model
 
         if ($course->payment_type === 'monthly') {
 
-          $start = \Carbon\Carbon::parse($course->join_start)->startOfMonth();
-          $end   = \Carbon\Carbon::parse($course->join_end)->endOfMonth();
-          $months = $start->diffInMonths($end) + 1;
+          $current = \Carbon\Carbon::parse($course->join_start)->startOfMonth();
+          $end     = \Carbon\Carbon::parse($course->join_end)->endOfMonth();
 
-          for ($i = 0; $i < $months; $i++) {
-
-            $monthStart = (clone $start)->addMonths($i);
-
+          while ($current <= $end) {
             Fee::create([
               'student_id'    => $enrollment->student_id,
               'enrollment_id' => $enrollment->id,
               'fee_type_id'   => $feeType->id,
               'created_by'    => Auth::id() ?? 1,
               'amount'        => $course->fee,
-              'description'   => "Monthly fee for {$course->subject->name} - " . $monthStart->format('F Y'),
-              'due_date'      => (clone $monthStart)->addDays(15),
+              'description'   => "Monthly fee for {$course->subject->name} - " . $current->format('F Y'),
+              'due_date'      => (clone $current)->addDays(15),
             ]);
+
+            $current->addMonth();
           }
         }
       });

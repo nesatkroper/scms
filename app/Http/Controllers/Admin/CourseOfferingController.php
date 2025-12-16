@@ -34,7 +34,7 @@ class CourseOfferingController extends BaseController
     $user = Auth::user();
 
     $courseOfferings = CourseOffering::query()
-      ->with(['subject', 'teacher', 'classroom', 'attendances'])
+      ->with(['subject', 'teacher', 'classroom', 'attendances', 'exams'])
 
       ->when($user->hasRole('teacher'), function ($query) use ($user) {
         $query->where('teacher_id', $user->id);
