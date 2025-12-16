@@ -18,5 +18,5 @@ Route::middleware(['auth:sanctum'])
     Route::post('/send_notification', [NotificationController::class, 'sendToStaff']);
 
     Route::get('/subjects', [SubjectController::class, 'index']);
-    Route::get('/course-offerings', [CourseOfferingController::class, 'index']);
+    Route::get('/courses', [CourseOfferingController::class, 'index']);
   });
