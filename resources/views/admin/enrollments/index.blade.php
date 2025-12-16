@@ -134,24 +134,9 @@
                 Final Grade:
               </span>
 
-              @php
-                $grades = [
-                    $enrollment->attendance_grade,
-                    $enrollment->listening_grade,
-                    $enrollment->writing_grade,
-                    $enrollment->reading_grade,
-                    $enrollment->speaking_grade,
-                    $enrollment->midterm_grade,
-                    $enrollment->final_grade,
-                ];
-
-                $sum = collect($grades)->filter(fn($g) => !is_null($g))->sum();
-
-                $grade_final = $sum > 0 ? $sum : 'N/A';
-              @endphp
-
               <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
-                {{ $grade_final }} p
+                {{ collect([$enrollment->attendance_grade, $enrollment->listening_grade, $enrollment->writing_grade, $enrollment->reading_grade, $enrollment->speaking_grade, $enrollment->midterm_grade, $enrollment->final_grade])->filter()->sum() ?:'N/A' }}
+                p
               </span>
             </div>
 

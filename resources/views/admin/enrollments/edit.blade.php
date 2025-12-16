@@ -48,14 +48,13 @@
         <div class="space-y-6">
 
           {{-- Status, Payment Status, Grade Final (3 Columns) --}}
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 border-t pt-6 border-gray-200 dark:border-gray-700">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 border-t pt-6 border-gray-200 dark:border-gray-700">
 
             <input type="hidden" name="student_id" value="{{ $enrollment->student_id }}">
             <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
 
             {{-- 3. Status Field (Select) --}}
-            <div>
+            <div class="col-span-2">
               <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Admission Status <span class="text-red-500">*</span>
               </label>
@@ -90,19 +89,6 @@
                 @endforeach
               </select>
               @error('payment_status')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-              @enderror
-            </div>
-
-            {{-- 5. Final Grade Field (Input) --}}
-            <div>
-              <label for="grade_final" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Final Grade (0-100)
-              </label>
-              <input type="number" step="0.01" min="0" max="100" name="grade_final" id="grade_final"
-                value="{{ old('grade_final', $enrollment->grade_final) }}" placeholder="e.g., 95"
-                class="w-full px-3 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('grade_final') border-red-500 @enderror">
-              @error('grade_final')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
             </div>

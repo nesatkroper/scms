@@ -13,7 +13,6 @@ class Enrollment extends Model
   protected $fillable = [
     'student_id',
     'course_offering_id',
-    'grade_final',
     'status',
     'remarks',
     'attendance_grade',
@@ -33,7 +32,6 @@ class Enrollment extends Model
     'speaking_grade'   => 'decimal:2',
     'midterm_grade'    => 'decimal:2',
     'final_grade'      => 'decimal:2',
-    'grade_final'      => 'decimal:2',
   ];
 
 
@@ -116,6 +114,13 @@ class Enrollment extends Model
     });
   }
 
+  protected function gradeFinal(): \Illuminate\Database\Eloquent\Casts\Attribute
+  {
+    return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+      get: fn() => $this->calculateFinalGrade(),
+    );
+  }
+
   public function calculateFinalGrade(): float
   {
     return round(
@@ -125,7 +130,7 @@ class Enrollment extends Model
         ($this->reading_grade    ?? 0) * 0.10 +
         ($this->speaking_grade   ?? 0) * 0.10 +
         ($this->midterm_grade    ?? 0) * 0.20 +
-        ($this->final_grade ?? 0) * 0.30,
+        ($this->final_grade      ?? 0) * 0.30,
       2
     );
   }
