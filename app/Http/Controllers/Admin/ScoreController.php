@@ -83,7 +83,7 @@ class ScoreController extends BaseController
       elseif ($scoreValue >= 30) $grade = 'D';
       else $grade = 'F';
 
-      Score::updateOrCreate(
+      $score =  Score::updateOrCreate(
         ['student_id' => $student->id, 'exam_id' => $examId],
         [
           'score'   => $scoreValue,
@@ -91,51 +91,49 @@ class ScoreController extends BaseController
           'remarks' => $remarks,
         ]
       );
+
+      $this->updateEnrollmentGrade($score);
     }
 
     return back()->with('success', 'All scores saved successfully!');
   }
 
-  public function assignFinalGrades(Request $request)
+  private function scaleScore(float $score, float $totalMarks, float $maxGrade): float
   {
-    $courseOfferingId = $request->course_offering_id;
+    if ($totalMarks <= 0) return 0;
+    return round(($score / $totalMarks) * $maxGrade, 2);
+  }
 
-    $courseOffering = CourseOffering::with([
-      'students',
-      'students.scores' => function ($q) use ($courseOfferingId) {
-        $q->whereHas('exam', function ($examQuery) use ($courseOfferingId) {
-          $examQuery->where('course_offering_id', $courseOfferingId);
-        });
-      }
-    ])->findOrFail($courseOfferingId);
+  public function updateEnrollmentGrade(Score $score)
+  {
+    $exam = $score->exam()->first();
+    $enrollment = Enrollment::where('course_offering_id', $exam->course_offering_id)
+      ->where('student_id', $score->student_id)
+      ->first();
 
-    foreach ($courseOffering->students as $student) {
+    if (!$enrollment) return;
 
-      $scores = $student->scores;
-
-      if ($scores->count() === 0) {
-        continue;
-      }
-
-      $finalScore = round($scores->avg('score'));
-
-      if ($finalScore >= 90) $finalGrade = 'A+';
-      elseif ($finalScore >= 80) $finalGrade = 'A';
-      elseif ($finalScore >= 70) $finalGrade = 'B+';
-      elseif ($finalScore >= 60) $finalGrade = 'B';
-      elseif ($finalScore >= 50) $finalGrade = 'C+';
-      elseif ($finalScore >= 40) $finalGrade = 'C';
-      elseif ($finalScore >= 30) $finalGrade = 'D';
-      else $finalGrade = 'F';
-
-      Enrollment::where('student_id', $student->id)
-        ->where('course_offering_id', $courseOfferingId)
-        ->update([
-          'grade_final' => $finalGrade,
-          'remarks'     => "Final grade auto-calculated",
-        ]);
+    switch ($exam->type) {
+      case 'listening':
+        $enrollment->listening_grade = $this->scaleScore($score->score, $exam->total_marks, 10);
+        break;
+      case 'writing':
+        $enrollment->writing_grade = $this->scaleScore($score->score, $exam->total_marks, 10);
+        break;
+      case 'reading':
+        $enrollment->reading_grade = $this->scaleScore($score->score, $exam->total_marks, 10);
+        break;
+      case 'speaking':
+        $enrollment->speaking_grade = $this->scaleScore($score->score, $exam->total_marks, 10);
+        break;
+      case 'midterm':
+        $enrollment->midterm_grade = $this->scaleScore($score->score, $exam->total_marks, 20);
+        break;
+      case 'final':
+        $enrollment->final_grade = $this->scaleScore($score->score, $exam->total_marks, 30);
+        break;
     }
 
-    return back()->with('success', 'Final grades assigned successfully!');
+    $enrollment->save();
   }
 }

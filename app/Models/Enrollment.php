@@ -58,10 +58,6 @@ class Enrollment extends Model
 
   protected static function booted()
   {
-    static::saving(function (Enrollment $enrollment) {
-      $enrollment->final_grade = $enrollment->calculateFinalGrade();
-    });
-
     static::created(function (Enrollment $enrollment) {
 
       DB::transaction(function () use ($enrollment) {
@@ -121,17 +117,41 @@ class Enrollment extends Model
     );
   }
 
-  public function calculateFinalGrade(): float
+  public function getManualSumAttribute(): float
   {
-    return round(
-      ($this->attendance_grade ?? 0) * 0.10 +
-        ($this->listening_grade  ?? 0) * 0.10 +
-        ($this->writing_grade    ?? 0) * 0.10 +
-        ($this->reading_grade    ?? 0) * 0.10 +
-        ($this->speaking_grade   ?? 0) * 0.10 +
-        ($this->midterm_grade    ?? 0) * 0.20 +
-        ($this->final_grade      ?? 0) * 0.30,
-      2
+    return (float) (
+      ($this->attendance_grade ?? 0) +
+      ($this->listening_grade  ?? 0) +
+      ($this->writing_grade    ?? 0) +
+      ($this->reading_grade    ?? 0) +
+      ($this->speaking_grade   ?? 0) +
+      ($this->midterm_grade    ?? 0) +
+      ($this->final_grade      ?? 0)
     );
+  }
+
+  public function getLetterGradeAttribute(): string
+  {
+    $total = $this->manual_sum;
+
+    if ($total >= 95) return 'A+';
+    if ($total >= 90) return 'A';
+    if ($total >= 85) return 'B+';
+    if ($total >= 80) return 'B';
+    if ($total >= 75) return 'C+';
+    if ($total >= 70) return 'C';
+    if ($total >= 65) return 'D+';
+    if ($total >= 60) return 'D';
+
+    return 'F';
+  }
+
+  public function getGradeColorAttribute(): string
+  {
+    $score = $this->grade_final;
+    if ($score >= 80) return 'text-green-600';
+    if ($score >= 70) return 'text-yellow-600';
+    if ($score >= 60) return 'text-orange-600';
+    return 'text-red-600';
   }
 }

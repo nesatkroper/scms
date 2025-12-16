@@ -45,13 +45,13 @@
               <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
                 <i class="fa-solid fa-plus"></i>
-                Admission (Existed)
+                Enrollment
               </a>
 
-              <a href="{{ route('admin.students.create') }}"
+              <a href="{{ route('admin.course_offerings.index') }}"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
                 <i class="fa-solid fa-plus"></i>
-                Admission (New)
+                Back
               </a>
             </div>
           @endif
@@ -134,9 +134,28 @@
                 Final Grade:
               </span>
 
+              @php
+                $grades = [
+                    $enrollment->attendance_grade,
+                    $enrollment->listening_grade,
+                    $enrollment->writing_grade,
+                    $enrollment->reading_grade,
+                    $enrollment->speaking_grade,
+                    $enrollment->midterm_grade,
+                    $enrollment->final_grade,
+                ];
+
+                $sum = collect($grades)->filter(fn($g) => !is_null($g))->sum();
+
+                $output = $sum > 0 ? $sum : 'N/A';
+              @endphp
+
               <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
-                {{ collect([$enrollment->attendance_grade, $enrollment->listening_grade, $enrollment->writing_grade, $enrollment->reading_grade, $enrollment->speaking_grade, $enrollment->midterm_grade, $enrollment->final_grade])->filter()->sum() ?:'N/A' }}
-                p
+                {{-- {{ $output }} p --}}
+                {{ $enrollment->manual_sum > 0 ? $enrollment->manual_sum : '0.00' }}
+                @if ($enrollment->manual_sum > 0)
+                  {{ $enrollment->letter_grade }}
+                @endif
               </span>
             </div>
 

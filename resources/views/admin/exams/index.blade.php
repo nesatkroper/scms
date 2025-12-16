@@ -60,73 +60,6 @@
 
     {{-- Exam Cards --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-      <div
-        class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
-
-        <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
-          <div class="flex justify-between items-start gap-2">
-            <div class="">
-              {{-- Main Exam Name --}}
-              <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">Final Grade</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Course: <span
-                  class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $courses->subject->name ?? 'Course Deleted' }}
-                  ({{ $courses?->time_slot }})
-                </span>
-              </p>
-            </div>
-
-            {{-- @if ($exam->scores->count())
-              <a href="{{ route('admin.scores.export', $exam->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                title="Eport Result">
-                <span class="btn-content flex items-center justify-center">
-                  <i class="fa-solid fa-download me-2"></i>
-                  Eport Result
-                </span>
-              </a>
-            @endif --}}
-
-          </div>
-        </div>
-
-        <div class="p-4 space-y-3 flex">
-
-          {{-- Total Marks / Passing Marks --}}
-          <div class="flex items-center gap-3 text-sm">
-            <div class="p-2 rounded-lg bg-green-50 dark:bg-slate-700 text-green-600 dark:text-green-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 002.944 12c.328 1.488.844 2.936 1.551 4.316l-3.35 3.35a1 1 0 001.414 1.414l3.35-3.35c1.38 0.707 2.828 1.223 4.316 1.551a11.955 11.955 0 01-8.618-3.04A12.02 12.02 0 0012 21.056c1.488-.328 2.936-.844 4.316-1.551l3.35 3.35a1 1 0 001.414-1.414l-3.35-3.35c0.707-1.38 1.223-2.828 1.551-4.316a12.02 12.02 0 00.001-8.168z" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-xs text-gray-500 dark:text-gray-400">Total Marks / Passing Marks</p>
-              <p class="font-medium text-gray-700 dark:text-gray-200">
-                <span>
-                  100 / <span class="text-green-600 dark:text-green-400 font-bold">60</span>
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {{-- Actions (Edit Link + Delete Form) --}}
-        <div
-          class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2 ">
-
-          <a href="{{ route('admin.scores.index', ['exam_id' => 2]) }}"
-            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-            title="Assign Score">
-            <span class="btn-content flex items-center justify-center">
-              <i class="fa-solid fa-book-atlas me-2"></i>
-              Assign Score
-            </span>
-          </a>
-        </div>
-      </div>
-
       @forelse ($exams as $exam)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
@@ -134,7 +67,6 @@
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div class="">
-                {{-- Main Exam Name --}}
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">{{ $exam->type }} -
                   {{ $exam->courseOffering?->teacher?->name }}</h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -209,7 +141,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Scheduled Time</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  <span>
+                  <span class="capitalize">
                     {{ $exam->courseOffering->time_slot ?? 'N/A' }}
                   </span>
                 </p>

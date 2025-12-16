@@ -24,15 +24,7 @@ class ExamRequest extends FormRequest
           'speaking',
           'listening',
           'reading',
-          'lab1',
-          'lab2',
-          'lab3',
-          'quiz1',
-          'quiz2',
-          'quiz3',
-          'homework1',
-          'homework2',
-          'homework3',
+          'writing',
         ]),
       ],
       'description' => ['nullable', 'string'],
@@ -51,7 +43,7 @@ class ExamRequest extends FormRequest
   public function messages()
   {
     return [
-      'type.in' => 'Invalid exam type. Allowed types: midterm, final, speaking, listening, reading, lab1, lab2, lab3, quiz1, quiz2, quiz3, homework1, homework2, homework3.',
+      'type.in' => 'Invalid exam type. Allowed types: midterm, final, speaking, listening, reading, writing.',
     ];
   }
 }
