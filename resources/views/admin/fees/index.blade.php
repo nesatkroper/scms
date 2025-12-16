@@ -80,8 +80,14 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
       x-data="paymentsModal()">
       @forelse ($fees as $fee)
+
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($fee->status == 'paid') border-dashed dark:border-green-600 @endif">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300
+    @if ($fee->status === 'paid') border-dashed border-green-600 dark:border-green-600
+    @elseif($fee->due_date && $fee->due_date < now() && $fee->status !== 'paid')
+       border-dashed border-red-600 dark:border-red-500 @endif
+">
+
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
