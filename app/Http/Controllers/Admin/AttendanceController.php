@@ -6,6 +6,7 @@ use App\Exports\AttendanceExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Attendance;
 use App\Models\CourseOffering;
+use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -21,38 +22,6 @@ class AttendanceController extends BaseController
   {
     return 'Attendance';
   }
-
-  // public function index(Request $request)
-  // {
-  //   $courseOfferingId = $request->input('course_offering_id');
-  //   $search = $request->input('search');
-  //   $date = $request->input('date', date('Y-m-d'));
-
-  //   $courseOffering = CourseOffering::with('students')->findOrFail($courseOfferingId);
-  //   $studentsQuery = $courseOffering->students();
-
-  //   if ($studentsQuery->count() === 0) {
-  //     return redirect()
-  //       ->route('admin.enrollments.create', ['course_offering_id' => $courseOfferingId])
-  //       ->with('error', 'You need to enroll student first.');
-  //   }
-
-  //   if ($search) {
-  //     $studentsQuery = $studentsQuery->where(function ($q) use ($search) {
-  //       $q->where('name', 'like', "%{$search}%")
-  //         ->orWhere('email', 'like', "%{$search}%");
-  //     });
-  //   }
-
-  //   $students = $studentsQuery->with([
-  //     'attendances' => function ($q) use ($courseOfferingId, $date) {
-  //       $q->where('course_offering_id', $courseOfferingId)
-  //         ->where('date', $date);
-  //     }
-  //   ])->get();
-
-  //   return view('admin.attendance.index', compact('students', 'courseOffering', 'date'));
-  // }
 
 
   public function index(Request $request)
@@ -122,7 +91,13 @@ class AttendanceController extends BaseController
       ->orderBy('date', 'desc')
       ->get();
 
-    return view('admin.attendance.show', compact('student', 'courseOffering', 'attendances'));
+    $enrollment = Enrollment::where('student_id', $studentId)
+      ->where('course_offering_id', $courseOfferingId)
+      ->first();
+
+    // dd($enrollment);
+
+    return view('admin.attendance.show', compact('student', 'courseOffering', 'attendances', 'enrollment'));
   }
 
   public function saveAll(Request $request)
@@ -150,6 +125,42 @@ class AttendanceController extends BaseController
       );
     }
 
+    $this->recalculateAttendanceGrade($courseOfferingId);
+
     return back()->with('success', 'Attendance saved successfully!');
+  }
+
+  private function recalculateAttendanceGrade(int $courseOfferingId): void
+  {
+    $attendances = Attendance::where('course_offering_id', $courseOfferingId)
+      ->get()
+      ->groupBy('student_id');
+
+    foreach ($attendances as $studentId => $records) {
+
+      $totalDays = $records->count();
+
+      if ($totalDays === 0) {
+        $attendanceGrade = 0;
+      } else {
+
+        $actualSum = $records->sum(function ($attendance) {
+          return match ($attendance->status) {
+            'attending'  => 1,
+            'permission' => 0.5,
+            default      => 0,
+          };
+        });
+
+        // 🎯 EXACT numpy formula
+        $attendanceGrade = ($actualSum / $totalDays) * 10;
+      }
+
+      Enrollment::where('course_offering_id', $courseOfferingId)
+        ->where('student_id', $studentId)
+        ->update([
+          'attendance_grade' => round($attendanceGrade, 2),
+        ]);
+    }
   }
 }

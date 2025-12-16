@@ -133,8 +133,25 @@
                 <i class="fa-solid fa-graduation-cap text-purple-500"></i>
                 Final Grade:
               </span>
+
+              @php
+                $grades = [
+                    $enrollment->attendance_grade,
+                    $enrollment->listening_grade,
+                    $enrollment->writing_grade,
+                    $enrollment->reading_grade,
+                    $enrollment->speaking_grade,
+                    $enrollment->midterm_grade,
+                    $enrollment->final_grade,
+                ];
+
+                $sum = collect($grades)->filter(fn($g) => !is_null($g))->sum();
+
+                $grade_final = $sum > 0 ? $sum : 'N/A';
+              @endphp
+
               <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
-                {{ $enrollment->grade_final ?? 'N/A' }}
+                {{ $grade_final }} p
               </span>
             </div>
 
