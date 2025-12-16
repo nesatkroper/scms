@@ -88,7 +88,7 @@
 
     {{-- Admission Register Cards --}}
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-      @forelse($enrollments as $admission)
+      @forelse($enrollments as $enrollment)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
@@ -97,13 +97,13 @@
             class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
             <div class="flex justify-between items-start gap-2">
               <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">
-                {{ $admission->student->name ?? 'Student Deleted' }}</h4>
+                {{ $enrollment->student->name ?? 'Student Deleted' }}</h4>
             </div>
             <div class="">
               <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold">
-                {{ $admission->courseOffering->subject->name ?? 'Course Deleted' }}</p>
+                {{ $enrollment->courseOffering->subject->name ?? 'Course Deleted' }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400">Time Slot:
-                {{ $admission->courseOffering->time_slot ?? 'N/A' }}</p>
+                {{ $enrollment->courseOffering->time_slot ?? 'N/A' }}</p>
             </div>
           </div>
 
@@ -117,12 +117,12 @@
                 Status:
                 <span
                   class="font-semibold px-2 py-0.5 rounded-full text-xs
-                  @if ($admission->status === 'Completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
-                  @elseif ($admission->status === 'In Progress')
+                  @if ($enrollment->status === 'Completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
+                  @elseif ($enrollment->status === 'In Progress')
                     bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
                   @else
                     bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
-                  {{ $admission->status ?? 'N/A' }}
+                  {{ $enrollment->status ?? 'N/A' }}
                 </span>
               </p>
             </div>
@@ -134,7 +134,7 @@
                 Final Grade:
               </span>
               <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
-                {{ $admission->grade_final ?? 'N/A' }}
+                {{ $enrollment->grade_final ?? 'N/A' }}
               </span>
             </div>
 
@@ -145,13 +145,13 @@
                 Payment:
 
               <p class="text-sm ">
-                @if ($admission->fee->status == 'paid')
+                @if ($enrollment?->fee?->status == 'paid')
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
                     Paid on
-                    {{ $admission->fee->paid_date ? \Carbon\Carbon::parse($admission->fee->paid_date)->format('M d, Y') : 'N/A' }}
+                    {{ $enrollment->fee->paid_date ? \Carbon\Carbon::parse($enrollment->fee->paid_date)->format('M d, Y') : 'N/A' }}
                   </span>
-                @elseif ($admission->fee->status == 'pending' && $admission->fee->due_date && $admission->fee->due_date->isPast())
+                @elseif ($enrollment->fee?->status == 'pending' && $enrollment->fee->due_date && $enrollment->fee->due_date->isPast())
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300">
                     Overdue
@@ -159,21 +159,21 @@
                 @else
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
-                    {{ ucfirst($admission->fee->status) }}
+                    {{ ucfirst($enrollment->fee?->status) }}
                   </span>
                 @endif
               </p>
             </div>
 
             {{-- Remarks --}}
-            {{-- @if ($admission->remarks)
+            {{-- @if ($enrollment->remarks)
               <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50">
                 <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
                   <i class="fa-solid fa-comment-dots text-yellow-500"></i>
                   Remarks:
                 </span>
                 <p class="text-xs italic text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-2 rounded-md">
-                  {{ Str::limit($admission->remarks, 100) }}
+                  {{ Str::limit($enrollment->remarks, 100) }}
                 </p>
               </div>
             @endif --}}
@@ -184,7 +184,7 @@
 
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('view_attendance'))
-                <a href="{{ route('admin.attendances.show', [$courseOffering->id, $admission->student->id]) }}"
+                <a href="{{ route('admin.attendances.show', [$courseOffering->id, $enrollment->student->id]) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Attendance">
                   <span class="btn-content flex items-center justify-center">
@@ -197,7 +197,7 @@
 
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('update_attendance'))
-                <a href="{{ route('admin.enrollments.edit', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+                <a href="{{ route('admin.enrollments.edit', ['student_id' => $enrollment->student_id, 'course_offering_id' => $enrollment->course_offering_id]) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="Edit Admission">
                   <span class="btn-content flex items-center justify-center">
@@ -208,7 +208,7 @@
               @endif
 
               {{-- <form
-                action="{{ route('admin.enrollments.destroy', ['student_id' => $admission->student_id, 'course_offering_id' => $admission->course_offering_id]) }}"
+                action="{{ route('admin.enrollments.destroy', ['student_id' => $enrollment->student_id, 'course_offering_id' => $enrollment->course_offering_id]) }}"
                 method="POST" onsubmit="return confirm('Are you sure you want to delete this admission record?');">
                 @csrf
                 @method('DELETE')

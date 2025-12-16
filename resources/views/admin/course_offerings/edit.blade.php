@@ -33,7 +33,6 @@
           </label>
           <select id="subject_id" name="subject_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('subject_id') border-red-500 @enderror">
-            <option value="">{{ __('message.select_subject') }}</option>
             @foreach ($subjects as $subject)
               <option value="{{ $subject->id }}" @selected(old('subject_id', $courseOffering->subject_id) == $subject->id)>{{ $subject->name }}
                 ({{ $subject->code ?? '' }})
@@ -52,7 +51,6 @@
           </label>
           <select id="teacher_id" name="teacher_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('teacher_id') border-red-500 @enderror">
-            <option value="">{{ __('message.select_teacher') }}</option>
             @foreach ($teachers as $teacher)
               <option value="{{ $teacher->id }}" @selected(old('teacher_id', $courseOffering->teacher_id) == $teacher->id)>{{ $teacher->name }}
                 ({{ $teacher->specialization }})
@@ -72,7 +70,6 @@
           </label>
           <select id="classroom_id" name="classroom_id" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('classroom_id') border-red-500 @enderror">
-            <option value="">{{ __('message.select_classroom') }}</option>
             @foreach ($classrooms as $classroom)
               <option value="{{ $classroom->id }}" @selected(old('classroom_id', $courseOffering->classroom_id) == $classroom->id)>{{ $classroom->name }}</option>
             @endforeach
@@ -168,7 +165,6 @@
           </label>
           <select id="schedule" name="schedule" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            <option value="">{{ __('message.select_schedule') }}</option>
             @foreach (['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'] as $sch)
               <option value="{{ $sch }}" @selected(old('schedule') == $sch)>
                 {{ strtoupper($sch) }}
@@ -187,7 +183,6 @@
           </label>
           <select id="time_slot" name="time_slot" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
-            <option value="">{{ __('message.select_category') }}</option>
             @foreach (['morning', 'afternoon', 'evening'] as $slot)
               <option value="{{ $slot }}" @selected(old('time_slot', $courseOffering->time_slot) == $slot)>
                 {{ ucfirst($slot) }}
