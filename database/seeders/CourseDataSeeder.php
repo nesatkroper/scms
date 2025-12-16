@@ -9,13 +9,12 @@ use App\Models\Subject;
 use App\Models\CourseOffering;
 use Faker\Factory as Faker;
 
-class CourseDataSeeder extends Seeder // Use the original name or replace with your chosen name
+class CourseDataSeeder extends Seeder
 {
   public function run(): void
   {
     $faker = Faker::create();
 
-    // 1. Get IDs of necessary related records
     $teacherIds = User::role('teacher')->pluck('id')->toArray();
 
     if (empty($teacherIds)) {
@@ -23,17 +22,14 @@ class CourseDataSeeder extends Seeder // Use the original name or replace with y
       return;
     }
 
-    // --- 2. Seed or Update Classrooms (5 Records) ---
     $this->command->info('Seeding 5 Classrooms...');
     $classroomRoomNumbers = ['A145', 'B201', 'C310', 'D005', 'E122'];
-    $faker->unique(true); // Reset faker unique
+    $faker->unique(true);
     $classroomIds = [];
 
     foreach ($classroomRoomNumbers as $index => $roomNumber) {
       $classroom = Classroom::updateOrCreate(
-        // Fields to check for existence (unique key)
         ['room_number' => $roomNumber],
-        // Fields to set or update
         [
           'name' => 'Room ' . ($index + 1),
           'capacity' => $faker->numberBetween(20, 50),
@@ -43,7 +39,6 @@ class CourseDataSeeder extends Seeder // Use the original name or replace with y
     }
 
 
-    // --- 3. Seed or Update Subjects (5 Records) ---
     $this->command->info('Seeding 5 Subjects...');
     $subjectData = [
       ['name' => 'Calculus I', 'code' => 'MATH101'],
@@ -56,9 +51,7 @@ class CourseDataSeeder extends Seeder // Use the original name or replace with y
     $subjectIds = [];
     foreach ($subjectData as $data) {
       $subject = Subject::updateOrCreate(
-        // Fields to check for existence (unique key)
         ['code' => $data['code']],
-        // Fields to set or update
         [
           'name' => $data['name'],
           'description' => $faker->sentence(),
@@ -68,21 +61,16 @@ class CourseDataSeeder extends Seeder // Use the original name or replace with y
       $subjectIds[] = $subject->id;
     }
 
-    // --- 4. Seed Course Offerings (15 Records) ---
     $this->command->info('Seeding 15 Course Offerings...');
 
-    // SIMPLIFIED LOGIC: Create a list of 15 subject IDs by cycling through the available IDs.
     $totalOfferings = 15;
     $numSubjects = count($subjectIds);
     $subjectAssignments = [];
 
-    // Cycle through subject IDs 15 times
     for ($i = 0; $i < $totalOfferings; $i++) {
-      // Use modulo operator (%) to cycle: 0%5=0, 1%5=1, ..., 5%5=0, etc.
       $subjectAssignments[] = $subjectIds[$i % $numSubjects];
     }
 
-    // Delete existing course offerings to avoid duplicates on the related tables
     CourseOffering::query()->delete();
 
     $teacherIndex = 0;
@@ -93,7 +81,7 @@ class CourseDataSeeder extends Seeder // Use the original name or replace with y
       $endTime = $faker->time('H:i:s', strtotime('+2 hours', strtotime($startTime)));
 
       CourseOffering::create([
-        'subject_id' => $subjectAssignments[$i], // Use the correctly cycled subject ID
+        'subject_id' => $subjectAssignments[$i],
         'teacher_id' => $teacherIds[$teacherIndex % count($teacherIds)],
         'classroom_id' => $classroomIds[$classroomIndex % count($classroomIds)],
         'time_slot' => $faker->randomElement(['morning', 'afternoon']),

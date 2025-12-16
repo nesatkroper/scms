@@ -2,14 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CourseOfferingController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\SubjectController;
 
 Route::post('/v1/login', [AuthController::class, 'login']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
-  Route::get('/v1/profile', [AuthController::class, 'profile']);
-  Route::post('/v1/logout', [AuthController::class, 'logout']);
-  Route::post('/v1/change_password', [AuthController::class, 'changePassword']);
-  Route::post('/v1/change_avatar', [AuthController::class, 'changeAvatar']);
-  Route::post('/v1/send_notification', [NotificationController::class, 'sendToStaff']);
-});
+Route::middleware(['auth:sanctum'])
+  ->prefix('/v1')
+  ->group(function () {
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/change_password', [AuthController::class, 'changePassword']);
+    Route::post('/change_avatar', [AuthController::class, 'changeAvatar']);
+    Route::post('/send_notification', [NotificationController::class, 'sendToStaff']);
+
+    Route::get('/subjects', [SubjectController::class, 'index']);
+    Route::get('/course-offerings', [CourseOfferingController::class, 'index']);
+  });
