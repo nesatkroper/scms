@@ -106,12 +106,16 @@ class ScoreController extends BaseController
 
   public function updateEnrollmentGrade(Score $score)
   {
-    $exam = $score->exam()->first();
+    // $exam = $score->exam()->first();
+    $exam = $score->exam()->with('courseOffering')->first();
+    if (!$exam || !$exam->courseOffering) return;
+
     $enrollment = Enrollment::where('course_offering_id', $exam->course_offering_id)
       ->where('student_id', $score->student_id)
       ->first();
 
     if (!$enrollment) return;
+    $isFinalOnly = $exam->courseOffering->is_final_only;
 
     switch ($exam->type) {
       case 'listening':
@@ -130,7 +134,9 @@ class ScoreController extends BaseController
         $enrollment->midterm_grade = $this->scaleScore($score->score, $exam->total_marks, 20);
         break;
       case 'final':
-        $enrollment->final_grade = $this->scaleScore($score->score, $exam->total_marks, 30);
+        // $enrollment->final_grade = $this->scaleScore($score->score, $exam->total_marks, 30);
+        $maxGrade = $isFinalOnly ? 90 : 30;
+        $enrollment->final_grade = $this->scaleScore($score->score, $exam->total_marks, $maxGrade);
         break;
     }
 

@@ -26,13 +26,21 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        @if (Auth::user()->hasPermissionTo('create_exam'))
-          <a href="{{ route('admin.exams.create', ['course_offering_id' => $courseOfferingId]) }}"
+        <div class=" flex gap-4">
+          @if (Auth::user()->hasPermissionTo('create_exam'))
+            <a href="{{ route('admin.exams.create', ['course_offering_id' => $courseOfferingId]) }}"
+              class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+              <i class="fa-solid fa-plus"></i>
+              Create New Exam
+            </a>
+          @endif
+
+          <a href="{{ route('admin.course_offerings.index') }}"
             class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus"></i>
-            Create New Exam
+            Back
           </a>
-        @endif
+        </div>
 
         <div class="flex items-center mt-3 md:mt-0 gap-2">
           <div class="relative w-full">

@@ -114,5 +114,6 @@ return [
   'students_will_appear_here_once_they_enroll' => "Students will appear here once they enroll",
   'edit_offering' => "Edit Offering",
   'delete_offering' => "Delete Offering",
-
+  'final_only_title' => "Final Exam Only",
+  'final_only_desc' => "This course has exam only final exam one time with 90% point.",
 ];

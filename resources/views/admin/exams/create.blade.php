@@ -42,14 +42,22 @@
                 'reading' => 'Reading',
                 'writing' => 'Writing',
             ];
+
+            if ($courseOffering->is_final_only) {
+                $examTypes = ['final' => 'Final'];
+            }
           @endphp
+
           <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Exam Type <span class="text-red-500">*</span>
+            @if ($courseOffering->is_final_only)
+              <span class="ml-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase">(Final Only
+                Course)</span>
+            @endif
           </label>
 
           <select id="type" name="type" required
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
-            <option value="" disabled selected>Select Exam Type</option>
 
             @foreach ($examTypes as $key => $label)
               <option value="{{ $key }}" @selected(old('type') == $key)>
@@ -64,18 +72,32 @@
         </div>
 
         {{-- 4. Exam Date --}}
+
+        @php
+          $maxDate = $courseOffering->join_end
+              ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d')
+              : '2027-12-31';
+        @endphp
+
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Exam Date <span class="text-red-500">*</span>
           </label>
-          <input type="date" id="date" name="date" value="{{ old('date') ?? '2025-01-01' }}" min="2025-01-01"
-            max="2027-12-31"
+
+          <input type="date" id="date" name="date" value="{{ old('date', $maxDate) }}"
+            max="{{ $maxDate }}"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror"
             required>
+
+          <p class="mt-1 text-xs text-gray-500">
+            The exam must be held **on or before {{ \Carbon\Carbon::parse($maxDate)->format('d-m-Y') }}**.
+          </p>
+
           @error('date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div>
+
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 border-t pt-6 border-gray-200 dark:border-gray-700">
@@ -85,8 +107,8 @@
           <label for="total_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Total Marks <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}" max="100"
-            min="1"
+          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}"
+            max="100" min="1"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
             placeholder="e.g., 100" required>
           @error('total_marks')

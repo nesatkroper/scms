@@ -55,11 +55,21 @@ class FeeController extends BaseController
         });
       })
 
-      // --- NEW ORDERING: unpaid near due_date first, paid last ---
-      ->orderByRaw("CASE WHEN payment_date IS NULL THEN 0 ELSE 1 END ASC")
-      ->orderByRaw("ABS(DATEDIFF(due_date, CURDATE())) ASC")
-      ->orderByRaw("CASE WHEN payment_date IS NULL THEN due_date END ASC")
+      // ->orderByRaw("CASE WHEN payment_date IS NULL THEN 0 ELSE 1 END ASC")
+      // ->orderByRaw("ABS(DATEDIFF(due_date, CURDATE())) ASC")
+      // ->orderByRaw("CASE WHEN payment_date IS NULL THEN due_date END ASC")
+      // ->orderBy('payment_date', 'desc')
+
+      ->orderByRaw("
+          CASE
+            WHEN payment_date IS NULL AND due_date < CURDATE() THEN 0
+            WHEN payment_date IS NULL THEN 1
+            ELSE 2
+          END ASC
+        ")
+      ->orderByRaw("due_date ASC")
       ->orderBy('payment_date', 'desc')
+
 
       ->paginate($perPage)
       ->appends($request->query());

@@ -21,6 +21,7 @@ class CourseOffering extends Model
     'join_end',
     'fee',
     'payment_type',
+    'is_final_only',
   ];
 
 
@@ -29,6 +30,7 @@ class CourseOffering extends Model
     'join_end' => 'date',
     'start_time' => 'datetime',
     'end_time' => 'datetime',
+    'is_final_only' => 'boolean',
   ];
 
 
@@ -59,6 +61,11 @@ class CourseOffering extends Model
   public function enrollments()
   {
     return $this->hasMany(Enrollment::class, 'course_offering_id');
+  }
+
+  public function scopeActive($query)
+  {
+    return $query->whereDate('join_end', '>=', \Carbon\Carbon::today());
   }
 
   public function students()

@@ -33,6 +33,14 @@ class CourseOfferingRequest extends FormRequest
       'join_end' => ['nullable', 'date', 'after_or_equal:join_start'],
       'fee' => ['required', 'numeric', 'min:0'],
       'payment_type'   => ['required', 'in:course,monthly'],
+      'is_final_only'  => ['boolean'],
     ];
+  }
+
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'is_final_only' => $this->boolean('is_final_only'),
+    ]);
   }
 }

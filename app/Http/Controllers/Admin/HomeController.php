@@ -32,7 +32,8 @@ class HomeController extends BaseController
   {
     $students = User::role('student')->count();
     $teachers = User::role('teacher')->count();
-    $course = CourseOffering::count();
+    // $course = CourseOffering::whereDate('join_end', '>=', Carbon::today())->count();
+    $course = CourseOffering::active()->count();
     $totalPaid = Fee::whereNotNull('payment_date')->sum('amount');
     $totalUnpaid = Fee::whereNull('payment_date')->sum('amount');
     $totalExpense = Expense::whereNotNull('approved_by')->sum('amount');
