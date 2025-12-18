@@ -3,7 +3,7 @@
 
 @section('content')
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto @if (\Carbon\Carbon::parse($courseOffering->join_end)->isPast()) border-4 border-dashed border-red-600 dark:border-red-600 @endif">
     <!-- Header Section -->
     <div class="mb-4">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -13,7 +13,14 @@
             <i class="ri-calendar-todo-fill text-2xl"></i>
           </div>
           <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Course Offering Details</h1>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+              Course Offering Details
+              @if (\Carbon\Carbon::parse($courseOffering->join_end)->isPast())
+                <strong class="text-red-400 uppercase">
+                  ( This Course Has Completed)
+                </strong>
+              @endif
+            </h1>
             <p class="text-gray-500 dark:text-gray-400 mt-1">Complete information about this course offering</p>
           </div>
         </div>
@@ -137,8 +144,9 @@
                     </div>
                     <div>
                       <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.class_time') }}</p>
-                      <p class="text-md font-semibold text-gray-900 dark:text-white mt-1">
-                        {{ $courseOffering->start_time }} - {{ $courseOffering->end_time }}</p>
+                      <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
+                        {{ $courseOffering->start_time?->format('h:m') }} -
+                        {{ $courseOffering->end_time?->format('h:m') }}</p>
                     </div>
                   </div>
 
@@ -152,7 +160,7 @@
                       <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.credit_hours') }}
                       </p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
-                        {{ $courseOffering->subject->credit_hours ?? 'N/A' }}</p>
+                        {{ $courseOffering->subject->credit_hours ?? 'N/A' }} Point</p>
                     </div>
                   </div>
                 </div>
@@ -275,30 +283,31 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="my-4 flex flex-col sm:flex-row justify-end gap-4">
+    @if (\Carbon\Carbon::parse($courseOffering->join_end)->isFuture())
 
-      @if (Auth::user()->hasPermissionTo('update_course-offering'))
-        <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
-          class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
-          <i class="fas fa-edit"></i>
-          {{ __('message.edit_offering') }}
-        </a>
-      @endif
+      <div class="my-4 flex flex-col sm:flex-row justify-end gap-4">
+        @if (Auth::user()->hasPermissionTo('update_course-offering'))
+          <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
+            class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
+            <i class="fas fa-edit"></i>
+            {{ __('message.edit_offering') }}
+          </a>
+        @endif
 
-      @if (Auth::user()->hasPermissionTo('delete_course-offering'))
-        <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
-          onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');"
-          class="inline-block">
-          @csrf
-          @method('DELETE')
-          <button type="submit"
-            class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
-            <i class="fas fa-trash-can"></i>
-            {{ __('message.delete_offering') }}
-          </button>
-        </form>
-      @endif
-
-    </div>
+        @if (Auth::user()->hasPermissionTo('delete_course-offering'))
+          <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
+            onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');"
+            class="inline-block">
+            @csrf
+            @method('DELETE')
+            <button type="submit"
+              class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
+              <i class="fas fa-trash-can"></i>
+              {{ __('message.delete_offering') }}
+            </button>
+          </form>
+        @endif
+      </div>
+    @endif
   </div>
 @endsection

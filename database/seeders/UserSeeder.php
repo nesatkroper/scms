@@ -38,9 +38,9 @@ class UserSeeder extends Seeder
     $admin->assignRole('admin');
 
 
-    $this->seedTeachers($faker, 5);
+    $this->seedTeachers($faker, 3);
 
-    $this->seedStudents($faker, 100);
+    $this->seedStudents($faker, 50);
   }
 
   protected function seedTeachers($faker, int $count): void

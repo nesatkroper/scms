@@ -64,7 +64,7 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       @forelse ($courseOfferings as $offering)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-600 dark:border-red-600 @endif">
 
           <div
             class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
@@ -76,6 +76,12 @@
                     <span class="text-sm @if ($offering->students->count() >= $offering->classroom->capacity) dark:text-red-500 @endif">
                       @if ($offering->students->count() >= $offering->classroom->capacity)
                         (Full)
+                      @endif
+
+                      @if (\Carbon\Carbon::parse($offering->join_end)->isPast())
+                        <strong class="text-red-400 uppercase">
+                          ( This Course Has Completed)
+                        </strong>
                       @endif
                     </span>
                   </h4>
@@ -125,13 +131,15 @@
 
             <div class="flex gap-1">
 
-              @if (Auth::user()->hasPermissionTo('view_attendance'))
-                <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                  class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Attendance">
-                  <i class="fa-regular fa-calendar-days me-2"></i>
-                  {{ __('message.attendance') }}
-                </a>
+              @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
+                @if (Auth::user()->hasPermissionTo('view_attendance'))
+                  <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
+                    class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Attendance">
+                    <i class="fa-regular fa-calendar-days me-2"></i>
+                    {{ __('message.attendance') }}
+                  </a>
+                @endif
               @endif
 
               @if (Auth::user()->hasPermissionTo('view_exam'))
@@ -143,23 +151,26 @@
                 </a>
               @endif
 
-              @if (Auth::user()->hasPermissionTo('view_enrollment'))
-                @if ($offering->students->count() >= $offering->classroom->capacity)
-                  <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                    class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Admission Register">
-                    <i class="fa-solid fa-check me-2"></i>
-                    {{ __('message.class_full') }}
-                  </a>
-                @else
-                  <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                    class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Admission Register">
-                    <i class="fa-solid fa-book-atlas me-2"></i>
-                    {{ __('message.register') }}
-                  </a>
+              @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
+                @if (Auth::user()->hasPermissionTo('view_enrollment'))
+                  @if ($offering->students->count() >= $offering->classroom->capacity)
+                    <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
+                      class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                      title="Admission Register">
+                      <i class="fa-solid fa-check me-2"></i>
+                      {{ __('message.class_full') }}
+                    </a>
+                  @else
+                    <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
+                      class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                      title="Admission Register">
+                      <i class="fa-solid fa-book-atlas me-2"></i>
+                      {{ __('message.register') }}
+                    </a>
+                  @endif
                 @endif
               @endif
+
             </div>
 
             <div class="flex">
@@ -170,13 +181,14 @@
                 {{-- {{ __('message.detail') }} --}}
               </a>
 
-              @if (Auth::user()->hasPermissionTo('update_course-offering'))
-                <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit">
-                  <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- {{ __('message.edit') }} --}}
-                </a>
+              @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
+                @if (Auth::user()->hasPermissionTo('update_course-offering'))
+                  <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Edit">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>
+                  </a>
+                @endif
               @endif
 
             </div>

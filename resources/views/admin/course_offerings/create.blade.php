@@ -127,8 +127,8 @@
           <label for="join_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {{ __('message.start_date') }}
           </label>
-          <input type="date" id="join_start" name="join_start" value="{{ old('join_start') ?? '2025-01-01' }}"
-            min="2025-01-01" max="2027-12-31"
+          <input type="date" id="join_start" name="join_start" value="{{ old('join_start', now()->toDateString()) }}"
+            min="{{ now()->toDateString() }}" max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
           @error('join_start')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -140,8 +140,8 @@
           <label for="join_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {{ __('message.end_date') }}
           </label>
-          <input type="date" id="join_end" name="join_end" value="{{ old('join_end') ?? '2025-01-01' }}"
-            min="2025-01-01" max="2027-12-31"
+          <input type="date" id="join_end" name="join_end" value="{{ old('join_end', now()->toDateString()) }}"
+            min="{{ now()->toDateString() }}" max="2027-12-31"
             class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
           @error('join_end')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
