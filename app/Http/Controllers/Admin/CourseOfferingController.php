@@ -57,6 +57,7 @@ class CourseOfferingController extends BaseController
         });
       })
 
+      ->orderByRaw('join_end < NOW(), join_end DESC')
       ->orderBy('created_at', 'desc')
       ->paginate($perPage)
       ->appends([
