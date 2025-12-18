@@ -37,13 +37,13 @@ class GenerateModelPermissions extends Command
     $models = collect(File::files($modelPath))
       ->map(function ($file) use ($namespace) {
         $className = $namespace . pathinfo($file, PATHINFO_FILENAME);
-        return new $className;
+        return $className;
       })
-      ->filter(function ($model) {
-        return $model instanceof \Illuminate\Database\Eloquent\Model;
+      ->filter(function ($className) {
+        return class_exists($className) && is_subclass_of($className, \Illuminate\Database\Eloquent\Model::class);
       })
-      ->map(function ($model) {
-        $className = class_basename($model);
+      ->map(function ($className) {
+        $className = class_basename($className);
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $className));
       })
       ->values()
@@ -56,27 +56,4 @@ class GenerateModelPermissions extends Command
 
     return $models;
   }
-
-
-  // protected function getModels()
-  // {
-  //   $modelPath = app_path('Models');
-  //   $namespace = app()->getNamespace() . 'Models\\';
-
-  //   return collect(File::files($modelPath))
-  //     ->map(function ($file) use ($namespace) {
-  //       $className = $namespace . pathinfo($file, PATHINFO_FILENAME);
-
-  //       return new $className;
-  //     })
-  //     ->filter(function ($model) {
-  //       return $model instanceof \Illuminate\Database\Eloquent\Model;
-  //     })
-  //     ->map(function ($model) {
-  //       $className = class_basename($model);
-  //       return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $className));
-  //     })
-  //     ->values()
-  //     ->toArray();
-  // }
 }

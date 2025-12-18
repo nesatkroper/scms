@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class Enrollment extends Model
 {
+  use SoftDeletes;
+  use HasUuids;
+  protected $keyType = 'string';
+  public $incrementing = false;
+
   protected $fillable = [
     'student_id',
     'course_offering_id',

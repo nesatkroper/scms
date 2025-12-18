@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,6 +15,9 @@ class User extends Authenticatable
 {
   use HasFactory, Notifiable, HasApiTokens;
   use HasRoles, SoftDeletes;
+  use HasUuids;
+  protected $keyType = 'string';
+  public $incrementing = false;
 
   protected $fillable = [
     'name',
