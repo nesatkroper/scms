@@ -10,7 +10,7 @@ return new class extends Migration
   {
     Schema::create('classrooms', function (Blueprint $table) {
       $table->id();
-      $table->string('name');
+      $table->string('name')->unique();
       $table->string('room_number')->unique();
       $table->integer('capacity');
       $table->timestamps();
@@ -23,10 +23,15 @@ return new class extends Migration
       $table->string('email')->unique();
       $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
-      $table->string('phone')->nullable();
+      $table->string('phone')->nullable()->unique();
       $table->text('address')->nullable();
       $table->date('date_of_birth')->nullable();
-      $table->enum('gender', ['male', 'female', 'other'])->nullable()->default('male');
+      $table->enum('gender', [
+        'monk',
+        'male',
+        'female',
+        'other'
+      ])->nullable()->default('male');
       $table->date('joining_date')->nullable();
       $table->string('qualification')->nullable();
       $table->string('experience')->nullable();
@@ -62,7 +67,7 @@ return new class extends Migration
 
     Schema::create('subjects', function (Blueprint $table) {
       $table->id();
-      $table->string('name');
+      $table->string('name')->unique();
       $table->string('code')->unique();
       $table->text('description')->nullable();
       $table->integer('credit_hours')->default(1);
@@ -91,14 +96,27 @@ return new class extends Migration
       $table->softDeletes();
     });
 
+
     Schema::create('course_offerings', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('subject_id')->constrained()->onDelete('cascade');
-      $table->foreignId('teacher_id')->nullable()->constrained('users')->onDelete('set null');
-      $table->foreignId('classroom_id')->nullable()->constrained()->onDelete('set null');
-      $table->enum('time_slot', ['morning', 'afternoon', 'evening'])->default('morning');
-      $table->enum('schedule', ['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'])->default('mon-fri');
-      $table->enum('payment_type', ['course', 'monthly'])->default('course');
+      $table->foreignId('subject_id')
+        ->constrained()
+        ->cascadeOnDelete();
+      $table->foreignId('teacher_id')
+        ->nullable()
+        ->constrained('users')
+        ->nullOnDelete();
+      $table->foreignId('classroom_id')
+        ->nullable()
+        ->constrained()
+        ->nullOnDelete();
+      $table->enum('time_slot', ['morning', 'afternoon', 'evening'])
+        ->default('morning');
+      $table->enum('schedule', ['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'])
+        ->default('mon-fri');
+      $table->enum('payment_type', ['course', 'monthly'])
+        ->default('course');
+      $table->boolean('is_final_only')->default(false);
       $table->time('start_time')->nullable();
       $table->time('end_time')->nullable();
       $table->date('join_start')->nullable();
@@ -106,22 +124,42 @@ return new class extends Migration
       $table->decimal('fee', 10, 2)->default(0);
       $table->timestamps();
       $table->softDeletes();
+
+      $table->unique(
+        ['teacher_id', 'schedule', 'time_slot'],
+        'unique_teacher_schedule_slot'
+      );
+
+      $table->unique(
+        ['classroom_id', 'schedule', 'time_slot'],
+        'unique_classroom_schedule_slot'
+      );
     });
 
     Schema::create('enrollments', function (Blueprint $table) {
       $table->id();
       $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
       $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
-      $table->decimal('grade_final', 5, 2)->nullable();
       $table->enum('status', [
         'studying',
         'suspended',
         'dropped',
         'completed'
       ])->default('studying');
+      $table->decimal('attendance_grade', 5, 2)->nullable();
+      $table->decimal('listening_grade', 5, 2)->nullable();
+      $table->decimal('writing_grade', 5, 2)->nullable();
+      $table->decimal('reading_grade', 5, 2)->nullable();
+      $table->decimal('speaking_grade', 5, 2)->nullable();
+      $table->decimal('midterm_grade', 5, 2)->nullable();
+      $table->decimal('final_grade', 5, 2)->nullable();
       $table->text('remarks')->nullable();
       $table->timestamps();
-      $table->unique(['student_id', 'course_offering_id']);
+
+      $table->unique(
+        ['student_id', 'course_offering_id'],
+        'unique_student_course_enrollment'
+      );
     });
 
     Schema::create('attendances', function (Blueprint $table) {
@@ -133,35 +171,34 @@ return new class extends Migration
       $table->text('remarks')->nullable();
       $table->timestamps();
       $table->softDeletes();
-      $table->unique(['student_id', 'course_offering_id',  'date'], 'attendances_unique_idx');
+      $table->unique(
+        ['student_id', 'course_offering_id',  'date'],
+        'attendances_unique_idx'
+      );
     });
-
 
     Schema::create('exams', function (Blueprint $table) {
       $table->id();
+      $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
       $table->enum('type', [
         'midterm',
         'final',
         'speaking',
         'listening',
         'reading',
-        'lab1',
-        'lab2',
-        'lab3',
-        'quiz1',
-        'quiz2',
-        'quiz3',
-        'homework1',
-        'homework2',
-        'homework3',
+        'writing',
       ]);
       $table->text('description')->nullable();
-      $table->foreignId('course_offering_id')->constrained()->onDelete('cascade');
       $table->date('date');
       $table->integer('total_marks');
       $table->integer('passing_marks');
       $table->timestamps();
       $table->softDeletes();
+
+      $table->unique(
+        ['course_offering_id', 'type'],
+        'unique_exam_type_per_course'
+      );
     });
 
     Schema::create('fee_types', function (Blueprint $table) {
@@ -187,8 +224,12 @@ return new class extends Migration
       $table->foreignId('received_by')->nullable()->constrained('users')->onDelete('set null');
       $table->timestamps();
       $table->softDeletes();
-    });
 
+      $table->unique(
+        ['enrollment_id', 'fee_type_id'],
+        'unique_fee_per_enrollment_type'
+      );
+    });
 
     Schema::create('scores', function (Blueprint $table) {
       $table->id();
@@ -199,7 +240,11 @@ return new class extends Migration
       $table->text('remarks')->nullable();
       $table->timestamps();
       $table->softDeletes();
-      $table->unique(['student_id', 'exam_id']);
+
+      $table->unique(
+        ['student_id', 'exam_id'],
+        'unique_student_exam_score'
+      );
     });
 
     Schema::create('notifications', function (Blueprint $table) {
