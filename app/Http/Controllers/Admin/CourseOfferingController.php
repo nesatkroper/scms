@@ -29,7 +29,7 @@ class CourseOfferingController extends BaseController
   public function index(Request $request)
   {
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 4);
+    $perPage = $request->input('per_page', 6);
 
     $user = Auth::user();
 
