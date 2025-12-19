@@ -126,13 +126,13 @@ return new class extends Migration
       $table->softDeletes();
 
       $table->unique(
-        ['teacher_id', 'schedule', 'time_slot'],
-        'unique_teacher_schedule_slot'
+        ['teacher_id', 'schedule', 'time_slot', 'join_start', 'join_end'],
+        'unique_teacher_schedule_slot_period'
       );
 
       $table->unique(
-        ['classroom_id', 'schedule', 'time_slot'],
-        'unique_classroom_schedule_slot'
+        ['classroom_id', 'schedule', 'time_slot', 'join_start', 'join_end'],
+        'unique_classroom_schedule_slot_period'
       );
     });
 
