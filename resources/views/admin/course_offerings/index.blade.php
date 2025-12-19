@@ -64,7 +64,7 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       @forelse ($courseOfferings as $offering)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-600 dark:border-red-600 @endif">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-400 dark:border-red-400 @endif">
 
           <div
             class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
@@ -165,7 +165,7 @@
                       class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                       title="Admission Register">
                       <i class="fa-solid fa-book-atlas me-2"></i>
-                      {{ __('message.register') }}
+                      {{ __('message.enroll') }}
                     </a>
                   @endif
                 @endif
@@ -178,13 +178,12 @@
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Show Details">
                 <i class="fa-regular fa-eye me-2"></i>
-                {{-- {{ __('message.detail') }} --}}
               </a>
 
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                 @if (Auth::user()->hasPermissionTo('update_course-offering'))
                   <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
-                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-500 dark:text-red-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-500 dark:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                     title="Edit">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
                   </a>

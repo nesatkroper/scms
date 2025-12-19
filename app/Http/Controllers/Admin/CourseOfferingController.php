@@ -176,4 +176,22 @@ class CourseOfferingController extends BaseController
       return redirect()->back()->with('error', 'Error deleting course offering: ' . $e->getMessage());
     }
   }
+
+  public function restore($id)
+  {
+    try {
+      $course = CourseOffering::onlyTrashed()->findOrFail($id);
+      $course->restore();
+
+      return redirect()
+        ->route('admin.course_offerings.index')
+        ->with('success', 'course offering restored successfully');
+    } catch (\Exception $e) {
+      Log::error('Error restoring course offering: ' . $e->getMessage());
+
+      return redirect()
+        ->back()
+        ->with('error', 'Error restoring course offering');
+    }
+  }
 }

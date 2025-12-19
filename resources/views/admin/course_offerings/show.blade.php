@@ -303,7 +303,7 @@
             <button type="submit"
               class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-medium rounded-lg transition-all duration-300">
               <i class="fas fa-trash-can"></i>
-              {{ __('message.delete_offering') }}
+              {{ __('message.disabled') }}
             </button>
           </form>
         @endif
