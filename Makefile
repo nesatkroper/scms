@@ -64,6 +64,15 @@ migrate:
 	@php artisan migrate
 	@echo "✅ Database Migrations Complete."
 
+fresh:
+	@echo "================================================="
+	@echo "🏗️  Running Refresh..."
+	@php artisan db:wipe
+	@php artisan migrate 
+	@php artisan permissions:generate
+	@php artisan db:seed
+	@echo "✅ Database Refresh Complete."
+
 m-seed:
 	@echo "================================================="
 	@echo "🏗️  Running Migrations, Permissions, and Database Seeding..."
