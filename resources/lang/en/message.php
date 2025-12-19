@@ -1,6 +1,8 @@
 <?php
 
 return [
+  'restore' => 'Restore',
+  'disabled' => 'Disabled',
   'addresses' => 'Addresses',
   'classrooms_list' => "Classrooms List",
   'create_new' => "Create New",

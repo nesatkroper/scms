@@ -26,7 +26,7 @@ class ClassroomController extends BaseController
     $search = $request->input('search');
     $perPage = $request->input('per_page', 12);
 
-    $classrooms = Classroom::query()
+    $classrooms = Classroom::withTrashed()
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('room_number', 'like', "%{$search}%");
@@ -82,6 +82,24 @@ class ClassroomController extends BaseController
     } catch (\Exception $e) {
       Log::error('Error deleting classroom: ' . $e->getMessage());
       return redirect()->back()->with('error', 'Error deleting classroom: ' . $e->getMessage());
+    }
+  }
+
+  public function restore($id)
+  {
+    try {
+      $classroom = Classroom::onlyTrashed()->findOrFail($id);
+      $classroom->restore();
+
+      return redirect()
+        ->route('admin.classrooms.index')
+        ->with('success', 'Classroom restored successfully');
+    } catch (\Exception $e) {
+      Log::error('Error restoring classroom: ' . $e->getMessage());
+
+      return redirect()
+        ->back()
+        ->with('error', 'Error restoring classroom');
     }
   }
 }

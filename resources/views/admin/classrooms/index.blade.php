@@ -67,12 +67,16 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
       @forelse ($classrooms as $classroom)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($classroom->deleted_at) border-3 border-dashed border-red-500 dark:border-red-500 @endif">
 
           <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
-                <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $classroom->name }}</h4>
+                <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $classroom->name }}
+                  @if ($classroom->deleted_at)
+                    <strong class="text-red-400"> (Disabled)</strong>
+                  @endif
+                </h4>
               </div>
 
               <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -129,23 +133,37 @@
                 title="Edit">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- {{ __('message.edit') }} --}}
+                  {{ __('message.edit') }}
                 </span>
               </a>
             @endif
 
             {{-- Delete Button (Full form submission) --}}
-            {{-- <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"
-              onsubmit="return confirm('Are you sure you want to delete the classroom {{ $classroom->name }}?');">
-              @csrf
-              @method('DELETE')
-              <button type="submit"
-                class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                title="Delete">
-                <i class="fa-regular fa-trash-can me-2"></i>
-                {{ __('message.delete') }}
-              </button>
-            </form> --}}
+            @if ($classroom->deleted_at)
+              <form action="{{ route('admin.classrooms.restore', $classroom->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <button type="submit"
+                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete">
+                  <i class="fa-solid fa-trash-arrow-up me-2"></i>
+                  {{ __('message.restore') }}
+                </button>
+              </form>
+            @else
+              <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete the classroom {{ $classroom->name }}?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete">
+                  <i class="fa-solid fa-ban me-2"></i>
+                  {{ __('message.disabled') }}
+                </button>
+              </form>
+            @endif
+
           </div>
         </div>
       @empty
