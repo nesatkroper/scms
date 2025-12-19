@@ -56,12 +56,16 @@
       @if (count($subjects) > 0)
         @foreach ($subjects as $subject)
           <div
-            class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg">
+            class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg @if ($subject->deleted_at) border-3 border-dashed border-red-500 dark:border-red-500 @endif">
 
             <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
               <div class="flex justify-between items-start gap-2">
                 <div>
-                  <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $subject->name }}</h4>
+                  <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $subject->name }}
+                    @if ($subject->deleted_at)
+                      <strong class="text-red-400"> (Disabled)</strong>
+                    @endif
+                  </h4>
                 </div>
               </div>
             </div>
@@ -108,21 +112,34 @@
                 title="Edit">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
+                  Edit
                 </span>
               </a>
 
-              {{-- <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete this subject? This action cannot be undone.');">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                  class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Delete">
-                  <i class="fa-regular fa-trash-can me-2"></i>
-                  Delete
-                </button>
-              </form> --}}
+              @if ($subject->deleted_at)
+                <form action="{{ route('admin.subjects.restore', $subject->id) }}" method="POST">
+                  @csrf
+                  @method('PATCH')
+                  <button type="submit"
+                    class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Delete">
+                    <i class="fa-solid fa-trash-arrow-up me-2"></i>
+                    {{ __('message.restore') }}
+                  </button>
+                </form>
+              @else
+                <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete this subject? This action cannot be undone.');">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                    class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Delete">
+                    <i class="fa-solid fa-ban me-2"></i>
+                    {{ __('message.disabled') }}
+                  </button>
+                </form>
+              @endif
             </div>
           </div>
         @endforeach

@@ -81,6 +81,12 @@ Route::prefix('admin')
         Route::patch('/{id}/restore', [ClassroomController::class, 'restore'])->name('restore');
       });
 
+    Route::prefix('subjects')
+      ->as('subjects.')
+      ->group(function () {
+        Route::patch('/{id}/restore', [SubjectController::class, 'restore'])->name('restore');
+      });
+
     Route::prefix('profile')
       ->as('profile.')
       ->group(function () {

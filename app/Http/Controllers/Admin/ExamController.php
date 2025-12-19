@@ -35,9 +35,11 @@ class ExamController extends BaseController
     $perPage = $request->input('per_page', 10);
     $courses = CourseOffering::findOrFail($courseOfferingId);
 
-    $exams = Exam::query()
+    $exams = Exam::withTrashed()
       ->where('course_offering_id', $courseOfferingId)
-      ->with(['courseOffering'])
+      ->with([
+        'courseOffering' => fn($q) => $q->withTrashed()
+      ])
       ->when($search, function ($query) use ($search) {
         return $query->where(function ($q) use ($search) {
           $q->where('type', 'like', "%{$search}%")

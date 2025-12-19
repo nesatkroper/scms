@@ -33,8 +33,15 @@ class CourseOfferingController extends BaseController
 
     $user = Auth::user();
 
-    $courseOfferings = CourseOffering::query()
-      ->with(['subject', 'teacher', 'classroom', 'attendances', 'exams'])
+    $courseOfferings = CourseOffering::withTrashed()
+      // ->with(['subject', 'teacher', 'classroom', 'attendances', 'exams'])
+      ->with([
+        'subject' => fn($q) => $q->withTrashed(),
+        'teacher' => fn($q) => $q->withTrashed(),
+        'classroom' => fn($q) => $q->withTrashed(),
+        'attendances' => fn($q) => $q->withTrashed(),
+        'exams' => fn($q) => $q->withTrashed(),
+      ])
 
       ->when($user->hasRole('teacher'), function ($query) use ($user) {
         $query->where('teacher_id', $user->id);
@@ -113,7 +120,14 @@ class CourseOfferingController extends BaseController
 
   public function show(CourseOffering $courseOffering)
   {
-    $courseOffering->load(['subject', 'teacher', 'classroom', 'students']);
+    // $courseOffering->load(['subject', 'teacher', 'classroom', 'students']);
+    $courseOffering->load([
+      'subject'   => fn($q) => $q->withTrashed(),
+      'teacher'   => fn($q) => $q->withTrashed(),
+      'classroom' => fn($q) => $q->withTrashed(),
+      'students'  => fn($q) => $q->withTrashed(),
+    ]);
+
 
     return view('admin.course_offerings.show', compact('courseOffering'));
   }

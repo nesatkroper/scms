@@ -14,7 +14,7 @@
       @if ($courseOffering)
         Admission Register for {{ $courseOffering->subject?->name }} -
         {{ $courseOffering->teacher->name }} -
-        {{ $courseOffering->classroom->name }}
+        {{ $courseOffering->classroom?->name }}
         ({{ $courseOffering->time_slot }}) -
         ($ {{ $courseOffering->fee }})
       @endif
@@ -37,7 +37,7 @@
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
-        @if ($enrollments->count() >= $courseOffering->classroom->capacity)
+        @if ($enrollments->count() >= $courseOffering->classroom?->capacity)
           <div></div>
         @else
           @if (Auth::user()->hasPermissionTo('create_enrollment'))

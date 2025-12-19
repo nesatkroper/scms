@@ -73,8 +73,8 @@
                 <div>
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
                     {{ $offering->subject->name ?? 'Subject Deleted' }}
-                    <span class="text-sm @if ($offering->students->count() >= $offering->classroom->capacity) dark:text-red-500 @endif">
-                      @if ($offering->students->count() >= $offering->classroom->capacity)
+                    <span class="text-sm @if ($offering?->students->count() >= $offering->classroom?->capacity) dark:text-red-500 @endif">
+                      @if ($offering->students->count() >= $offering->classroom?->capacity)
                         (Full)
                       @endif
 
@@ -116,7 +116,7 @@
 
             <x-info.item
               name="{{ $offering->classroom->name ?? 'Location TBD' }}
-                                        ({{ $offering->classroom->capacity }}
+                                        ({{ $offering->classroom?->capacity }}
                                         Seats)"
               icon="ri-door-open-fill text-xl" label="Classroom" labelcolor="text-gray-500 dark:text-gray-400"
               color="" position="left" />
@@ -153,7 +153,7 @@
 
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                 @if (Auth::user()->hasPermissionTo('view_enrollment'))
-                  @if ($offering->students->count() >= $offering->classroom->capacity)
+                  @if ($offering->students->count() >= $offering->classroom?->capacity)
                     <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
                       class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                       title="Admission Register">
