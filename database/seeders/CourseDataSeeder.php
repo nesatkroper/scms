@@ -22,8 +22,8 @@ class CourseDataSeeder extends Seeder
       return;
     }
 
-    $this->command->info('Seeding 5 Classrooms...');
-    $classroomRoomNumbers = ['A145', 'B201', 'C310', 'D005', 'E122'];
+    $this->command->info('Seeding 2 Classrooms...');
+    $classroomRoomNumbers = ['A145', 'B201'];
     $faker->unique(true);
     $classroomIds = [];
 
@@ -31,20 +31,18 @@ class CourseDataSeeder extends Seeder
       $classroom = Classroom::updateOrCreate(
         ['room_number' => $roomNumber],
         [
-          'name' => 'Room ' . ($index + 1),
-          'capacity' => $faker->numberBetween(20, 50),
+          'name' => 'Room ' . ($index + 100),
+          'capacity' => 25,
         ]
       );
       $classroomIds[] = $classroom->id;
     }
 
 
-    $this->command->info('Seeding 5 Subjects...');
+    $this->command->info('Seeding 3 Subjects...');
     $subjectData = [
-      ['name' => 'Calculus I', 'code' => 'MATH101'],
       ['name' => 'English Grammar', 'code' => 'ENGL102'],
       ['name' => 'World History', 'code' => 'HIST201'],
-      ['name' => 'Introduction to Programming', 'code' => 'CS101'],
       ['name' => 'Microeconomics', 'code' => 'ECON305'],
     ];
 
@@ -61,9 +59,9 @@ class CourseDataSeeder extends Seeder
       $subjectIds[] = $subject->id;
     }
 
-    $this->command->info('Seeding 15 Course Offerings...');
+    $this->command->info('Seeding 7 Course Offerings...');
 
-    $totalOfferings = 15;
+    $totalOfferings = 7;
     $numSubjects = count($subjectIds);
     $subjectAssignments = [];
 
@@ -76,23 +74,47 @@ class CourseDataSeeder extends Seeder
     $teacherIndex = 0;
     $classroomIndex = 0;
 
-    for ($i = 0; $i < $totalOfferings; $i++) {
-      $startTime = $faker->time('H:i:s', '09:00:00');
-      $endTime = $faker->time('H:i:s', strtotime('+2 hours', strtotime($startTime)));
+    $timeSlots = ['morning', 'afternoon', 'evening'];
+    $schedules = ['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'];
 
-      CourseOffering::create([
-        'subject_id' => $subjectAssignments[$i],
-        'teacher_id' => $teacherIds[$teacherIndex % count($teacherIds)],
-        'classroom_id' => $classroomIds[$classroomIndex % count($classroomIds)],
-        'time_slot' => $faker->randomElement(['morning', 'afternoon']),
-        'schedule' => $faker->randomElement(['mon-wed', 'mon-fri', 'wed-fri']),
-        'payment_type' => $faker->randomElement(['course', 'monthly']),
-        'start_time' => $startTime,
-        'end_time' => $endTime,
-        'join_start' => $faker->dateTimeBetween('-1 year', '-6 months')->format('Y-m-d'),
-        'join_end' => $faker->dateTimeBetween('-6 months', '+3 months')->format('Y-m-d'),
-        'fee' => $faker->randomFloat(2, 50, 300),
-      ]);
+    $usedTeacherCombinations = [];
+    $usedClassroomCombinations = [];
+
+    for ($i = 0; $i < $totalOfferings; $i++) {
+      $teacherId = $teacherIds[$teacherIndex % count($teacherIds)];
+      $classroomId = $classroomIds[$classroomIndex % count($classroomIds)];
+
+      // Pick schedule and time_slot that don't violate unique constraint
+      foreach ($schedules as $schedule) {
+        foreach ($timeSlots as $timeSlot) {
+          $teacherKey = "{$teacherId}-{$schedule}-{$timeSlot}";
+          $classroomKey = "{$classroomId}-{$schedule}-{$timeSlot}";
+
+          if (!isset($usedTeacherCombinations[$teacherKey]) && !isset($usedClassroomCombinations[$classroomKey])) {
+            $usedTeacherCombinations[$teacherKey] = true;
+            $usedClassroomCombinations[$classroomKey] = true;
+
+            $startTime = $faker->time('H:i:s', '09:00:00');
+            $endTime = $faker->time('H:i:s', strtotime('+2 hours', strtotime($startTime)));
+
+            CourseOffering::create([
+              'subject_id' => $subjectAssignments[$i],
+              'teacher_id' => $teacherId,
+              'classroom_id' => $classroomId,
+              'time_slot' => $timeSlot,
+              'schedule' => $schedule,
+              'payment_type' => $faker->randomElement(['course', 'monthly']),
+              'start_time' => $startTime,
+              'end_time' => $endTime,
+              'join_start' => $faker->dateTimeBetween('-1 year', '-6 months')->format('Y-m-d'),
+              'join_end' => $faker->dateTimeBetween('-6 months', '+3 months')->format('Y-m-d'),
+              'fee' => $faker->randomFloat(2, 50, 300),
+            ]);
+
+            break 2; // exit both loops once we have a valid combination
+          }
+        }
+      }
 
       $teacherIndex++;
       $classroomIndex++;

@@ -27,7 +27,7 @@ class SubjectController extends BaseController
     $search = $request->input('search');
     $perPage = $request->input('per_page', 12);
 
-    $subjects = Subject::query()
+    $subjects = Subject::withTrashed()
       ->when($search, function ($query) use ($search) {
         return $query->where('name', 'like', "%{$search}%")
           ->orWhere('code', 'like', "%{$search}%")
@@ -83,6 +83,24 @@ class SubjectController extends BaseController
     } catch (\Exception $e) {
       Log::error('Error deleting subject: ' . $e->getMessage());
       return redirect()->back()->with('error', 'Error deleting subject: ' . $e->getMessage());
+    }
+  }
+
+  public function restore($id)
+  {
+    try {
+      $subject = Subject::onlyTrashed()->findOrFail($id);
+      $subject->restore();
+
+      return redirect()
+        ->route('admin.subjects.index')
+        ->with('success', 'subject restored successfully');
+    } catch (\Exception $e) {
+      Log::error('Error restoring subject: ' . $e->getMessage());
+
+      return redirect()
+        ->back()
+        ->with('error', 'Error restoring subject');
     }
   }
 }

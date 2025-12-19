@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Course Details: ' . $courseOffering->subject->name . ' - ' . $courseOffering->time_slot)
+@section('title', 'Course Details: ' . $courseOffering->subject?->name . ' - ' . $courseOffering->time_slot)
 
 @section('content')
   <div

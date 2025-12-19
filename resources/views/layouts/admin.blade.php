@@ -48,6 +48,27 @@
 
     <script src="//unpkg.com/alpinejs" defer></script>
 
+    <script>
+      (function smoothTitleScroll() {
+        const originalTitle = document.title;
+        const maxLength = 18;
+
+        if (originalTitle.length <= maxLength) return;
+
+        const spacer = "   •   ";
+        const scrollText = originalTitle + spacer;
+        let index = 0;
+
+        setInterval(() => {
+          document.title =
+            scrollText.substring(index) +
+            scrollText.substring(0, index);
+
+          index = (index + 1) % scrollText.length;
+        }, 220);
+      })();
+    </script>
+
     @stack('scripts')
     @stack('script')
 

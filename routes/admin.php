@@ -75,6 +75,18 @@ Route::prefix('admin')
         Route::delete('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'destroy'])->name('destroy');
       });
 
+    Route::prefix('classrooms')
+      ->as('classrooms.')
+      ->group(function () {
+        Route::patch('/{id}/restore', [ClassroomController::class, 'restore'])->name('restore');
+      });
+
+    Route::prefix('subjects')
+      ->as('subjects.')
+      ->group(function () {
+        Route::patch('/{id}/restore', [SubjectController::class, 'restore'])->name('restore');
+      });
+
     Route::prefix('profile')
       ->as('profile.')
       ->group(function () {

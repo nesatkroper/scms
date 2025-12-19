@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use App\Models\CourseOffering;
-
+use App\Models\User;
 
 class CourseOfferingRequest extends FormRequest
 {
@@ -14,85 +13,44 @@ class CourseOfferingRequest extends FormRequest
     return true;
   }
 
-  // public function rules()
-  // {
-  //   return [
-  //     'subject_id' => ['required', 'exists:subjects,id'],
-  //     'teacher_id' => [
-  //       'nullable',
-  //       'exists:users,id',
-  //       function ($attribute, $value, $fail) {
-  //         if (!\App\Models\User::find($value)?->hasRole('teacher')) {
-  //           $fail('Selected user is not a teacher.');
-  //         }
-  //       }
-  //     ],
-  //     'classroom_id' => ['nullable', 'exists:classrooms,id'],
-  //     'time_slot' => ['required', 'string', 'in:morning,afternoon,evening'],
-  //     'schedule' => ['required', 'string', 'in:mon-wed,mon-fri,wed-fri,sat-sun'],
-  //     'start_time' => ['nullable', 'date_format:H:i'],
-  //     'end_time' => ['nullable', 'date_format:H:i', 'after:start_time'],
-  //     'join_start' => ['nullable', 'date'],
-  //     'join_end' => ['nullable', 'date', 'after_or_equal:join_start'],
-  //     'fee' => ['required', 'numeric', 'min:0'],
-  //     'payment_type'   => ['required', 'in:course,monthly'],
-  //     'is_final_only'  => ['boolean'],
-  //   ];
-  // }
-
-
   public function rules()
   {
-    $courseId = $this->route('course_offering'); // null on create
-
     return [
       'subject_id' => ['required', 'exists:subjects,id'],
 
       'teacher_id' => [
         'nullable',
         'exists:users,id',
-
-        // must be teacher
         function ($attribute, $value, $fail) {
-          if ($value && !\App\Models\User::find($value)?->hasRole('teacher')) {
+          if ($value && !User::find($value)?->hasRole('teacher')) {
             $fail('Selected user is not a teacher.');
+            return;
+          }
+
+          if ($this->hasOverlap('teacher_id', $value)) {
+            $fail('This teacher already has a course at that time.');
           }
         },
-
-        // teacher schedule conflict
-        Rule::unique('course_offerings')
-          ->ignore($courseId)
-          ->where(
-            fn($q) => $q
-              ->where('schedule', $this->schedule)
-              ->where('time_slot', $this->time_slot)
-              ->whereNull('deleted_at')
-          ),
       ],
 
       'classroom_id' => [
         'nullable',
         'exists:classrooms,id',
-
-        // classroom conflict
-        Rule::unique('course_offerings')
-          ->ignore($courseId)
-          ->where(
-            fn($q) => $q
-              ->where('schedule', $this->schedule)
-              ->where('time_slot', $this->time_slot)
-              ->whereNull('deleted_at')
-          ),
+        function ($attribute, $value, $fail) {
+          if ($this->hasOverlap('classroom_id', $value)) {
+            $fail('This classroom is already used at that time.');
+          }
+        },
       ],
 
       'time_slot' => ['required', 'in:morning,afternoon,evening'],
-      'schedule' => ['required', 'in:mon-wed,mon-fri,wed-fri,sat-sun'],
+      'schedule'  => ['required', 'in:mon-wed,mon-fri,wed-fri,sat-sun'],
 
       'start_time' => ['nullable', 'date_format:H:i'],
       'end_time'   => ['nullable', 'date_format:H:i', 'after:start_time'],
 
-      'join_start' => ['nullable', 'date'],
-      'join_end'   => ['nullable', 'date', 'after_or_equal:join_start'],
+      'join_start' => ['required', 'date'],
+      'join_end'   => ['required', 'date', 'after_or_equal:join_start'],
 
       'fee' => ['required', 'numeric', 'min:0'],
       'payment_type' => ['required', 'in:course,monthly'],
@@ -100,15 +58,27 @@ class CourseOfferingRequest extends FormRequest
     ];
   }
 
-  public function messages()
+  protected function hasOverlap(string $column, $value): bool
   {
-    return [
-      'teacher_id.unique'   => 'This teacher already has a course at that time.',
-      'classroom_id.unique' => 'This classroom is already used at that time.',
-      'end_time.after'      => 'End time must be after start time.',
-    ];
-  }
+    if (!$value) return false;
 
+    $courseId = $this->route('course_offering');
+
+    return CourseOffering::where($column, $value)
+      ->where('schedule', $this->schedule)
+      ->where('time_slot', $this->time_slot)
+      ->whereNull('deleted_at')
+      ->when($courseId, fn($q) => $q->where('id', '!=', $courseId))
+      ->where(function ($q) {
+        $q->whereBetween('join_start', [$this->join_start, $this->join_end])
+          ->orWhereBetween('join_end', [$this->join_start, $this->join_end])
+          ->orWhere(function ($q) {
+            $q->where('join_start', '<=', $this->join_start)
+              ->where('join_end', '>=', $this->join_end);
+          });
+      })
+      ->exists();
+  }
 
   protected function prepareForValidation()
   {
