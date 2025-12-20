@@ -167,10 +167,10 @@
 
           @if ($totalPaid > 0 && $fee->payment_date)
             <tr class="bg-teal-50/50 dark:bg-teal-900/30">
-              <td class="px-6 py-2 text-sm text-left font-medium text-teal-700 dark:text-teal-300">
+              <td class="px-6 py-1 text-sm text-left font-medium text-teal-700 dark:text-teal-300">
                 Payments Received ({{ $fee->payment_method ?? 'N/A' }})
               </td>
-              <td class="px-6 py-2 text-sm text-right font-bold text-teal-700 dark:text-teal-300">
+              <td class="px-6 py-1 text-sm text-right font-bold text-teal-700 dark:text-teal-300">
                 -{{ $currency }}{{ number_format($totalPaid, 2) }}
               </td>
             </tr>

@@ -161,22 +161,45 @@ class EnrollmentController extends BaseController
     ));
   }
 
+  // public function update(EnrollmentRequest $request, $student_id, $course_offering_id)
+  // {
+  //   $enrollment = Enrollment::where('student_id', $student_id)
+  //     ->where('course_offering_id', $course_offering_id)
+  //     ->firstOrFail();
+
+  //   $safe = collect($request->validated())->except(['student_id', 'course_offering_id'])->toArray();
+
+  //   try {
+  //     $enrollment->update($safe);
+
+  //     return redirect()->route('admin.enrollments.index', ['course_offering_id' => $course_offering_id])
+  //       ->with('success', 'Enrollment updated successfully');
+  //   } catch (\Exception $e) {
+  //     dd('Error updating Enrollment: ' . $e->getMessage());
+  //     return redirect()->back()->with('error', 'Error updating enrollment.')->withInput();
+  //   }
+  // }
+
   public function update(EnrollmentRequest $request, $student_id, $course_offering_id)
   {
     $enrollment = Enrollment::where('student_id', $student_id)
       ->where('course_offering_id', $course_offering_id)
       ->firstOrFail();
 
-    $safe = collect($request->validated())->except(['student_id', 'course_offering_id'])->toArray();
+    // Only update fields allowed
+    $safe = collect($request->validated())
+      ->except(['student_id', 'course_offering_id'])
+      ->toArray();
 
     try {
       $enrollment->update($safe);
 
-      return redirect()->route('admin.enrollments.index', ['course_offering_id' => $course_offering_id])
-        ->with('success', 'Enrollment updated successfully');
+      return redirect()->route('admin.enrollments.index', [
+        'course_offering_id' => $course_offering_id
+      ])->with('success', 'Enrollment updated successfully.');
     } catch (\Exception $e) {
-      Log::error('Error updating Enrollment: ' . $e->getMessage());
-      return redirect()->back()->with('error', 'Error updating enrollment.')->withInput();
+      return redirect()->back()->with('error', 'Error updating enrollment: ' . $e->getMessage())
+        ->withInput();
     }
   }
 

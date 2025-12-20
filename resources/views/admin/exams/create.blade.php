@@ -19,7 +19,7 @@
         Create New Exam
       </h3>
 
-      <a href="{{ route('admin.exams.index') }}"
+      <a href="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         Back to List
       </a>
@@ -185,7 +185,7 @@
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        <a href="{{ route('admin.exams.index') }}"
+        <a href="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}"
           class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-lg flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"

@@ -30,7 +30,7 @@
 
     <form action="{{ route('admin.fee_types.index') }}" method="GET">
       <div
-        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
         @if (Auth::user()->hasPermissionTo('create_fee-type'))
           <a href="{{ route('admin.fee_types.create') }}"
@@ -54,12 +54,12 @@
           </div>
 
           <button type="submit"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.fee_types.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors dark:text-white"
             style="margin-top: 0 !important" title="Reset Search">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
@@ -72,7 +72,7 @@
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
-          <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+          <div class="px-4 py-1 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $feeType->name }}</h4>
@@ -109,7 +109,7 @@
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('create_fee'))
                 <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeType->id]) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
@@ -121,7 +121,7 @@
 
             <div class="flex items-center">
               <a href="{{ route('admin.fee_types.show', $feeType->id) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="View Details">
                 <span class="btn-content">
                   <i class="fa-solid fa-eye me-2"></i>
@@ -131,7 +131,7 @@
 
               @if (Auth::user()->hasPermissionTo('create_fee-type'))
                 <a href="{{ route('admin.fee_types.edit', $feeType->id) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="Edit">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>

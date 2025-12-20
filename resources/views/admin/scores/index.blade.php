@@ -71,7 +71,8 @@
             $scoreEntry = $student->scores->first();
           @endphp
 
-          <div class="border-b border-gray-200 dark:border-gray-700 py-1 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div
+            class="border-b border-e border-gray-200 dark:border-gray-700 py-1 pe-1 grid grid-cols-1 md:grid-cols-4 gap-4">
 
             {{-- Student Info --}}
             <div class="md:col-span-2">

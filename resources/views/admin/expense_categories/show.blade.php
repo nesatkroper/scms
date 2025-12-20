@@ -98,7 +98,7 @@
           </span>
         </span>
         <div
-          class="max-h-96 overflow-y-auto bg-white dark:bg-gray-700 p-3 rounded-md border border-gray-100 dark:border-gray-600">
+          class="max-h-96 overflow-y-auto bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-100 dark:border-gray-600">
           @if ($expenseCategory->expenses->isNotEmpty())
             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
               @foreach ($expenseCategory->expenses->sortByDesc('date') as $expense)

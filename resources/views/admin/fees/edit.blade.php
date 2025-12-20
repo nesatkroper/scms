@@ -17,7 +17,7 @@
         Edit Fee Record: #{{ $fee->id }}
       </h3>
       <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}"
-        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+        class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         Back to List
       </a>
     </div>
@@ -42,7 +42,7 @@
             Student <span class="text-red-500">*</span>
           </label>
           <select id="student_id" name="student_id"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('student_id') border-red-500 @else border-gray-400 @enderror"
@@ -65,7 +65,7 @@
             Fee Type <span class="text-red-500">*</span>
           </label>
           <select id="fee_type_id" name="fee_type_id"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('fee_type_id') border-red-500 @else border-gray-400 @enderror"
@@ -89,7 +89,7 @@
           </label>
           <input type="number" step="0.01" min="0" id="amount" name="amount"
             value="{{ old('amount', $fee->amount) }}"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('amount') border-red-500 @else border-gray-400 @enderror"
@@ -105,7 +105,7 @@
             Due Date (Optional)
           </label>
           <input type="date" id="due_date" name="due_date" value="{{ old('due_date', $fee->due_date) }}"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('due_date') border-red-500 @else border-gray-400 @enderror">
@@ -121,7 +121,7 @@
           Remarks (Optional)
         </label>
         <textarea id="remarks" name="remarks" rows="3"
-          class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+          class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('remarks') border-red-500 @else border-gray-400 @enderror"
@@ -134,7 +134,7 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.fees.index') }}"
-          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
+          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-lg flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -145,7 +145,7 @@
 
         @if (Auth::user()->hasPermissionTo('update_fee'))
           <button type="submit"
-            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path
                 d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-1.414 2.828L11 9.043V15h-6V4h7.586l.707-.707a2 2 0 012.828 0l1.414 1.414A2 2 0 0117.414 5l.707.707zM16 9.043l-3 3V16h3v-6.957zM5 16h6v-6H5v6z"

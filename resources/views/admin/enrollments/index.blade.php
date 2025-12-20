@@ -102,7 +102,7 @@
             <div class="">
               <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold">
                 {{ $enrollment->courseOffering->subject->name ?? 'Course Deleted' }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">Time Slot:
+              <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">Time Slot:
                 {{ $enrollment->courseOffering->time_slot ?? 'N/A' }}</p>
             </div>
           </div>
@@ -111,8 +111,25 @@
           <div class="p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
             {{-- Status and Payment Status (Flex for alignment) --}}
             <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
-              {{-- Admission Status --}}
-              <p class="flex items-center gap-1 font-medium">
+              <p class="flex items-center gap-1 font-medium justify-between">
+                <i class="fa-solid fa-circle-info text-indigo-500"></i>
+                Status:
+                <span
+                  class="font-semibold px-2 py-0.5 rounded-full text-xs
+            @if ($enrollment->status === 'completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
+            @elseif ($enrollment->status === 'studying')
+                bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
+            @elseif ($enrollment->status === 'suspended')
+                bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300
+            @else
+                bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
+                  {{ ucfirst($enrollment->status ?? 'N/A') }}
+                </span>
+              </p>
+            </div>
+
+            {{-- <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
+              <p class="flex items-center gap-1 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
                 Status:
                 <span
@@ -121,11 +138,11 @@
                   @elseif ($enrollment->status === 'In Progress')
                     bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
                   @else
-                    bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
+                    bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
                   {{ $enrollment->status ?? 'N/A' }}
                 </span>
               </p>
-            </div>
+            </div> --}}
 
             {{-- Final Grade --}}
             <div class="flex justify-between items-center">
@@ -170,7 +187,7 @@
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
                     Paid on
-                    {{ $enrollment->fee->paid_date ? \Carbon\Carbon::parse($enrollment->fee->paid_date)->format('M d, Y') : 'N/A' }}
+                    {{ $enrollment->fee->payment_date ? \Carbon\Carbon::parse($enrollment->fee->payment_date)->format('M d, Y') : 'N/A' }}
                   </span>
                 @elseif ($enrollment->fee?->status == 'pending' && $enrollment->fee->due_date && $enrollment->fee->due_date->isPast())
                   <span
