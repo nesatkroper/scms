@@ -39,7 +39,7 @@
 
       <input type="hidden" name="expense_category_id" value="{{ $category->id }}">
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
 
         {{-- 1. Title Field --}}
         <div>
@@ -79,6 +79,37 @@
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Date <span class="text-red-500">*</span>
           </label>
+
+          <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+              </svg>
+            </div>
+
+            <input type="text" id="date" name="date" datepicker datepicker-format="yyyy-mm-dd"
+              value="{{ old('date', \Carbon\Carbon::parse($expense->date)->toDateString()) }}"
+              min="{{ now()->toDateString() }}" max="2027-01-01" required placeholder="Select date"
+              class="block w-full ps-9 pe-3 py-2.5
+             bg-neutral-secondary-medium border border-default-medium
+             text-heading text-sm rounded-base
+             focus:ring-2 focus:ring-red-500 focus:border-red-500
+             shadow-xs placeholder:text-body
+             dark:bg-gray-700 dark:border-gray-600 dark:text-white
+             @error('date') border-red-500 @else border-gray-400 @enderror">
+          </div>
+
+          @error('date')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        {{-- <div>
+          <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Date <span class="text-red-500">*</span>
+          </label>
           <input type="date" id="date" name="date"
             value="{{ old('date', \Carbon\Carbon::parse($expense->date)->toDateString()) }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -89,10 +120,10 @@
           @error('date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
-        </div>
+        </div> --}}
 
         {{-- 5. Approved By Select Field (Optional) --}}
-        <div>
+        {{-- <div>
           <label for="approved_by" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Approved By (Optional)
           </label>
@@ -111,7 +142,7 @@
           @error('approved_by')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
-        </div>
+        </div> --}}
 
       </div>
 

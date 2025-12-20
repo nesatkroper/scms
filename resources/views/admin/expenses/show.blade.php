@@ -50,7 +50,7 @@
     <div class="flex justify-between items-start mb-8 z-20">
       <div>
         <h1 class="text-3xl font-extrabold text-red-800 dark:text-red-400 mb-1">
-          {{ config('app.name') }}
+          {{ config('app.name') }}-G2
         </h1>
         <p class="text-sm text-gray-600 dark:text-gray-400">{{ $school_address }}</p>
         <p class="text-sm text-gray-600 dark:text-gray-400">

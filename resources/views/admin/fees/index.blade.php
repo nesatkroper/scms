@@ -88,7 +88,7 @@
        border-dashed border-red-600 dark:border-red-500 @endif
 ">
 
-          <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+          <div class="px-4 py-1 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">
@@ -170,7 +170,7 @@
             @if ($fee->status != 'paid')
               <a href="#"
                 @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.fees.pay', $fee->id) }}')"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Add Payment">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
@@ -179,7 +179,7 @@
               </a>
             @else
               <a href="{{ route('admin.fees.show', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Paid">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
@@ -192,7 +192,7 @@
               <div class="flex">
                 @if (Auth::user()->hasPermissionTo('update_fee'))
                   <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                     title="Edit">
                     <span class="btn-content flex items-center justify-center">
                       <i class="fa-solid fa-pen-to-square me-2"></i>
