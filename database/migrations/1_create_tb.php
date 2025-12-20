@@ -224,11 +224,6 @@ return new class extends Migration
       $table->foreignId('received_by')->nullable()->constrained('users')->onDelete('set null');
       $table->timestamps();
       $table->softDeletes();
-
-      $table->unique(
-        ['enrollment_id', 'fee_type_id'],
-        'unique_fee_per_enrollment_type'
-      );
     });
 
     Schema::create('scores', function (Blueprint $table) {

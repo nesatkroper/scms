@@ -21,7 +21,7 @@
         </h3>
         {{-- Back to Register Button --}}
         <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOfferingId]) }}"
-          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+          class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
           Back to Register
         </a>
       </div>
@@ -51,20 +51,66 @@
             <input type="hidden" name="payment_status" value="pending">
 
             {{-- 1. Student Field (Select) --}}
-            <div>
-              <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <div x-data="{
+                open: false,
+                search: '',
+                selectedId: '{{ old('student_id') }}',
+                selectedName: '',
+                students: @js(
+    $students->map(
+        fn($s) => [
+            'id' => $s->id,
+            'name' => $s->name,
+        ],
+    ),
+)
+            }" x-init="if (selectedId) {
+                const s = students.find(i => i.id == selectedId);
+                if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+            }" class="relative">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Student <span class="text-red-500">*</span>
               </label>
 
-              <select name="student_id" id="student_id" required
-                class="w-full px-3 py-2 border rounded-md
-      dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
-                <option value="">Select Student</option>
+              <!-- Hidden input for form submit -->
+              <input type="hidden" name="student_id" :value="selectedId" required>
 
-                @foreach ($students as $student)
-                  <option value="{{ $student->id }}">{{ $student->name }} (ID: {{ $student->id }})</option>
-                @endforeach
-              </select>
+              <!-- Button -->
+              <button type="button" @click="open = !open"
+                class="w-full px-3 py-2 border rounded-lg text-left
+           bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <span x-text="selectedName || 'Select Student'"></span>
+              </button>
+
+              <!-- Dropdown -->
+              <div x-show="open" @click.outside="open = false"
+                class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border
+           dark:border-gray-600 rounded-lg shadow-lg">
+                <!-- Search -->
+                <input type="text" x-model="search" placeholder="Search student..."
+                  class="w-full px-3 py-2 border-b dark:border-gray-600
+             dark:bg-gray-700 dark:text-white">
+
+                <!-- List -->
+                <ul class="max-h-60 overflow-y-auto">
+                  <template
+                    x-for="student in students.filter(s =>
+        (s.name + s.id).toLowerCase().includes(search.toLowerCase())
+      )"
+                    :key="student.id">
+                    <li
+                      @click="
+            selectedId = student.id;
+            selectedName = student.name + ' (ID: ' + student.id + ')';
+            open = false;
+          "
+                      class="px-3 py-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                      <span x-text="student.name"></span>
+                      <span class="text-xs text-gray-500">(ID: <span x-text="student.id"></span>)</span>
+                    </li>
+                  </template>
+                </ul>
+              </div>
 
               @error('student_id')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -75,35 +121,18 @@
               <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Student <span class="text-red-500">*</span>
               </label>
-              <select name="student_id" id="student_id" required
-                class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('student_id') border-red-500 @enderror">
-                <option value="" disabled>Select Student</option>
-                @foreach ($students as $student)
-                  <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                    {{ $student->name }} (ID: {{ $student->id }})
-                  </option>
-                @endforeach
-              </select>
-              @error('student_id')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-              @enderror
-            </div> --}}
 
-            {{-- 4. Payment Status Field (Select) --}}
-            {{-- <div>
-              <label for="payment_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Payment Status <span class="text-red-500">*</span>
-              </label>
-              <select name="payment_status" id="payment_status" required
-                class="w-full px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('payment_status') border-red-500 @enderror">
-                <option value="" disabled>Select Payment Status</option>
-                @foreach ($paymentStatuses as $pStatus)
-                  <option value="{{ $pStatus }}" {{ old('payment_status') == $pStatus ? 'selected' : '' }}>
-                    {{ ucfirst($pStatus) }}
-                  </option>
+              <select name="student_id" id="student_id" required
+                class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
+
+                <option value="">Select Student</option>
+
+                @foreach ($students as $student)
+                  <option value="{{ $student->id }}">{{ $student->name }} (ID: {{ $student->id }})</option>
                 @endforeach
               </select>
-              @error('payment_status')
+
+              @error('student_id')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
             </div> --}}
@@ -117,7 +146,7 @@
             </label>
             <textarea name="remarks" id="remarks" rows="5"
               placeholder="Any special notes about this student's admission or progress."
-              class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('remarks') border-red-500 @enderror">{{ old('remarks') }}</textarea>
+              class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('remarks') border-red-500 @enderror">{{ old('remarks') }}</textarea>
             @error('remarks')
               <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
             @enderror
@@ -128,7 +157,7 @@
         {{-- Submit Button Row --}}
         <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-8">
           <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOfferingId]) }}"
-            class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
+            class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-lg flex items-center gap-2 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd"
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -139,7 +168,7 @@
 
           @if (Auth::user()->hasPermissionTo('create_enrollment'))
             <button type="submit"
-              class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+              class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd"
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -156,7 +185,7 @@
 
 @endsection
 
-@push('script')
+{{-- @push('script')
   <script>
     new SlimSelect({
       select: '#student_id',
@@ -172,7 +201,7 @@
 @push('style')
   <style>
     .ss-main {
-      @apply w-full px-3 py-[6px] border rounded-md bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300;
+      @apply w-full px-3 py-[6px] border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300;
     }
 
     .ss-main .ss-values .ss-placeholder {
@@ -180,7 +209,7 @@
     }
 
     .ss-list {
-      @apply bg-white dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg mt-1;
+      @apply bg-white dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg mt-1;
     }
 
     .ss-option {
@@ -191,4 +220,4 @@
       @apply bg-indigo-100 dark:bg-gray-600;
     }
   </style>
-@endpush
+@endpush --}}

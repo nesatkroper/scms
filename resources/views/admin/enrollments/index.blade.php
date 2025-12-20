@@ -35,7 +35,7 @@
     {{-- Search Form --}}
     <form action="{{ route('admin.enrollments.index') }}" method="GET">
       <div
-        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
         @if ($enrollments->count() >= $courseOffering->classroom?->capacity)
           <div></div>
@@ -69,12 +69,12 @@
           </div>
 
           <button type="submit"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.enrollments.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
             title="Reset Search">
             <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -193,7 +193,7 @@
                   <i class="fa-solid fa-comment-dots text-yellow-500"></i>
                   Remarks:
                 </span>
-                <p class="text-xs italic text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-2 rounded-md">
+                <p class="text-xs italic text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
                   {{ Str::limit($enrollment->remarks, 100) }}
                 </p>
               </div>
@@ -201,12 +201,12 @@
           </div>
 
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+            class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('view_attendance'))
                 <a href="{{ route('admin.attendances.show', [$courseOffering->id, $enrollment->student->id]) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Attendance">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
@@ -219,11 +219,11 @@
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('update_attendance'))
                 <a href="{{ route('admin.enrollments.edit', ['student_id' => $enrollment->student_id, 'course_offering_id' => $enrollment->course_offering_id]) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="Edit Admission">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
-                    {{-- Edit --}}
+                    Edit
                   </span>
                 </a>
               @endif

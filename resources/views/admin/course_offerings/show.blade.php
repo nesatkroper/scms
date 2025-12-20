@@ -285,16 +285,16 @@
     <!-- Action Buttons -->
     @if (\Carbon\Carbon::parse($courseOffering->join_end)->isFuture())
 
-      <div class="my-4 flex flex-col sm:flex-row justify-end gap-4">
+      <div class="my-2 flex flex-col sm:flex-row justify-end gap-4">
         @if (Auth::user()->hasPermissionTo('update_course-offering'))
           <a href="{{ route('admin.course_offerings.edit', $courseOffering->id) }}"
-            class="inline-flex items-center justify-center gap-2 px-6 py-2 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
+            class="inline-flex items-center justify-center gap-2 px-3 py-1 border-2 border-blue-500 hover:border-blue-500 hover:bg-transparent hover:text-blue-500 bg-blue-500 text-white font-medium rounded-lg transition-all duration-300">
             <i class="fas fa-edit"></i>
             {{ __('message.edit_offering') }}
           </a>
         @endif
 
-        @if (Auth::user()->hasPermissionTo('delete_course-offering'))
+        {{-- @if (Auth::user()->hasPermissionTo('delete_course-offering'))
           <form action="{{ route('admin.course_offerings.destroy', $courseOffering->id) }}" method="POST"
             onsubmit="return confirm('Are you sure you want to permanently delete this course offering? This will remove all associated student enrollments.');"
             class="inline-block">
@@ -306,7 +306,7 @@
               {{ __('message.disabled') }}
             </button>
           </form>
-        @endif
+        @endif --}}
       </div>
     @endif
   </div>
