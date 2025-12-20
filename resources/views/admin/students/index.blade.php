@@ -28,7 +28,7 @@
 
     <form action="{{ route('admin.students.index') }}" method="GET">
       <div
-        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-slate-800">
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-slate-800">
 
         @if (Auth::user()->hasPermissionTo('create_student'))
           <a href="{{ route('admin.students.create') }}"
@@ -52,12 +52,12 @@
           </div>
 
           <button type="submit"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 rounded-md transition-colors text-white"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 rounded-lg transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.students.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors dark:text-white"
             style="margin-top: 0 !important" title="Reset Search">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
@@ -77,7 +77,7 @@
 
             <div class="flex items-center gap-3">
               <img src="{{ $student->avatar_url }}"
-                class="w-14 h-14 rounded-full object-cover border-3 border-white shadow @if ($student->deleted_at) border-red-600 @endif">
+                class="w-14 h-14 rounded-full object-cover border-2 border-white shadow @if ($student->deleted_at) border-red-600 @endif">
 
               <a href="{{ route('admin.students.show', $student->id) }}"
                 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize truncate hover:text-blue-600 dark:hover:text-blue-400">
@@ -149,12 +149,12 @@
 
           {{-- Card Footer: Primary Actions --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
+            class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
 
             <div class="flex items-center">
               @if (Auth::user()->hasPermissionTo('view_enrollment'))
                 <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
-                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
                   title="Edit Student">
                   <i class="fa-solid fa-file-circle-plus me-2"></i>
                   Enroll
@@ -192,16 +192,15 @@
 
               {{-- Delete Form/Button --}}
               {{-- <form action="{{ route('admin.students.destroy', $student->id) }}" method="POST"
-              onsubmit="return confirm('Are you sure you want to delete the student \'{{ $student->name }}\'? This will soft-delete the user record.');">
-              @csrf
-              @method('DELETE')
-              <button type="submit"
-                class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                title="Delete Student">
-                <i class="fa-regular fa-trash-can me-2"></i>
-                Delete
-              </button>
-            </form> --}}
+                onsubmit="return confirm('Are you sure you want to delete the student \'{{ $student->name }}\'? This will soft-delete the user record.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                  class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Delete Student">
+                  <i class="fa-regular fa-trash-can me-2"></i>
+                </button>
+              </form> --}}
             </div>
 
           </div>

@@ -26,7 +26,7 @@
       <input type="hidden" name="exam_id" value="{{ $exam->id }}">
 
       {{-- Save All Button --}}
-      <div class="flex justify-between mb-4">
+      <div class="flex justify-between mb-2">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
           <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -50,13 +50,13 @@
 
         <div class="flex gap-4">
           <a href="{{ route('admin.exams.index', ['exam_id' => $exam->id, 'course_offering_id' => $exam->courseOffering->id]) }}"
-            class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            class="px-5 py-1 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
             <span class="btn-content flex items-center justify-center">
               <i class="fa-solid fa-arrow-left me-2"></i>
               Back to Exam
             </span>
           </a>
-          <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+          <button type="submit" class="px-5 py-1 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
             Save All Scores
           </button>
 
@@ -71,7 +71,7 @@
             $scoreEntry = $student->scores->first();
           @endphp
 
-          <div class="border-b border-gray-200 dark:border-gray-700 py-2 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="border-b border-gray-200 dark:border-gray-700 py-1 grid grid-cols-1 md:grid-cols-4 gap-4">
 
             {{-- Student Info --}}
             <div class="md:col-span-2">
@@ -91,7 +91,7 @@
               <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
                 value="{{ $scoreEntry->score ?? '' }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
-              text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
             </div>
 
@@ -100,7 +100,7 @@
               <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Remarks</label>
               <input type="text" name="remarks_{{ $student->id }}" value="{{ $scoreEntry->remarks ?? '' }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
-                text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             </div>
 
           </div>
