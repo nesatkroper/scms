@@ -73,7 +73,7 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
       @forelse($expenses as $expense)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($expense->approved_by) border-3 border-dashed border-green-400 dark:border-green-400 @endif">
 
           {{-- Header: Title & Amount --}}
           <div class="px-4 py-3 bg-red-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
@@ -157,7 +157,7 @@
               </span>
             </a>
 
-            @if (Auth::user()->hasPermissionTo('update_expense'))
+            @if (Auth::user()->hasPermissionTo('update_expense') && !$expense->approved_by)
               <a href="{{ route('admin.expenses.edit', $expense->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Edit Expense">
