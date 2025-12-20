@@ -36,6 +36,7 @@
     "@tailwindcss/postcss": "^4.1.10",
     "cropperjs": "^1.6.2",
     "file-saver": "^2.0.5",
+    "flowbite": "^4.0.1",
     "remixicon": "^4.6.0"
   }
 }

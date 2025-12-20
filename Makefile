@@ -1,4 +1,4 @@
-DEV_COMMAND := ./node_modules/.bin/concurrently --kill-others-on-fail -n "Backend,Frontend" -c "blue,green" "php artisan serve --port=8102 --host=0.0.0.0" "npm run dev" "bash -c 'while true; do sleep 1; done'"
+DEV_COMMAND := ./node_modules/.bin/concurrently --kill-others-on-fail -n "Backend,Frontend" -c "blue,green" "php artisan serve --port=8102" "npm run dev" "bash -c 'while true; do sleep 1; done'"
 
 .PHONY: dev git clear migrate m-seed model
 
@@ -68,7 +68,7 @@ fresh:
 	@echo "================================================="
 	@echo "🏗️  Running Refresh..."
 	@php artisan db:wipe
-	@php artisan migrate 
+	@php artisan migrate
 	@php artisan permissions:generate
 	@php artisan db:seed
 	@echo "✅ Database Refresh Complete."
