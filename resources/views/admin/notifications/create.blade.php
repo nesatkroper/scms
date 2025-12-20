@@ -84,7 +84,48 @@
         </button>
       </div>
 
-      <div class="mb-4 flex gap-4">
+      {{-- Select All / Unselect All --}}
+      <div class="mb-4 flex gap-4 items-center w-full">
+        <input type="checkbox" id="checkAllUsers" class="sr-only peer">
+        <label for="checkAllUsers"
+          class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full">
+          <span class="font-bold">Select All / Unselect All (Visible)</span>
+          <div class="relative inline-flex items-center">
+            <div
+              class="w-11 h-6 bg-gray-200 peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
+            </div>
+          </div>
+        </label>
+      </div>
+
+      {{-- Users Grid with Toggle Cards --}}
+      <div id="usersGrid"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 max-h-96 overflow-y-auto">
+
+        @forelse ($users as $u)
+          <label for="user-{{ $u->id }}"
+            class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors user-item me-2">
+
+            <div class="flex flex-col">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $u->name }}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">{{ $u->roles->pluck('name')->join(', ') }}</span>
+            </div>
+
+            <div class="relative inline-flex items-center">
+              <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}"
+                class="sr-only peer" {{ in_array($u->id, old('user_ids', [])) ? 'checked' : '' }}>
+
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
+              </div>
+            </div>
+          </label>
+        @empty
+          <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">No users found for the selected filter(s).</p>
+        @endforelse
+      </div>
+
+      {{-- <div class="mb-4 flex gap-4">
         <input type="checkbox" id="checkAllUsers"
           class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
             checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
@@ -106,7 +147,7 @@
         @empty
           <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">No users found for the selected filter(s).</p>
         @endforelse
-      </div>
+      </div> --}}
 
       <div class="flex justify-end space-x-3 pt-4 border-t mt-4 border-gray-200 dark:border-gray-700">
         <a href="{{ url()->previous() }}"

@@ -27,7 +27,7 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Report Type <span class="text-red-500">*</span>
             </label>
-            <select class="form-control-tailwind" id="report_type" name="report_type" required>
+            <select class="form-control-tailwind rounded-lg" id="report_type" name="report_type" required>
 
               <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
                 Student Enrollment</option>
@@ -46,18 +46,84 @@
             </select>
           </div>
 
+          {{-- Start Date --}}
           <div>
+            <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {{ __('message.start_date') }}
+            </label>
+
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                  viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+                </svg>
+              </div>
+
+              <input type="text" id="start_date" name="start_date" datepicker datepicker-format="yyyy-mm-dd"
+                min="{{ now()->toDateString() }}" max="2027-12-31"
+                value="{{ old('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '') }}"
+                class="block w-full ps-9 pe-3 py-2.5
+               bg-neutral-secondary-medium border border-default-medium
+               text-heading text-sm rounded-base
+               focus:ring-brand focus:border-brand
+               shadow-xs placeholder:text-body
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white
+               @error('start_date') border-red-500 @enderror"
+                placeholder="Select start date">
+            </div>
+
+            @error('start_date')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
+
+          {{-- End Date --}}
+          <div>
+            <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {{ __('message.end_date') }}
+            </label>
+
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                  viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+                </svg>
+              </div>
+
+              <input type="text" id="end_date" name="end_date" datepicker datepicker-format="yyyy-mm-dd"
+                min="{{ now()->toDateString() }}" max="2027-12-31"
+                value="{{ old('end_date', $defaultEnd ? \Carbon\Carbon::parse($defaultEnd)->format('Y-m-d') : '') }}"
+                class="block w-full ps-9 pe-3 py-2.5
+               bg-neutral-secondary-medium border border-default-medium
+               text-heading text-sm rounded-base
+               focus:ring-brand focus:border-brand
+               shadow-xs placeholder:text-body
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white
+               @error('end_date') border-red-500 @enderror"
+                placeholder="Select end date">
+            </div>
+
+            @error('end_date')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
+
+          {{-- <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
-            <input type="date" class="form-control-tailwind" name="start_date"
+            <input type="date" class="form-control-tailwind rounded-lg" name="start_date"
               value="{{ request('start_date') ?? ($defaultStart ? date('Y-m-d', strtotime($defaultStart)) : '') }}">
 
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
-            <input type="date" class="form-control-tailwind" name="end_date"
+            <input type="date" class="form-control-tailwind rounded-lg" name="end_date"
               value="{{ request('end_date') ?? ($defaultEnd ? date('Y-m-d', strtotime($defaultEnd)) : '') }}">
-          </div>
+          </div> --}}
 
         </div>
 
@@ -74,7 +140,7 @@
               <!-- Course -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Offering</label>
-                <select class="form-control-tailwind" name="course_offering_id">
+                <select class="form-control-tailwind rounded-lg" name="course_offering_id">
                   <option value="">All Courses</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
@@ -86,7 +152,7 @@
               <!-- Status -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                <select class="form-control-tailwind" name="status">
+                <select class="form-control-tailwind rounded-lg" name="status">
                   <option value="">All</option>
                   @foreach (['studying', 'suspended', 'dropped', 'completed'] as $status)
                     <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
@@ -103,7 +169,7 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Offering</label>
-                <select class="form-control-tailwind" name="course_offering_id">
+                <select class="form-control-tailwind rounded-lg" name="course_offering_id">
                   <option value="">All Courses</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
@@ -114,7 +180,7 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                <select class="form-control-tailwind" name="status">
+                <select class="form-control-tailwind rounded-lg" name="status">
                   <option value="">All</option>
                   @foreach (['present', 'absent', 'late'] as $status)
                     <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
@@ -131,7 +197,7 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Offering</label>
-                <select class="form-control-tailwind" name="course_offering_id">
+                <select class="form-control-tailwind rounded-lg" name="course_offering_id">
                   <option value="">All Courses</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
@@ -142,7 +208,7 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam Type</label>
-                <select class="form-control-tailwind" name="exam_type">
+                <select class="form-control-tailwind rounded-lg" name="exam_type">
                   <option value="">All</option>
                   @foreach (['quiz', 'midterm', 'final'] as $type)
                     <option value="{{ $type }}" {{ request('exam_type') == $type ? 'selected' : '' }}>
@@ -165,13 +231,13 @@
         <!-- GENERATE BUTTON -->
         <div class="flex justify-end gap-4">
           <a href="{{ route('admin.reports') }}"
-            class="px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-rotate"></i>
             Refresh
           </a>
 
           <button type="submit"
-            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
             Generate Report
           </button>
@@ -191,13 +257,13 @@
 
             <!-- Export Excel -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}"
-              class="px-3 py-2 bg-green-600 text-white rounded-md text-sm hover:bg-green-700">
+              class="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
               Excel
             </a>
 
             <!-- Export PDF -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'pdf']) }}"
-              class="px-3 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+              class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
               PDF
             </a>
 
@@ -215,7 +281,6 @@
       .form-control-tailwind {
         width: 100%;
         padding: 0.5rem 0.75rem;
-        border-radius: 0.375rem;
         border: 1px solid #d1d5db;
         background-color: white;
         color: #1f2937;
