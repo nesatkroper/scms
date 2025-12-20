@@ -6,39 +6,52 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
-    {{-- Success Message --}}
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
         {{ session('success') }}
       </div>
     @endif
 
-    {{-- Error Message --}}
     @if (session('error'))
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
         {{ session('error') }}
       </div>
     @endif
 
-    {{-- Date Selector Form (GET request) --}}
     <form method="GET" action="{{ route('admin.attendances.index') }}"
       class="mb-4 flex justify-between items-center gap-4">
       <input type="hidden" name="course_offering_id" value="{{ $courseOffering->id }}">
 
       <div class="flex items-center gap-3">
-        <input type="date" name="date" value="{{ $date }}"
-          min="{{ $courseOffering->join_start->format('Y-m-d') }}" max="{{ $courseOffering->join_end->format('Y-m-d') }}"
-          class="w-64 px-3 py-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500
-         dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
+
+        <div class="relative w-64">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+            </svg>
+          </div>
+
+          <input type="text" name="date" value="{{ $date }}" datepicker datepicker-format="yyyy-mm-dd"
+            min="{{ $courseOffering->join_start->format('Y-m-d') }}"
+            max="{{ $courseOffering->join_end->format('Y-m-d') }}"
+            class="block w-full ps-9 pe-3 py-1.5
+           bg-neutral-secondary-medium border border-default-medium
+           text-heading text-sm rounded-base
+           focus:ring-brand focus:border-brand
+           shadow-xs placeholder:text-body
+           dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            placeholder="Select date">
+        </div>
 
         <button type="submit"
-          class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700
+          class="px-4 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700
                    dark:bg-indigo-500 dark:hover:bg-indigo-600">
           {{ __('message.go') }}
         </button>
       </div>
 
-      {{-- Status Key --}}
       <div class="mb-4">
         <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ __('message.status_key') }}</span>
         <span class="inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">L =
@@ -50,13 +63,11 @@
       </div>
     </form>
 
-    {{-- Save All Attendance Form --}}
     <form action="{{ route('admin.attendances.saveAll') }}" method="POST">
       @csrf
       <input type="hidden" name="course_offering_id" value="{{ $courseOffering->id }}">
       <input type="hidden" name="date" value="{{ $date }}">
 
-      {{-- Header --}}
       <div class="flex justify-between mb-4 items-center">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
           <i class="fa-solid fa-clipboard-user"></i>
@@ -88,8 +99,7 @@
         </div>
       </div>
 
-      {{-- Students List --}}
-      <div class="my-2 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4">
+      <div class="my-2 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-6 ">
         @forelse($students as $student)
           @php
             $attendanceEntry = $student->attendances->first();
@@ -97,44 +107,69 @@
 
           @endphp
 
-          <div class="border-b border-gray-200 dark:border-gray-700 py-2 grid grid-cols-1 md:grid-cols-4 gap-4">
-            {{-- Student Info --}}
-            <div class="md:col-span-2">
+          <div class="flex flex-col border-r dark:border-gray-500 pr-4">
+            <div class="md:col-span-2 flex justify-between">
               <span class="font-semibold text-gray-800 dark:text-gray-200">{{ $student->name }}</span>
               <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.student_id') }} {{ $student->id }}
               </div>
             </div>
 
-            {{-- Status Radio Buttons --}}
+            <div class="flex flex-row justify-between">
+              <div class="flex flex-col me-4">
+                <label
+                  class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.status') }}</label>
 
-            <div class="flex flex-col">
-              <label
-                class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.status') }}</label>
-              <div class="flex gap-2">
-                <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="attending"
-                    {{ $currentStatus === 'attending' ? 'checked' : '' }} class="form-radio text-yellow-500">
-                  <span class="ml-1 text-gray-700 dark:text-gray-200">L</span>
-                </label>
-                <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="permission"
-                    {{ $currentStatus === 'permission' ? 'checked' : '' }} class="form-radio text-green-600">
-                  <span class="ml-1 text-gray-700 dark:text-gray-200">P</span>
-                </label>
-                <label class="inline-flex items-center">
-                  <input type="radio" name="status_{{ $student->id }}" value="absence"
-                    {{ $currentStatus === 'absence' ? 'checked' : '' }} class="form-radio text-red-600">
-                  <span class="ml-1 text-gray-700 dark:text-gray-200">A</span>
-                </label>
+                <ul class="grid w-full gap-2 grid-cols-3">
+                  <li class="min-w-[60px] w-full">
+                    <input type="radio" id="status_attending_{{ $student->id }}" name="status_{{ $student->id }}"
+                      value="attending" class="hidden peer" {{ $currentStatus === 'attending' ? 'checked' : '' }} />
+                    <label for="status_attending_{{ $student->id }}"
+                      class="inline-flex items-center justify-between w-full p-2 text-xs
+                   bg-neutral-primary-soft border border-default rounded-base cursor-pointer
+                   hover:bg-neutral-secondary-medium
+                   peer-checked:bg-brand-softer peer-checked:border-brand-subtle
+                   peer-checked:text-fg-brand-strong">
+                      <span class="font-semibold">L</span>
+                      <i class="fa-solid fa-check"></i>
+                    </label>
+                  </li>
+
+                  <li class="min-w-[60px] w-full">
+                    <input type="radio" id="status_permission_{{ $student->id }}" name="status_{{ $student->id }}"
+                      value="permission" class="hidden peer" {{ $currentStatus === 'permission' ? 'checked' : '' }} />
+                    <label for="status_permission_{{ $student->id }}"
+                      class="inline-flex items-center justify-between w-full p-2 text-xs
+                   bg-neutral-primary-soft border border-default rounded-base cursor-pointer
+                   hover:bg-neutral-secondary-medium
+                   peer-checked:bg-brand-softer peer-checked:border-brand-subtle
+                   peer-checked:text-fg-brand-strong">
+                      <span class="font-semibold">P</span>
+                      <i class="fa-solid fa-check"></i>
+                    </label>
+                  </li>
+
+                  <li class="min-w-[60px] w-full">
+                    <input type="radio" id="status_absence_{{ $student->id }}" name="status_{{ $student->id }}"
+                      value="absence" class="hidden peer" {{ $currentStatus === 'absence' ? 'checked' : '' }} />
+                    <label for="status_absence_{{ $student->id }}"
+                      class="inline-flex items-center justify-between w-full p-2 text-xs
+                   bg-neutral-primary-soft border border-default rounded-base cursor-pointer
+                   hover:bg-neutral-secondary-medium
+                   peer-checked:bg-brand-softer peer-checked:border-brand-subtle
+                   peer-checked:text-fg-brand-strong">
+                      <span class="font-semibold">A</span>
+                      <i class="fa-solid fa-check"></i>
+                    </label>
+                  </li>
+                </ul>
               </div>
-            </div>
 
-            {{-- Remarks Input --}}
-            <div class="flex flex-col">
-              <label
-                class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
-              <input type="text" name="remarks_{{ $student->id }}" value="{{ $attendanceEntry->remarks ?? '' }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100">
+              <div class="flex flex-col">
+                <label
+                  class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
+                <input type="text" name="remarks_{{ $student->id }}" value="{{ $attendanceEntry->remarks ?? '' }}"
+                  class="w-full max-w-[150px] border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              </div>
             </div>
           </div>
         @empty
@@ -146,40 +181,6 @@
         @endforelse
       </div>
     </form>
-
-    <h3 class="mb-5 text-lg font-medium text-gray-900 dark:text-white">How much do you expect to use each month?</h3>
-    <ul class="grid w-full gap-6 md:grid-cols-2">
-      <li>
-        <input type="radio" id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
-        <label for="hosting-small"
-          class="inline-flex items-center justify-between w-full p-5 text-body bg-neutral-primary-soft border-1 border-default rounded-base cursor-pointer peer-checked:hover:bg-brand-softer peer-checked:border-brand-subtle peer-checked:bg-brand-softer hover:bg-neutral-secondary-medium peer-checked:text-fg-brand-strong">
-          <div class="block">
-            <div class="w-full font-semibold">0-50 MB</div>
-            <div class="w-full">Good for small websites</div>
-          </div>
-          <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-            height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19 12H5m14 0-4 4m4-4-4-4" />
-          </svg>
-        </label>
-      </li>
-      <li>
-        <input type="radio" id="hosting-big" name="hosting" value="hosting-big" class="hidden peer">
-        <label for="hosting-big"
-          class="inline-flex items-center justify-between w-full w-full p-5 text-body bg-neutral-primary-soft border-1 border-default rounded-base cursor-pointer peer-checked:hover:bg-brand-softer peer-checked:border-brand-subtle peer-checked:bg-brand-softer hover:bg-neutral-secondary-medium peer-checked:text-fg-brand-strong">
-          <div class="block">
-            <div class="w-full font-semibold">500-1000 MB</div>
-            <div class="w-full">Good for large websites</div>
-          </div>
-          <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19 12H5m14 0-4 4m4-4-4-4" />
-          </svg>
-        </label>
-      </li>
-    </ul>
 
   </div>
 @endsection
