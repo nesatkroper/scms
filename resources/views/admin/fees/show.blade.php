@@ -14,7 +14,7 @@
   @endphp
 
   <div
-    class="invoice-container max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg border border-gray-200 dark:border-gray-700 relative">
+    class="invoice-container max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg border border-gray-200 dark:border-gray-700 relative mb-10">
 
     {{-- 1. PAID Watermark Implementation --}}
     @if ($fee->status == 'paid')
@@ -52,7 +52,7 @@
     <div class="flex justify-between items-start mb-4 z-20">
       <div>
         <h1 class="text-3xl font-extrabold text-blue-800 dark:text-blue-400 mb-1">
-          {{ config('app.name') }}
+          {{ config('app.name') }} G2
         </h1>
         <p class="text-sm text-gray-600 dark:text-gray-400">{{ $school_address ?? '123 School Lane, City, Country' }}</p>
         <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -78,14 +78,6 @@
         <p class="text-lg font-semibold text-blue-600 dark:text-blue-400">
           {{ $fee->transaction_id }}
         </p>
-        {{-- @if ($fee->transaction_id)
-          <div
-            class="mt-4 p-1 inline-block bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded-md">
-            <img
-              src="https://tool.konkmeng.site/api/qrcode?size=300&content={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}&icon={{ asset('assets/images/khmer.svg') }}"
-              alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-24 h-24 mx-auto" loading="lazy" />
-          </div>
-        @endif --}}
 
         @if ($fee->transaction_id)
           <div
@@ -220,7 +212,7 @@
         </div>
 
         <div
-          class="flex justify-between py-3 border-t-2 border-b-2 border-blue-400 dark:border-blue-700/50 bg-blue-50 dark:bg-blue-900/30 p-2 rounded">
+          class="flex justify-between py-3 border-t-2 border-b-2 border-blue-400 dark:border-blue-700/50 bg-blue-50 dark:bg-blue-900/30 p-2 rounded @if ($balanceDue) border-red-400 dark:border-red-700/50 bg-red-50 dark:bg-red-900/30 @endif">
           <span class="text-xl font-extrabold text-blue-700 dark:text-blue-300">BALANCE DUE:</span>
           <span class="text-2xl font-extrabold text-blue-700 dark:text-blue-300">
             {{ $currency }}{{ number_format($balanceDue, 2) }}
@@ -231,7 +223,7 @@
 
     <div class="mt-8 z-20">
       <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">Remarks:</h4>
-      <p class="text-sm italic text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 p-3 rounded-md min-h-20">
+      <p class="text-sm italic text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 p-3 rounded-lg min-h-20">
         {{ $fee->remarks ?? 'Please ensure payment is made by the due date.' }}
       </p>
     </div>

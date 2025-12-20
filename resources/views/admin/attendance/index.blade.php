@@ -46,7 +46,7 @@
         </div>
 
         <button type="submit"
-          class="px-4 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700
+          class="px-4 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700
                    dark:bg-indigo-500 dark:hover:bg-indigo-600">
           {{ __('message.go') }}
         </button>

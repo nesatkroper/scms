@@ -12,7 +12,7 @@
             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            class="relative inline-block align-middle bg-white dark:bg-gray-800 rounded-xl text-left shadow-2xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full">
+            class="relative inline-block align-middle bg-white dark:bg-gray-800 rounded-xl text-left shadow-2xl transform transition-all sm:my-8 sm:max-w-3xl sm:w-full">
 
             <form :action="actionUrl" method="POST">
               @csrf
@@ -139,7 +139,7 @@
 
             generateTransactionId() {
               const segment = () => Math.random().toString(36).substring(2, 7).toUpperCase();
-              return `SCMS-${segment()}-${segment()}-${segment()}-${segment()}`;
+              return `SCMS:G2-${segment()}-${segment()}-${segment()}-${segment()}`;
             },
 
             openModal(fee, feeType, student, storeRoute) {

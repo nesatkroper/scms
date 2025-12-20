@@ -28,7 +28,7 @@
             Fee Category (Type)
           </label>
           <select id="fee_type_id" name="fee_type_id" required
-            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
             <option value="">-- Select Fee Type --</option>
             @foreach ($feeTypes as $feeType)
               <option value="{{ $feeType->id }}" {{ old('fee_type_id') == $feeType->id ? 'selected' : '' }}>
@@ -48,7 +48,7 @@
           </label>
           <input type="number" step="0.01" min="0.01" name="amount" id="amount" value="{{ old('amount') }}"
             required
-            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
           @error('amount')
             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -61,7 +61,7 @@
           </label>
           <input type="date" name="due_date" id="due_date"
             value="{{ old('due_date', now()->addDays(30)->toDateString()) }}" required
-            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
           @error('due_date')
             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -73,7 +73,7 @@
             Initial Status
           </label>
           <select id="status" name="status" required
-            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
             {{-- Defaulting to Due or Draft is common practice --}}
             @foreach (['Draft', 'Due', 'Partial', 'Paid'] as $s)
               <option value="{{ $s }}" {{ old('status', 'Due') == $s ? 'selected' : '' }}>
@@ -92,7 +92,7 @@
             Description (Optional)
           </label>
           <textarea name="description" id="description" rows="3"
-            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">{{ old('description') }}</textarea>
+            class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">{{ old('description') }}</textarea>
           @error('description')
             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -101,11 +101,11 @@
 
       <div class="mt-8 flex justify-end space-x-3">
         <a href="{{ route('admin.students.fees.index', $student) }}"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors">
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors">
           Cancel
         </a>
         <button type="submit"
-          class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">
+          class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
           Create Fee Record
         </button>
       </div>
