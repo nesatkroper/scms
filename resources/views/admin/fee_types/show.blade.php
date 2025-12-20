@@ -99,7 +99,7 @@
           </span>
         </span>
         <div
-          class="max-h-96 overflow-y-auto bg-white dark:bg-gray-700 p-3 rounded-md border border-gray-100 dark:border-gray-600">
+          class="max-h-96 overflow-y-auto bg-white dark:bg-gray-700 p-3 rounded-lg border border-gray-100 dark:border-gray-600">
           @if ($feeType->fees->isNotEmpty())
             <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
               @foreach ($feeType->fees->sortByDesc('due_date') as $fee)
@@ -162,7 +162,7 @@
         </a>
       @endif
 
-      @if (Auth::user()->hasPermissionTo('delete_fee-type'))
+      {{-- @if (Auth::user()->hasPermissionTo('delete_fee-type'))
         <form action="{{ route('admin.fee_types.destroy', $feeType->id) }}" method="POST"
           onsubmit="return confirm('Are you sure you want to permanently delete this fee type? This will not delete associated fees, but they will become uncategorized.');">
           @csrf
@@ -174,9 +174,8 @@
             Delete
           </button>
         </form>
-      @endif
+      @endif --}}
     </div>
-
   </div>
 
 @endsection

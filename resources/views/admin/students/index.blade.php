@@ -73,7 +73,7 @@
 
           {{-- Card Header: Student Name and Actions --}}
           <div
-            class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
+            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
 
             <div class="flex items-center gap-3">
               <img src="{{ $student->avatar_url }}"

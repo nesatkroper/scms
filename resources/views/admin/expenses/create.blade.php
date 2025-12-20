@@ -18,7 +18,7 @@
         Record New Expense - {{ $category->name }}
       </h3>
       <a href="{{ route('admin.expenses.index', ['category_id' => $category->id]) }}"
-        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+        class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         Back to Ledger
       </a>
     </div>
@@ -44,7 +44,7 @@
             Expense Title <span class="text-red-500">*</span>
           </label>
           <input type="text" id="title" name="title" value="{{ old('title') }}"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('title') border-red-500 @else border-gray-400 @enderror"
@@ -60,7 +60,7 @@
             Amount ($) <span class="text-red-500">*</span>
           </label>
           <input type="number" step="0.01" min="0.01" id="amount" name="amount" value="{{ old('amount') }}"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('amount') border-red-500 @else border-gray-400 @enderror"
@@ -77,7 +77,7 @@
           </label>
           <input type="date" id="date" name="date" value="{{ old('date', now()->toDateString()) }}"
             min="2025-01-01" max="2027-01-01"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+            class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('date') border-red-500 @else border-gray-400 @enderror"
@@ -101,7 +101,7 @@
                 <div class="relative flex items-center justify-center">
                   <input id="user-{{ $user->id }}" type="checkbox" name="payroll_user_ids[]"
                     value="{{ $user->id }}"
-                    class="peer size-5 appearance-none rounded-md cursor-pointer
+                    class="peer size-5 appearance-none rounded-lg cursor-pointer
                       border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800
                       transition-all duration-200
                       checked:bg-indigo-600 checked:border-indigo-600
@@ -133,7 +133,7 @@
           Description / Notes
         </label>
         <textarea id="description" name="description" rows="5" required
-          class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+          class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
             @error('description') border-red-500 @else border-gray-400 @enderror"
@@ -146,7 +146,7 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.expenses.index', ['category_id' => $category->id]) }}"
-          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
+          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-lg flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -157,7 +157,7 @@
 
         @if (Auth::user()->hasPermissionTo('create_expense'))
           <button type="submit"
-            class="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd"
                 d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
