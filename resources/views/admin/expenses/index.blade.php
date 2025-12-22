@@ -7,16 +7,10 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      <svg class="size-8 p-1 rounded-full bg-red-50 text-red-600 dark:text-red-50 dark:bg-red-900"
-        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M12 6v12m-3-2.818l-.511-.274a.75.75 0 01-.152-.962L9.423 6.326m-3.1 8.783L7.33 12m10.237 2.818l.511-.274a.75.75 0 00.152-.962l-1.423-2.618M18.8 12L16.67 9.177M5 12h14" />
-      </svg>
+      <i class="fa-solid fa-money-check-dollar"></i>
       Expense for
-      {{-- {{ $expense->category->name }} --}}
     </h3>
 
-    {{-- Success/Error Messages --}}
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
         {{ session('success') }}
@@ -28,7 +22,6 @@
       </div>
     @endif
 
-    {{-- Search Form --}}
     <form action="{{ route('admin.expenses.index') }}" method="GET">
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-red-50 dark:bg-slate-800">
@@ -36,16 +29,12 @@
         @if (Auth::user()->hasPermissionTo('create_expense'))
           <a href="{{ route('admin.expenses.create', ['category_id' => request('category_id')]) }}"
             class="text-nowrap px-4 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clip-rule="evenodd" />
-            </svg>
+            <i class="fa-solid fa-plus me-2"></i>
             Record New Expense
           </a>
         @endif
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
+        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
               placeholder="Search by title, description, or category..."

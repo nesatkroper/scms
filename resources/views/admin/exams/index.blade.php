@@ -42,7 +42,7 @@
           </a>
         </div>
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
+        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
               placeholder="Search exams by name, course, or description..."
