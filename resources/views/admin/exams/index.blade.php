@@ -91,7 +91,7 @@
                   title="Eport Result">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-download me-2"></i>
-                    Eport Result
+                    Eport
                   </span>
                 </a>
               @endif

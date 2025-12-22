@@ -5,16 +5,20 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class GenericReportExport implements FromCollection, WithHeadings, WithMapping
+class GenericReportExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
   protected $data;
-  protected $columns;
+  protected $mapping;
 
-  public function __construct($data, array $columns)
+  public function __construct($data, array $mapping)
   {
-    $this->data = collect($data);
-    $this->columns = $columns;
+    $this->data = is_a($data, \Illuminate\Pagination\LengthAwarePaginator::class)
+      ? $data->getCollection()
+      : collect($data);
+
+    $this->mapping = $mapping;
   }
 
   public function collection()
@@ -24,18 +28,15 @@ class GenericReportExport implements FromCollection, WithHeadings, WithMapping
 
   public function headings(): array
   {
-    return $this->columns;
+    return array_keys($this->mapping);
   }
 
   public function map($row): array
   {
-    $mapped = [];
-
-    foreach ($this->columns as $column) {
-      $key = strtolower(str_replace(' ', '_', $column));
-      $mapped[] = data_get($row, $key);
+    $result = [];
+    foreach ($this->mapping as $header => $field) {
+      $result[] = data_get($row, $field, '—');
     }
-
-    return $mapped;
+    return $result;
   }
 }

@@ -244,18 +244,36 @@ class ReportController extends BaseController
     ];
   }
 
+
   private function reportFinancialSummary($request)
   {
-    $income = Fee::sum('amount');
-    $expenses = Expense::sum('amount');
+    $incomeQuery = Fee::query();
+    $expenseQuery = Expense::with('category');
+
+    if ($request->start_date) {
+      $incomeQuery->whereDate('created_at', '>=', $request->start_date);
+      $expenseQuery->whereDate('date', '>=', $request->start_date);
+    }
+
+    if ($request->end_date) {
+      $incomeQuery->whereDate('created_at', '<=', $request->end_date);
+      $expenseQuery->whereDate('date', '<=', $request->end_date);
+    }
+
+    $incomeList = $incomeQuery->orderBy('created_at')->get();
+    $expenseList = $expenseQuery->orderBy('date')->get();
+
+    $totalIncome = $incomeList->sum('amount');
+    $totalExpenses = $expenseList->sum('amount');
 
     return [
       'title' => 'Financial Summary Report',
       'view'  => 'admin.reports.partials.financial_summary',
       'data'  => [
-        'income' => $income,
-        'expenses' => $expenses,
-        'balance' => $income - $expenses,
+        'total_income'   => $totalIncome,
+        'total_expenses' => $totalExpenses,
+        'income'         => $incomeList,
+        'expenses'       => $expenseList,
       ]
     ];
   }
@@ -263,17 +281,88 @@ class ReportController extends BaseController
   private function exportReport($response, $type)
   {
     $view = $response['view'];
-    $data = ['data' => $response['data'], 'title' => $response['title']];
+    $data = $response['data'];
+    $title = $response['title'];
+    $reportType = request('report_type');
 
     if ($type === 'pdf') {
-      return Pdf::loadView($view, $data)->download("report.pdf");
+      return Pdf::loadView('admin.reports.pdf.master', [
+        'view'  => $view,
+        'data'  => $data,
+        'title' => $title,
+      ])->setPaper('a4', 'portrait')->download("{$title}.pdf");
     }
 
     if ($type === 'excel') {
-      return Excel::download(
-        new GenericReportExport($data),
-        "report.xlsx"
-      );
+      $export = match ($reportType) {
+        'financial_summary'  => new \App\Exports\FinancialSummaryExport($data),
+        'student_enrollment' => new \App\Exports\EnrollmentReportExport($data),
+        // 'financial_expenses' => new \App\Exports\ExpenseReportExport($data),
+        // 'attendance'         => new \App\Exports\AttendanceReportExport($data),
+        // 'scores'             => new \App\Exports\ScoreReportExport($data),
+        default              => new GenericReportExport($data, ['ID' => 'id', 'Date' => 'created_at']),
+      };
+
+      return Excel::download($export, "{$title}.xlsx");
     }
   }
+
+  // private function exportReport($response, $type)
+  // {
+  //   $view = $response['view'];
+  //   $data = $response['data'];
+  //   $title = $response['title'];
+  //   $reportType = request('report_type');
+
+  //   if ($type === 'pdf') {
+  //     return Pdf::loadView('admin.reports.pdf.master', [
+  //       'view'  => $view,
+  //       'data'  => $data,
+  //       'title' => $title,
+  //     ])->setPaper('a4', 'portrait')->download("{$title}.pdf");
+  //   }
+
+  //   if ($type === 'excel') {
+  //     if ($reportType === 'financial_summary') {
+  //       return Excel::download(new \App\Exports\FinancialSummaryExport($data), "{$title}.xlsx");
+  //     }
+
+  //     $mapping = match ($reportType) {
+  //       'student_enrollment' => [
+  //         'Student Name' => 'student.name',
+  //         'Course'       => 'courseOffering.subject.name',
+  //         'Date'         => 'created_at',
+  //         'Status'       => 'status',
+  //       ],
+  //       'attendance' => [
+  //         'Student Name' => 'student.name',
+  //         'Course'       => 'courseOffering.subject.name',
+  //         'Date'         => 'date',
+  //         'Status'       => 'status',
+  //       ],
+  //       'scores' => [
+  //         'Student Name' => 'student.name',
+  //         'Exam'         => 'exam.type',
+  //         'Subject'      => 'exam.courseOffering.subject.name',
+  //         'Score'        => 'score',
+  //         'Grade'        => 'grade',
+  //       ],
+  //       'financial_expenses' => [
+  //         'Category' => 'category.name',
+  //         'Amount'   => 'amount',
+  //         'Date'     => 'date',
+  //         'Notes'    => 'notes',
+  //       ],
+  //       default => [
+  //         'ID'   => 'id',
+  //         'Date' => 'created_at'
+  //       ]
+  //     };
+
+  //     return Excel::download(
+  //       new GenericReportExport($data, $mapping),
+  //       "{$title}.xlsx"
+  //     );
+  //   }
+  // }
 }

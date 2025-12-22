@@ -3,11 +3,14 @@
 namespace App\Exports;
 
 use App\Models\Score;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use App\Models\Exam;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ScoreExport implements FromCollection, WithHeadings, WithMapping
+class ScoreExport implements FromView, WithColumnWidths, WithStyles
 {
   protected $examId;
 
@@ -16,33 +19,41 @@ class ScoreExport implements FromCollection, WithHeadings, WithMapping
     $this->examId = $examId;
   }
 
-  public function collection()
+  public function view(): View
   {
-    return Score::with('student')
+    $exam = Exam::with(['courseOffering.subject', 'courseOffering.teacher', 'courseOffering.classroom'])
+      ->findOrFail($this->examId);
+
+    $scores = Score::with('student')
       ->where('exam_id', $this->examId)
       ->orderBy('student_id')
       ->get();
+
+    return view('exports.score_sheet', [
+      'exam' => $exam,
+      'scores' => $scores
+    ]);
   }
 
-  public function headings(): array
+  public function columnWidths(): array
   {
     return [
-      'Student Name',
-      'Student ID',
-      'Score',
-      'Grade',
-      'Remarks',
+      'A' => 6,
+      'B' => 15,
+      'C' => 35,
+      'D' => 10,
+      'E' => 12,
+      'F' => 10,
+      'G' => 30,
     ];
   }
 
-  public function map($score): array
+  public function styles(Worksheet $sheet)
   {
     return [
-      $score->student->name,
-      $score->student->id,
-      $score->score,
-      $score->grade,
-      $score->remarks ?? '—',
+      1 => ['font' => ['bold' => true, 'size' => 16]],
+      'E' => ['alignment' => ['horizontal' => 'center']],
+      'F' => ['alignment' => ['horizontal' => 'center']],
     ];
   }
 }

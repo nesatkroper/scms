@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Enrollment extends Model
 {
@@ -110,10 +111,20 @@ class Enrollment extends Model
     });
   }
 
-  protected function gradeFinal(): \Illuminate\Database\Eloquent\Casts\Attribute
+  protected function gradeFinal(): Attribute
   {
-    return \Illuminate\Database\Eloquent\Casts\Attribute::make(
-      get: fn() => $this->calculateFinalGrade(),
+    return Attribute::make(
+      get: fn() => collect([
+        $this->attendance_grade,
+        $this->listening_grade,
+        $this->writing_grade,
+        $this->reading_grade,
+        $this->speaking_grade,
+        $this->midterm_grade,
+        $this->final_grade,
+      ])
+        ->filter(fn($value) => $value !== null)
+        ->sum()
     );
   }
 
