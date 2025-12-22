@@ -40,7 +40,7 @@
           </a>
         @endif
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
+        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput" placeholder="Search classrooms (name or room number)..."
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5

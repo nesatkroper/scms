@@ -26,7 +26,8 @@
     @endif
     @if ($btnLink)
       <a href="{{ $href }}"
-        class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 w-48" data-tooltip-target="tooltip" data-tooltip-placement="top">
+        class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 w-48"
+        data-tooltip-target="tooltip" data-tooltip-placement="top">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
@@ -39,7 +40,7 @@
       </a>
     @endif
     @if ($showSearch || $showReset || $showViewToggle)
-      <div class="flex items-center mt-3 md:mt-0 gap-2">
+      <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
         @if ($showSearch)
           <div class="relative w-full">
             <input type="search" id="searchInput" placeholder="Search {{ $title }}..."

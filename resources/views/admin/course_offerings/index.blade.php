@@ -37,7 +37,7 @@
           </a>
         @endif
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
+        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
               placeholder="Search offerings by subject, teacher, or time..."
@@ -64,7 +64,7 @@
     <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       @forelse ($courseOfferings as $offering)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-400 dark:border-red-400 @endif">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-400 dark:border-red-400 @endif">
 
           <div
             class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">

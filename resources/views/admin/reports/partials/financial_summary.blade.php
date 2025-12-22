@@ -1,6 +1,5 @@
 <div class="space-y-6">
 
-  {{-- Summary Boxes --}}
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
     <div class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm">
@@ -30,7 +29,6 @@
 
   </div>
 
-  {{-- Income Table --}}
   <div class="overflow-x-auto">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Income Breakdown</h3>
 
@@ -65,7 +63,6 @@
     </table>
   </div>
 
-  {{-- Expense Table --}}
   <div class="overflow-x-auto mt-6">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Expense Breakdown</h3>
 

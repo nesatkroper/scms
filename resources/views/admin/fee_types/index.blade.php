@@ -7,13 +7,7 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-      {{-- Icon for Fee Types (money/bill theme) --}}
-      <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path
-          d="M4 4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 10a1 1 0 011-1h6a1 1 0 010 2H7a1 1 0 01-1-1z" />
-        <path fill-rule="evenodd" d="M14 6a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
-      </svg>
+      <i class="fa-solid fa-sack-dollar me-2"></i>
       Fee Types List
     </h3>
 
@@ -35,16 +29,12 @@
         @if (Auth::user()->hasPermissionTo('create_fee-type'))
           <a href="{{ route('admin.fee_types.create') }}"
             class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clip-rule="evenodd" />
-            </svg>
+            <i class="fa-solid fa-plus me-2"></i>
             Create New Fee Type
           </a>
         @endif
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
+        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput" placeholder="Search fee types..."
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5

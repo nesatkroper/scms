@@ -33,16 +33,12 @@
         @if (Auth::user()->hasPermissionTo('create_student'))
           <a href="{{ route('admin.students.create') }}"
             class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clip-rule="evenodd" />
-            </svg>
+            <i class="fa-solid fa-plus me-2"></i>
             Enroll New Student
           </a>
         @endif
 
-        <div class="flex items-center mt-3 md:mt-0 gap-2">
+        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput" placeholder="Search students by name or email..."
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5

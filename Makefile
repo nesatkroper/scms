@@ -67,6 +67,8 @@ migrate:
 fresh:
 	@echo "================================================="
 	@echo "🏗️  Running Refresh..."
+	@composer update
+	@npm i
 	@php artisan db:wipe
 	@php artisan migrate
 	@php artisan permissions:generate
