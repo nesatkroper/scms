@@ -215,7 +215,7 @@
     </div>
 
     <div class="mt-6">
-      {{ $courseOfferings->links() }}
+      {{ $courseOfferings->onEachSide(2)->links('admin.components.tailwind-modern') }}
     </div>
 
   </div>

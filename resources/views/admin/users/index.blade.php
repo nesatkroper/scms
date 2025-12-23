@@ -201,8 +201,7 @@
     {{-- END: Card View for Users --}}
 
     <div class="mt-6">
-      {{-- Assuming $users is the pagination instance --}}
-      {{ $users->links() }}
+      {{ $users->onEachSide(2)->links('admin.components.tailwind-modern') }}
     </div>
 
     @include('admin.users.partials.password-modal')

@@ -221,7 +221,7 @@
     {{-- END: Card View for Students --}}
 
     <div class="mt-6">
-      {{ $students->links() }}
+      {{ $students->onEachSide(2)->links('admin.components.tailwind-modern') }}
     </div>
 
   </div>

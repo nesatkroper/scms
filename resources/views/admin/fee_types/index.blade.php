@@ -164,9 +164,8 @@
       @endforelse
     </div>
 
-    {{-- Pagination Links --}}
     <div class="mt-6">
-      {{ $feeTypes->links() }}
+      {{ $feeTypes->onEachSide(2)->links('admin.components.tailwind-modern') }}
     </div>
 
   </div>
