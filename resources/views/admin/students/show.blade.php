@@ -4,13 +4,9 @@
 
   <div class="mb-6 flex justify-between items-center">
     <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-      <svg class="size-8 rounded-full p-1 bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-        <circle cx="8.5" cy="7" r="4"></circle>
-        <polyline points="17 11 19 13 23 9"></polyline>
-      </svg>
+     <div class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
+        <i class="ri-user-2-fill text-2xl"></i>
+      </div>
       {{ $student->name }} Details
     </h3>
     <div class="flex space-x-3">

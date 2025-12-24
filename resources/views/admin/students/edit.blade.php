@@ -5,7 +5,12 @@
   <div class="mb-10">
     {{-- Page Header --}}
     <div class="flex items-center justify-between px-3 md:px-0 mb-6">
-      <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Edit Student: {{ $student->name }}</h1>
+      <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+        <div class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
+            <i class="ri-user-2-fill text-2xl"></i>
+          </div>
+          Edit Student: {{ $student->name }}
+        </h3>
       <a href="{{ route('admin.students.index') }}"
         class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
