@@ -31,14 +31,14 @@
             <a href="{{ route('admin.exams.create', ['course_offering_id' => $courseOfferingId]) }}"
               class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
               <i class="fa-solid fa-plus"></i>
-              Create New Exam
+              {{ __('message.create_new_exam') }}
             </a>
           @endif
 
           <a href="{{ route('admin.course_offerings.index') }}"
             class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus"></i>
-            Back
+            {{ __('message.back') }}
           </a>
         </div>
 
@@ -91,7 +91,7 @@
                   title="Eport Result">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-download me-2"></i>
-                    Eport
+                    {{ __('message.eport') }}
                   </span>
                 </a>
               @endif
@@ -110,7 +110,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Exam Date</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.exam_date') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{ \Carbon\Carbon::parse($exam->date)->format('F jS, Y') }}
                 </p>
@@ -127,7 +127,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Total Marks / Passing Marks</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.total_marks_/_passing_marks') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span>
                     {{ $exam->total_marks }} / <span
@@ -147,7 +147,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Scheduled Time</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.scheduled_time') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="capitalize">
                     {{ $exam->courseOffering->time_slot ?? 'N/A' }}
@@ -166,7 +166,7 @@
               title="Assign Score">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-book-atlas me-2"></i>
-                Assign Score
+                {{ __('message.assign_score') }}
               </span>
             </a>
 
@@ -178,7 +178,7 @@
                   title="Edit">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
-                    Edit
+                    {{ __('message.edit') }}
                   </span>
                 </a>
               @endif
@@ -194,7 +194,7 @@
                   class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Delete">
                   <i class="fa-regular fa-trash-can me-2"></i>
-                  Delete
+                  {{ __('message.delete') }}
                 </button>
               </form> --}}
 
@@ -212,8 +212,8 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Exams Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first exam to begin recording scores.</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_exams_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_exam_to_begin_recording_scores') }}</p>
           </div>
         </div>
       @endforelse
