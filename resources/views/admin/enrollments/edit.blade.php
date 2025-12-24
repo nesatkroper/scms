@@ -23,14 +23,14 @@
               d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
               clip-rule="evenodd" />
           </svg>
-          Edit Admission for <span class="ml-1 text-green-600 dark:text-green-400">
+           {{ __('message.edit_admission_for') }}<span class="ml-1 text-green-600 dark:text-green-400">
             {{ $courseName }} - {{ $student->name }}
           </span>
         </h3>
         {{-- Back to Register Button --}}
         <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOfferingId]) }}"
           class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-          Back to Register
+          {{ __('message.back_to_register') }}
         </a>
       </div>
 
@@ -53,7 +53,7 @@
           {{-- 3. Status Field (Select) --}}
           <div>
             <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Admission Status <span class="text-red-500">*</span>
+              {{ __('message.admission_status') }} <span class="text-red-500">*</span>
             </label>
             <select name="status" id="status" required
               class="w-full px-3 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('status') border-red-500 @enderror">
@@ -71,7 +71,7 @@
           {{-- 6. Remarks Field (Textarea) --}}
           <div class="border-t pt-6 border-gray-200 dark:border-gray-700">
             <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Remarks (Optional)
+              {{ __('message.remarks_(optional)') }}
             </label>
             <textarea name="remarks" id="remarks" rows="5"
               placeholder="Any special notes about this student's admission or progress."
@@ -103,7 +103,7 @@
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                   clip-rule="evenodd" />
               </svg>
-              Update Enrollment
+              {{ __('message.update_enrollment') }}
             </button>
           @endif
 
