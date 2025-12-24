@@ -37,3 +37,6 @@ Route::get('/invoice-check/{transactionId}', [InvoiceCheckController::class, 'sh
 
 // include admin routes
 require __DIR__ . '/admin.php';
+
+// include api routes
+require __DIR__ . '/v1.php';
