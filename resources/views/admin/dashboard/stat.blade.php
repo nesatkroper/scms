@@ -5,7 +5,7 @@
              dark:border-gray-700 shadow-sm relative">
         <div class="flex justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Fees Collected</p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.fees_collected') }}</p>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
               ${{ number_format($feesCollected, 2) }}</h3>
           </div>
@@ -14,7 +14,7 @@
           </div>
         </div>
         <div>
-          <p class="text-red-500 dark:text-red-400 text-sm font-medium">Fees Pending</p>
+          <p class="text-red-500 dark:text-red-400 text-sm font-medium">{{ __('message.fees_pending') }}</p>
           <h3 class="text-xl font-bold text-red-800 dark:text-white mt-1">
             - ${{ number_format($feesUnpaid, 2) }}</h3>
         </div>
@@ -38,13 +38,13 @@
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
-                  View Details
+                  {{ __('message.view_details') }}
                 </a>
                 <a href="#"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
-                  Export Data
+                  {{ __('message.export_data') }}
                 </a>
               </div>
 
@@ -59,7 +59,7 @@
              dark:border-gray-700 shadow-sm relative">
         <div class="flex justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Expense Cost</p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.expense_cost') }}</p>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
               ${{ number_format($totalExpense, 2) }}</h3>
           </div>
@@ -69,7 +69,7 @@
 
         </div>
         <div>
-          <p class="text-red-500 dark:text-red-400 text-sm font-medium">Expense Pending</p>
+          <p class="text-red-500 dark:text-red-400 text-sm font-medium">{{ __('message.expense_pending') }}</p>
           <h3 class="text-xl font-bold text-red-800 dark:text-white mt-1">
             - ${{ number_format($pendingExpense, 2) }}</h3>
         </div>
@@ -94,13 +94,13 @@
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
-                  View Details
+                  {{ __('message.view_details') }}
                 </a>
                 <a href="#"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
-                  Export Data
+                  {{ __('message.export_data') }}
                 </a>
               </div>
 
@@ -115,7 +115,7 @@
         id="student-card">
         <div class="flex justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Students</p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.total_students') }}</p>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalStudents }}</h3>
           </div>
           <div class="h-12 w-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
@@ -123,7 +123,7 @@
           </div>
         </div>
         <div>
-          <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Teachers</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.total_teachers') }}</p>
           <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalTeachers }}</h3>
         </div>
         <div class="flex items-center justify-end mt-4">
@@ -147,13 +147,13 @@
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
-                  View Details
+                  {{ __('message.view_details') }}
                 </a>
                 <a href="#"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
-                  Export Data
+                  {{ __('message.export_data') }}
                 </a>
               </div>
 
@@ -168,7 +168,7 @@
              dark:border-gray-700 shadow-sm relative">
         <div class="flex justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Course</p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.active_course') }}</p>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $activeCourse }}</h3>
           </div>
           <div class="h-12 w-12 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
@@ -180,7 +180,7 @@
             <span class="text-green-500 dark:text-green-400 text-sm flex items-center">
               <i class="fas fa-arrow-up mr-1"></i> 3.1%
             </span>
-            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last month</span>
+            <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">{{ __('message.vs_last_month') }}</span>
           </div>
 
           <!-- Dropdown button -->
@@ -202,13 +202,13 @@
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
-                  View Details
+                  {{ __('message.view_details') }}
                 </a>
                 <a href="#"
                   class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
-                  Export Data
+                  {{ __('message.export_data') }}
                 </a>
               </div>
             </div>

@@ -2,8 +2,7 @@
     <div
       class="box bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden mb-4">
       <div class="p-4 md:flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">Recently Enrolled
-          Students
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">{{ __('message.recently_enrolled_students') }}
         </h2>
         <div class="flex items-center gap-2">
           <div class="relative">
@@ -21,10 +20,10 @@
         <table class="w-full text-sm text-left">
           <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
             <tr>
-              <th scope="col" class="px-6 py-3">Student</th>
-              <th scope="col" class="px-6 py-3">Status</th>
-              <th scope="col" class="px-6 py-3">Join Date</th>
-              <th scope="col" class="px-6 py-3"><span class="sr-only">Actions</span></th>
+              <th scope="col" class="px-6 py-3">{{ __('message.student') }}</th>
+              <th scope="col" class="px-6 py-3">{{ __('message.status') }}</th>
+              <th scope="col" class="px-6 py-3">{{ __('message.join_date') }}</th>
+              <th scope="col" class="px-6 py-3"><span class="sr-only">{{ __('message.actions') }}</span></th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +55,7 @@
                         {{ \Carbon\Carbon::parse($recent->created_at)->format('Y-m-d') }}</td>
                       <td class="px-6 py-4 text-right">
                         <a href="{{ route('admin.students.show', $recent->student->id) }}"
-                          class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">Details</a>
+                          class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">{{ __('message.details') }}</a>
                       </td>
                     </tr>
                   @endforeach
@@ -64,7 +63,7 @@
               </table>
             @else
               <div class="p-4 text-center text-red-500 dark:text-gray-400">
-                No recent students found.
+                {{ __('message.no_recent_students_found') }}
               </div>
             @endif
           </tbody>
