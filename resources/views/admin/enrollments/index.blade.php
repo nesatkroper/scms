@@ -231,6 +231,17 @@
                   </span>
                 </a>
               @endif
+
+              @if (Auth::user()->hasPermissionTo('view_score'))
+                <a href="{{ route('admin.scores.show', [$courseOffering->id, $enrollment->student->id]) }}"
+                  class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  title="Attendance">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-file-circle-plus me-2"></i>
+                    Score
+                  </span>
+                </a>
+              @endif
             </div>
 
             <div class="flex">

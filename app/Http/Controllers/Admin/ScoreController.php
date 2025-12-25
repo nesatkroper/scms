@@ -8,6 +8,7 @@ use App\Models\Enrollment;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Score;
 use App\Models\Exam;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -54,6 +55,18 @@ class ScoreController extends BaseController
     ])->get();
 
     return view('admin.scores.index', compact('students', 'exam'));
+  }
+
+  public function show($courseOfferingId, $studentId)
+  {
+    $courseOffering = CourseOffering::findOrFail($courseOfferingId);
+    $student = User::findOrFail($studentId);
+
+    $enrollment = Enrollment::where('student_id', $studentId)
+      ->where('course_offering_id', $courseOfferingId)
+      ->firstOrFail();
+
+    return view('admin.scores.show', compact('student', 'courseOffering', 'enrollment'));
   }
 
   public function exportExamScores($examId)

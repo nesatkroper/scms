@@ -115,10 +115,9 @@ Route::prefix('admin')
       ->group(function () {
         Route::get('/', [ScoreController::class, 'index'])->name('index');
         Route::post('/save-all', [ScoreController::class, 'saveAll'])->name('saveAll');
-        Route::get('/export/{exam_id}', [ScoreController::class, 'exportExamScores'])
-          ->name('export');
-        Route::post('/final-grade', [ScoreController::class, 'assignFinalGrades'])
-          ->name('assignFinalGrades');
+        Route::get('/{courseOfferingId}/student/{studentId}', [ScoreController::class, 'show'])->name('show');
+        Route::get('/export/{exam_id}', [ScoreController::class, 'exportExamScores'])->name('export');
+        Route::post('/final-grade', [ScoreController::class, 'assignFinalGrades'])->name('assignFinalGrades');
       });
 
     Route::prefix('attendances')

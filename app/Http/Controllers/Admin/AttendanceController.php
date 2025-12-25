@@ -95,7 +95,6 @@ class AttendanceController extends BaseController
       ->where('course_offering_id', $courseOfferingId)
       ->first();
 
-    // dd($enrollment);
 
     return view('admin.attendance.show', compact('student', 'courseOffering', 'attendances', 'enrollment'));
   }

@@ -80,7 +80,7 @@
           </span>
         </h3>
 
-        <div class="flex gap-4">
+        <div class="flex gap-2">
           <a href="{{ route('admin.course_offerings.index') }}"
             class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
             <span class="btn-content flex items-center justify-center">
@@ -90,7 +90,7 @@
           </a>
 
           @if (Auth::user()->hasPermissionTo('create_attendance'))
-            <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700">
               <i class="fa-regular fa-floppy-disk me-2"></i>
               {{ __('message.save_all_attendance') }}
             </button>
