@@ -3,10 +3,6 @@
 @section('title', 'Admission Register')
 @section('content')
 
-  {{-- @php
-    dd($enrollments);
-  @endphp --}}
-
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -40,21 +36,21 @@
         @if ($enrollments->count() >= $courseOffering->classroom?->capacity)
           <div></div>
         @else
-          @if (Auth::user()->hasPermissionTo('create_enrollment'))
-            <div class="flex gap-4">
+          <div class="flex gap-4">
+            @if (Auth::user()->hasPermissionTo('create_enrollment'))
               <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
                 <i class="fa-solid fa-plus"></i>
                 Enrollment
               </a>
+            @endif
 
-              <a href="{{ route('admin.course_offerings.index') }}"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
-                <i class="fa-solid fa-plus"></i>
-                Back
-              </a>
-            </div>
-          @endif
+            <a href="{{ route('admin.course_offerings.index') }}"
+              class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
+              <i class="fa-solid fa-plus"></i>
+              Back
+            </a>
+          </div>
 
         @endif
 

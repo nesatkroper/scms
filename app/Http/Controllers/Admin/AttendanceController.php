@@ -73,7 +73,6 @@ class AttendanceController extends BaseController
   public function exportCourseAttendance($courseOfferingId)
   {
     $course = CourseOffering::findOrFail($courseOfferingId);
-
     $fileName = 'Attendance_' . $course->subject->name . '_' . $course->time_slot . '.xlsx';
 
     return Excel::download(new AttendanceExport($courseOfferingId), $fileName);

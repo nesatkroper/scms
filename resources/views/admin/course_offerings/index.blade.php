@@ -91,8 +91,7 @@
                 {{ $offering->time_slot }}
                 ({{ $offering->schedule }})
                 ({{ \Carbon\Carbon::parse($offering->start_time)->format('H:i') }} -
-                {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }}) -
-                (Total Students: {{ $offering->students->count() }})
+                {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})
               </p>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize font-bold">
                 Start: {{ \Carbon\Carbon::parse($offering->join_start)->format('d M Y') }},
@@ -102,9 +101,19 @@
 
             @if ($offering->attendances->count())
               <a title="Eport Attendance" href="{{ route('admin.attendances.export', $offering->id) }}"
-                class="btn p-2 size-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 size-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                 title="Attendance">
-                <i class="fa-solid fa-right-from-bracket "></i>
+                <i class="fa-solid fa-right-from-bracket me-2"></i>
+                Export Att
+              </a>
+            @endif
+
+            @if ($offering->attendances->count())
+              <a title="Eport Attendance" href="{{ route('admin.course_offerings.export', $offering->id) }}"
+                class="btn p-2 size-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
+                title="Attendance">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>
+                Export Score
               </a>
             @endif
 

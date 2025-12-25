@@ -91,6 +91,7 @@ Route::prefix('admin')
       ->as('course_offerings.')
       ->group(function () {
         Route::patch('/{id}/restore', [CourseOfferingController::class, 'restore'])->name('restore');
+        Route::get('/export/{course_offering_id}', [ScoreController::class, 'exportCourseScores'])->name('export');
       });
 
     Route::prefix('profile')

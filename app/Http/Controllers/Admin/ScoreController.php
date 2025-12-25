@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportCourseScore;
 use App\Exports\ScoreExport;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
@@ -67,6 +68,14 @@ class ScoreController extends BaseController
       ->firstOrFail();
 
     return view('admin.scores.show', compact('student', 'courseOffering', 'enrollment'));
+  }
+
+  public function exportCourseScores($courseOfferingId)
+  {
+    $course = CourseOffering::findOrFail($courseOfferingId);
+    $fileName = 'Score_Report_' . $course->subject->name . '_' . str_replace(' ', '_', $course->time_slot) . '.xlsx';
+
+    return Excel::download(new ExportCourseScore($courseOfferingId), $fileName);
   }
 
   public function exportExamScores($examId)
