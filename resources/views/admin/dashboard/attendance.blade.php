@@ -2,19 +2,19 @@
 <div
   class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
   <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Attendance Overview</h3>
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ __('message.attendance_overview') }}</h3>
 
     <div class="flex bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
       <button data-range="daily" class="attendance-btn px-3 py-1 text-sm bg-indigo-600 text-white">
-        Daily
+        {{ __('message.daily') }}
       </button>
       <button data-range="weekly"
         class="attendance-btn px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
-        Weekly
+        {{ __('message.weekly') }}
       </button>
       <button data-range="monthly"
         class="attendance-btn px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
-        Monthly
+        {{ __('message.monthly') }}
       </button>
     </div>
   </div>

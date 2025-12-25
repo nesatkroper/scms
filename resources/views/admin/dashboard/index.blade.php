@@ -16,7 +16,7 @@
 
       <!-- Recent Activities -->
       <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Recent Activities</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">{{ __('message.recent_activities') }}</h3>
         <div class="space-y-4">
           <!-- Activity Item -->
 
@@ -47,7 +47,7 @@
         </div>
         <a href="{{ route('admin.notifications.index') }}"
           class="w-full  mt-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors">
-          View All Activities
+          {{ __('message.view_all_activities') }}
         </a>
       </div>
     </div>
