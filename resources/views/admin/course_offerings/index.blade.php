@@ -99,23 +99,23 @@
               </p>
             </div>
 
-            @if ($offering->attendances->count())
-              <a title="Eport Attendance" href="{{ route('admin.attendances.export', $offering->id) }}"
-                class="btn p-2 size-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
-                title="Attendance">
-                <i class="fa-solid fa-right-from-bracket me-2"></i>
-                Export Att
-              </a>
-            @endif
+            <div class="flex flex-col items-end">
+              @if ($offering->attendances->count())
+                <a title="Eport Attendance" href="{{ route('admin.attendances.export', $offering->id) }}"
+                  class="btn p-2 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
+                  title="Attendance">
+                  <i class="fa-solid fa-right-from-bracket me-2"></i>
+                  Export Attendance
+                </a>
+              @endif
 
-            @if ($offering->attendances->count())
               <a title="Eport Attendance" href="{{ route('admin.course_offerings.export', $offering->id) }}"
-                class="btn p-2 size-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
+                class="btn p-2 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                 title="Attendance">
                 <i class="fa-solid fa-right-from-bracket me-2"></i>
                 Export Score
               </a>
-            @endif
+            </div>
 
           </div>
 
