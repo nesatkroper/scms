@@ -15,7 +15,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M2.25 18.75a60.03 60.03 0 0115.79-4.148 61.03 61.03 0 014.288 3.52 61.03 61.03 0 01-4.288 3.52A60.03 60.03 0 012.25 18.75zm17.91-14.939a.75.75 0 00-.918-.282L13 6.969V5.25A2.25 2.25 0 0010.75 3h-5a2.25 2.25 0 00-2.25 2.25V15h2.25a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V5.511l.243-.092A.75.75 0 0020.16 3.811z" />
         </svg>
-        Expense Category Details
+        {{ __('message.expense_category_details') }}
       </h3>
 
       <div class="flex gap-4">
@@ -23,12 +23,12 @@
           class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
           title="Export {{ $expenseCategory->name ?? 'N/A' }}">
           <i class="fa-solid fa-download me-2"></i>
-          Export {{ $expenseCategory->name ?? 'N/A' }}
+          {{ __('message.export') }} {{ $expenseCategory->name ?? 'N/A' }}
         </a>
         {{-- Back Button (Update route name) --}}
         <a href="{{ route('admin.expense_categories.index') }}"
           class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
-          <i class="fas fa-arrow-left text-xs"></i> Back to Categories
+          <i class="fas fa-arrow-left text-xs"></i> {{ __('message.back_to_categories') }}
         </a>
       </div>
     </div>
@@ -44,12 +44,12 @@
             {{ $expenseCategory->name ?? 'N/A' }}
           </h2>
           <p class="text-sm font-semibold text-green-500 dark:text-green-400 mt-1">
-            Category ID: {{ $expenseCategory->id }}
+            {{ __('message.category_id') }} {{ $expenseCategory->id }}
           </p>
         </div>
         {{-- Calculate and display total amount spent for this category --}}
         <span class="text-3xl font-extrabold text-indigo-700 dark:text-indigo-400 mt-2 sm:mt-0">
-          Total Spent: ${{ number_format($expenseCategory->expenses->sum('amount') ?? 0, 2) }}
+          {{ __('message.total_spent') }} ${{ number_format($expenseCategory->expenses->sum('amount') ?? 0, 2) }}
         </span>
       </div>
 
@@ -60,7 +60,7 @@
         {{-- Description --}}
         <p class="lg:col-span-2 detail-item">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-list-ul text-purple-500"></i> Description:
+            <i class="fa-solid fa-list-ul text-purple-500"></i> {{ __('message.description') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1 text-base whitespace-pre-wrap">
             {{ $expenseCategory->description ?? 'No description provided.' }}
@@ -70,7 +70,7 @@
         {{-- Created At --}}
         <p class="detail-item">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-plus text-cyan-500"></i> Created:
+            <i class="fa-solid fa-calendar-plus text-cyan-500"></i> {{ __('message.created') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
             {{ $expenseCategory->created_at?->format('M d, Y H:i') ?? 'N/A' }}
@@ -80,7 +80,7 @@
         {{-- Last Updated --}}
         <p class="detail-item">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-check text-pink-500"></i> Last Updated:
+            <i class="fa-solid fa-calendar-check text-pink-500"></i> {{ __('message.last_updated') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
             {{ $expenseCategory->updated_at?->format('M d, Y H:i') ?? 'N/A' }}
@@ -91,10 +91,10 @@
       {{-- Associated Expenses Section --}}
       <div class="pt-4 border-t border-gray-200 dark:border-gray-700/50">
         <span class="font-bold text-lg text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-3">
-          <i class="fa-solid fa-file-invoice-dollar text-green-500"></i> Associated Expenses
+          <i class="fa-solid fa-file-invoice-dollar text-green-500"></i> {{ __('message.associated_expenses') }}
           <span
             class="ml-2 px-3 py-0.5 rounded-full text-xs font-extrabold bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
-            Total: {{ $expenseCategory->expenses->count() }}
+            {{ __('message.total') }} {{ $expenseCategory->expenses->count() }}
           </span>
         </span>
         <div
@@ -110,7 +110,7 @@
                       {{ $expense->title }}
                     </span>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
-                      Date: {{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}
+                      {{ __('message.date') }} {{ \Carbon\Carbon::parse($expense->date)->format('M d, Y') }}
                     </span>
                   </div>
 
@@ -128,7 +128,7 @@
             </ul>
           @else
             <p class="text-center text-sm italic text-gray-500 dark:text-gray-400">
-              No expenses have been recorded for this category yet.
+              {{ __('message.no_expenses_have_been_recorded_for_this_category_yet') }}
             </p>
           @endif
         </div>
@@ -144,7 +144,7 @@
           class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
           title="Edit Expense Category">
           <i class="fa-solid fa-pen-to-square mr-2"></i>
-          Edit Category
+          {{ __('message.edit_category') }}
         </a>
       @endif
 
@@ -157,11 +157,10 @@
             class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
             title="Delete Expense Category">
             <i class="fa-regular fa-trash-can mr-2"></i>
-            Delete
+            {{ __('message.delete') }}
           </button>
         </form>
       @endif
     </div>
   </div>
-
 @endsection

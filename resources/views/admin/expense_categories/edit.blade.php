@@ -18,11 +18,11 @@
             clip-rule="evenodd" />
         </svg>
         {{-- Changed Department to Expense Category and $department->name to $expenseCategory->name --}}
-        Edit Expense Category: {{ $expenseCategory->name }}
+        {{ __('message.edit_expense_category') }} {{ $expenseCategory->name }}
       </h3>
       <a href="{{ route('admin.expense_categories.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -37,7 +37,7 @@
         {{-- Category Name Field (Pre-filled with existing data) --}}
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Category Name <span class="text-red-500">*</span>
+            {{ __('message.category_name') }} <span class="text-red-500">*</span>
           </label>
           {{-- Pre-fill logic using $expenseCategory->name --}}
           <input type="text" id="name" name="name" value="{{ old('name', $expenseCategory->name) }}"
@@ -55,7 +55,7 @@
       {{-- Category Description Field (Pre-filled with existing data) --}}
       <div class="mb-6">
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description
+          {{ __('message.description') }}
         </label>
         <textarea id="description" name="description" rows="3"
           class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -77,7 +77,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         @if (Auth::user()->hasPermissionTo('update_expense-category'))
@@ -89,7 +89,7 @@
                 d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                 clip-rule="evenodd" />
             </svg>
-            Update Category
+            {{ __('message.update_category') }}
           </button>
         @endif
       </div>
