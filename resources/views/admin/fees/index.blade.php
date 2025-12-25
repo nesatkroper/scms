@@ -230,7 +230,7 @@
     </div>
 
     <div class="mt-6">
-      {{ $fees->links() }}
+      {{ $fees->onEachSide(2)->links('admin.components.tailwind-modern') }}
     </div>
   </div>
 @endsection

@@ -84,7 +84,7 @@
             class="mt-4 p-1 inline-block bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded-md">
             <div class="relative w-24 h-24 mx-auto">
               <img
-                src="https://tool.konkmeng.site/api/qrcode?size=500&fg=007A28&content={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
+                src="https://tool.konkmeng.site/api/qrcode?size=500&fg=00000&content={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
                 alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-full h-full" loading="lazy">
 
               <img src="{{ asset('assets/images/khmer.svg') }}" alt="Khmer Icon"

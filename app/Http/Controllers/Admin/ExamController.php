@@ -23,6 +23,44 @@ class ExamController extends BaseController
   }
 
 
+  // public function index(Request $request)
+  // {
+  //   $courseOfferingId = $request->input('course_offering_id');
+
+  //   if (!$courseOfferingId) {
+  //     return redirect()->back()->with('error', 'Course offering ID is required.');
+  //   }
+
+  //   $search = $request->input('search');
+  //   $perPage = $request->input('per_page', 10);
+  //   $courses = CourseOffering::findOrFail($courseOfferingId);
+
+  //   $exams = Exam::withTrashed()
+  //     ->where('course_offering_id', $courseOfferingId)
+  //     ->with([
+  //       'courseOffering' => fn($q) => $q->withTrashed()
+  //     ])
+  //     ->when($search, function ($query) use ($search) {
+  //       return $query->where(function ($q) use ($search) {
+  //         $q->where('type', 'like', "%{$search}%")
+  //           ->orWhere('description', 'like', "%{$search}%")
+  //           ->orWhereHas('courseOffering.subject', function ($s) use ($search) {
+  //             $s->where('name', 'like', "%{$search}%");
+  //           });
+  //       });
+  //     })
+  //     ->orderBy('date', 'desc')
+  //     ->paginate($perPage)
+  //     ->appends([
+  //       'search'   => $search,
+  //       'per_page' => $perPage,
+  //       'course_offering_id' => $courseOfferingId,
+  //     ]);
+
+  //   return view('admin.exams.index', compact('exams', 'courseOfferingId', 'courses'));
+  // }
+
+
   public function index(Request $request)
   {
     $courseOfferingId = $request->input('course_offering_id');
@@ -32,7 +70,6 @@ class ExamController extends BaseController
     }
 
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 10);
     $courses = CourseOffering::findOrFail($courseOfferingId);
 
     $exams = Exam::withTrashed()
@@ -41,7 +78,7 @@ class ExamController extends BaseController
         'courseOffering' => fn($q) => $q->withTrashed()
       ])
       ->when($search, function ($query) use ($search) {
-        return $query->where(function ($q) use ($search) {
+        $query->where(function ($q) use ($search) {
           $q->where('type', 'like', "%{$search}%")
             ->orWhere('description', 'like', "%{$search}%")
             ->orWhereHas('courseOffering.subject', function ($s) use ($search) {
@@ -50,15 +87,11 @@ class ExamController extends BaseController
         });
       })
       ->orderBy('date', 'desc')
-      ->paginate($perPage)
-      ->appends([
-        'search'   => $search,
-        'per_page' => $perPage,
-        'course_offering_id' => $courseOfferingId,
-      ]);
+      ->get(); // ✅ no pagination
 
     return view('admin.exams.index', compact('exams', 'courseOfferingId', 'courses'));
   }
+
 
   public function create(Request $request)
   {

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportCourseScore;
 use App\Exports\ScoreExport;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Score;
 use App\Models\Exam;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -54,6 +56,26 @@ class ScoreController extends BaseController
     ])->get();
 
     return view('admin.scores.index', compact('students', 'exam'));
+  }
+
+  public function show($courseOfferingId, $studentId)
+  {
+    $courseOffering = CourseOffering::findOrFail($courseOfferingId);
+    $student = User::findOrFail($studentId);
+
+    $enrollment = Enrollment::where('student_id', $studentId)
+      ->where('course_offering_id', $courseOfferingId)
+      ->firstOrFail();
+
+    return view('admin.scores.show', compact('student', 'courseOffering', 'enrollment'));
+  }
+
+  public function exportCourseScores($courseOfferingId)
+  {
+    $course = CourseOffering::findOrFail($courseOfferingId);
+    $fileName = 'Score_Report_' . $course->subject->name . '_' . str_replace(' ', '_', $course->time_slot) . '.xlsx';
+
+    return Excel::download(new ExportCourseScore($courseOfferingId), $fileName);
   }
 
   public function exportExamScores($examId)

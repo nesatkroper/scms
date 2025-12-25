@@ -89,7 +89,7 @@
     </div>
 
     <div class="mt-6">
-      {{ $notifications->links() }}
+      {{ $notifications->onEachSide(2)->links('admin.components.tailwind-modern') }}
     </div>
 
   </div>

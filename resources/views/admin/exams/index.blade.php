@@ -22,7 +22,9 @@
       </div>
     @endif
 
-    <form action="{{ route('admin.exams.index') }}" method="GET">
+    <form action="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}" method="GET">
+      <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
+
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
@@ -57,7 +59,7 @@
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
-          <a href="{{ route('admin.exams.index') }}" id="resetSearch"
+          <a href="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="Reset Search">
             <i class="fa-solid fa-rotate-right"></i>
@@ -217,11 +219,6 @@
           </div>
         </div>
       @endforelse
-    </div>
-
-    {{-- Pagination Links --}}
-    <div class="mt-6">
-      {{ $exams->links() }}
     </div>
 
   </div>

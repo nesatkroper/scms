@@ -157,6 +157,9 @@
       @endif
     </div>
 
-    <x-table.pagination :paginator="$subjects" />
+    <div class="mt-6">
+      {{ $subjects->onEachSide(2)->links('admin.components.tailwind-modern') }}
+    </div>
+
   </div>
 @endsection

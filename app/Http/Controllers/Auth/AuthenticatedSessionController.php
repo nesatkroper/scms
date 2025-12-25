@@ -16,15 +16,6 @@ class AuthenticatedSessionController extends Controller
     return view('auth.login');
   }
 
-  // public function store(LoginRequest $request): RedirectResponse
-  // {
-  //   $request->authenticate();
-
-  //   $request->session()->regenerate();
-
-  //   return redirect()->intended(route('admin.deshboard', absolute: false));
-  // }
-
 
   public function store(LoginRequest $request): RedirectResponse
   {
@@ -40,7 +31,13 @@ class AuthenticatedSessionController extends Controller
 
     $request->session()->regenerate();
 
-    return redirect()->intended(route('admin.deshboard', absolute: false));
+
+    if ($user->hasRole('admin')) {
+      return redirect()->intended(route('admin.deshboard', absolute: false));
+    }
+
+    // All other allowed roles
+    return redirect()->intended(route('admin.profile.show', absolute: false));
   }
 
 
