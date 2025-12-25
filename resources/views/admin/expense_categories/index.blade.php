@@ -8,7 +8,7 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-hand-holding-dollar"></i>
-      Expense Categories List
+      {{ __('message.expense_categories_list') }}
     </h3>
 
     @if (session('success'))
@@ -30,7 +30,7 @@
           <a href="{{ route('admin.expense_categories.create') }}"
             class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
-            Create New Category
+            {{ __('message.create_new_category') }}
           </a>
         @endif
 
@@ -144,7 +144,7 @@
                   class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Delete">
                   <i class="fa-regular fa-trash-can me-2"></i>
-                  Delete
+                  {{ __('message.delete') }}
                 </button>
               </form> --}}
             </div>
@@ -161,10 +161,9 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Expense Categories Found
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_expense_categories_found') }}
             </h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first expense category to get
-              started</p>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_expense_category_to_get_started') }}</p>
           </div>
         </div>
       @endforelse

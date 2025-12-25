@@ -16,7 +16,7 @@
             d="M5 4a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9a1 1 0 112 0v7a4 4 0 01-4 4H5a4 4 0 01-4-4V6a4 4 0 014-4h5a1 1 0 110 2H5z"
             clip-rule="evenodd" />
         </svg>
-        Edit Exam:
+        {{ __('message.edit_exam') }}
         <span class="ml-1 text-indigo-600 dark:text-indigo-400 capitalize">
           {{ $exam->type ?? 'N/A' }}
           ({{ $exam->courseOffering->join_end->format('D,d,M-Y') }})
@@ -24,7 +24,7 @@
       </h3>
       <a href="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -50,13 +50,13 @@
           @endphp
 
           <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Type <span class="text-red-500">*</span>
+            {{ __('message.exam_type') }} <span class="text-red-500">*</span>
           </label>
 
           <select id="type" name="type" required
             class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
 
-            <option value="" disabled>Select Exam Type</option>
+            <option value="" disabled>{{ __('message.select_exam_type') }}</option>
 
             @foreach ($examTypes as $key => $label)
               <option value="{{ $key }}" @selected(old('type', $exam->type) == $key)>
@@ -79,7 +79,7 @@
 
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Date <span class="text-red-500">*</span>
+            {{ __('message.exam_date') }} <span class="text-red-500">*</span>
           </label>
 
           <div class="relative">
@@ -111,7 +111,7 @@
 
         {{-- <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Date <span class="text-red-500">*</span>
+            {{ __('message.exam_date') }} <span class="text-red-500">*</span>
           </label>
           <input type="date" id="date" name="date" required min="2025-01-01" max="2027-12-31"
             min="{{ now()->toDateString() }}"
@@ -128,7 +128,7 @@
         {{-- Total Marks --}}
         <div>
           <label for="total_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Total Marks <span class="text-red-500">*</span>
+            {{ __('message.total_marks') }} <span class="text-red-500">*</span>
           </label>
           <input type="number" id="total_marks" name="total_marks" required min="1" max="100" maxlength="3"
             value="{{ old('total_marks', $exam->total_marks ?? 100) }}"
@@ -142,7 +142,7 @@
         {{-- Passing Marks --}}
         <div>
           <label for="passing_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Passing Marks <span class="text-red-500">*</span>
+            {{ __('message.passing_marks') }} <span class="text-red-500">*</span>
           </label>
           <input type="number" id="passing_marks" name="passing_marks" required min="0" max="100"
             maxlength="3" value="{{ old('passing_marks', $exam->passing_marks ?? '') }}"
@@ -158,7 +158,7 @@
       <div class="mb-6">
         {{-- Description (Textarea) --}}
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description (Optional)
+          {{ __('message.description_(optional)') }}
         </label>
         <textarea id="description" name="description" rows="3"
           class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
@@ -176,7 +176,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         @if (Auth::user()->hasPermissionTo('update_exam'))
@@ -187,7 +187,7 @@
                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                 clip-rule="evenodd" />
             </svg>
-            Update Exam
+            {{ __('message.update_exam') }}
           </button>
         @endif
       </div>

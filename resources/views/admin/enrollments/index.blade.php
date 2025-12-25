@@ -41,16 +41,17 @@
               <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
                 class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
                 <i class="fa-solid fa-plus"></i>
-                Enrollment
+                {{ __('message.enrollment') }}
               </a>
             @endif
 
             <a href="{{ route('admin.course_offerings.index') }}"
               class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
               <i class="fa-solid fa-plus"></i>
-              Back
+              {{ __('message.back') }}
             </a>
           </div>
+        @endif
 
         @endif
 
@@ -109,7 +110,7 @@
             <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
               <p class="flex items-center gap-1 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
-                Status:
+                {{ __('message.status') }}
                 <span
                   class="font-semibold px-2 py-0.5 rounded-full text-xs
             @if ($enrollment->status === 'completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
@@ -127,7 +128,7 @@
             {{-- <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
               <p class="flex items-center gap-1 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
-                Status:
+                {{ __('message.status') }}
                 <span
                   class="font-semibold px-2 py-0.5 rounded-full text-xs
                   @if ($enrollment->status === 'Completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
@@ -144,7 +145,7 @@
             <div class="flex justify-between items-center">
               <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
                 <i class="fa-solid fa-graduation-cap text-purple-500"></i>
-                Final Grade:
+                {{ __('message.final_grade') }}
               </span>
 
               @php
@@ -261,7 +262,7 @@
                   class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Delete Admission">
                   <i class="fa-regular fa-trash-can me-2"></i>
-                  Delete
+                  {{ __('message.delete') }}
                 </button>
               </form> --}}
             </div>

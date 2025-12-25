@@ -22,7 +22,7 @@
         {{-- Back to Register Button --}}
         <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOfferingId]) }}"
           class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-          Back to Register
+          {{ __('message.back_to_register') }}
         </a>
       </div>
 
@@ -69,7 +69,7 @@
                 if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
             }" class="relative">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Student <span class="text-red-500">*</span>
+                {{ __('message.student') }} <span class="text-red-500">*</span>
               </label>
 
               <!-- Hidden input for form submit -->
@@ -125,7 +125,7 @@
               <select name="student_id" id="student_id" required
                 class="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
 
-                <option value="">Select Student</option>
+                <option value="">{{ __('message.select_student') }}</option>
 
                 @foreach ($students as $student)
                   <option value="{{ $student->id }}">{{ $student->name }} (ID: {{ $student->id }})</option>
@@ -142,7 +142,7 @@
           {{-- 6. Remarks Field (Textarea) --}}
           <div class="border-t pt-6 border-gray-200 dark:border-gray-700">
             <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Remarks (Optional)
+              {{ __('message.remarks_(optional)') }}
             </label>
             <textarea name="remarks" id="remarks" rows="5"
               placeholder="Any special notes about this student's admission or progress."
@@ -174,7 +174,7 @@
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                   clip-rule="evenodd" />
               </svg>
-              Create Enrollment
+              {{ __('message.create_enrollment') }}
             </button>
           @endif
 
