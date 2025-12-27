@@ -14,11 +14,11 @@
             d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 9H5a1 1 0 000 2h4v4a1 1 0 002 0v-4h4a1 1 0 000-2h-4V5a1 1 0 00-2 0v4z"
             clip-rule="evenodd" />
         </svg>
-        Create New Fee Type
+        {{ __('message.create_new_fee_type') }}
       </h3>
       <a href="{{ route('admin.fee_types.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -41,7 +41,7 @@
 
         <div class="col-span-2">
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fee Type Name <span class="text-red-500">*</span>
+            {{ __('message.fee_type_name') }} <span class="text-red-500">*</span>
           </label>
           <input type="text" id="name" name="name" value="{{ old('name') }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -56,7 +56,7 @@
 
         <div class="">
           <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fee Cost <span class="text-red-500">*</span>
+            {{ __('message.fee_cost') }} <span class="text-red-500">*</span>
           </label>
           <input type="number" id="amount" name="amount" value="{{ old('amount') }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -73,7 +73,7 @@
 
       {{-- <div class="mb-3">
         <label class="form-label fw-bold text-gray-800 dark:text-gray-200">
-          Apply Fee Type to Courses (multiple):
+          {{ __('message.apply_fee_type_to_courses_(multiple)') }}
         </label>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
           @foreach ($courseOfferings as $course)
@@ -107,7 +107,7 @@
 
       <div class="mb-3">
         <label class="form-label fw-bold text-gray-800 dark:text-gray-200 mb-4">
-          Apply Fee Type to Courses (multiple):
+          {{ __('message.apply_fee_type_to_courses_(multiple)') }}
         </label>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -145,7 +145,7 @@
       {{-- Fee Type Description Field --}}
       <div class="mb-6">
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description
+          {{ __('message.description') }}
         </label>
         <textarea id="description" name="description" rows="3"
           class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -167,14 +167,14 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         @if (Auth::user()->hasPermissionTo('create_fee-type'))
           <button type="submit"
             class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-plus me-2"></i>
-            Create Fee Type
+            {{ __('message.create_fee_type') }}
           </button>
         @endif
       </div>

@@ -16,7 +16,7 @@
             d="M12 6v12m-2.25 1.5h4.5a.75.75 0 00.75-.75V6.75a.75.75 0 00-.75-.75h-4.5a.75.75 0 00-.75.75V18.75a.75.75 0 00.75.75z" />
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12h-6" />
         </svg>
-        {{ $feeType->name ?? 'N/A' }} Details
+        {{ $feeType->name ?? 'N/A' }} {{ __('message.details') }}
       </h3>
 
       <div class="flex gap-4">
@@ -24,12 +24,12 @@
           class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
           title="Export {{ $feeType->name ?? 'N/A' }}">
           <i class="fa-solid fa-download me-2"></i>
-          Export {{ $feeType->name ?? 'N/A' }}
+          {{ __('message.export') }} {{ $feeType->name ?? 'N/A' }}
         </a>
         {{-- Back Button --}}
         <a href="{{ route('admin.fee_types.index') }}"
           class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
-          <i class="fas fa-arrow-left text-xs"></i> Back to Fee Types
+          <i class="fas fa-arrow-left text-xs"></i> {{ __('message.back_to_fee_types') }}
         </a>
       </div>
     </div>
@@ -45,12 +45,12 @@
             {{ $feeType->name ?? 'N/A' }}
           </h2>
           <p class="text-sm font-semibold text-teal-500 dark:text-teal-400 mt-1">
-            Type ID: {{ $feeType->id }}
+            {{ __('message.type_id') }} {{ $feeType->id }}
           </p>
         </div>
         {{-- Calculate and display total amount due for this category --}}
         <span class="text-3xl font-extrabold text-blue-700 dark:text-blue-400 mt-2 sm:mt-0">
-          Total Due: ${{ number_format($feeType->fees->sum('amount') ?? 0, 2) }}
+          {{ __('message.total_due') }} ${{ number_format($feeType->fees->sum('amount') ?? 0, 2) }}
         </span>
       </div>
 
@@ -61,7 +61,7 @@
         {{-- Description --}}
         <p class="lg:col-span-2 detail-item">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-list-ul text-purple-500"></i> Description:
+            <i class="fa-solid fa-list-ul text-purple-500"></i> {{ __('message.description') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1 text-base whitespace-pre-wrap">
             {{ $feeType->description ?? 'No description provided.' }}
@@ -71,7 +71,7 @@
         {{-- Created At --}}
         <p class="detail-item">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-plus text-cyan-500"></i> Created:
+            <i class="fa-solid fa-calendar-plus text-cyan-500"></i> {{ __('message.created') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
             {{ $feeType->created_at?->format('M d, Y H:i') ?? 'N/A' }}
@@ -81,7 +81,7 @@
         {{-- Last Updated --}}
         <p class="detail-item">
           <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-            <i class="fa-solid fa-calendar-check text-pink-500"></i> Last Updated:
+            <i class="fa-solid fa-calendar-check text-pink-500"></i> {{ __('message.last_updated') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
             {{ $feeType->updated_at?->format('M d, Y H:i') ?? 'N/A' }}
@@ -92,10 +92,10 @@
       {{-- Associated Fees Section --}}
       <div class="pt-4 border-t border-gray-200 dark:border-gray-700/50">
         <span class="font-bold text-lg text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-3">
-          <i class="fa-solid fa-graduation-cap text-teal-500"></i> Associated Fees
+          <i class="fa-solid fa-graduation-cap text-teal-500"></i> {{ __('message.associated_fees') }}
           <span
             class="ml-2 px-3 py-0.5 rounded-full text-xs font-extrabold bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-            Total Fees: {{ $feeType->fees->count() }}
+            {{ __('message.total_fees') }} {{ $feeType->fees->count() }}
           </span>
         </span>
         <div
@@ -120,10 +120,10 @@
                   {{-- Fee Details (Student Name) --}}
                   <div class="flex flex-col">
                     <span class="font-bold text-base text-gray-800 dark:text-gray-200">
-                      Fee for: {{ $fee->student->name ?? 'Student N/A' }}
+                      {{ __('message.fee_for') }} {{ $fee->student->name ?? 'Student N/A' }}
                     </span>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
-                      Due Date: {{ $fee->due_date?->format('M d, Y') ?? 'N/A' }}
+                      {{ __('message.due_date') }} {{ $fee->due_date?->format('M d, Y') ?? 'N/A' }}
                     </span>
                   </div>
 
@@ -142,7 +142,7 @@
             </ul>
           @else
             <p class="text-center text-sm italic text-gray-500 dark:text-gray-400">
-              No fees have been assigned with this fee type yet.
+              {{ __('message.no_fees_have_been_assigned_with_this_fee_type_yet') }}
             </p>
           @endif
         </div>
@@ -158,7 +158,7 @@
           class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
           title="Edit Fee Type">
           <i class="fa-solid fa-pen-to-square mr-2"></i>
-          Edit Type
+         {{ __('message.edit_type') }}
         </a>
       @endif
 
@@ -171,7 +171,7 @@
             class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors"
             title="Delete Fee Type">
             <i class="fa-regular fa-trash-can mr-2"></i>
-            Delete
+            {{ __('message.delete') }}
           </button>
         </form>
       @endif --}}
