@@ -14,11 +14,11 @@
           <line x1="12" y1="1" x2="12" y2="23"></line>
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
         </svg>
-        Create New Fee Record
+        {{ __('message.create_new_fee_record') }}
       </h3>
       <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -38,7 +38,7 @@
         {{-- 1. Student Field --}}
         {{-- <div>
           <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Student <span class="text-red-500">*</span>
+            {{ __('message.student') }} <span class="text-red-500">*</span>
           </label>
           <select id="student_id" name="student_id"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -46,7 +46,7 @@
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('student_id') border-red-500 @else border-gray-400 @enderror"
             required>
-            <option value="">Select a Student</option>
+            <option value="">{{ __('message.select_a_student') }}</option>
             @foreach ($students as $student)
               <option value="{{ $student->id }}" @selected(old('student_id') == $student->id)>
                 {{ $student->name }} ({{ $student->email }})
@@ -71,7 +71,7 @@
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('fee_type_id') border-red-500 @else border-gray-400 @enderror"
             required>
-            <option value="">Select Fee Type</option>
+            <option value="">{{ __('message.select_fee_type') }}</option>
             @foreach ($feeTypes as $feeType)
               <option value="{{ $feeType->id }}" @selected(old('fee_type_id') == $feeType->id)>
                 {{ $feeType->name }}
@@ -102,7 +102,7 @@
         {{-- 4. Due Date Field --}}
         <div>
           <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Due Date (Optional)
+            {{ __('message.due_date_(optional)') }}
           </label>
           <input type="date" id="due_date" name="due_date" value="{{ old('due_date') }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -119,7 +119,7 @@
       {{-- 6. Remarks Field --}}
       <div class="mb-6">
         <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Remarks (Optional)
+          {{ __('message.remarks_(optional)') }}
         </label>
         <textarea id="remarks" name="remarks" rows="3"
           class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -141,14 +141,14 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         @if (Auth::user()->hasPermissionTo('create_fee'))
           <button type="submit"
             class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-plus me-2"></i>
-            Create Fee Record
+            {{ __('message.create_fee_record') }}
           </button>
         @endif
       </div>

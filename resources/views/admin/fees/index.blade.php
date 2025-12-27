@@ -8,7 +8,7 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-file-invoice-dollar me-2"></i>
-      Fees List of - {{ $selectedFeeType->name ?? 'All' }}
+      {{ __('message.fees_list_of__') }} {{ $selectedFeeType->name ?? 'All' }}
     </h3>
 
     @if (session('success'))
@@ -31,14 +31,14 @@
           <a href="{{ route('admin.fees.create', ['fee_type_id' => $feeTypeId]) }}"
             class="lg:col-span-1 text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
-            Create New Fee
+            {{ __('message.create_new_fee') }}
           </a>
         @endif
 
         <div class="lg:col-span-2 xl:col-span-3 flex items-center mt-3 lg:mt-0 gap-2 flex min-w-2/3">
           <select name="status"
             class="border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg py-1.5 px-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-            <option value="">All Statuses</option>
+            <option value="">{{ __('message.all_statuses') }}</option>
             @foreach ($statuses as $s)
               <option value="{{ $s }}" @selected(request('status') == $s) class="capitalize">{{ $s }}
               </option>
@@ -87,7 +87,7 @@
                   ${{ number_format($fee->amount, 2) }}
                 </h4>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Category: <span
+                  {{ __('message.category') }} <span
                     class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $fee->feeType->name ?? 'Fee Type Deleted' }}</span>
                 </p>
               </div>
@@ -114,7 +114,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Due Date</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.due_date') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('F jS, Y') : 'N/A' }}
                 </p>
@@ -130,18 +130,18 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Status</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.status') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200 capitalize">
                 <p class="text-sm">
                   @if ($fee->status == 'paid')
                     <span
                       class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-                      Paid on {{ $fee->paid_date ? \Carbon\Carbon::parse($fee->paid_date)->format('M d, Y') : 'N/A' }}
+                      {{ __('message.paid_on') }} {{ $fee->paid_date ? \Carbon\Carbon::parse($fee->paid_date)->format('M d, Y') : 'N/A' }}
                     </span>
                   @elseif ($fee->status == 'pending' && $fee->due_date && $fee->due_date->isPast())
                     <span
                       class="font-bold px-3 py-0.5 rounded-full text-xs bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300">
-                      Overdue
+                      {{ __('message.overdue') }}
                     </span>
                   @else
                     <span
@@ -165,7 +165,7 @@
                 title="Add Payment">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
-                  Payment
+                  {{ __('message.payment') }}
                 </span>
               </a>
             @else
@@ -174,7 +174,7 @@
                 title="Paid">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
-                  Invoice
+                  {{ __('message.invoice') }}
                 </span>
               </a>
             @endif
@@ -187,7 +187,7 @@
                     title="Edit">
                     <span class="btn-content flex items-center justify-center">
                       <i class="fa-solid fa-pen-to-square me-2"></i>
-                      Edit
+                      {{ __('message.edit') }}
                     </span>
                   </a>
                 @endif
@@ -200,7 +200,7 @@
                     class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                     title="Delete">
                     <i class="fa-regular fa-trash-can me-2"></i>
-                    Delete
+                    {{ __('message.delete') }}
                   </button>
                 </form> --}}
               </div>
@@ -218,9 +218,8 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Fee Records Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first fee record to begin tracking student
-              payments.</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_fee_records_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_fee_record_to_begin_tracking_student_payments') }}</p>
           </div>
         </div>
       @endforelse

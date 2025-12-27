@@ -14,11 +14,11 @@
           <path d="M12 20h9"></path>
           <path d="M16.5 3.5l4 4L7 19l-4 1 1-4z"></path>
         </svg>
-        Edit Fee Record: #{{ $fee->id }}
+        {{ __('message.edit_fee_record') }} #{{ $fee->id }}
       </h3>
       <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
 
@@ -39,7 +39,7 @@
         {{-- 1. Student Field --}}
         <div>
           <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Student <span class="text-red-500">*</span>
+            {{ __('message.student') }} <span class="text-red-500">*</span>
           </label>
           <select id="student_id" name="student_id"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -47,7 +47,7 @@
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('student_id') border-red-500 @else border-gray-400 @enderror"
             required>
-            <option value="">Select a Student</option>
+            <option value="">{{ __('message.select_a_student') }}</option>
             @foreach ($students as $student)
               <option value="{{ $student->id }}" @selected(old('student_id', $fee->student_id) == $student->id)>
                 {{ $student->name }} ({{ $student->email }})
@@ -62,7 +62,7 @@
         {{-- 2. Fee Type Field --}}
         <div>
           <label for="fee_type_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fee Type <span class="text-red-500">*</span>
+            {{ __('message.fee_type') }} <span class="text-red-500">*</span>
           </label>
           <select id="fee_type_id" name="fee_type_id"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -70,7 +70,7 @@
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('fee_type_id') border-red-500 @else border-gray-400 @enderror"
             required>
-            <option value="">Select Fee Type</option>
+            <option value="">{{ __('message.select_fee_type') }}</option>
             @foreach ($feeTypes as $feeType)
               <option value="{{ $feeType->id }}" @selected(old('fee_type_id', $fee->fee_type_id) == $feeType->id)>
                 {{ $feeType->name }}
@@ -85,7 +85,7 @@
         {{-- 3. Amount Field --}}
         <div>
           <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Amount ($) <span class="text-red-500">*</span>
+            {{ __('message.amount') }} ($) <span class="text-red-500">*</span>
           </label>
           <input type="number" step="0.01" min="0" id="amount" name="amount"
             value="{{ old('amount', $fee->amount) }}"
@@ -102,7 +102,7 @@
         {{-- 4. Due Date Field --}}
         <div>
           <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Due Date (Optional)
+            {{ __('message.due_date_(optional)') }}
           </label>
           <input type="date" id="due_date" name="due_date" value="{{ old('due_date', $fee->due_date) }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -118,7 +118,7 @@
       {{-- 6. Remarks Field --}}
       <div class="mb-6">
         <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Remarks (Optional)
+          {{ __('message.remarks_(optional)') }}
         </label>
         <textarea id="remarks" name="remarks" rows="3"
           class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -140,7 +140,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         @if (Auth::user()->hasPermissionTo('update_fee'))
@@ -151,7 +151,7 @@
                 d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-1.414 2.828L11 9.043V15h-6V4h7.586l.707-.707a2 2 0 012.828 0l1.414 1.414A2 2 0 0117.414 5l.707.707zM16 9.043l-3 3V16h3v-6.957zM5 16h6v-6H5v6z"
                 fill-rule="evenodd" clip-rule="evenodd" />
             </svg>
-            Update Fee Record
+            {{ __('message.update_fee_record') }}
           </button>
         @endif
       </div>
