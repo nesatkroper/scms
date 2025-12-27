@@ -8,7 +8,7 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-money-check-dollar"></i>
-      Expense for
+      {{ __('message.expense_for') }}
     </h3>
 
     @if (session('success'))
@@ -30,7 +30,7 @@
           <a href="{{ route('admin.expenses.create', ['category_id' => request('category_id')]) }}"
             class="text-nowrap px-4 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
-            Record New Expense
+            {{ __('message.record_new_expense') }}
           </a>
         @endif
 
@@ -75,7 +75,7 @@
               </span>
             </div>
             <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold flex items-center gap-1">
-              Category:
+            {{ __('message.category') }}  
               <span class="text-red-600 dark:text-red-400">{{ $expense->category?->name ?? 'N/A' }}</span>
             </p>
           </div>
@@ -86,7 +86,7 @@
             <p
               class="flex items-center gap-1 font-medium text-gray-600 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700/50 py-1">
               <i class="fa-solid fa-calendar-alt text-blue-500"></i>
-              Date:
+              {{ __('message.date') }}
               <span class="font-semibold text-gray-800 dark:text-gray-200">
                 {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : 'N/A' }}
               </span>
@@ -95,7 +95,7 @@
             <p
               class="flex items-center gap-1 font-medium text-gray-600 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700/50 py-1">
               <i class="fa-solid fa-user-edit text-green-500"></i>
-              Recorded By:
+              {{ __('message.recorded_by') }}
               <span class="font-semibold text-gray-800 dark:text-gray-200">
                 {{ $expense->creator?->name ?? 'Unknown' }}
               </span>
@@ -105,17 +105,17 @@
             <p class="flex justify-between items-center">
               <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
                 <i class="fa-solid fa-check-circle text-teal-500"></i>
-                Approval:
+                {{ __('message.approval') }}
               </span>
               @if ($expense->approved_by)
                 <span
                   class="font-bold px-2 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-                  Approved by - {{ $expense?->approver?->name }}
+                  {{ __('message.approved_by__') }} {{ $expense?->approver?->name }}
                 </span>
               @else
                 <span
                   class="font-bold px-2 py-0.5 rounded-full text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
-                  Pending
+                  {{ __('message.pending') }}
                 </span>
               @endif
             </p>
@@ -125,7 +125,7 @@
               <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50">
                 <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
                   <i class="fa-solid fa-file-alt text-orange-500"></i>
-                  Notes:
+                  {{ __('message.notes') }}
                 </span>
                 <p class="text-xs italic text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
                   {{ Str::limit($expense->description, 100) }}
@@ -165,7 +165,7 @@
                 class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                 title="Delete Expense">
                 <i class="fa-regular fa-trash-can me-2"></i>
-                Delete
+                {{ __('message.delete') }}
               </button>
             </form> --}}
           </div>
@@ -173,7 +173,7 @@
       @empty
         <div
           class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          No expense records found. Click "Record New Expense" to start.
+          {{ __('message.no_expense_records_found_click_record_new_expense_to_start') }}
         </div>
       @endforelse
     </div>
