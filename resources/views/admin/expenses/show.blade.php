@@ -204,7 +204,7 @@
 
     <div class="mt-10 pt-2 border-t border-gray-200 dark:border-gray-700/50 text-center z-20">
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        {{ __('message.record_id') }} EXP-{{ $expense->id }} | Report Generated on {{ now()->format('M d, Y h:i A') }}
+        {{ __('message.record_id') }} EXP-{{ $expense->id }} | {{ __('message.report_generated_on') }} {{ now()->format('M d, Y h:i A') }}
       </p>
     </div>
 

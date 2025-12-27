@@ -249,5 +249,6 @@ return [
   'edit' => "Edit",
   'delete' => "Delete",
   'record_id' => "Record ID:",
+  'report_generated_on' => "Report Generated on",
   
 ];
