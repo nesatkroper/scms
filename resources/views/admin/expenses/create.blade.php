@@ -15,11 +15,11 @@
           <line x1="12" y1="1" x2="12" y2="23"></line>
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
         </svg>
-        Record New Expense - {{ $category->name }}
+        {{ __('message.record_new_expense') }} - {{ $category->name }}
       </h3>
       <a href="{{ route('admin.expenses.index', ['category_id' => $category->id]) }}"
         class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-        Back to Ledger
+        {{ __('message.back_to_ledger') }}
       </a>
     </div>
 
@@ -41,7 +41,7 @@
         {{-- 1. Title Field --}}
         <div>
           <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Expense Title <span class="text-red-500">*</span>
+            {{ __('message.expense_title') }} <span class="text-red-500">*</span>
           </label>
           <input type="text" id="title" name="title" value="{{ old('title') }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -57,7 +57,7 @@
         {{-- 2. Amount Field --}}
         <div>
           <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Amount ($) <span class="text-red-500">*</span>
+            {{ __('message.amount') }} ($) <span class="text-red-500">*</span>
           </label>
           <input type="number" step="0.01" min="0.01" id="amount" name="amount" value="{{ old('amount') }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -73,7 +73,7 @@
         {{-- 3. Date Field --}}
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Date <span class="text-red-500">*</span>
+            {{ __('message.date') }} <span class="text-red-500">*</span>
           </label>
 
           <div class="relative">
@@ -104,7 +104,7 @@
 
         {{-- <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Date <span class="text-red-500">*</span>
+            {{ __('message.date') }} <span class="text-red-500">*</span>
           </label>
           <input type="date" id="date" name="date" value="{{ old('date', now()->toDateString()) }}"
             min="2025-01-01" max="2027-01-01"
@@ -123,7 +123,7 @@
       @if ($category->name === 'Payroll')
         <div class="mb-3 mt-6">
           <label class="form-label fw-bold text-gray-800 dark:text-gray-200">
-            Select Users for Payroll:
+            {{ __('message.select_users_for_payroll') }}
           </label>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-2">
@@ -183,14 +183,14 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         @if (Auth::user()->hasPermissionTo('create_expense'))
           <button type="submit"
             class="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-plus me-2"></i>
-            Record Expense
+            {{ __('message.record_expense') }}
           </button>
         @endif
       </div>

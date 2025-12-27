@@ -199,5 +199,13 @@ return [
   'no_expenses_have_been_recorded_for_this_category_yet' => "No expenses have been recorded for this category yet.",
   'edit_category' => "Edit Category",
   'delete' => "Delete",
+  'record_new_expense' => "Record New Expense",
+  'back_to_ledger' => "Back to Ledger",
+  'expense_title' => "Expense Title",
+  'amount' => "Amount",
+  'date' => "Date",
+  'select_users_for_payroll' => "Select Users for Payroll:",
+  'cancel' => "Cancel",
+  'record_expense' => "Record Expense",
   
 ];
