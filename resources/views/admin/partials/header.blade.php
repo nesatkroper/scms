@@ -103,7 +103,7 @@
             </a>
           @empty
             <div class="block px-4 py-3 text-sm text-gray-500 dark:text-gray-400 italic">
-              You have no new notifications.
+              {{ __('message.you_have_no_new_notifications') }}
             </div>
           @endforelse
         </div>
@@ -112,7 +112,7 @@
           <div class="px-4 py-2 text-center text-sm">
             <a href="{{ route('admin.notifications.index') }}"
               class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800">
-              View All Notifications
+              {{ __('message.view_all_notifications') }}
             </a>
           </div>
         @endif
@@ -149,7 +149,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
           </svg>
-          Profile
+          {{ __('message.profile') }}
         </a>
 
         <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
@@ -163,7 +163,7 @@
                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
               </path>
             </svg>
-            {{ __('Logout') }}
+            {{ __('message.logout') }}
           </button>
         </form>
       </div>

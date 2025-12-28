@@ -46,9 +46,9 @@
           {{ request()->routeIs('admin.deshboard*') ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fas fa-tachometer-alt text-center"></i>
-              <span class="ml-3 sidebar-text text-hidden">Dashboard</span>
+              <span class="ml-3 sidebar-text text-hidden">{{ __('message.dashboard') }}</span>
             </div>
-            <span class="menu-tooltip">Dashboard</span>
+            <span class="menu-tooltip">{{ __('message.dashboard') }}</span>
           </a>
         </li>
       @endif
@@ -64,10 +64,10 @@
           {{ $isAcademicsActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="ri-graduation-cap-fill text-lg"></i>
-              <span class="ml-3 sidebar-text text-hidden">Academics</span>
+              <span class="ml-3 sidebar-text text-hidden">{{ __('message.academics') }}</span>
             </div>
             <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-            <span class="menu-tooltip">Academics</span>
+            <span class="menu-tooltip">{{ __('message.academics') }}</span>
           </div>
           <div class="submenu {{ $isAcademicsActive ? 'active' : '' }}">
             <ul class="pl-4 pr-4">
@@ -75,7 +75,7 @@
                 <li>
                   <a href="{{ route('admin.classrooms.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Classrooms</a>
+                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.classrooms') }}</a>
                 </li>
               @endif
 
@@ -84,7 +84,7 @@
                   <a href="{{ route('admin.subjects.index') }}"
                     class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.subjects.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                    subjects
+                    {{ __('message.subjects') }}
                   </a>
                 </li>
               @endif
@@ -93,8 +93,7 @@
                 <li>
                   <a href="{{ route('admin.course_offerings.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Course
-                    offering
+                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.course_offering') }}
                   </a>
                 </li>
               @endif
@@ -111,10 +110,10 @@
           {{ $isOrganizationActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fa-solid fa-lock"></i>
-              <span class="ml-3 sidebar-text text-hidden">Organization</span>
+              <span class="ml-3 sidebar-text text-hidden">{{ __('message.organization') }}</span>
             </div>
             <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-            <span class="menu-tooltip">Organization</span>
+            <span class="menu-tooltip">{{ __('message.organization') }}</span>
           </div>
           <div class="submenu {{ $isOrganizationActive ? 'active' : '' }}">
             <ul class="pl-4 pr-4">
@@ -123,7 +122,7 @@
                   <a href="{{ route('admin.teachers.index') }}"
                     class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.teachers.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                    <span class="ml-2">teachers</span>
+                    <span class="ml-2">{{ __('message.teachers') }}</span>
                   </a>
                 </li>
               @endif
@@ -133,7 +132,7 @@
                   <a href="{{ route('admin.students.index') }}"
                     class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
                 {{ request()->routeIs('admin.students.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                    <span class="ml-2">Students</span>
+                    <span class="ml-2">{{ __('message.students') }}</span>
                   </a>
                 </li>
               @endif
@@ -154,10 +153,10 @@
                             {{ $isFinanceActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fas fa-money-bill-wave text-center"></i>
-              <span class="ml-3 sidebar-text text-hidden">Finance</span>
+              <span class="ml-3 sidebar-text text-hidden">{{ __('message.finance') }}</span>
             </div>
             <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-            <span class="menu-tooltip">Finance</span>
+            <span class="menu-tooltip">{{ __('message.finance') }}</span>
           </div>
           <div class="submenu {{ $isFinanceActive ? 'active' : '' }}">
             <ul class="pl-2 pr-2">
@@ -167,7 +166,7 @@
                   <a href="{{ route('admin.fee_types.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.fee_types.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                    fee collection
+                    {{ __('message.fee_collection') }}
                   </a>
                 </li>
               @endif
@@ -177,7 +176,7 @@
                   <a href="{{ route('admin.expense_categories.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
                 {{ request()->routeIs('admin.expense_categories.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
-                    expense cost
+                    {{ __('message.expense_cost') }}
                   </a>
                 </li>
               @endif
@@ -193,9 +192,9 @@
           {{ request()->routeIs('admin.notifications*') ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="fa-regular fa-bell"></i>
-            <span class="ml-3 sidebar-text text-hidden">Notification</span>
+            <span class="ml-3 sidebar-text text-hidden">{{ __('message.notification') }}</span>
           </div>
-          <span class="menu-tooltip">Notification</span>
+          <span class="menu-tooltip">{{ __('message.notification') }}</span>
         </a>
       </li>
 
@@ -206,9 +205,9 @@
           {{ request()->routeIs('admin.reports') ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fas fa-tachometer-alt text-center"></i>
-              <span class="ml-3 sidebar-text text-hidden">Report</span>
+              <span class="ml-3 sidebar-text text-hidden">{{ __('message.report') }}</span>
             </div>
-            <span class="menu-tooltip">Report</span>
+            <span class="menu-tooltip">{{ __('message.report') }}</span>
           </a>
         </li>
 
@@ -223,10 +222,10 @@
             {{ $isAdministratorActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fa-solid fa-lock"></i>
-              <span class="ml-3 sidebar-text text-hidden">Administrator</span>
+              <span class="ml-3 sidebar-text text-hidden">{{ __('message.administrator') }}</span>
             </div>
             <i class="fas fa-chevron-right menu-icon text-xs sidebar-text text-hidden"></i>
-            <span class="menu-tooltip">Administrator</span>
+            <span class="menu-tooltip">{{ __('message.administrator') }}</span>
           </div>
           <div class="submenu {{ $isAdministratorActive ? 'active' : '' }}">
             <ul class="pl-4 pr-4">
@@ -234,7 +233,7 @@
                 <li>
                   <a href="{{ route('admin.users.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                  {{ request()->routeIs('admin.users.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">Users</a>
+                  {{ request()->routeIs('admin.users.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.users') }}</a>
                 </li>
               @endif
 
@@ -242,7 +241,7 @@
                 <li>
                   <a href="{{ route('admin.roles.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                  {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">roles</a>
+                  {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.roles') }}</a>
                 </li>
               @endif
           </div>
