@@ -62,7 +62,6 @@ class UserSeeder extends Seeder
           'experience' => $faker->numberBetween(1, 15) . ' years',
           'specialization' => $faker->randomElement(['Mathematics', 'Physics', 'English Literature', 'History']),
           'salary' => $faker->randomFloat(2, 40000, 120000),
-          'blood_group' => $faker->randomElement(['A+', 'B+', 'O+', 'AB-']),
           'nationality' => 'Example Country',
           'religion' => 'Example Faith',
         ]
@@ -87,7 +86,6 @@ class UserSeeder extends Seeder
           'gender' => $faker->randomElement(['male', 'female']),
           'admission_date' => $faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'),
           'occupation' => 'Student',
-          'blood_group' => $faker->randomElement(['A+', 'B+', 'O+', 'AB-']),
           'nationality' => 'Example Country',
           'religion' => 'Example Faith',
         ]

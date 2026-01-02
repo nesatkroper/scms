@@ -166,7 +166,6 @@ class UserController extends BaseController
         'gender',
         'nationality',
         'religion',
-        'blood_group',
         'joining_date',
         'qualification',
         'experience',

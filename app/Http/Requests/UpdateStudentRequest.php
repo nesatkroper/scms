@@ -23,7 +23,6 @@ class UpdateStudentRequest extends FormRequest
       'gender' => 'required|in:male,female,other',
       'date_of_birth' => 'required|date',
       'address' => 'nullable|string',
-      'blood_group' => 'nullable|string|max:10',
       'nationality' => 'nullable|string|max:100',
       'religion' => 'nullable|string|max:100',
       'admission_date' => 'required|date',

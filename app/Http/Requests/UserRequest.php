@@ -35,7 +35,6 @@ class UserRequest extends FormRequest
       'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
       'nationality' => ['nullable', 'string', 'max:255'],
       'religion' => ['nullable', 'string', 'max:255'],
-      'blood_group' => ['nullable', 'string', 'max:10'],
       'joining_date' => ['nullable', 'date'],
       'qualification' => ['nullable', 'string', 'max:255'],
       'experience' => ['nullable', 'numeric', 'min:0'],

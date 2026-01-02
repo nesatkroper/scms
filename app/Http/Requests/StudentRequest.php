@@ -27,7 +27,6 @@ class StudentRequest extends FormRequest
       'date_of_birth' => ['nullable', 'date'],
       'gender' => ['nullable', 'string', Rule::in(['male', 'female', 'other'])],
       'admission_date' => ['nullable', 'date'],
-      'blood_group' => ['nullable', 'string', 'max:5'],
       'nationality' => ['nullable', 'string', 'max:50'],
       'religion' => ['nullable', 'string', 'max:50'],
       'occupation' => ['nullable', 'string', 'max:100'],

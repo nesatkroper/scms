@@ -4,7 +4,8 @@
 
   <div class="mb-6 flex justify-between items-center">
     <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-     <div class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
+      <div
+        class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
         <i class="ri-user-2-fill text-2xl"></i>
       </div>
       {{ $student->name }} Details
@@ -93,12 +94,6 @@
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Personal & Contact Info</h3>
 
-          <a href="{{ route('admin.students.fees.index', $student->id) }}"
-            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-            title="Export Information">
-            <i class="fa-solid fa-download me-2"></i>
-            Export Information
-          </a>
         </div>
 
         {{-- Details Grid --}}
@@ -118,10 +113,6 @@
           @include('admin.components.detail-item', [
               'label' => 'Phone',
               'value' => $student->phone ?? 'N/A',
-          ])
-          @include('admin.components.detail-item', [
-              'label' => 'Blood Group',
-              'value' => $student->blood_group ?? 'N/A',
           ])
 
           {{-- Admission/Status Info --}}
@@ -177,12 +168,6 @@
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Assigned Courses</h3>
 
-          <a href="{{ route('admin.students.fees.index', $student->id) }}"
-            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-            title="Export Courses">
-            <i class="fa-solid fa-download me-2"></i>
-            Export Courses
-          </a>
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
@@ -254,12 +239,6 @@
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Fee Records</h3>
 
-          <a href="{{ route('admin.students.fees.index', $student->id) }}"
-            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-            title="Export Payment">
-            <i class="fa-solid fa-download me-2"></i>
-            Export Payment
-          </a>
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
@@ -337,12 +316,6 @@
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Exam Scores</h3>
 
-          <a href="{{ route('admin.students.fees.index', $student->id) }}"
-            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-            title="Export Result">
-            <i class="fa-solid fa-download me-2"></i>
-            Export Result
-          </a>
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
@@ -423,12 +396,6 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Attendance Log</h3>
 
-          <a href="{{ route('admin.students.fees.index', $student->id) }}"
-            class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-            title="Export Attendance">
-            <i class="fa-solid fa-download me-2"></i>
-            Export Attendance
-          </a>
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">

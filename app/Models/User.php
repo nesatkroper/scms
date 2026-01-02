@@ -29,7 +29,6 @@ class User extends Authenticatable
     'specialization',
     'salary',
     'cv',
-    'blood_group',
     'nationality',
     'religion',
     'admission_date',

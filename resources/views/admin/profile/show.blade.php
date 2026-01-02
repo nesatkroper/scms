@@ -136,10 +136,6 @@
           ])
           @include('admin.components.detail-item', ['label' => 'Phone', 'value' => $user->phone ?? 'N/A'])
           @include('admin.components.detail-item', [
-              'label' => 'Blood Group',
-              'value' => $user->blood_group ?? 'N/A',
-          ])
-          @include('admin.components.detail-item', [
               'label' => 'Nationality',
               'value' => $user->nationality ?? 'N/A',
           ])
