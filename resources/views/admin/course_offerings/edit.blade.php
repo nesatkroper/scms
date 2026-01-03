@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', '{{ __('message.edit') }} Course Offering: ' . ($courseOffering->subject->name ?? __('message.n/a')))
+@section('title', __('message.edit') . ' Course Offering: ' . ($courseOffering->subject->name ?? __('message.n/a')))
 @section('content')
 
   <div

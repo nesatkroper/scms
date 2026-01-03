@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', '{{ __('message.attendance') }} Register')
+@section('title', 'Attendance Register')
 
 @section('content')
   <div

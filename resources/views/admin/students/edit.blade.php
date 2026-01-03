@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', '{{ __('message.edit') }} Student: ' . $student->name)
+@section('title', __('message.edit') . ' Student: ' . $student->name)
 @section('content')
 
   <div class="mb-10">

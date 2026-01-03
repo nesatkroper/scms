@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', '{{ __('message.edit') }} Expense: ' . $expense->title)
+@section('title', __('message.edit') . ' Expense: ' . $expense->title)
 
 @section('content')
 
@@ -16,7 +16,8 @@
           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
         </svg>
-        {{ __('message.edit_expense') }} <span class="text-red-600 dark:text-red-400">{{ $category->name }} - {{ $expense->title }} -
+        {{ __('message.edit_expense') }} <span class="text-red-600 dark:text-red-400">{{ $category->name }} -
+          {{ $expense->title }} -
           ({{ $expense?->creator?->name }})</span>
       </h3>
       <a href="{{ route('admin.expenses.index', ['category_id' => $expense->expense_category_id]) }}"

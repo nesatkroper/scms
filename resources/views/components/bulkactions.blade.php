@@ -68,7 +68,8 @@
         btn.addEventListener('click', e => {
           e.preventDefault();
           const id = btn.dataset.id;
-          console.log('{{ __('message.edit') }} :', id);
+          console.log(__('message.edit').
+            '  :', id);
           //alert('View details for:', id)
         });
       });

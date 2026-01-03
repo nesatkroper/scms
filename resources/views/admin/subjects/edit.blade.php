@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', '{{ __('message.edit') }} Subject: ' . $subject->name)
+@section('title', __('message.edit') . ' Subject: ' . $subject->name)
 @section('content')
   <div
     class="box px-4 py-6 md:p-8 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">

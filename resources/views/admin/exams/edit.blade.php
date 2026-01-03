@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', '{{ __('message.edit') }} Exam: ' . ($exam->type ?? __('message.n/a')))
+@section('title', __('message.edit') . ' Exam: ' . ($exam->type ?? __('message.n/a')))
 @section('content')
 
   <div
