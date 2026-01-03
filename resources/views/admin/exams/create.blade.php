@@ -31,7 +31,7 @@
       <input type="hidden" name="course_offering_id" value="{{ $courseOfferingId }}">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
-        {{-- 1. Exam Type (New addition from Edit) --}}
+        {{-- 1. Exam Type (New addition from {{ __('message.edit') }}) --}}
         <div class="lg:col-span-1">
           @php
             $examTypes = [
@@ -105,7 +105,8 @@
           </div>
 
           <p class="mt-1 text-xs text-gray-500">
-            {{ __('message.the_exam_must_be_held') }} <strong> {{ __('message.on_or_before') }}{{ \Carbon\Carbon::parse($maxDate)->format('d-m-Y') }}</strong>.
+            {{ __('message.the_exam_must_be_held') }} <strong>
+              {{ __('message.on_or_before') }}{{ \Carbon\Carbon::parse($maxDate)->format('d-m-Y') }}</strong>.
           </p>
 
           @error('date')

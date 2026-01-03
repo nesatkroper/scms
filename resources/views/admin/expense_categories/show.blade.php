@@ -21,9 +21,9 @@
       <div class="flex gap-4">
         <a href="{{ route('admin.students.fees.index', $expenseCategory->id) }}"
           class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-          title="Export {{ $expenseCategory->name ?? 'N/A' }}">
+          title="Export {{ $expenseCategory->name ?? __('message.n/a') }}">
           <i class="fa-solid fa-download me-2"></i>
-          {{ __('message.export') }} {{ $expenseCategory->name ?? 'N/A' }}
+          {{ __('message.export') }} {{ $expenseCategory->name ?? __('message.n/a') }}
         </a>
         {{-- Back Button (Update route name) --}}
         <a href="{{ route('admin.expense_categories.index') }}"
@@ -41,7 +41,7 @@
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200 dark:border-gray-700">
         <div class="flex flex-col">
           <h2 class="text-2xl font-extrabold text-green-700 dark:text-green-300">
-            {{ $expenseCategory->name ?? 'N/A' }}
+            {{ $expenseCategory->name ?? __('message.n/a') }}
           </h2>
           <p class="text-sm font-semibold text-green-500 dark:text-green-400 mt-1">
             {{ __('message.category_id') }} {{ $expenseCategory->id }}
@@ -73,7 +73,7 @@
             <i class="fa-solid fa-calendar-plus text-cyan-500"></i> {{ __('message.created') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $expenseCategory->created_at?->format('M d, Y H:i') ?? 'N/A' }}
+            {{ $expenseCategory->created_at?->format('M d, Y H:i') ?? __('message.n/a') }}
           </span>
         </p>
 
@@ -83,7 +83,7 @@
             <i class="fa-solid fa-calendar-check text-pink-500"></i> {{ __('message.last_updated') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $expenseCategory->updated_at?->format('M d, Y H:i') ?? 'N/A' }}
+            {{ $expenseCategory->updated_at?->format('M d, Y H:i') ?? __('message.n/a') }}
           </span>
         </p>
       </div>
@@ -142,7 +142,7 @@
       @if (Auth::user()->hasPermissionTo('update_expense-category'))
         <a href="{{ route('admin.expense_categories.edit', $expenseCategory->id) }}"
           class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
-          title="Edit Expense Category">
+          title="{{ __('message.edit') }} Expense Category">
           <i class="fa-solid fa-pen-to-square mr-2"></i>
           {{ __('message.edit_category') }}
         </a>

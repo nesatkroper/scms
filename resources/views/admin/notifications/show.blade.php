@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Student Attendance History')
+@section('title', 'Student {{ __('message.attendance') }} History')
 
 @section('content')
   <div
@@ -18,7 +18,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M3 6.75a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6.75v10.5A2.25 2.25 0 0 1 18.75 19.5H5.25A2.25 2.25 0 0 1 3 17.25V6.75Z" />
         </svg>
-        Attendance History for: <span class="ml-1 text-indigo-600 dark:text-indigo-400">{{ $student->name }}</span>
+        {{ __('message.attendance') }} History for: <span class="ml-1 text-indigo-600 dark:text-indigo-400">{{ $student->name }}</span>
       </h3>
       <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOffering->id]) }}"
         class="px-4 py-2 text-sm bg-gray-200 text-gray-800 rounded shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
@@ -42,9 +42,9 @@
       </p>
     </div>
 
-    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Attendance Records</h4>
+    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">{{ __('message.attendance') }} Records</h4>
 
-    {{-- Attendance Records - Grid/Card View --}}
+    {{-- {{ __('message.attendance') }} Records - Grid/Card View --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
       @forelse ($attendances as $attendance)
         @php
@@ -58,7 +58,7 @@
               $statusClasses[$attendance->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
         @endphp
 
-        {{-- Individual Attendance Card/Box --}}
+        {{-- Individual {{ __('message.attendance') }} Card/Box --}}
         <div class="p-2 border rounded-lg shadow-sm {{ $statusColor }} flex flex-col justify-between">
           <div class="flex justify-between items-start mb-0">
 
@@ -75,7 +75,7 @@
           {{-- Remarks (Secondary Info) --}}
           <div class="text-xs text-gray-700 dark:text-gray-300 italic mt-1">
             <span class="font-medium">Remarks:</span>
-            {{ $attendance->remarks ?? 'N/A' }}
+            {{ $attendance->remarks ?? __('message.n/a') }}
           </div>
         </div>
       @empty

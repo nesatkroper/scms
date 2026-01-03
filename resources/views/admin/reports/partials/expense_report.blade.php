@@ -40,7 +40,7 @@
           </td>
           {{-- Category --}}
           <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
-            {{ $expense->expenseCategory->name ?? 'N/A' }}
+            {{ $expense->expenseCategory->name ?? __('message.n/a') }}
           </td>
           {{-- Created By --}}
           <td class="px-6 py-4 text-gray-600 dark:text-gray-300">

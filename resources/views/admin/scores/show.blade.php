@@ -85,7 +85,7 @@
             @php
               $gradeItems = [
                   [
-                      'label' => 'Attendance',
+                      'label' => '{{ __('message.attendance') }}',
                       'val' => $enrollment->attendance_grade,
                       'max' => 10,
                       'color' => 'bg-blue-500',

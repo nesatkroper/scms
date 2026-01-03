@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Student Attendance History')
+@section('title', 'Student {{ __('message.attendance') }} History')
 
 @section('content')
   <div
@@ -40,7 +40,7 @@
     <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">{{ __('message.attendance_records') }} -
       ( {{ $enrollment->attendance_grade }} Points )</h4>
 
-    {{-- Attendance Records - Grid/Card View --}}
+    {{-- {{ __('message.attendance') }} Records - Grid/Card View --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
       @forelse ($attendances as $attendance)
         @php
@@ -54,7 +54,7 @@
               $statusClasses[$attendance->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
         @endphp
 
-        {{-- Individual Attendance Card/Box --}}
+        {{-- Individual {{ __('message.attendance') }} Card/Box --}}
         <div class="p-2 border rounded-lg shadow-sm {{ $statusColor }} flex flex-col justify-between">
           <div class="flex justify-between items-start mb-0">
 
@@ -71,7 +71,7 @@
           {{-- Remarks (Secondary Info) --}}
           <div class="text-xs text-gray-700 dark:text-gray-300 italic mt-1">
             <span class="font-medium">{{ __('message.remarks') }}</span>
-            {{ $attendance->remarks ?? 'N/A' }}
+            {{ $attendance->remarks ?? __('message.n/a') }}
           </div>
         </div>
       @empty

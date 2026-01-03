@@ -55,7 +55,7 @@
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
             <h4 class="font-bold text-xl text-gray-800 dark:text-gray-200 capitalize truncate"
-              title="{{ $fee->feeType->name ?? 'N/A' }}">
+              title="{{ $fee->feeType->name ?? __('message.n/a') }}">
               {{ $fee->feeType->name ?? 'N/A Fee' }}
             </h4>
             <span class="px-3 py-1 text-xs leading-5 font-semibold rounded-full {{ $badgeClass }}">
@@ -85,7 +85,7 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400">Due Date</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200 text-sm">
                   <i class="fa-regular fa-calendar-days text-gray-400 dark:text-gray-500"></i>
-                  {{ $fee->due_date?->format('M d, Y') ?? 'N/A' }}
+                  {{ $fee->due_date?->format('M d, Y') ?? __('message.n/a') }}
                 </p>
               </div>
             </div>
@@ -139,7 +139,7 @@
 
           </div>
 
-          {{-- Card Footer: Actions (View/Edit/Add Payment) --}}
+          {{-- Card Footer: Actions (View/{{ __('message.edit') }}/Add Payment) --}}
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 

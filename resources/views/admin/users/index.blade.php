@@ -95,25 +95,27 @@
           {{-- Card Body: Key Details --}}
           <div class="p-4 space-y-3 flex-grow">
             {{-- Contact --}}
-            <x-info.item name="{{ $user->phone ?? 'N/A' }} | {{ Str::limit($user->address, 30) ?? 'No Address' }}"
+            <x-info.item
+              name="{{ $user->phone ?? __('message.n/a') }} | {{ Str::limit($user->address, 30) ?? 'No Address' }}"
               icon="fa-solid fa-phone text-xl" label="Contact" labelcolor="text-gray-500 dark:text-gray-400"
               color="" position="left" />
             {{-- Qualification (Teacher Only) --}}
             @if ($user->hasRole('teacher'))
-              <x-info.item name="{{ $user->qualification ?? 'Not Specified' }} | {{ $user->specialization ?? 'N/A' }}"
+              <x-info.item
+                name="{{ $user->qualification ?? 'Not Specified' }} | {{ $user->specialization ?? __('message.n/a') }}"
                 icon="fa-solid fa-graduation-cap text-xl" label="Qualification / Specialization"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             @endif
             {{-- Admission & DOB (Student Only) --}}
             @if ($user->hasRole('student'))
               <x-info.item
-                name="Admission: {{ $user->admission_date ? $user->admission_date->format('Y-m-d') : 'N/A' }} | DOB: {{ $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : 'N/A' }}"
+                name="Admission: {{ $user->admission_date ? $user->admission_date->format('Y-m-d') : __('message.n/a') }} | DOB: {{ $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : __('message.n/a') }}"
                 icon="fa-solid fa-calendar-alt text-xl" label="Admission / DOB"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             @endif
             {{-- Joined & Gender --}}
             <x-info.item
-              name="{{ $user->joining_date ? $user->joining_date->format('Y-m-d') : 'N/A' }} | {{ $user->gender ?? 'N/A' }}"
+              name="{{ $user->joining_date ? $user->joining_date->format('Y-m-d') : __('message.n/a') }} | {{ $user->gender ?? __('message.n/a') }}"
               icon="fa-solid fa-calendar-check text-xl" label="Joined / Gender"
               labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
           </div>
@@ -155,12 +157,12 @@
               @endif
 
               @if (!$user->hasRole('admin'))
-                {{-- Edit Button --}}
+                {{-- {{ __('message.edit') }} Button --}}
                 <a href="{{ route('admin.users.edit', $user->id) }}"
                   class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit User">
+                  title="{{ __('message.edit') }} User">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
+                  {{-- {{ __('message.edit') }} --}}
                 </a>
               @endif
 

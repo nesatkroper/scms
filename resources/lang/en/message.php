@@ -281,4 +281,19 @@ return [
   'roles' => "roles",
 
   // new locale start from this line
+  'search_classrooms_(name_or_room_number)' => "Search classrooms (name or room number)...",
+  'search_offerings_by_subject_teacher_or_time' => "Search offerings by subject, teacher, or time...",
+  'export_attendance' => "Export Attendance",
+  'export_score' => "Export Score",
+  'start' => "Start:",
+  'end' => "End:",
+  'this_course_has_completed' => "This Course Has Completed",
+  'complete_information_about_this_course_offering' => "Complete information about this course offering",
+  'course_details' => "Course Details:",
+  'course_offering_details' => "Course Offering Details",
+  'point' => "Point",
+  'n/a' => "N/A",
+  'id' => "ID:",
+  'deleted' => "Deleted",
+  'create_new_admission_record' => "Create New Admission Record",
 ];

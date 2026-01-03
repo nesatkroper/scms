@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Course Details: ' . $courseOffering->subject?->name . ' - ' . $courseOffering->time_slot)
+@section('title', __('message.course_details') . $courseOffering->subject?->name . ' - ' . $courseOffering->time_slot)
 
 @section('content')
   <div
@@ -14,14 +14,15 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-              Course Offering Details
+              {{ __('message.course_offering_details') }}
               @if (\Carbon\Carbon::parse($courseOffering->join_end)->isPast())
                 <strong class="text-red-400 uppercase">
-                  ( This Course Has Completed)
+                  ({{ __('message.this_course_has_completed') }})
                 </strong>
               @endif
             </h1>
-            <p class="text-gray-500 dark:text-gray-400 mt-1">Complete information about this course offering</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">
+              {{ __('message.complete_information_about_this_course_offering') }}</p>
           </div>
         </div>
         <div>
@@ -44,18 +45,18 @@
           <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div class="mb-4 lg:mb-0">
               <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                {{ $courseOffering->subject->name ?? 'N/A' }}</h2>
+                {{ $courseOffering->subject->name ?? __('message.n/a') }}</h2>
               <div class="flex items-center gap-4 mt-2">
                 <span
                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-sm font-medium">
 
                   {{ __('message.subject_code') }}<i
-                    class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? 'N/A' }}
+                    class="fas fa-hashtag text-xs"></i>{{ $courseOffering->subject->code ?? __('message.n/a') }}
                 </span>
                 <span
                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-sm font-medium">
                   <i class="fas fa-star text-xs"></i>
-                  {{ $courseOffering->subject->credit_hours ?? 'N/A' }} {{ __('message.credit_hours') }}
+                  {{ $courseOffering->subject->credit_hours ?? __('message.n/a') }} {{ __('message.credit_hours') }}
                 </span>
               </div>
             </div>
@@ -119,7 +120,7 @@
                       <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.schedule_type') }}
                       </p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
-                        {{ $courseOffering->schedule ?? 'N/A' }}</p>
+                        {{ $courseOffering->schedule ?? __('message.n/a') }}</p>
                     </div>
                   </div>
 
@@ -132,7 +133,7 @@
                     <div>
                       <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.time_slot') }}</p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1 capitalize">
-                        {{ $courseOffering->time_slot ?? 'N/A' }}</p>
+                        {{ $courseOffering->time_slot ?? __('message.n/a') }}</p>
                     </div>
                   </div>
 
@@ -160,7 +161,7 @@
                       <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.credit_hours') }}
                       </p>
                       <p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">
-                        {{ $courseOffering->subject->credit_hours ?? 'N/A' }} Point</p>
+                        {{ $courseOffering->subject->credit_hours ?? __('message.n/a') }} {{ __('message.point') }}</p>
                     </div>
                   </div>
                 </div>
@@ -190,7 +191,7 @@
                           {{ __('message.enrollment_opens') }}
                         </p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                          {{ $courseOffering->join_start?->format('M d, Y') ?? 'N/A' }}</p>
+                          {{ $courseOffering->join_start?->format('M d, Y') ?? __('message.n/a') }}</p>
                       </div>
                     </div>
                     <div class="text-cyan-600 dark:text-cyan-400">
@@ -210,7 +211,7 @@
                           {{ __('message.enrollment_closes') }}
                         </p>
                         <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                          {{ $courseOffering->join_end?->format('M d, Y') ?? 'N/A' }}</p>
+                          {{ $courseOffering->join_end?->format('M d, Y') ?? __('message.n/a') }}</p>
                       </div>
                     </div>
                     <div class="text-pink-600 dark:text-pink-400">
@@ -256,7 +257,7 @@
                         <p class="font-medium text-gray-900 dark:text-white">{{ $student->name }}
                         </p>
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-mono">
-                          ID:{{ $student->id }}</p>
+                          {{ __('message.id') }} {{ $student->id }}</p>
                       </div>
                     </div>
                     <div class="text-right">

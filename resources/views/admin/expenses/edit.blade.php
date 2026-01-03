@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Expense: ' . $expense->title)
+@section('title', '{{ __('message.edit') }} Expense: ' . $expense->title)
 
 @section('content')
 

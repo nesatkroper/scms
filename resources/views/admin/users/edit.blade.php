@@ -1,10 +1,10 @@
 @extends('layouts.admin')
-@section('title', 'Edit User')
+@section('title', '{{ __('message.edit') }} User')
 @section('content')
 
   <div>
     <div class="flex items-center justify-between mb-6 px-3 md:px-0">
-      <h1 class="text-2xl font-semibold">Edit User: {{ $user->name }}</h1>
+      <h1 class="text-2xl font-semibold">{{ __('message.edit') }} User: {{ $user->name }}</h1>
       <a href="{{ route('admin.users.index') }}"
         class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
@@ -372,7 +372,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd"></path>
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
         <button type="submit"
           class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Update

@@ -1,9 +1,9 @@
 @extends('layouts.admin')
-@section('title', 'Edit Role')
+@section('title', '{{ __('message.edit') }} Role')
 @section('content')
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    <h2 class="text-2xl font-bold mb-2">Edit Role: {{ $role->name }}</h2>
+    <h2 class="text-2xl font-bold mb-2">{{ __('message.edit') }} Role: {{ $role->name }}</h2>
     <form action="{{ route('admin.roles.update', $role->id) }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
       @csrf
       @method('PUT')
@@ -100,7 +100,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
         <button type="submit"
           class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">

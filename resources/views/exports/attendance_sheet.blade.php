@@ -14,7 +14,7 @@
     <tr>
       <td colspan="2"><strong>Teacher:</strong> {{ $course->teacher->name }}</td>
       <td colspan="{{ count($dates) }}"><strong>Time:</strong> {{ $course->time_slot }}</td>
-      <td colspan="3" align="right"><strong>Room:</strong> {{ $course->classroom->name ?? 'N/A' }}</td>
+      <td colspan="3" align="right"><strong>Room:</strong> {{ $course->classroom->name ?? __('message.n/a') }}</td>
     </tr>
     <tr>
       <td colspan="2"><strong>Generated:</strong> {{ date('d-M-Y H:i') }}</td>

@@ -13,7 +13,7 @@
     class="dropdown-menu hidden absolute w-auto right-0 z-10 mt-2 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
     role="menu">
     <div class="py-1" role="none">
-      <a href="#" title="Edit Id({{ $id }})"
+      <a href="#" title="{{ __('message.edit') }} Id({{ $id }})"
         class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
         data-id="{{ $id }}">
         <span class="btn-content flex items-center gap-2">
@@ -21,7 +21,7 @@
             <path
               d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
           </svg>
-          Edit
+          {{ __('message.edit') }}
         </span>
       </a>
       <a href="#" title="Details Id({{ $id }})"

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Fee Type: ' . $feeType->name)
+@section('title', '{{ __('message.edit') }} Fee Type: ' . $feeType->name)
 @section('content')
 
   <div

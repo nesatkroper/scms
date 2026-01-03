@@ -103,7 +103,7 @@
                 <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                   {{ $user->attendances_count ?? 0 }}
                 </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">Attendance Log</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.attendance') }} Log</div>
               </div>
             </div>
           </div>
@@ -126,22 +126,25 @@
           {{-- General Info --}}
           @include('admin.components.detail-item', [
               'label' => 'Gender',
-              'value' => $user->gender ?? 'N/A',
+              'value' => $user->gender ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Date of Birth',
               'value' => $user->date_of_birth
                   ? \Carbon\Carbon::parse($user->date_of_birth)->format('M d, Y')
-                  : 'N/A',
+                  : __('message.n/a'),
           ])
-          @include('admin.components.detail-item', ['label' => 'Phone', 'value' => $user->phone ?? 'N/A'])
+          @include('admin.components.detail-item', [
+              'label' => 'Phone',
+              'value' => $user->phone ?? __('message.n/a'),
+          ])
           @include('admin.components.detail-item', [
               'label' => 'Nationality',
-              'value' => $user->nationality ?? 'N/A',
+              'value' => $user->nationality ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Religion',
-              'value' => $user->religion ?? 'N/A',
+              'value' => $user->religion ?? __('message.n/a'),
           ])
 
           {{-- Role-Specific Dates --}}
@@ -150,22 +153,24 @@
                 'label' => 'Admission Date',
                 'value' => $user->admission_date
                     ? \Carbon\Carbon::parse($user->admission_date)->format('M d, Y')
-                    : 'N/A',
+                    : __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
                 'label' => 'Parent Occupation',
-                'value' => ($user->occupation ?? 'N/A') . ($user->company ? ' at ' . $user->company : ''),
+                'value' =>
+                    ($user->occupation ?? __('message.n/a')) . ($user->company ? ' at ' . $user->company : ''),
             ])
           @else
             @include('admin.components.detail-item', [
                 'label' => 'Joining Date',
                 'value' => $user->joining_date
                     ? \Carbon\Carbon::parse($user->joining_date)->format('M d, Y')
-                    : 'N/A',
+                    : __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
                 'label' => 'Occupation / Company',
-                'value' => ($user->occupation ?? 'N/A') . ($user->company ? ' at ' . $user->company : ''),
+                'value' =>
+                    ($user->occupation ?? __('message.n/a')) . ($user->company ? ' at ' . $user->company : ''),
             ])
           @endif
 
@@ -173,19 +178,19 @@
           @if ($user->hasRole('teacher') || $user->hasRole('admin') || $user->hasRole('staff'))
             @include('admin.components.detail-item', [
                 'label' => 'Qualification',
-                'value' => $user->qualification ?? 'N/A',
+                'value' => $user->qualification ?? __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
                 'label' => 'Specialization',
-                'value' => $user->specialization ?? 'N/A',
+                'value' => $user->specialization ?? __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
                 'label' => 'Experience (Yrs)',
-                'value' => $user->experience ?? 'N/A',
+                'value' => $user->experience ?? __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
                 'label' => 'Annual Salary',
-                'value' => $user->salary ? '$' . number_format($user->salary, 2) : 'N/A',
+                'value' => $user->salary ? '$' . number_format($user->salary, 2) : __('message.n/a'),
             ])
             @if ($user->cv)
               <div class="sm:col-span-1">
@@ -202,7 +207,7 @@
           {{-- Address Info (Full Width) --}}
           <div class="sm:col-span-2">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Full Address</dt>
-            <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $user->address ?? 'N/A' }}</dd>
+            <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $user->address ?? __('message.n/a') }}</dd>
           </div>
         </dl>
       </div>
@@ -221,7 +226,7 @@
               @foreach ($user->teachingCourses as $courseOffering)
                 <span
                   class="px-3 py-1 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                  {{ $courseOffering->subject->name ?? 'N/A' }}
+                  {{ $courseOffering->subject->name ?? __('message.n/a') }}
                   ({{ \Carbon\Carbon::parse($courseOffering->start_time)->format('h:i A') }} -
                   Students: {{ $courseOffering->students_count }})
                 </span>
@@ -238,7 +243,7 @@
         </div>
       @endif
 
-      {{-- STUDENT: Enrollment, Fees, Scores, Attendance Sections --}}
+      {{-- STUDENT: Enrollment, Fees, Scores, {{ __('message.attendance') }} Sections --}}
       @if ($user->hasRole('student'))
 
         {{-- Assigned Courses (Enrollment) --}}
@@ -271,13 +276,13 @@
                   @foreach ($user->courseOfferings as $offering)
                     <tr>
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                        {{ $offering->subject->name ?? 'N/A' }}</td>
+                        {{ $offering->subject->name ?? __('message.n/a') }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {{ $offering->teacher->name ?? 'Unassigned' }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {{ $offering->enrollment->grade_final ?? 'Pending' }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {{ $offering->schedule ?? 'N/A' }}
+                        {{ $offering->schedule ?? __('message.n/a') }}
                         ({{ $offering->start_time ? \Carbon\Carbon::parse($offering->start_time)->format('h:i A') : '' }}
                         -
                         {{ $offering->end_time ? \Carbon\Carbon::parse($offering->end_time)->format('h:i A') : '' }})
@@ -323,19 +328,20 @@
         </div>
       @endif
 
-      {{-- Generic: Attendance Log --}}
+      {{-- Generic: {{ __('message.attendance') }} Log --}}
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Attendance Log
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ __('message.attendance') }} Log
           ({{ $user->attendances_count }})</h3>
 
         @if ($user->attendances->isEmpty())
           <p class="text-gray-500 dark:text-gray-400">No attendance records found for your account.</p>
         @else
           <div class="overflow-x-auto">
-            {{-- Attendance table data here... --}}
+            {{-- {{ __('message.attendance') }} table data here... --}}
             {{-- Since you didn't provide the attendance table, this is a placeholder. --}}
-            <p class="text-sm text-gray-500 dark:text-gray-400">Attendance table implementation needed.</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('message.attendance') }} table implementation
+              needed.</p>
           </div>
         @endif
       </div>

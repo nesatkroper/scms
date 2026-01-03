@@ -4,7 +4,7 @@
 <meta name="description"
   content="SCMS (School Management System) helps schools in Cambodia efficiently manage students, teachers, attendance, grades, and communication — all in one secure platform.">
 <meta name="keywords"
-  content="School Management System, Cambodia School App, Student Management, Teacher Portal, Attendance System, Education Software, SCMS">
+  content="School Management System, Cambodia School App, Student Management, Teacher Portal, {{ __('message.attendance') }} System, Education Software, SCMS">
 <meta name="author" content="SCMS Team">
 <meta name="robots" content="index, follow">
 <meta name="language" content="English">

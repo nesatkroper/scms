@@ -75,8 +75,8 @@
               </span>
             </div>
             <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold flex items-center gap-1">
-            {{ __('message.category') }}  
-              <span class="text-red-600 dark:text-red-400">{{ $expense->category?->name ?? 'N/A' }}</span>
+              {{ __('message.category') }}
+              <span class="text-red-600 dark:text-red-400">{{ $expense->category?->name ?? __('message.n/a') }}</span>
             </p>
           </div>
 
@@ -88,7 +88,7 @@
               <i class="fa-solid fa-calendar-alt text-blue-500"></i>
               {{ __('message.date') }}
               <span class="font-semibold text-gray-800 dark:text-gray-200">
-                {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : 'N/A' }}
+                {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : __('message.n/a') }}
               </span>
             </p>
 
@@ -139,7 +139,7 @@
             class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
             <a href="{{ route('admin.expenses.show', $expense->id) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-              title="Edit Expense">
+              title="{{ __('message.edit') }} Expense">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-eye me-2"></i>
                 {{-- Show --}}
@@ -149,10 +149,10 @@
             @if (Auth::user()->hasPermissionTo('update_expense') && !$expense->approved_by)
               <a href="{{ route('admin.expenses.edit', $expense->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit Expense">
+                title="{{ __('message.edit') }} Expense">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
+                  {{-- {{ __('message.edit') }} --}}
                 </span>
               </a>
             @endif

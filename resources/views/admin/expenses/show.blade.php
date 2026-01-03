@@ -58,8 +58,10 @@
         </p>
 
         <div class="mt-4">
-          <p class="font-semibold text-gray-900 dark:text-gray-100">Category: {{ $expense->category?->name ?? 'N/A' }}</p>
-          <p class="text-gray-600 dark:text-gray-400">{{ __('message.recorded_by') }} {{ $expense->creator?->name ?? 'Unknown' }}</p>
+          <p class="font-semibold text-gray-900 dark:text-gray-100">Category:
+            {{ $expense->category?->name ?? __('message.n/a') }}</p>
+          <p class="text-gray-600 dark:text-gray-400">{{ __('message.recorded_by') }}
+            {{ $expense->creator?->name ?? 'Unknown' }}</p>
         </div>
       </div>
 
@@ -69,7 +71,8 @@
           #EXP-{{ str_pad($expense->id, 6, '0', STR_PAD_LEFT) }}
         </p>
         <p class="text-gray-600 dark:text-gray-400 mt-1">
-          {{ __('message.date') }} {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : 'N/A' }}
+          {{ __('message.date') }}
+          {{ $expense->date ? \Carbon\Carbon::parse($expense->date)->format('M d, Y') : __('message.n/a') }}
         </p>
       </div>
     </div>
@@ -80,7 +83,7 @@
 
       <div>
         <h4 class="font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">{{ __('message.expense_title') }}</h4>
-        <p class="text-xl font-extrabold text-red-700 dark:text-red-300">{{ $expense->title ?? 'N/A' }}</p>
+        <p class="text-xl font-extrabold text-red-700 dark:text-red-300">{{ $expense->title ?? __('message.n/a') }}</p>
       </div>
 
       <div class="text-right">
@@ -94,7 +97,8 @@
           {{ $statusText }}
         </span>
         <p class="text-gray-900 dark:text-gray-100 mt-2">
-          <span class="font-medium">{{ __('message.recorded_at') }}</span> {{ $expense->created_at->format('M d, Y h:i A') }}
+          <span class="font-medium">{{ __('message.recorded_at') }}</span>
+          {{ $expense->created_at->format('M d, Y h:i A') }}
         </p>
       </div>
     </div>
@@ -117,7 +121,7 @@
             <td class="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-gray-100">
               {{ $expense->title ?? 'General Expense' }}
               <p class="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1">
-                {{ __('message.category') }} {{ $expense->category?->name ?? 'N/A' }}
+                {{ __('message.category') }} {{ $expense->category?->name ?? __('message.n/a') }}
               </p>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-3xl font-extrabold text-red-700 dark:text-red-300">
@@ -132,7 +136,8 @@
     <div class="flex flex-col md:flex-row justify-between gap-8 z-20">
 
       <div class="md:w-1/2 space-y-3">
-        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">{{ __('message.approval_details') }}</h4>
+        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">
+          {{ __('message.approval_details') }}</h4>
         @if ($isApproved)
           <div class="p-3 bg-teal-50 dark:bg-teal-900/50 border border-teal-200 dark:border-teal-700 rounded-lg">
             <p class="text-sm text-teal-700 dark:text-teal-300">
@@ -141,7 +146,7 @@
             </p>
             <p class="text-sm text-teal-700 dark:text-teal-300 mt-1">
               <span class="font-semibold">Approval Date:</span>
-              {{ $expense->approved_at ? \Carbon\Carbon::parse($expense->approved_at)->format('M d, Y h:i A') : 'N/A' }}
+              {{ $expense->approved_at ? \Carbon\Carbon::parse($expense->approved_at)->format('M d, Y h:i A') : __('message.n/a') }}
             </p>
           </div>
         @else
@@ -154,7 +159,8 @@
       </div>
 
       <div class="md:w-1/2 space-y-1">
-        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">{{ __('message.description_/_remarks') }}</h4>
+        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">
+          {{ __('message.description_/_remarks') }}</h4>
         <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg min-h-20">
           <p class="text-sm italic text-gray-700 dark:text-gray-300">
             {{ $expense->description ?? 'No detailed description provided for this expense.' }}
@@ -183,7 +189,7 @@
       @if (!$isApproved)
         <a href="{{ route('admin.expenses.edit', $expense->id) }}"
           class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors font-semibold"
-          title="Edit Expense">
+          title="{{ __('message.edit') }} Expense">
           <i class="fa-solid fa-pen-to-square mr-2"></i>
           {{ __('message.edit') }}
         </a>
@@ -204,7 +210,8 @@
 
     <div class="mt-10 pt-2 border-t border-gray-200 dark:border-gray-700/50 text-center z-20">
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        {{ __('message.record_id') }} EXP-{{ $expense->id }} | {{ __('message.report_generated_on') }} {{ now()->format('M d, Y h:i A') }}
+        {{ __('message.record_id') }} EXP-{{ $expense->id }} | {{ __('message.report_generated_on') }}
+        {{ now()->format('M d, Y h:i A') }}
       </p>
     </div>
 

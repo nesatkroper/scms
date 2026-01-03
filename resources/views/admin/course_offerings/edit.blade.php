@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Course Offering: ' . ($courseOffering->subject->name ?? 'N/A'))
+@section('title', '{{ __('message.edit') }} Course Offering: ' . ($courseOffering->subject->name ?? __('message.n/a')))
 @section('content')
 
   <div
@@ -9,7 +9,7 @@
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
         <i class="fa-solid fa-book-atlas"></i>
         {{ __('message.edit_course_offering') }}<span class="ml-1 text-indigo-600 dark:text-indigo-400">
-          {{ $courseOffering->subject->name ?? 'N/A' }}
+          {{ $courseOffering->subject->name ?? __('message.n/a') }}
         </span>
       </h3>
       <a href="{{ route('admin.course_offerings.index') }}"

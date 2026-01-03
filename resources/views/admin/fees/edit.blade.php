@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Fee Record')
+@section('title', '{{ __('message.edit') }} Fee Record')
 @section('content')
 
   <div

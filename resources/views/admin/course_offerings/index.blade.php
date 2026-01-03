@@ -40,7 +40,7 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="Search offerings by subject, teacher, or time..."
+              placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                     focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -94,26 +94,28 @@
                 {{ \Carbon\Carbon::parse($offering->end_time)->format('H:i') }})
               </p>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize font-bold">
-                Start: {{ \Carbon\Carbon::parse($offering->join_start)->format('d M Y') }},
-                End: {{ \Carbon\Carbon::parse($offering->join_end)->format('d M Y') }}
+                {{ __('message.start') }} {{ \Carbon\Carbon::parse($offering->join_start)->format('d M Y') }},
+                {{ __('message.end') }} {{ \Carbon\Carbon::parse($offering->join_end)->format('d M Y') }}
               </p>
             </div>
 
             <div class="flex flex-col items-end">
               @if ($offering->attendances->count())
-                <a title="Eport Attendance" href="{{ route('admin.attendances.export', $offering->id) }}"
+                <a title="{{ __('message.export_score') }}"
+                  href="{{ route('admin.attendances.export', $offering->id) }}"
                   class="btn p-2 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
-                  title="Attendance">
+                  title="{{ __('message.export_attendance') }}">
                   <i class="fa-solid fa-right-from-bracket me-2"></i>
-                  Export Attendance
+                  {{ __('message.export_attendance') }}
                 </a>
               @endif
 
-              <a title="Eport Attendance" href="{{ route('admin.course_offerings.export', $offering->id) }}"
+              <a title="{{ __('message.export_score') }}"
+                href="{{ route('admin.course_offerings.export', $offering->id) }}"
                 class="btn p-2 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
-                title="Attendance">
+                title="{{ __('message.export_score') }}">
                 <i class="fa-solid fa-right-from-bracket me-2"></i>
-                Export Score
+                {{ __('message.export_score') }}
               </a>
             </div>
 
@@ -144,7 +146,7 @@
                 @if (Auth::user()->hasPermissionTo('view_attendance'))
                   <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
                     class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Attendance">
+                    title="{{ __('message.attendance') }}">
                     <i class="fa-regular fa-calendar-days me-2"></i>
                     {{ __('message.attendance') }}
                   </a>
@@ -193,7 +195,7 @@
                 @if (Auth::user()->hasPermissionTo('update_course-offering'))
                   <a href="{{ route('admin.course_offerings.edit', $offering->id) }}"
                     class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-500 dark:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Edit">
+                    title="{{ __('message.edit') }}">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
                   </a>
                 @endif

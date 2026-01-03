@@ -39,7 +39,7 @@
 
                 @if (in_array('edit', $actionItems))
                   <a href="{{ $endpoint ? route('admin.' . $endpoint . '.edit', $item->id) : '#' }}"
-                    title="Edit Id({{ $item->id }})"
+                    title="{{ __('message.edit') }} Id({{ $item->id }})"
                     class="edit-btn text-indigo-600 dark:text-indigo-500 hover:text-indigo-800 dark:hover:text-indigo-400 transition-colors p-1"
                     data-id="{{ $item->id }}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -150,7 +150,7 @@
                   <div class="py-1" role="none">
                     @if (in_array('edit', $actionItems))
                       <a href="{{ $endpoint ? route('admin.' . $endpoint . '.edit', $item->id) : '#' }}"
-                        title="Edit Id({{ $item->id }})"
+                        title="{{ __('message.edit') }} Id({{ $item->id }})"
                         class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                         data-id="{{ $item->id }}">
                         <span class="btn-content flex items-center gap-2">
@@ -159,7 +159,7 @@
                             <path
                               d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                           </svg>
-                          Edit
+                          {{ __('message.edit') }}
                         </span>
                       </a>
                     @endif

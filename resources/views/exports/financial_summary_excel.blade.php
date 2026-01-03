@@ -30,7 +30,7 @@
     @foreach ($data['income'] as $income)
       <tr>
         <td style="border: 1px solid #000;">{{ $income->created_at->format('Y-m-d') }}</td>
-        <td style="border: 1px solid #000;">Fee Payment - {{ $income->student->name ?? 'N/A' }}</td>
+        <td style="border: 1px solid #000;">Fee Payment - {{ $income->student->name ?? __('message.n/a') }}</td>
         <td style="border: 1px solid #000;">{{ number_format($income->amount, 2) }}</td>
       </tr>
     @endforeach

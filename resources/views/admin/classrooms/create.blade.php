@@ -77,7 +77,7 @@
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-        {{-- Cancel button updated to classroom index route --}}
+        {{-- {{ __('message.cancel') }} button updated to classroom index route --}}
         <a href="{{ route('admin.classrooms.index') }}"
           class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-md flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

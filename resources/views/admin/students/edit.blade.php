@@ -1,16 +1,17 @@
 @extends('layouts.admin')
-@section('title', 'Edit Student: ' . $student->name)
+@section('title', '{{ __('message.edit') }} Student: ' . $student->name)
 @section('content')
 
   <div class="mb-10">
     {{-- Page Header --}}
     <div class="flex items-center justify-between px-3 md:px-0 mb-6">
       <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-        <div class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
-            <i class="ri-user-2-fill text-2xl"></i>
-          </div>
-          Edit Student: {{ $student->name }}
-        </h3>
+        <div
+          class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
+          <i class="ri-user-2-fill text-2xl"></i>
+        </div>
+        {{ __('message.edit') }} Student: {{ $student->name }}
+      </h3>
       <a href="{{ route('admin.students.index') }}"
         class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
@@ -250,7 +251,6 @@
               @enderror
             </div>
 
-
             {{-- Occupation --}}
             <div class="mb-2">
               <label for="occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -344,7 +344,7 @@
         <div class="flex justify-end space-x-3 pt-6 border-t border-slate-300 dark:border-slate-700">
           <a href="{{ route('admin.students.index') }}"
             class="px-6 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-xl shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
-            Cancel
+            {{ __('message.cancel') }}
           </a>
           <button type="submit"
             class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">

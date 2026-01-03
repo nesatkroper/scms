@@ -69,7 +69,7 @@
               </div>
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ Str::limit($feeType->description, 100, '...') ?? 'N/A' }}
+              {{ Str::limit($feeType->description, 100, '...') ?? __('message.n/a') }}
             </p>
           </div>
 
@@ -92,7 +92,7 @@
             </div>
           </div>
 
-          {{-- Actions (Edit Link + Delete Form) --}}
+          {{-- Actions ({{ __('message.edit') }} Link + Delete Form) --}}
           <div
             class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
@@ -122,10 +122,10 @@
               @if (Auth::user()->hasPermissionTo('create_fee-type'))
                 <a href="{{ route('admin.fee_types.edit', $feeType->id) }}"
                   class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit">
+                  title="{{ __('message.edit') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
-                    {{-- Edit --}}
+                    {{-- {{ __('message.edit') }} --}}
                   </span>
                 </a>
               @endif
@@ -156,8 +156,10 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_fee_types_found') }}</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_fee_type_to_get_started') }}
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_fee_types_found') }}
+            </h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_your_first_fee_type_to_get_started') }}
             </p>
           </div>
         </div>

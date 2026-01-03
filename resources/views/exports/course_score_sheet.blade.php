@@ -14,7 +14,7 @@
     <tr>
       <td colspan="3"><strong>Teacher:</strong> {{ $course->teacher->name }}</td>
       <td colspan="5"><strong>Time:</strong> {{ $course->time_slot }}</td>
-      <td colspan="4" align="right"><strong>Room:</strong> {{ $course->classroom->name ?? 'N/A' }}</td>
+      <td colspan="4" align="right"><strong>Room:</strong> {{ $course->classroom->name ?? __('message.n/a') }}</td>
     </tr>
     <tr>
       <td colspan="3"><strong>Generated:</strong> {{ date('d-M-Y H:i') }}</td>
@@ -91,7 +91,8 @@
     <tr>
       <td colspan="3" style="font-weight: bold;">LEGEND:</td>
       <td colspan="9">
-        ATT: Attendance | LIS: Listening | REA: Reading | WRI: Writing | SPE: Speaking | MID: Midterm | FIN: Final
+        ATT: {{ __('message.attendance') }} | LIS: Listening | REA: Reading | WRI: Writing | SPE: Speaking | MID:
+        Midterm | FIN: Final
       </td>
     </tr>
   </tfoot>

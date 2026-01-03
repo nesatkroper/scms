@@ -101,7 +101,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Classroom / Schedule</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $enrollment->classroom->name ?? 'N/A' }} ({{ $enrollment->schedule ?? 'TBA' }})
+                  {{ $enrollment->classroom->name ?? __('message.n/a') }} ({{ $enrollment->schedule ?? 'TBA' }})
                 </p>
               </div>
             </div>
@@ -114,13 +114,13 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Enrollment Date</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $enrollment->created_at?->format('M d, Y') ?? 'N/A' }}
+                  {{ $enrollment->created_at?->format('M d, Y') ?? __('message.n/a') }}
                 </p>
               </div>
             </div>
           </div>
 
-          {{-- Card Footer: Actions (Edit/Delete Enrollment, or View Course Details) --}}
+          {{-- Card Footer: Actions ({{ __('message.edit') }}/Delete Enrollment, or View Course Details) --}}
           <div
             class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 

@@ -102,7 +102,7 @@
       <div class="mt-8 flex justify-end space-x-3">
         <a href="{{ route('admin.students.fees.index', $student) }}"
           class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors">
-          Cancel
+          {{ __('message.cancel') }}
         </a>
         <button type="submit"
           class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">

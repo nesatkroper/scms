@@ -124,7 +124,7 @@
                                bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600
                                rounded-lg transition-colors duration-200 flex items-center gap-2">
               <i class="fas fa-arrow-left"></i>
-              Cancel
+              {{ __('message.cancel') }}
             </button>
 
             <button type="submit" :disabled="selectedRoles.length === 0"

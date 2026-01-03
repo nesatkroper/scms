@@ -15,7 +15,7 @@
         <a href="{{ route('admin.students.edit', $student) }}"
           class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
           <i class="fa-solid fa-user-pen"></i>
-          Edit
+          {{ __('message.edit') }}
         </a>
       @endif
 
@@ -53,7 +53,7 @@
                 <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                   {{ $student->attendances_count ?? 0 }}
                 </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">Attendance</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.attendance') }}</div>
               </div>
               <div class="p-2">
                 <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
@@ -102,17 +102,17 @@
           {{-- General Info --}}
           @include('admin.components.detail-item', [
               'label' => 'Gender',
-              'value' => $student->gender ?? 'N/A',
+              'value' => $student->gender ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Date of Birth',
               'value' => $student->date_of_birth
                   ? \Carbon\Carbon::parse($student->date_of_birth)->format('M d, Y')
-                  : 'N/A',
+                  : __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Phone',
-              'value' => $student->phone ?? 'N/A',
+              'value' => $student->phone ?? __('message.n/a'),
           ])
 
           {{-- Admission/Status Info --}}
@@ -120,7 +120,7 @@
               'label' => 'Admission Date',
               'value' => $student->admission_date
                   ? \Carbon\Carbon::parse($student->admission_date)->format('M d, Y')
-                  : 'N/A',
+                  : __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Account Created',
@@ -128,11 +128,11 @@
           ])
           @include('admin.components.detail-item', [
               'label' => 'Nationality',
-              'value' => $student->nationality ?? 'N/A',
+              'value' => $student->nationality ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
               'label' => 'Religion',
-              'value' => $student->religion ?? 'N/A',
+              'value' => $student->religion ?? __('message.n/a'),
           ])
 
           {{-- Work/Address Info (Full Width) --}}
@@ -157,7 +157,7 @@
           @endif
           <div class="sm:col-span-2">
             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Address</dt>
-            <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $student->address ?? 'N/A' }}</dd>
+            <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $student->address ?? __('message.n/a') }}</dd>
           </div>
         </dl>
       </div>
@@ -206,25 +206,25 @@
                 @foreach ($student->courseOfferings as $offering)
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {{ $offering->subject->name ?? 'N/A' }}
+                      {{ $offering->subject->name ?? __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {{ $offering->teacher->name ?? 'Unassigned' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $offering?->enrollment?->status ? ucfirst(str_replace('_', ' ', $offering->enrollment->status)) : 'N/A' }}
+                      {{ $offering?->enrollment?->status ? ucfirst(str_replace('_', ' ', $offering->enrollment->status)) : __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <span
                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-100">
-                        {{ $offering->enrollment->grade_final ?? 'N/A' }}
+                        {{ $offering->enrollment->grade_final ?? __('message.n/a') }}
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $offering->schedule ?? 'N/A' }}
-                      ({{ $offering->start_time ? \Carbon\Carbon::parse($offering->start_time)->format('h:i A') : 'N/A' }}
+                      {{ $offering->schedule ?? __('message.n/a') }}
+                      ({{ $offering->start_time ? \Carbon\Carbon::parse($offering->start_time)->format('h:i A') : __('message.n/a') }}
                       -
-                      {{ $offering->end_time ? \Carbon\Carbon::parse($offering->end_time)->format('h:i A') : 'N/A' }})
+                      {{ $offering->end_time ? \Carbon\Carbon::parse($offering->end_time)->format('h:i A') : __('message.n/a') }})
                     </td>
                   </tr>
                 @endforeach
@@ -291,7 +291,7 @@
                       ${{ number_format($paidAmount, 2) }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('M d, Y') : 'N/A' }}
+                      {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('M d, Y') : __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                       <span
@@ -355,16 +355,16 @@
                 @foreach ($student->scores as $score)
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                      <span class="font-bold">{{ $score->exam->type ?? 'N/A' }}</span>
+                      <span class="font-bold">{{ $score->exam->type ?? __('message.n/a') }}</span>
                       <p class="text-xs text-gray-500 dark:text-gray-400">
                         ({{ $score->exam->courseOffering->subject->name ?? 'Unknown Course' }})
                       </p>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $score->exam->date ? \Carbon\Carbon::parse($score->exam->date)->format('M d, Y') : 'N/A' }}
+                      {{ $score->exam->date ? \Carbon\Carbon::parse($score->exam->date)->format('M d, Y') : __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $score->score }} / {{ $score->exam->total_marks ?? 'N/A' }}
+                      {{ $score->score }} / {{ $score->exam->total_marks ?? __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                       <span
@@ -376,7 +376,7 @@
 @else
 bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
                             @endif">
-                        {{ $score->grade ?? 'N/A' }}
+                        {{ $score->grade ?? __('message.n/a') }}
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -390,11 +390,11 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
         @endif
       </div>
 
-      {{-- Attendance Log --}}
+      {{-- {{ __('message.attendance') }} Log --}}
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
         <div class="flex justify-between items-center pb-2">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Attendance Log</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.attendance') }} Log</h3>
 
         </div>
 
@@ -434,7 +434,7 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
                       {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $attendance->courseOffering->subject->name ?? 'N/A' }}
+                      {{ $attendance->courseOffering->subject->name ?? __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                       <span

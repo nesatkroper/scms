@@ -18,7 +18,8 @@
       <td colspan="2" align="right"><strong>Total Marks:</strong> {{ $exam->total_marks }}</td>
     </tr>
     <tr>
-      <td colspan="2"><strong>Classroom:</strong> {{ $exam->courseOffering->classroom->name ?? 'N/A' }}</td>
+      <td colspan="2"><strong>Classroom:</strong> {{ $exam->courseOffering->classroom->name ?? __('message.n/a') }}
+      </td>
       <td colspan="3"><strong>Schedule:</strong> {{ $exam->courseOffering->time_slot }}</td>
       <td colspan="2" align="right" style="color: #E53E3E;"><strong>Passing Marks:</strong>
         {{ $exam->passing_marks }}</td>

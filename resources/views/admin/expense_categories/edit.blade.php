@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 {{-- Changed $department to $expenseCategory --}}
-@section('title', 'Edit Expense Category: ' . $expenseCategory->name)
+@section('title', '{{ __('message.edit') }} Expense Category: ' . $expenseCategory->name)
 @section('content')
 
   <div

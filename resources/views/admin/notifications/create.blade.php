@@ -152,7 +152,7 @@
       <div class="flex justify-end space-x-3 pt-4 border-t mt-4 border-gray-200 dark:border-gray-700">
         <a href="{{ url()->previous() }}"
           class="px-4 py-2 border border-red-500 hover:bg-red-600 hover:text-white text-red-500 rounded-md flex items-center gap-2">
-          Cancel
+          {{ __('message.cancel') }}
         </a>
 
         <button type="submit"

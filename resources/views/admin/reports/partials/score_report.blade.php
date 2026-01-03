@@ -15,8 +15,8 @@
       @forelse ($data as $index => $row)
         <tr class="border-b dark:border-gray-700">
           <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $index + 1 }}</td>
-          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->student->name ?? 'N/A' }}</td>
-          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->course->name ?? 'N/A' }}</td>
+          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->student->name ?? __('message.n/a') }}</td>
+          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->course->name ?? __('message.n/a') }}</td>
           <td class="px-4 py-2 text-gray-700 dark:text-gray-300 font-semibold">{{ $row->score ?? '-' }}</td>
           <td class="px-4 py-2">
             @php

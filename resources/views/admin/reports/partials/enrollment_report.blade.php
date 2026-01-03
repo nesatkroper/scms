@@ -20,11 +20,11 @@
           </th>
           {{-- Course / Subject --}}
           <td class="px-6 py-4">
-            {{ $enrollment->courseOffering->subject->name ?? 'N/A' }}
+            {{ $enrollment->courseOffering->subject->name ?? __('message.n/a') }}
           </td>
           {{-- Time Slot --}}
           <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
-            {{ $enrollment->courseOffering->time_slot ?? 'N/A' }}
+            {{ $enrollment->courseOffering->time_slot ?? __('message.n/a') }}
           </td>
           {{-- Enroll Date --}}
           <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
@@ -47,7 +47,7 @@
           </td>
           {{-- Final Grade --}}
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-gray-200">
-            {{ $enrollment->grade_final ?? 'N/A' }}
+            {{ $enrollment->grade_final ?? __('message.n/a') }}
           </td>
         </tr>
       @empty

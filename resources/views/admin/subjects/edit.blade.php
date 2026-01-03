@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Subject: ' . $subject->name)
+@section('title', '{{ __('message.edit') }} Subject: ' . $subject->name)
 @section('content')
   <div
     class="box px-4 py-6 md:p-8 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
@@ -10,7 +10,7 @@
           viewBox="0 0 24 24" fill="currentColor">
           <path d="M7 17.013v1.987h10v-1.987l-5-5-5 5zM17 5v1.987l-5 5-5-5v-1.987h10z" />
         </svg>
-        Edit Subject: {{ $subject->name }}
+        {{ __('message.edit') }} Subject: {{ $subject->name }}
       </h3>
       <a href="{{ route('admin.subjects.index') }}"
         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
@@ -92,7 +92,7 @@
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd" />
           </svg>
-          Cancel
+          {{ __('message.cancel') }}
         </a>
         <button type="submit"
           class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors flex items-center gap-2">

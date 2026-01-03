@@ -42,7 +42,8 @@
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search classrooms (name or room number)..."
+            <input type="search" name="search" id="searchInput"
+              placeholder="{{ __('message.search_classrooms_(name_or_room_number)') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -123,14 +124,14 @@
             </div>
           </div>
 
-          {{-- Actions (Edit Link + Delete Form) --}}
+          {{-- Actions ({{ __('message.edit') }} Link + Delete Form) --}}
           <div
             class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
             @if (Auth::user()->hasPermissionTo('update_classroom'))
               <a href="{{ route('admin.classrooms.edit', $classroom->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Edit">
+                title="{{ __('message.edit') }}">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
                   {{ __('message.edit') }}

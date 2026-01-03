@@ -116,7 +116,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.due_date') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('F jS, Y') : 'N/A' }}
+                  {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('F jS, Y') : __('message.n/a') }}
                 </p>
               </div>
             </div>
@@ -136,7 +136,8 @@
                   @if ($fee->status == 'paid')
                     <span
                       class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-                      {{ __('message.paid_on') }} {{ $fee->paid_date ? \Carbon\Carbon::parse($fee->paid_date)->format('M d, Y') : 'N/A' }}
+                      {{ __('message.paid_on') }}
+                      {{ $fee->paid_date ? \Carbon\Carbon::parse($fee->paid_date)->format('M d, Y') : __('message.n/a') }}
                     </span>
                   @elseif ($fee->status == 'pending' && $fee->due_date && $fee->due_date->isPast())
                     <span
@@ -184,7 +185,7 @@
                 @if (Auth::user()->hasPermissionTo('update_fee'))
                   <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
                     class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Edit">
+                    title="{{ __('message.edit') }}">
                     <span class="btn-content flex items-center justify-center">
                       <i class="fa-solid fa-pen-to-square me-2"></i>
                       {{ __('message.edit') }}
@@ -218,8 +219,10 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_fee_records_found') }}</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_fee_record_to_begin_tracking_student_payments') }}</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_fee_records_found') }}
+            </h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_your_first_fee_record_to_begin_tracking_student_payments') }}</p>
           </div>
         </div>
       @endforelse

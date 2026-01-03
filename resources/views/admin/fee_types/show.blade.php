@@ -16,15 +16,15 @@
             d="M12 6v12m-2.25 1.5h4.5a.75.75 0 00.75-.75V6.75a.75.75 0 00-.75-.75h-4.5a.75.75 0 00-.75.75V18.75a.75.75 0 00.75.75z" />
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12h-6" />
         </svg>
-        {{ $feeType->name ?? 'N/A' }} {{ __('message.details') }}
+        {{ $feeType->name ?? __('message.n/a') }} {{ __('message.details') }}
       </h3>
 
       <div class="flex gap-4">
         <a href="{{ route('admin.students.fees.index', $feeType->id) }}"
           class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors text-base"
-          title="Export {{ $feeType->name ?? 'N/A' }}">
+          title="Export {{ $feeType->name ?? __('message.n/a') }}">
           <i class="fa-solid fa-download me-2"></i>
-          {{ __('message.export') }} {{ $feeType->name ?? 'N/A' }}
+          {{ __('message.export') }} {{ $feeType->name ?? __('message.n/a') }}
         </a>
         {{-- Back Button --}}
         <a href="{{ route('admin.fee_types.index') }}"
@@ -42,7 +42,7 @@
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200 dark:border-gray-700">
         <div class="flex flex-col">
           <h2 class="text-2xl font-extrabold text-teal-700 dark:text-teal-300">
-            {{ $feeType->name ?? 'N/A' }}
+            {{ $feeType->name ?? __('message.n/a') }}
           </h2>
           <p class="text-sm font-semibold text-teal-500 dark:text-teal-400 mt-1">
             {{ __('message.type_id') }} {{ $feeType->id }}
@@ -74,7 +74,7 @@
             <i class="fa-solid fa-calendar-plus text-cyan-500"></i> {{ __('message.created') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $feeType->created_at?->format('M d, Y H:i') ?? 'N/A' }}
+            {{ $feeType->created_at?->format('M d, Y H:i') ?? __('message.n/a') }}
           </span>
         </p>
 
@@ -84,7 +84,7 @@
             <i class="fa-solid fa-calendar-check text-pink-500"></i> {{ __('message.last_updated') }}
           </span>
           <span class="font-semibold text-gray-800 dark:text-gray-200 block mt-1">
-            {{ $feeType->updated_at?->format('M d, Y H:i') ?? 'N/A' }}
+            {{ $feeType->updated_at?->format('M d, Y H:i') ?? __('message.n/a') }}
           </span>
         </p>
       </div>
@@ -123,7 +123,7 @@
                       {{ __('message.fee_for') }} {{ $fee->student->name ?? 'Student N/A' }}
                     </span>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
-                      {{ __('message.due_date') }} {{ $fee->due_date?->format('M d, Y') ?? 'N/A' }}
+                      {{ __('message.due_date') }} {{ $fee->due_date?->format('M d, Y') ?? __('message.n/a') }}
                     </span>
                   </div>
 
@@ -156,9 +156,9 @@
       @if (Auth::user()->hasPermissionTo('update_fee-type'))
         <a href="{{ route('admin.fee_types.edit', $feeType->id) }}"
           class="btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-yellow-500 text-white hover:bg-yellow-600 transition-colors"
-          title="Edit Fee Type">
+          title="{{ __('message.edit') }} Fee Type">
           <i class="fa-solid fa-pen-to-square mr-2"></i>
-         {{ __('message.edit_type') }}
+          {{ __('message.edit_type') }}
         </a>
       @endif
 

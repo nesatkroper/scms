@@ -7,10 +7,11 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
     <h3 class="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-        <div class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
-            <i class="ri-user-2-fill text-2xl"></i>
-          </div>
-          Students List
+      <div
+        class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
+        <i class="ri-user-2-fill text-2xl"></i>
+      </div>
+      Students List
     </h3>
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -105,7 +106,7 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400">Admission Date</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-cyan-600 dark:text-cyan-400">
-                    {{ $student->admission_date ? $student->admission_date->format('M d, Y') : 'N/A' }}
+                    {{ $student->admission_date ? $student->admission_date->format('M d, Y') : __('message.n/a') }}
                   </span>
                 </p>
               </div>
@@ -125,13 +126,13 @@
               </div>
             </div>
 
-            {{-- Attendance Count --}}
+            {{-- {{ __('message.attendance') }} Count --}}
             <div class="flex items-center gap-3 text-sm">
               <div class="p-2 rounded-lg bg-green-50 dark:bg-slate-700 text-green-600 dark:text-green-300">
                 <i class="fa-solid fa-check-circle size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Attendance Records</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.attendance') }} Records</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-green-600 dark:text-green-400">{{ $student->attendances_count }}</span>
                   Records
@@ -148,7 +149,7 @@
               @if (Auth::user()->hasPermissionTo('view_enrollment'))
                 <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
                   class="btn p-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit Student">
+                  title="{{ __('message.edit') }} Student">
                   <i class="fa-solid fa-file-circle-plus me-2"></i>
                   Enroll
                 </a>
@@ -157,7 +158,7 @@
               @if (Auth::user()->hasPermissionTo('view_fee'))
                 <a href="{{ route('admin.students.fees.index', $student->id) }}"
                   class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit Student">
+                  title="{{ __('message.edit') }} Student">
                   <i class="fa-solid fa-dollar-sign me-2"></i>
                   Payment
                 </a>
@@ -177,9 +178,9 @@
               @if (Auth::user()->hasPermissionTo('update_student'))
                 <a href="{{ route('admin.students.edit', $student->id) }}"
                   class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit Student">
+                  title="{{ __('message.edit') }} Student">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- Edit --}}
+                  {{-- {{ __('message.edit') }} --}}
                 </a>
               @endif
 

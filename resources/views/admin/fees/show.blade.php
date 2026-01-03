@@ -62,14 +62,16 @@
         <div class="mt-4">
           @if ($subject)
             <p class="font-semibold text-gray-900 dark:text-gray-100">Course: {{ $subject->name }}</p>
-            <p class="text-gray-600 dark:text-gray-400">Teacher: {{ $teacher?->name ?? 'N/A' }}</p>
+            <p class="text-gray-600 dark:text-gray-400">Teacher: {{ $teacher?->name ?? __('message.n/a') }}</p>
             <p class="text-gray-600 dark:text-gray-400">
-              {{ __('message.payment_type') }} <span class="font-medium uppercase">{{ $courseOffering->payment_type ?? 'N/A' }}</span>
+              {{ __('message.payment_type') }} <span
+                class="font-medium uppercase">{{ $courseOffering->payment_type ?? __('message.n/a') }}</span>
             </p>
           @else
             <p class="text-gray-600 dark:text-gray-400">{{ __('message.general_fee_(no_enrollment)') }}</p>
           @endif
-          <p class="text-gray-600 dark:text-gray-400">{{ __('message.fee_type') }} {{ $fee->feeType?->name ?? 'N/A' }}</p>
+          <p class="text-gray-600 dark:text-gray-400">{{ __('message.fee_type') }}
+            {{ $fee->feeType?->name ?? __('message.n/a') }}</p>
         </div>
       </div>
 
@@ -100,10 +102,10 @@
 
       <div>
         <h4 class="font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">{{ __('message.bill_to') }}</h4>
-        <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $student?->name ?? 'N/A' }}</p>
-        <p class="text-gray-600 dark:text-gray-400">Email: {{ $student?->email ?? 'N/A' }}</p>
-        <p class="text-gray-600 dark:text-gray-400">Phone: {{ $student?->phone ?? 'N/A' }}</p>
-        <p class="text-gray-600 dark:text-gray-400">Address: {{ $student?->address ?? 'N/A' }}</p>
+        <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $student?->name ?? __('message.n/a') }}</p>
+        <p class="text-gray-600 dark:text-gray-400">Email: {{ $student?->email ?? __('message.n/a') }}</p>
+        <p class="text-gray-600 dark:text-gray-400">Phone: {{ $student?->phone ?? __('message.n/a') }}</p>
+        <p class="text-gray-600 dark:text-gray-400">Address: {{ $student?->address ?? __('message.n/a') }}</p>
       </div>
 
       <div class="text-right">
@@ -128,7 +130,7 @@
         </p>
         <p class="font-semibold text-red-600 dark:text-red-400">
           <span class="font-medium text-gray-700 dark:text-gray-300">{{ __('message.due_date') }}</span>
-          {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('M d, Y') : 'N/A' }}
+          {{ $fee->due_date ? \Carbon\Carbon::parse($fee->due_date)->format('M d, Y') : __('message.n/a') }}
         </p>
       </div>
     </div>
@@ -168,7 +170,7 @@
           @if ($totalPaid > 0 && $fee->payment_date)
             <tr class="bg-teal-50/50 dark:bg-teal-900/30">
               <td class="px-6 py-1 text-sm text-left font-medium text-teal-700 dark:text-teal-300">
-                {{ __('message.payments_received') }} ({{ $fee->payment_method ?? 'N/A' }})
+                {{ __('message.payments_received') }} ({{ $fee->payment_method ?? __('message.n/a') }})
               </td>
               <td class="px-6 py-1 text-sm text-right font-bold text-teal-700 dark:text-teal-300">
                 -{{ $currency }}{{ number_format($totalPaid, 2) }}
@@ -182,24 +184,25 @@
     <div class="flex flex-col md:flex-row justify-between gap-8 z-20">
 
       <div class="md:w-1/2 space-y-1">
-        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">{{ __('message.payment/transaction_info') }}</h4>
+        <h4 class="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 mb-2">
+          {{ __('message.payment/transaction_info') }}</h4>
         <p class="text-sm text-gray-700 dark:text-gray-300">
           <span class="font-semibold">{{ __('message.payment_date') }}</span>
           <span class="font-medium text-blue-600 dark:text-blue-400">
-            {{ $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date)->format('M d, Y h:i A') : 'N/A' }}
+            {{ $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date)->format('M d, Y h:i A') : __('message.n/a') }}
           </span>
         </p>
         <p class="text-sm text-gray-700 dark:text-gray-300">
           <span class="font-semibold">Method:</span>
-          {{ $fee->payment_method ? strtoupper($fee->payment_method) : 'N/A' }}
+          {{ $fee->payment_method ? strtoupper($fee->payment_method) : __('message.n/a') }}
         </p>
         <p class="text-sm text-gray-700 dark:text-gray-300">
           <span class="font-semibold">{{ __('message.transaction_id') }}</span>
-          {{ $fee->transaction_id ?? 'N/A' }}
+          {{ $fee->transaction_id ?? __('message.n/a') }}
         </p>
         <p class="text-sm text-gray-700 dark:text-gray-300">
           <span class="font-semibold">{{ __('message.received_by') }}</span>
-          {{ $fee->receiver?->name ?? 'N/A' }}
+          {{ $fee->receiver?->name ?? __('message.n/a') }}
         </p>
       </div>
 
@@ -231,7 +234,8 @@
     <div class="mt-10 pt-2 border-t border-gray-200 dark:border-gray-700/50 text-center z-20">
       <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">{{ __('message.thank_you') }}</p>
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        {{ __('message.developed_by') }} {{ config('app.name') }} - {{ __('message.g2_developer_support_on') }} {{ now()->format('M d, Y h:i A') }}
+        {{ __('message.developed_by') }} {{ config('app.name') }} - {{ __('message.g2_developer_support_on') }}
+        {{ now()->format('M d, Y h:i A') }}
       </p>
     </div>
 

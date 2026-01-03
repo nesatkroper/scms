@@ -152,14 +152,14 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.scheduled_time') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="capitalize">
-                    {{ $exam->courseOffering->time_slot ?? 'N/A' }}
+                    {{ $exam->courseOffering->time_slot ?? __('message.n/a') }}
                   </span>
                 </p>
               </div>
             </div>
           </div>
 
-          {{-- Actions (Edit Link + Delete Form) --}}
+          {{-- Actions ({{ __('message.edit') }} Link + Delete Form) --}}
           <div
             class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
@@ -177,7 +177,7 @@
               @if (Auth::user()->hasPermissionTo('update_exam'))
                 <a href="{{ route('admin.exams.edit', ['exam' => $exam->id, 'course_offering_id' => $courseOfferingId]) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit">
+                  title="{{ __('message.edit') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
                     {{ __('message.edit') }}
@@ -215,7 +215,8 @@
               </svg>
             </div>
             <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_exams_found') }}</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">{{ __('message.create_your_first_exam_to_begin_recording_scores') }}</p>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_your_first_exam_to_begin_recording_scores') }}</p>
           </div>
         </div>
       @endforelse

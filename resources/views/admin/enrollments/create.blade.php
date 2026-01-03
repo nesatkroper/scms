@@ -17,7 +17,7 @@
               d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zm0 1c-2.67 0-4.85 1.58-5.78 3.5.93 1.92 3.11 3.5 5.78 3.5s4.85-1.58 5.78-3.5c-.93-1.92-3.11-3.5-5.78-3.5z" />
             <path d="M17 11h-1v-1a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2z" />
           </svg>
-          Create New Admission Record {{ $courseOffering?->subject?->name ?? 'Deleted' }}
+          {{ __('message.create_new_admission_record') }} {{ $courseOffering?->subject?->name ?? __('message.deleted') }}
         </h3>
         {{-- Back to Register Button --}}
         <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOfferingId]) }}"
@@ -106,7 +106,8 @@
           "
                       class="px-3 py-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                       <span x-text="student.name"></span>
-                      <span class="text-xs text-gray-500">(ID: <span x-text="student.id"></span>)</span>
+                      <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                          x-text="student.id"></span>)</span>
                     </li>
                   </template>
                 </ul>
@@ -163,7 +164,7 @@
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                 clip-rule="evenodd" />
             </svg>
-            Cancel
+            {{ __('message.cancel') }}
           </a>
 
           @if (Auth::user()->hasPermissionTo('create_enrollment'))

@@ -53,8 +53,6 @@
           </div>
         @endif
 
-        @endif
-
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
@@ -99,8 +97,8 @@
             <div class="">
               <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold">
                 {{ $enrollment->courseOffering->subject->name ?? 'Course Deleted' }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">Time Slot:
-                {{ $enrollment->courseOffering->time_slot ?? 'N/A' }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">{{ __('message.time_slot') }}
+                {{ $enrollment->courseOffering->time_slot ?? __('message.n/a') }}</p>
             </div>
           </div>
 
@@ -120,7 +118,7 @@
                 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300
             @else
                 bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
-                  {{ ucfirst($enrollment->status ?? 'N/A') }}
+                  {{ ucfirst($enrollment->status ?? __('message.n/a')) }}
                 </span>
               </p>
             </div>
@@ -136,7 +134,7 @@
                     bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
                   @else
                     bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
-                  {{ $enrollment->status ?? 'N/A' }}
+                  {{ $enrollment->status ?? __('message.n/a') }}
                 </span>
               </p>
             </div> --}}
@@ -161,7 +159,7 @@
 
                 $sum = collect($grades)->filter(fn($g) => !is_null($g))->sum();
 
-                $output = $sum > 0 ? $sum : 'N/A';
+                $output = $sum > 0 ? $sum : __('message.n/a');
               @endphp
 
               <span class="font-bold text-lg text-purple-600 dark:text-purple-400">
@@ -177,14 +175,13 @@
             <div class="flex justify-between items-center">
               <p class="flex items-center gap-1 font-medium">
                 <i class="fa-solid fa-wallet text-teal-500"></i>
-                Payment:
-
+                {{ __('message.payment') }}
               <p class="text-sm ">
                 @if ($enrollment?->fee?->status == 'paid')
                   <span
                     class="font-bold px-3 py-0.5 rounded-full text-xs bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300">
-                    Paid on
-                    {{ $enrollment->fee->payment_date ? \Carbon\Carbon::parse($enrollment->fee->payment_date)->format('M d, Y') : 'N/A' }}
+                    {{ __('message.paid_on') }}
+                    {{ $enrollment->fee->payment_date ? \Carbon\Carbon::parse($enrollment->fee->payment_date)->format('M d, Y') : __('message.n/a') }}
                   </span>
                 @elseif ($enrollment->fee?->status == 'pending' && $enrollment->fee->due_date && $enrollment->fee->due_date->isPast())
                   <span
@@ -221,10 +218,10 @@
               @if (Auth::user()->hasPermissionTo('view_attendance'))
                 <a href="{{ route('admin.attendances.show', [$courseOffering->id, $enrollment->student->id]) }}"
                   class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Attendance">
+                  title="{{ __('message.attendance') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
-                    Attendance
+                    {{ __('message.attendance') }}
                   </span>
                 </a>
               @endif
@@ -232,7 +229,7 @@
               @if (Auth::user()->hasPermissionTo('view_score'))
                 <a href="{{ route('admin.scores.show', [$courseOffering->id, $enrollment->student->id]) }}"
                   class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Attendance">
+                  title="{{ __('message.attendance') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-file-circle-plus me-2"></i>
                     Score
@@ -245,10 +242,10 @@
               @if (Auth::user()->hasPermissionTo('update_attendance'))
                 <a href="{{ route('admin.enrollments.edit', ['student_id' => $enrollment->student_id, 'course_offering_id' => $enrollment->course_offering_id]) }}"
                   class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Edit Admission">
+                  title="{{ __('message.edit') }} Admission">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
-                    Edit
+                    {{ __('message.edit') }}
                   </span>
                 </a>
               @endif

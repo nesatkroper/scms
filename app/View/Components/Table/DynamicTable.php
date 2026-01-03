@@ -47,12 +47,12 @@ class DynamicTable extends Component
   public static function getDisplayValue($item, $key)
   {
     if (method_exists($item, $key) || isset($item->{$key})) {
-      return $item->{$key} ?? 'N/A';
+      return $item->{$key} ?? __('message.n/a');
     }
     if (in_array($key, ['role', 'type']) && method_exists($item, 'getRoleNames')) {
-      return $item->getRoleNames()->first() ?? 'N/A';
+      return $item->getRoleNames()->first() ?? __('message.n/a');
     }
 
-    return 'N/A';
+    return __('message.n/a');
   }
 }

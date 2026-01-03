@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Exam: ' . ($exam->type ?? 'N/A'))
+@section('title', '{{ __('message.edit') }} Exam: ' . ($exam->type ?? __('message.n/a')))
 @section('content')
 
   <div
@@ -18,7 +18,7 @@
         </svg>
         {{ __('message.edit_exam') }}
         <span class="ml-1 text-indigo-600 dark:text-indigo-400 capitalize">
-          {{ $exam->type ?? 'N/A' }}
+          {{ $exam->type ?? __('message.n/a') }}
           ({{ $exam->courseOffering->join_end->format('D,d,M-Y') }})
         </span>
       </h3>

@@ -1,4 +1,4 @@
-<!-- Attendance Chart -->
+<!-- {{ __('message.attendance') }} Chart -->
 <div
   class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
   <div class="flex justify-between items-center mb-6">
@@ -32,7 +32,7 @@
       const ctx = document.getElementById('attendanceChart').getContext('2d');
 
       // -------------------------
-      // 3 DATASETS (Attendance, Absence, Permission)
+      // 3 DATASETS ({{ __('message.attendance') }}, Absence, Permission)
       // -------------------------
       const dataSets = {
         daily: {
@@ -76,7 +76,7 @@
         data: {
           labels: dataSets.daily.labels,
           datasets: [{
-              label: "Attendance",
+              label: "{{ __('message.attendance') }}",
               data: dataSets.daily.attendance,
               borderWidth: 2,
               borderColor: "#6366f1",
