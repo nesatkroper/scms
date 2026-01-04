@@ -107,7 +107,7 @@
                   title="Admission Register">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
-                    Register
+                    {{ __('message.register') }}
                   </span>
                 </a>
               @endif

@@ -63,7 +63,7 @@
         {{-- 2. Fee Type Field --}}
         <div>
           <label for="fee_type_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fee Type <span class="text-red-500">*</span>
+            {{ __('message.fee_type') }} <span class="text-red-500">*</span>
           </label>
           <select id="fee_type_id" name="fee_type_id"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
@@ -86,7 +86,7 @@
         {{-- 3. Amount Field --}}
         <div>
           <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Amount ($) <span class="text-red-500">*</span>
+            {{ __('message.amount') }} ($) <span class="text-red-500">*</span>
           </label>
           <input type="number" step="0.01" min="0" id="amount" name="amount" value="{{ old('amount') }}"
             class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white

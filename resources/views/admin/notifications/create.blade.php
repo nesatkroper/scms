@@ -5,7 +5,7 @@
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
-    <h2 class="text-2xl font-bold mb-4">Send Notification</h2>
+    <h2 class="text-2xl font-bold mb-4">{{ __('message.send_notification') }}</h2>
 
     @if (session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -23,11 +23,12 @@
 
       <div id="filterForm" class="flex justify-between w-full gap-4">
         <div class="w-full min-w-80">
-          <label for="roleFilter" class="font-medium text-gray-700 dark:text-gray-300">Filter by Role</label>
+          <label for="roleFilter"
+            class="font-medium text-gray-700 dark:text-gray-300">{{ __('message.filter_by_role') }}</label>
           <select name="role" id="roleFilter"
             onchange="location.href='{{ route('admin.notifications.create') }}?role='+this.value"
             class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
-            <option value="">-- All --</option>
+            <option value="">-- {{ __('message.all') }} --</option>
             @foreach ($roles as $r)
               <option value="{{ $r }}" {{ $selectedRole == $r ? 'selected' : '' }}>{{ ucfirst($r) }}
               </option>
@@ -42,7 +43,7 @@
             <select name="course_offering_id" id="courseFilter"
               onchange="location.href='{{ route('admin.notifications.create') }}?role={{ $selectedRole }}&course_offering_id='+this.value"
               class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
-              <option value="">-- All --</option>
+              <option value="">-- {{ __('message.all') }} --</option>
               @foreach ($courseOfferings as $co)
                 <option value="{{ $co->id }}" {{ $selectedCourseOffering == $co->id ? 'selected' : '' }}>
                   {{ $co->subject->name }}
@@ -55,7 +56,7 @@
 
       <div class="flex flex-col gap-4">
         <div>
-          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Title <span
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('message.title') }} <span
               class="text-red-500">*</span></label>
           <input type="text" name="title" value="{{ old('title') }}"
             class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
@@ -63,7 +64,7 @@
         </div>
 
         <div>
-          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Message <span
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('message.message') }} <span
               class="text-red-500">*</span></label>
           <textarea name="body" rows="5"
             class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
@@ -89,7 +90,7 @@
         <input type="checkbox" id="checkAllUsers" class="sr-only peer">
         <label for="checkAllUsers"
           class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full">
-          <span class="font-bold">Select All / Unselect All (Visible)</span>
+          <span class="font-bold">{{ __('message.select_all_/_unselect_all_(visible)') }}</span>
           <div class="relative inline-flex items-center">
             <div
               class="w-11 h-6 bg-gray-200 peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
@@ -121,7 +122,8 @@
             </div>
           </label>
         @empty
-          <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">No users found for the selected filter(s).</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">
+            {{ __('message.no_users_found_for_the_selected_filter(s)') }}</p>
         @endforelse
       </div>
 
@@ -157,7 +159,7 @@
 
         <button type="submit"
           class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
-          Send Notification
+          {{ __('message.send_notification') }}
         </button>
       </div>
     </form>

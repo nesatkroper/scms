@@ -20,7 +20,7 @@
         <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
-      My Profile
+      {{ __('message.my_profile') }}
       {{-- Display primary role for quick identification --}}
       @if ($user->roles->isNotEmpty())
         <span class="text-base font-semibold text-gray-500 dark:text-gray-400">
@@ -57,7 +57,7 @@
           </div>
 
           <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Metrics</h3>
+            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('message.metrics') }}</h3>
             <div class="flex justify-around text-center">
 
               @if ($user->hasRole('student'))
@@ -65,13 +65,13 @@
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                     {{ $user->course_offerings_count ?? 0 }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Courses</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.courses') }}</div>
                 </div>
                 <div class="p-2">
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                     {{ $user->fees_count ?? 0 }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Fees</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.fees') }}</div>
                 </div>
               @endif
 
@@ -80,13 +80,13 @@
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                     {{ $user->teaching_courses_count ?? 0 }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Courses Taught</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.courses_taught') }}</div>
                 </div>
                 <div class="p-2">
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                     {{ $taughtStudentsCount }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Students Taught</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.students_taught') }}</div>
                 </div>
               @endif
 
@@ -95,7 +95,7 @@
                   <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                     {{ $user->approved_expenses_count ?? 0 }}
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">Expenses Approved</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.expenses_approved') }}</div>
                 </div>
               @endif
 
@@ -118,7 +118,8 @@
     <div class="lg:col-span-2">
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-4">Personal & Contact Info</h3>
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 pb-4">
+          {{ __('message.personal_&_contact_info') }}</h3>
 
         {{-- Details Grid --}}
         <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-4">
@@ -194,11 +195,11 @@
             ])
             @if ($user->cv)
               <div class="sm:col-span-1">
-                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">CV / Resume</dt>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.cv_/_resume') }}</dt>
                 <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
                   {{-- Storage::url() is correct for publicly stored files --}}
                   <a href="{{ Storage::url($user->cv) }}" target="_blank"
-                    class="text-blue-600 dark:text-blue-400 hover:underline">View File</a>
+                    class="text-blue-600 dark:text-blue-400 hover:underline">{{ __('message.view_file') }}</a>
                 </dd>
               </div>
             @endif
@@ -206,7 +207,7 @@
 
           {{-- Address Info (Full Width) --}}
           <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Full Address</dt>
+            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.full_address') }}</dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $user->address ?? __('message.n/a') }}</dd>
           </div>
         </dl>
@@ -215,12 +216,14 @@
       {{-- TEACHER: Courses Taught Section --}}
       @if ($user->hasRole('teacher'))
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Courses Taught & Students</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            {{ __('message.courses_taught_&_students') }}</h3>
 
-          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Teaching Courses
+          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('message.teaching_courses') }}
             ({{ $user->teaching_courses_count }})</h4>
           @if ($user->teachingCourses->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">You are not currently assigned to teach any courses.</p>
+            <p class="text-gray-500 dark:text-gray-400">
+              {{ __('message.you_are_not_currently_assigned_to_teach_any_courses') }}</p>
           @else
             <div class="flex flex-wrap gap-2 mb-4">
               @foreach ($user->teachingCourses as $courseOffering)
@@ -234,11 +237,13 @@
             </div>
           @endif
 
-          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">Total Unique Students Taught
+          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">
+            {{ __('message.total_unique_students_taught') }}
             ({{ $taughtStudentsCount }})</h4>
-          <p class="text-sm text-gray-500 dark:text-gray-400">This number reflects all unique students enrolled across
-            the
-            courses you teach.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            {{ __('message.this_number_reflects_all_unique_students_enrolled_across_the_courses_you_teach') }}
+
+          </p>
 
         </div>
       @endif
@@ -248,11 +253,12 @@
 
         {{-- Assigned Courses (Enrollment) --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Enrolled Courses
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ __('message.enrolled_courses') }}
             ({{ $user->course_offerings_count }})</h3>
 
           @if ($user->courseOfferings->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">You are not currently enrolled in any courses.</p>
+            <p class="text-gray-500 dark:text-gray-400">{{ __('message.you_are_not_currently_enrolled_in_any_courses') }}
+            </p>
           @else
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -260,16 +266,16 @@
                   <tr>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Subject</th>
+                      {{ __('message.subject') }}</th>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Teacher</th>
+                      {{ __('message.teacher') }}</th>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Final Grade</th>
+                      {{ __('message.final_grade') }}</th>
                     <th
                       class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Schedule</th>
+                      {{ __('message.schedule') }}</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -297,32 +303,34 @@
 
         {{-- Fee Records (Invoices/Bills) --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Fee Records ({{ $user->fees_count }})
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ __('message.fee_records') }}
+            ({{ $user->fees_count }})
           </h3>
 
           @if ($user->fees->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">No fee records found for your account.</p>
+            <p class="text-gray-500 dark:text-gray-400">{{ __('message.no_fee_records_found_for_your_account') }}</p>
           @else
             <div class="overflow-x-auto">
               {{-- Fee table data here... --}}
               {{-- Since you didn't provide the fee table, this is a placeholder. --}}
-              <p class="text-sm text-gray-500 dark:text-gray-400">Fee table implementation needed.</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('message.fee_table_implementation_needed') }}</p>
             </div>
           @endif
         </div>
 
         {{-- Exam Scores --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Exam Scores
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ __('message.exam_scores') }}
             ({{ $user->scores->count() }})</h3>
 
           @if ($user->scores->isEmpty())
-            <p class="text-gray-500 dark:text-gray-400">No exam scores found for your account.</p>
+            <p class="text-gray-500 dark:text-gray-400">{{ __('message.no_exam_scores_found_for_your_account') }}</p>
           @else
             <div class="overflow-x-auto">
               {{-- Score table data here... --}}
               {{-- Since you didn't provide the score table, this is a placeholder. --}}
-              <p class="text-sm text-gray-500 dark:text-gray-400">Score table implementation needed.</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('message.score_table_implementation_needed') }}
+              </p>
             </div>
           @endif
         </div>
@@ -331,17 +339,20 @@
       {{-- Generic: {{ __('message.attendance') }} Log --}}
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ __('message.attendance') }} Log
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ __('message.attendance') }}
+          {{ __('message.log') }}
           ({{ $user->attendances_count }})</h3>
 
         @if ($user->attendances->isEmpty())
-          <p class="text-gray-500 dark:text-gray-400">No attendance records found for your account.</p>
+          <p class="text-gray-500 dark:text-gray-400">{{ __('message.no_attendance_records_found_for_your_account') }}
+          </p>
         @else
           <div class="overflow-x-auto">
             {{-- {{ __('message.attendance') }} table data here... --}}
             {{-- Since you didn't provide the attendance table, this is a placeholder. --}}
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('message.attendance') }} table implementation
-              needed.</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('message.attendance') }}
+              {{ __('message.table_implementation_needed') }}
+            </p>
           </div>
         @endif
       </div>

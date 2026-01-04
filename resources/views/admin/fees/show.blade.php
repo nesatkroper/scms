@@ -61,8 +61,9 @@
 
         <div class="mt-4">
           @if ($subject)
-            <p class="font-semibold text-gray-900 dark:text-gray-100">Course: {{ $subject->name }}</p>
-            <p class="text-gray-600 dark:text-gray-400">Teacher: {{ $teacher?->name ?? __('message.n/a') }}</p>
+            <p class="font-semibold text-gray-900 dark:text-gray-100">{{ __('message.course') }}: {{ $subject->name }}</p>
+            <p class="text-gray-600 dark:text-gray-400">{{ __('message.teacher') }}:
+              {{ $teacher?->name ?? __('message.n/a') }}</p>
             <p class="text-gray-600 dark:text-gray-400">
               {{ __('message.payment_type') }} <span
                 class="font-medium uppercase">{{ $courseOffering->payment_type ?? __('message.n/a') }}</span>
@@ -103,9 +104,12 @@
       <div>
         <h4 class="font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">{{ __('message.bill_to') }}</h4>
         <p class="font-semibold text-gray-900 dark:text-gray-100">{{ $student?->name ?? __('message.n/a') }}</p>
-        <p class="text-gray-600 dark:text-gray-400">Email: {{ $student?->email ?? __('message.n/a') }}</p>
-        <p class="text-gray-600 dark:text-gray-400">Phone: {{ $student?->phone ?? __('message.n/a') }}</p>
-        <p class="text-gray-600 dark:text-gray-400">Address: {{ $student?->address ?? __('message.n/a') }}</p>
+        <p class="text-gray-600 dark:text-gray-400">{{ __('message.email') }}:
+          {{ $student?->email ?? __('message.n/a') }}</p>
+        <p class="text-gray-600 dark:text-gray-400">{{ __('message.phone') }}:
+          {{ $student?->phone ?? __('message.n/a') }}</p>
+        <p class="text-gray-600 dark:text-gray-400">{{ __('message.address') }}:
+          {{ $student?->address ?? __('message.n/a') }}</p>
       </div>
 
       <div class="text-right">

@@ -49,10 +49,10 @@
           @endphp
 
           <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Type <span class="text-red-500">*</span>
+            {{ __('message.exam_type') }} <span class="text-red-500">*</span>
             @if ($courseOffering->is_final_only)
-              <span class="ml-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase">(Final Only
-                Course)</span>
+              <span
+                class="ml-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase">({{ __('message.final_only_course') }})</span>
             @endif
           </label>
 
@@ -80,7 +80,7 @@
 
         <div>
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Exam Date <span class="text-red-500">*</span>
+            {{ __('message.exam_date') }} <span class="text-red-500">*</span>
           </label>
 
           <div class="relative">

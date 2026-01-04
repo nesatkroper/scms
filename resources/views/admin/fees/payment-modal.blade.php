@@ -53,13 +53,15 @@
                 <div class="grid grid-cols-2 gap-4">
 
                   <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">{{ __('message.transaction_id') }}</label>
+                    <label
+                      class="block text-xs font-medium text-gray-500 dark:text-gray-400">{{ __('message.transaction_id') }}</label>
                     <p class="font-mono text-gray-800 dark:text-gray-100 font-semibold text-base"
                       x-text="formData.transaction_id"></p>
                   </div>
 
                   <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">{{ __('message.payment_date') }}</label>
+                    <label
+                      class="block text-xs font-medium text-gray-500 dark:text-gray-400">{{ __('message.payment_date') }}</label>
                     <p class="text-gray-800 dark:text-gray-100 font-semibold text-base" x-text="formData.payment_date">
                     </p>
                   </div>
@@ -83,9 +85,9 @@
                     </label>
                     <select id="payment_method" name="payment_method" x-model="formData.payment_method"
                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 text-base transition duration-150">
-                      <option value="Cash">Cash</option>
+                      <option value="Cash">{{ __('message.cash') }}</option>
                       <option value="Bank Transfer">{{ __('message.bank_transfer') }}</option>
-                      <option value="Card">Card</option>
+                      <option value="Card">{{ __('message.card') }}</option>
                       <option value="Mobile Payment">{{ __('message.mobile_payment') }}</option>
                       <option value="Other">{{ __('message.other') }}</option>
                     </select>
@@ -94,7 +96,8 @@
 
                 <div>
                   <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('message.remarks') }} <span class="text-gray-500 text-xs">{{ __('message.(optional)') }}</span>
+                    {{ __('message.remarks') }} <span
+                      class="text-gray-500 text-xs">{{ __('message.(optional)') }}</span>
                   </label>
                   <textarea id="remarks" name="remarks" x-model="formData.remarks" rows="3"
                     class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-lg shadow-sm p-2.5 text-gray-900 dark:text-gray-100 focus:ring-green-500 focus:border-green-500 text-base transition duration-150"></textarea>

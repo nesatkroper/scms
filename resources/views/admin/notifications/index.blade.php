@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'My Notifications')
+@section('title', __('message.my_notifications'))
 
 @section('content')
 
@@ -8,7 +8,7 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fas fa-bell text-2xl text-indigo-600 dark:text-indigo-400"></i>
-      My Notifications
+      {{ __('message.my_notifications') }}
     </h3>
 
     @if (session('success'))
@@ -22,7 +22,7 @@
         @csrf
         <button type="submit"
           class="px-3 py-1 bg-indigo-500 text-white text-sm rounded-lg hover:bg-indigo-600 transition-colors flex items-center gap-1">
-          <i class="fas fa-check-double"></i> Mark All as Read
+          <i class="fas fa-check-double"></i>{{ __('message.mark_all_as_read') }}
         </button>
       </form>
     @endif
@@ -50,7 +50,7 @@
             <div class="flex justify-between items-start">
               <h4
                 class="font-semibold {{ $isRead ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white' }}">
-                {{ $data['title'] ?? 'System Notification' }}
+                {{ $data['title'] ?? __('message.system_notification') }}
               </h4>
               <span
                 class="text-xs {{ $isRead ? 'text-gray-500' : 'text-indigo-600 dark:text-indigo-300' }} ml-4 flex-shrink-0">
@@ -59,13 +59,13 @@
             </div>
             <p
               class="text-sm mt-1 {{ $isRead ? 'text-gray-500 dark:text-gray-400' : 'text-gray-700 dark:text-gray-300' }}">
-              {{ $data['body'] ?? 'Click to view details.' }}
+              {{ $data['body'] ?? __('message.click_to_view_details') }}
             </p>
 
             <div class="mt-3 flex items-center space-x-3">
               <a href="{{ $data['link'] ?? '#' }}"
                 class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition-colors">
-                View Details
+                {{ __('message.view_details') }}
               </a>
 
               @if (!$isRead)
@@ -73,7 +73,7 @@
                   @csrf
                   <button type="submit"
                     class="text-xs text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                    | Mark as Read
+                    {{ __('message.|_mark_as_read') }}
                   </button>
                 </form>
               @endif
@@ -83,7 +83,7 @@
       @empty
         <div
           class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          You have no notifications yet.
+          {{ __('message.you_have_no_notifications_yet') }}
         </div>
       @endforelse
     </div>

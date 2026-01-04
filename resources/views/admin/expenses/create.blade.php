@@ -161,7 +161,7 @@
       {{-- 6. Description Field --}}
       <div class="mb-6">
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description / Notes
+          {{ __('message.description_/_notes') }}
         </label>
         <textarea id="description" name="description" rows="5" required
           class="w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
