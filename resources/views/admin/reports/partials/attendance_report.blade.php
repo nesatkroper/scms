@@ -3,10 +3,13 @@
     <thead class="bg-gray-100 dark:bg-gray-700">
       <tr>
         <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">#</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">Student</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">Course</th>
+        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
+          {{ __('message.student') }}</th>
+        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
+          {{ __('message.course') }}</th>
         <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">Date</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">Status</th>
+        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
+          {{ __('message.status') }}</th>
       </tr>
     </thead>
 
@@ -30,7 +33,7 @@
       @empty
         <tr>
           <td colspan="5" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">
-            No attendance records found.
+            {{ __('message.no_attendance_records_found') }}
           </td>
         </tr>
       @endforelse

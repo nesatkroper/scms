@@ -29,7 +29,7 @@
 
   <body>
 
-    <h2 style="text-align:center;">Report</h2>
+    <h2 style="text-align:center;">{{ __('message.report') }}</h2>
 
     <table>
       <thead>

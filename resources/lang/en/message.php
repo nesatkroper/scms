@@ -279,8 +279,6 @@ return [
   'administrator' => "Administrator",
   'users' => "Users",
   'roles' => "roles",
-
-  // new locale start from this line
   'search_classrooms_(name_or_room_number)' => "Search classrooms (name or room number)...",
   'search_offerings_by_subject_teacher_or_time' => "Search offerings by subject, teacher, or time...",
   'export_attendance' => "Export Attendance",
@@ -342,4 +340,109 @@ return [
   'score_table_implementation_needed' => "Score table implementation needed.",
   'log' => "Log",
   'table_implementation_needed' => "table implementation needed.",
+  'no_attendance_records_found' => "No attendance records found.",
+  'please_select_a_report_type_and_click_generate_report' => "Please select a report type and click 'Generate Report'.",
+  'student_name' => "Student Name",
+  'course_/_subject' => "Course / Subject",
+  'enroll_date' => "Enroll Date",
+  'no_enrollments_found_matching_the_criteria' => "No enrollments found matching the criteria.",
+  'financial_summary' => "Financial Summary",
+  'total_expenses_in_report_period' => "Total Expenses in Report Period",
+  'no_expenses_found_matching_the_criteria' => "No expenses found matching the criteria.",
+  'total_income' => "Total Income",
+  'income_breakdown' => "Income Breakdown",
+  'no_income_records_found' => "No income records found.",
+  'expense_breakdown' => "Expense Breakdown",
+  'no_expense_records_found' => "No expense records found.",
+  'grade' => "Grade",
+  'no_score_records_found' => "No score records found.",
+  'printed_by' => "Printed by",
+  'on' => "on",
+  'page_1_of_1' => "Page 1 of 1",
+  'generate_system_reports' => "Generate System Reports",
+  'select_report_parameters' => "Select Report Parameters",
+  'report_type' => "Report Type",
+  'student_enrollment' => "Student Enrollment",
+  'score_report' => "Score Report",
+  'financial_expenses' => "Financial Expenses",
+  'report_specific_filters' => "Report Specific Filters",
+  'offering' => "Offering",
+  'all_courses' => "All Courses",
+  'select_a_report_type_to_show_specific_filters' => "Select a report type to show specific filters.",
+  'refresh' => "Refresh",
+  'generate_report' => "Generate Report",
+  'excel' => "Excel",
+  'pdf' => "PDF",
+  'assign_permissions' => "Assign Permissions",
+  'check_all_/_uncheck_all_visible_permissions' => "Check All / Uncheck All Visible Permissions",
+  'create_role' => "Create Role",
+  'permissions' => "Permissions",
+  'check_all_/_uncheck_all' => "Check All / Uncheck All",
+  'save_changes' => "Save Changes",
+  'roles_list' => "Roles List",
+  'create_new_role' => "Create New Role",
+  'users_assigned' => "Users Assigned",
+  'no_roles_found' => "No Roles Found",
+  'you_must_create_roles_to_manage_user_permissions' => "You must create roles to manage user permissions.",
+  'score_register_for_exam' => "Score Register for Exam",
+  'max' => "Max",
+  'back_to_exam' => "Back to Exam",
+  'save_all_scores' => "Save All Scores",
+  'score' => "Score",
+  'detailed_score_breakdown_for_academic_assessment' => "Detailed score breakdown for academic assessment.",
+  'academic_performance' => "Academic Performance",
+  'total_score' => "Total Score",
+  'letter_grad' => "Letter Grad",
+  'teachers_remarks' => "Teacher's Remarks",
+  'reading' => "Reading",
+  'grade_breakdown' => "Grade Breakdown",
+  'in_a_course' => "in a Course",
+  'back_to_courses' => "Back to Courses",
+  'select_course_offering' => "Select Course Offering",
+  'choose_a_course' => "Choose a course",
+  'fee' => "Fee",
+  'payment_status' => "Payment Status",
+  'select_payment_status' => "Select Payment Status",
+  'confirm_enrollment' => "Confirm Enrollment",
+  'enrolled_courses_for' => "Enrolled Courses for",
+  'add_admission' => "Add Admission",
+  'back_to_student_details' => "Back to Student Details",
+  'classroom_/_schedule' => "Classroom / Schedule",
+  'enrollment_date' => "Enrollment Date",
+  'view_course' => "View Course",
+  'not_enrolled' => "Not Enrolled",
+  'this_student_is_not_currently_enrolled_in_any_courses' => "This student is not currently enrolled in any courses.",
+  'create_fee_record_for' => "Create Fee Record for",
+  'fee_category_(type)' => "Fee Category (Type)",
+  'amount_($)' => "Amount ($)",
+  'initial_status' => "Initial Status",
+  'fee_records_for' => "Fee Records for",
+  'amount_paid' => "Amount Paid",
+  'amount_due' => "Amount Due",
+  'record_created_by' => "Record Created By",
+  'view' => "View",
+  'no_fee_records' => "No Fee Records",
+  'there_are_no_financial_records_associated_with_this_student' => "There are no financial records associated with this               student.",
+  'create_first_fee_record' => "Create First Fee Record",
+  'create_new_student' => "Create New Student",
+  'back_to_students_list' => "Back to Students List",
+  'account_&_basic_information' => "Account & Basic Information",
+
+
+
+
+  // new locale start from this line
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];

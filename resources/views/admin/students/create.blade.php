@@ -10,7 +10,7 @@
           class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
           <i class="ri-user-2-fill text-2xl"></i>
         </div>
-        Create New Student
+        {{ __('message.create_new_student') }}
       </h3>
       <a href="{{ route('admin.students.index') }}"
         class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
@@ -21,7 +21,7 @@
             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
-          Back to Students List
+          {{ __('message.back_to_students_list') }}
         </span>
         <span
           class="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
@@ -49,7 +49,8 @@
 
         {{-- Basic Information Section --}}
         <div class="pt-5 pb-4 border-b border-slate-300 dark:border-slate-700">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">👤 Account & Basic Information
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">👤
+            {{ __('message.account_&_basic_information') }}
           </h3>
           <div class="grid grid-cols-1 md::grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">
 

@@ -3,12 +3,12 @@
     {{-- Table Header --}}
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
-        <th scope="col" class="px-6 py-3">Student Name</th>
-        <th scope="col" class="px-6 py-3">Course / Subject</th>
-        <th scope="col" class="px-6 py-3">Time Slot</th>
-        <th scope="col" class="px-6 py-3">Enroll Date</th>
-        <th scope="col" class="px-6 py-3">Status</th>
-        <th scope="col" class="px-6 py-3">Final Grade</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.student_name') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.course_/_subject') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.time_slot') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.enroll_date') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.status') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.final_grade') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -53,7 +53,7 @@
       @empty
         <tr>
           <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-            No enrollments found matching the criteria.
+            {{ __('message.no_enrollments_found_matching_the_criteria') }}
           </td>
         </tr>
       @endforelse

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Roles List')
+@section('title', __('message.roles_list'))
 
 @section('content')
 
@@ -8,7 +8,7 @@
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-fingerprint me-2"></i>
-      Roles List
+      {{ __('message.roles_list') }}
     </h3>
 
     @if (session('success'))
@@ -29,7 +29,7 @@
         <a href="{{ route('admin.roles.create') }}"
           class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <i class="fa-solid fa-plus me-2"></i>
-          Create New Role
+          {{ __('message.create_new_role') }}
         </a>
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
@@ -77,10 +77,10 @@
                 <i class="fa-solid fa-key size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Permissions</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.permissions') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-blue-600 dark:text-blue-400">{{ $role->permissions->count() }}</span>
-                  Total
+                  {{ __('message.total') }}
                 </p>
               </div>
             </div>
@@ -91,10 +91,10 @@
                 <i class="fa-solid fa-users size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Users Assigned</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.users_assigned') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-green-600 dark:text-green-400">{{ $role->users()->count() }}</span>
-                  Users
+                  {{ __('message.users') }}
                 </p>
               </div>
             </div>
@@ -137,8 +137,9 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Roles Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">You must create roles to manage user permissions.
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_roles_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.you_must_create_roles_to_manage_user_permissions') }}
             </p>
           </div>
         </div>

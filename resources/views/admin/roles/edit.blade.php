@@ -3,12 +3,12 @@
 @section('content')
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    <h2 class="text-2xl font-bold mb-2">{{ __('message.edit') }} Role: {{ $role->name }}</h2>
+    <h2 class="text-2xl font-bold mb-2">{{ __('message.edit') }} {{ __('message.role') }}: {{ $role->name }}</h2>
     <form action="{{ route('admin.roles.update', $role->id) }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
       @csrf
       @method('PUT')
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-        Name <span class="text-red-500">*</span>
+        {{ __('message.name') }} <span class="text-red-500">*</span>
       </label>
       <div
         class="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-20 border p-2 rounded-md border-gray-300 bg-violet-50 dark:bg-slate-800 dark:border-gray-700">
@@ -36,7 +36,7 @@
 
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-          Permissions
+          {{ __('message.permissions') }}
         </label>
 
         {{-- Master Checkbox for All Permissions --}}
@@ -51,7 +51,7 @@
                             before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
                             before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
           <label for="checkAllPermissions" class="text-sm font-bold text-indigo-700 dark:text-indigo-200 cursor-pointer">
-            Check All / Uncheck All
+            {{ __('message.check_all_/_uncheck_all') }}
           </label>
         </div>
 
@@ -109,7 +109,7 @@
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clip-rule="evenodd" />
           </svg>
-          Save Changes
+          {{ __('message.save_changes') }}
         </button>
       </div>
     </form>

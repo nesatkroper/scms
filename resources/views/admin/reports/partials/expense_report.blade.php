@@ -1,8 +1,8 @@
 @if (isset($data['summary']))
   <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-    <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">Financial Summary</h4>
+    <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.financial_summary') }}</h4>
     <p class="text-sm text-gray-600 dark:text-gray-300">
-      Total Expenses in Report Period:
+      {{ __('message.total_expenses_in_report_period') }}:
       <span class="text-2xl font-extrabold text-red-700 dark:text-red-300 ml-2">
         ${{ number_format($data['summary']['total_expenses'] ?? 0, 2) }}
       </span>
@@ -15,12 +15,12 @@
     {{-- Table Header --}}
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
-        <th scope="col" class="px-6 py-3">Date</th>
-        <th scope="col" class="px-6 py-3">Title</th>
-        <th scope="col" class="px-6 py-3">Amount</th>
-        <th scope="col" class="px-6 py-3">Category</th>
-        <th scope="col" class="px-6 py-3">Recorded By</th>
-        <th scope="col" class="px-6 py-3">Description</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.date') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.title') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.amount') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.category') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.recorded_by') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.description') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -54,7 +54,7 @@
       @empty
         <tr>
           <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-            No expenses found matching the criteria.
+            {{ __('message.no_expenses_found_matching_the_criteria') }}
           </td>
         </tr>
       @endforelse

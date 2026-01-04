@@ -242,7 +242,7 @@
             ({{ $taughtStudentsCount }})</h4>
           <p class="text-sm text-gray-500 dark:text-gray-400">
             {{ __('message.this_number_reflects_all_unique_students_enrolled_across_the_courses_you_teach') }}
-
+6
           </p>
 
         </div>

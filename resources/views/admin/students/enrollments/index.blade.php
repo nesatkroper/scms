@@ -10,7 +10,7 @@
       <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
         <i
           class="fa-regular fa-calendar-plus size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"></i>
-        Enrolled Courses for: {{ $student->name }}
+        {{ __('message.enrolled_courses_for') }}: {{ $student->name }}
       </h3>
       <div class="flex space-x-3 mt-1"> {{-- Adjusted spacing and alignment --}}
         <a href="{{ route('admin.students.enrollments.create', $student) }}"
@@ -20,7 +20,7 @@
               d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
               clip-rule="evenodd" />
           </svg>
-          Add Admission
+          {{ __('message.add_admission') }}
         </a>
 
         <a href="{{ route('admin.students.show', $student) }}"
@@ -29,7 +29,7 @@
             <path
               d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2.586l3-3V17a1 1 0 001 1h2a1 1 0 001-1v-6.586l1.293-1.293a1 1 0 000-1.414l-7-7z" />
           </svg>
-          Back to Student Details
+          {{ __('message.back_to_student_details') }}
         </a>
       </div>
     </div>
@@ -86,7 +86,7 @@
                 <i class="fa-solid fa-chalkboard-user size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Teacher</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.teacher') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{ $enrollment->teacher->name ?? 'Unassigned' }}
                 </p>
@@ -99,7 +99,7 @@
                 <i class="fa-regular fa-clock size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Classroom / Schedule</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.classroom_/_schedule') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{ $enrollment->classroom->name ?? __('message.n/a') }} ({{ $enrollment->schedule ?? 'TBA' }})
                 </p>
@@ -112,7 +112,7 @@
                 <i class="fa-regular fa-calendar-alt size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Enrollment Date</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.enrollment_date') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{ $enrollment->created_at?->format('M d, Y') ?? __('message.n/a') }}
                 </p>
@@ -128,7 +128,7 @@
               class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
               title="View Course Details">
               <i class="fa-solid fa-eye me-2"></i>
-              View Course
+              {{ __('message.view_course') }}
             </a>
 
           </div>
@@ -140,8 +140,9 @@
             <div class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
               <i class="fa-regular fa-sad-cry h-8 w-8 text-red-400 dark:text-red-500"></i>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">Not Enrolled</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">This student is not currently enrolled in any courses.
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.not_enrolled') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.this_student_is_not_currently_enrolled_in_any_courses') }}
             </p>
           </div>
         </div>

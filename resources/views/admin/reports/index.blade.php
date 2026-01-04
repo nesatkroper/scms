@@ -9,14 +9,14 @@
 
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-file-export"></i>
-      Generate System Reports
+      {{ __('message.generate_system_reports') }}
     </h3>
 
     <!-- FILTER BOX -->
     <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-8">
       <h4
         class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4 border-b pb-2 border-gray-200 dark:border-gray-600">
-        Select Report Parameters
+        {{ __('message.select_report_parameters') }}
       </h4>
 
       <form method="GET" action="{{ route('admin.reports.generate') }}" class="space-y-4">
@@ -25,24 +25,24 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Report Type <span class="text-red-500">*</span>
+              {{ __('message.report_type') }} <span class="text-red-500">*</span>
             </label>
             <select class="form-control-tailwind rounded-lg" id="report_type" name="report_type" required>
 
               <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
-                Student Enrollment</option>
+                {{ __('message.student_enrollment') }}</option>
 
               <option value="attendance" {{ request('report_type') == 'attendance' ? 'selected' : '' }}>
-                {{ __('message.attendance') }} Report</option>
+                {{ __('message.attendance') }} {{ __('message.report') }}</option>
 
               <option value="scores" {{ request('report_type') == 'scores' ? 'selected' : '' }}>
-                Score Report</option>
+                {{ __('message.score_report') }}</option>
 
               <option value="financial_expenses" {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
-                Financial Expenses</option>
+                {{ __('message.financial_expenses') }}</option>
 
               <option value="financial_summary" {{ request('report_type') == 'financial_summary' ? 'selected' : '' }}>
-                Financial Summary</option>
+                {{ __('message.financial_summary') }}</option>
             </select>
           </div>
 
@@ -130,7 +130,7 @@
         <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
 
           <h5 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-            Report Specific Filters
+            {{ __('message.report_specific_filters') }}
           </h5>
 
           {{-- Student Enrollment Filters --}}
@@ -139,9 +139,10 @@
 
               <!-- Course -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Offering</label>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
                 <select class="form-control-tailwind rounded-lg" name="course_offering_id">
-                  <option value="">All Courses</option>
+                  <option value="">{{ __('message.all_courses') }}</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
                       {{ $name }}</option>
@@ -151,9 +152,10 @@
 
               <!-- Status -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
                 <select class="form-control-tailwind rounded-lg" name="status">
-                  <option value="">All</option>
+                  <option value="">{{ __('message.all') }}</option>
                   @foreach (['studying', 'suspended', 'dropped', 'completed'] as $status)
                     <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
                       {{ ucfirst($status) }}</option>
@@ -168,9 +170,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Offering</label>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
                 <select class="form-control-tailwind rounded-lg" name="course_offering_id">
-                  <option value="">All Courses</option>
+                  <option value="">{{ __('message.all_courses') }}</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
                       {{ $name }}</option>
@@ -179,9 +182,10 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
                 <select class="form-control-tailwind rounded-lg" name="status">
-                  <option value="">All</option>
+                  <option value="">{{ __('message.all') }}</option>
                   @foreach (['present', 'absent', 'late'] as $status)
                     <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
                       {{ ucfirst($status) }}</option>
@@ -196,9 +200,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Offering</label>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
                 <select class="form-control-tailwind rounded-lg" name="course_offering_id">
-                  <option value="">All Courses</option>
+                  <option value="">{{ __('message.all_courses') }}</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
                       {{ $name }}</option>
@@ -209,7 +214,7 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam Type</label>
                 <select class="form-control-tailwind rounded-lg" name="exam_type">
-                  <option value="">All</option>
+                  <option value="">{{ __('message.all') }}</option>
                   @foreach (['quiz', 'midterm', 'final'] as $type)
                     <option value="{{ $type }}" {{ request('exam_type') == $type ? 'selected' : '' }}>
                       {{ ucfirst($type) }}</option>
@@ -222,7 +227,7 @@
             {{-- No filters --}}
           @else
             <p class="text-sm text-gray-500 dark:text-gray-400 italic">
-              Select a report type to show specific filters.
+              {{ __('message.select_a_report_type_to_show_specific_filters') }}
             </p>
           @endif
 
@@ -233,13 +238,13 @@
           <a href="{{ route('admin.reports') }}"
             class="px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-rotate"></i>
-            Refresh
+            {{ __('message.refresh') }}
           </a>
 
           <button type="submit"
             class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
-            Generate Report
+            {{ __('message.generate_report') }}
           </button>
         </div>
 
@@ -258,13 +263,13 @@
             <!-- Export Excel -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}"
               class="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
-              Excel
+              {{ __('message.excel') }}
             </a>
 
             <!-- Export PDF -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'pdf']) }}"
               class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
-              PDF
+              {{ __('message.pdf') }}
             </a>
 
           </div>

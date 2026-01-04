@@ -17,12 +17,12 @@
             <path d="M12 20h0v-4a4 4 0 0 0-4-4H4a4 4 0 0 0-4 4v4h24v-4a4 4 0 0 0-4-4H12z" />
             <circle cx="12" cy="7" r="4" />
           </svg>
-          Enroll **{{ $student->name }}** in a Course
+          {{ __('message.enroll') }} {{ $student->name }} {{ __('message.in_a_course') }}
         </h3>
         {{-- Back Button --}}
         <a href="{{ route('admin.students.enrollments.index', $student) }}"
           class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
-          Back to Courses
+          {{ __('message.back_to_courses') }}
         </a>
       </div>
 
@@ -54,16 +54,16 @@
             {{-- 1. Course Offering Selection Field (Select) --}}
             <div>
               <label for="course_offering_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Select Course Offering <span class="text-red-500">*</span>
+                {{ __('message.select_course_offering') }} <span class="text-red-500">*</span>
               </label>
               <select id="course_offering_id" name="course_offering_id" required
                 class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
-                <option value="">-- Choose a course --</option>
+                <option value="">-- {{ __('message.choose_a_course') }} --</option>
                 @foreach ($availableCourses as $course)
                   <option value="{{ $course->id }}" {{ old('course_offering_id') == $course->id ? 'selected' : '' }}>
                     {{ $course->subject->name ?? 'N/A Subject' }} - Teacher:
                     {{ $course->teacher->name ?? __('message.n/a') }}
-                    (Fee: ${{ number_format($course->fee, 0) }})
+                    ({{ __('message.fee') }}: ${{ number_format($course->fee, 0) }})
                   </option>
                 @endforeach
               </select>
@@ -75,11 +75,11 @@
             {{-- 2. Payment Status Field (Select) --}}
             <div>
               <label for="payment_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Payment Status <span class="text-red-500">*</span>
+                {{ __('message.payment_status') }} <span class="text-red-500">*</span>
               </label>
               <select id="payment_status" name="payment_status" required
                 class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('payment_status') border-red-500 @enderror">
-                <option value="" disabled>Select Payment Status</option>
+                <option value="" disabled>{{ __('message.select_payment_status') }}</option>
                 @foreach (['pending', 'paid', 'overdue', 'free'] as $p)
                   <option value="{{ $p }}" {{ old('payment_status', 'pending') == $p ? 'selected' : '' }}>
                     {{ ucfirst($p) }}
@@ -96,7 +96,7 @@
           {{-- Remarks Field (Textarea) --}}
           <div class="border-t pt-6 border-gray-200 dark:border-gray-700">
             <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Remarks (Optional)
+              {{ __('message.remarks_(optional)') }}
             </label>
             <textarea name="remarks" id="remarks" rows="5" placeholder="Any special notes about this student's enrollment."
               class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('remarks') border-red-500 @enderror">{{ old('remarks') }}</textarea>
@@ -125,7 +125,7 @@
                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                 clip-rule="evenodd" />
             </svg>
-            Confirm Enrollment
+            {{ __('message.confirm_enrollment') }}
           </button>
         </div>
       </form>

@@ -65,7 +65,8 @@
     @include($view)
 
     <div class="footer">
-      Printed by {{ auth()->user()->name }} on {{ date('Y-m-d H:i:s') }} - Page 1 of 1
+      {{ __('message.printed_by') }} {{ auth()->user()->name }} {{ __('message.on') }} {{ date('Y-m-d H:i:s') }} -
+      {{ __('message.page_1_of_1') }}
     </div>
   </body>
 

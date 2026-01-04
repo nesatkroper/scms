@@ -7,8 +7,9 @@
 
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Academic Performance') }}</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Detailed score breakdown for academic assessment.</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('message.academic_performance') }}</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          {{ __('message.detailed_score_breakdown_for_academic_assessment') }}</p>
       </div>
       <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOffering->id]) }}"
         class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
@@ -33,12 +34,12 @@
 
           <div class="bg-black/10 p-6 flex justify-around border-t border-white/10">
             <div class="text-center">
-              <p class="text-xs uppercase opacity-70 mb-1">Total Score</p>
+              <p class="text-xs uppercase opacity-70 mb-1">{{ __('message.total_score') }}</p>
               <p class="text-2xl font-black">{{ number_format($enrollment->manual_sum, 1) }}</p>
             </div>
             <div class="w-px bg-white/10"></div>
             <div class="text-center">
-              <p class="text-xs uppercase opacity-70 mb-1">Letter Grade</p>
+              <p class="text-xs uppercase opacity-70 mb-1">{{ __('message.letter_grad') }}e</p>
               <p class="text-2xl font-black">{{ $enrollment->letter_grade }}</p>
             </div>
           </div>
@@ -66,7 +67,7 @@
                 <p class="text-xs text-gray-500">{{ __('Status') }}</p>
                 <span
                   class="px-2 py-0.5 text-xs font-bold rounded-full {{ $enrollment->manual_sum >= 50 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                  {{ $enrollment->manual_sum >= 50 ? 'PASSED' : 'FAILED' }}
+                  {{ $enrollment->manual_sum >= 50 ? __('message.passed') : __('message.failed') }}
                 </span>
               </div>
             </div>
@@ -78,25 +79,30 @@
       <div class="lg:col-span-2">
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
           <div class="p-6 border-b border-gray-100 dark:border-gray-700">
-            <h4 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('Grade Breakdown') }}</h4>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('message.grade_breakdown') }}</h4>
           </div>
 
           <div class="p-6 space-y-8">
             @php
               $gradeItems = [
                   [
-                      'label' => 'Attendance',
+                      'label' => __('message.attendance'),
                       'val' => $enrollment->attendance_grade,
                       'max' => 10,
                       'color' => 'bg-blue-500',
                   ],
                   [
-                      'label' => 'Listening',
+                      'label' => __('message.listening'),
                       'val' => $enrollment->listening_grade,
                       'max' => 15,
                       'color' => 'bg-purple-500',
                   ],
-                  ['label' => 'Reading', 'val' => $enrollment->reading_grade, 'max' => 15, 'color' => 'bg-teal-500'],
+                  [
+                      'label' => __('message.reading'),
+                      'val' => $enrollment->reading_grade,
+                      'max' => 15,
+                      'color' => 'bg-teal-500',
+                  ],
                   ['label' => 'Writing', 'val' => $enrollment->writing_grade, 'max' => 15, 'color' => 'bg-indigo-500'],
                   [
                       'label' => 'Speaking',
@@ -140,7 +146,8 @@
               <div class="flex gap-3">
                 <i class="fa-solid fa-comment-dots text-amber-500 mt-1"></i>
                 <div>
-                  <h5 class="text-sm font-bold text-amber-800 dark:text-amber-400">Teacher's Remarks</h5>
+                  <h5 class="text-sm font-bold text-amber-800 dark:text-amber-400">{{ __('message.teachers_remarks') }}
+                  </h5>
                   <p class="text-sm text-amber-700 dark:text-amber-300 italic">"{{ $enrollment->remarks }}"</p>
                 </div>
               </div>

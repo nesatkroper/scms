@@ -38,13 +38,13 @@
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M3 6.75a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6.75v10.5A2.25 2.25 0 0 1 18.75 19.5H5.25A2.25 2.25 0 0 1 3 17.25V6.75Z" />
           </svg>
-          Score Register for Exam:
+          {{ __('message.score_register_for_exam') }}:
           <span class="ml-1 text-indigo-600 dark:text-indigo-400 capitalize">
             {{ $exam->type }} -
             {{ $exam?->courseOffering?->teacher?->name }} -
             {{ $exam?->courseOffering?->classroom?->name }} -
             {{ $exam?->courseOffering?->time_slot }}
-            (Max: {{ $exam->total_marks }})
+            ({{ __('message.max') }}: {{ $exam->total_marks }})
           </span>
         </h3>
 
@@ -53,11 +53,11 @@
             class="px-5 py-1 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
             <span class="btn-content flex items-center justify-center">
               <i class="fa-solid fa-arrow-left me-2"></i>
-              Back to Exam
+              {{ __('message.back_to_exam') }}
             </span>
           </a>
           <button type="submit" class="px-5 py-1 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
-            Save All Scores
+            {{ __('message.save_all_scores') }}
           </button>
 
         </div>
@@ -78,13 +78,14 @@
             <div class="md:col-span-2">
               <span class="font-semibold text-gray-800 dark:text-gray-200">{{ $student->name }}</span>
               <div class="text-xs text-gray-500 dark:text-gray-400">
-                Student ID: {{ $student->id }}
+                {{ __('message.student_id') }}: {{ $student->id }}
               </div>
             </div>
 
             {{-- Score Input --}}
             <div class="flex flex-col">
-              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Score</label>
+              <label
+                class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.score') }}</label>
               {{-- <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
                 name="fee" value="{{ old('fee') }}" value="{{ $scoreEntry->score ?? 0 }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
@@ -98,7 +99,8 @@
 
             {{-- Remarks Input --}}
             <div class="flex flex-col">
-              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Remarks</label>
+              <label
+                class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
               <input type="text" name="remarks_{{ $student->id }}" value="{{ $scoreEntry->remarks ?? '' }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
                 text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -109,7 +111,7 @@
         @empty
           <div class="p-8 text-center bg-gray-50 dark:bg-gray-700 rounded-lg shadow-inner">
             <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">
-              No students found in this course offering.
+              {{ __('message.no_students_found_in_this_course_offering') }}
             </p>
           </div>
         @endforelse

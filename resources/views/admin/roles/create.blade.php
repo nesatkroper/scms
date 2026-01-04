@@ -1,17 +1,17 @@
 @extends('layouts.admin')
-@section('title', 'Create Role')
+@section('title', __('message.create_role'))
 @section('content')
 
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-    <h2 class="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">Create New Role</h2>
+    <h2 class="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">{{ __('message.create_new_role') }}</h2>
 
     <form action="{{ route('admin.roles.store') }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
       @csrf
 
       <div class="mb-4">
         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Role Name <span class="text-red-500">*</span>
+          {{ __('message.role_name') }} <span class="text-red-500">*</span>
         </label>
         <input type="text" id="name" name="name" value="{{ old('name') }}"
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
@@ -24,7 +24,7 @@
       <div class="mb-4 p-3 border rounded-md border-gray-300 dark:border-gray-700 bg-violet-50 dark:bg-slate-800/50">
 
         <h3 class="text-lg font-bold text-gray-700 dark:text-gray-300 mb-3">
-          Assign Permissions
+          {{ __('message.assign_permissions') }}
         </h3>
 
         <div class="flex items-center gap-2 mb-4">
@@ -57,7 +57,7 @@
                         before:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjIwIDYgOSAxNyA0IDEyIj48L3BvbHlsaW5lPjwvc3ZnPg==')]
                         before:opacity-0 before:transition-opacity before:duration-200 checked:before:opacity-100">
           <label for="checkAllPermissions" class="text-sm font-bold text-indigo-700 dark:text-indigo-200 cursor-pointer">
-            Check All / Uncheck All Visible Permissions
+            {{ __('message.check_all_/_uncheck_all_visible_permissions') }}
           </label>
         </div>
         {{-- *** END: Check All Option *** --}}
@@ -114,7 +114,7 @@
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clip-rule="evenodd" />
           </svg>
-          Create Role
+          {{ __('message.create_role') }}
         </button>
       </div>
     </form>

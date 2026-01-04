@@ -9,13 +9,13 @@
     <div class="mb-6 flex justify-between items-start">
       <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
         <i class="fa-solid fa-dollar-sign"></i>
-        Fee Records for: {{ $student->name }}
+        {{ __('message.fee_records_for') }}: {{ $student->name }}
       </h3>
       <div class="flex space-x-3 mt-1">
         <a href="{{ route('admin.students.show', $student) }}"
           class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
           <i class="fa-solid fa-person me-2 text-lg"></i>
-          Back to Student Details
+          {{ __('message.back_to_student_details') }}
         </a>
       </div>
     </div>
@@ -73,7 +73,7 @@
                   <i class="fa-solid fa-sack-dollar size-5"></i>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Total Amount</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.total_amount') }}</p>
                   <p class="font-medium text-gray-700 dark:text-gray-200 text-base">
                     ${{ number_format($fee->amount, 2) }}
                   </p>
@@ -82,7 +82,7 @@
 
               {{-- Due Date --}}
               <div class="text-right">
-                <p class="text-xs text-gray-500 dark:text-gray-400">Due Date</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.due_date') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200 text-sm">
                   <i class="fa-regular fa-calendar-days text-gray-400 dark:text-gray-500"></i>
                   {{ $fee->due_date?->format('M d, Y') ?? __('message.n/a') }}
@@ -101,7 +101,7 @@
                   <i class="fa-solid fa-check size-5"></i>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Amount Paid</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.amount_paid') }}</p>
                   <p class="font-medium text-gray-700 dark:text-gray-200 text-base text-green-600 dark:text-green-400">
                     ${{ number_format($totalPaid, 2) }}
                   </p>
@@ -114,7 +114,7 @@
                   <i class="fa-solid fa-bell size-5"></i>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Amount Due</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.amount_due') }}</p>
                   <p class="font-medium text-gray-700 dark:text-gray-200 text-base text-red-600 dark:text-red-400">
                     ${{ number_format($amountDue, 2) }}
                   </p>
@@ -130,7 +130,7 @@
                 <i class="fa-solid fa-user-tag size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Record Created By</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.record_created_by') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{ $fee->creator->name ?? 'System' }}
                 </p>
@@ -148,7 +148,7 @@
               class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
               title="View Fee Details">
               <i class="fa-solid fa-eye me-2"></i>
-              View
+              {{ __('message.view') }}
             </a>
 
           </div>
@@ -160,9 +160,9 @@
             <div class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
               <i class="fa-regular fa-face-frown h-8 w-8 text-red-400 dark:text-red-500"></i>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Fee Records</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">There are no financial records associated with this
-              student.
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_fee_records') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.there_are_no_financial_records_associated_with_this_student') }}
             </p>
             <a href="{{ route('admin.students.fees.create', $student) }}"
               class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -171,7 +171,7 @@
                   d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                   clip-rule="evenodd" />
               </svg>
-              Create First Fee Record
+              {{ __('message.create_first_fee_record') }}
             </a>
           </div>
         </div>
