@@ -6,7 +6,7 @@
         <!-- Header -->
         <h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
           <i class="fa-solid fa-key text-amber-500"></i>
-          Reset Password: <span x-text="user.name"></span>
+          {{ __('message.reset_password') }}: <span x-text="user.name"></span>
         </h2>
         <!-- Form -->
         <form :action="'/admin/users/password/' + user.id" method="POST">
@@ -30,7 +30,7 @@
                            bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300
                            hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200
                            flex items-center gap-2">
-              <i class="fa-solid fa-xmark"></i> Close
+              <i class="fa-solid fa-xmark"></i> {{ __('message.close') }}
             </button>
             <button type="submit"
               class="px-4 py-2 text-sm font-semibold text-white rounded-lg
@@ -38,7 +38,7 @@
                            hover:from-green-600 hover:to-emerald-700
                            shadow-lg shadow-green-500/30
                            transition-all duration-200 flex items-center gap-2">
-              <i class="fa-solid fa-check-circle"></i> Update
+              <i class="fa-solid fa-check-circle"></i> {{ __('message.update') }}
             </button>
           </div>
         </form>

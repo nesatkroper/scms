@@ -4,7 +4,7 @@
 
   <div>
     <div class="flex items-center justify-between mb-6 px-3 md:px-0">
-      <h1 class="text-2xl font-semibold">{{ __('message.edit') }} User: {{ $user->name }}</h1>
+      <h1 class="text-2xl font-semibold">{{ __('message.edit') }} {{ __('message.user') }}: {{ $user->name }}</h1>
       <a href="{{ route('admin.users.index') }}"
         class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
@@ -14,7 +14,7 @@
             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
-          Back to Users List
+          {{ __('message.back_to_users_list') }}
         </span>
         <span
           class="absolute top-0 left-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
@@ -28,17 +28,9 @@
     @endif
 
     @php
-      // Get all available roles (Spatie Role collection)
       $allRoles = $roles;
-
-      // Get the role names currently assigned to the user
       $userCurrentRoleNames = $user->roles->pluck('name')->toArray();
-
-      // Determine the selected roles, prioritizing 'old' input on validation failure
-      // If validation fails, old('type') will be an array (or null/string if old input logic was single-role previously)
       $selectedRoles = old('type', $userCurrentRoleNames);
-
-      // Ensure $selectedRoles is always an array for Alpine.js and in_array checks
       if (!is_array($selectedRoles)) {
           $selectedRoles = [$selectedRoles];
       }
@@ -79,12 +71,13 @@
         </div>
 
         <div class="pb-4 border-b border-slate-300 dark:border-slate-700">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">👤 Basic Information</h3>
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">👤 {{ __('message.basic_information') }}
+          </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">
 
             <div class="mb-2">
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Name <span class="text-red-500">*</span>
+                {{ __('message.name') }} <span class="text-red-500">*</span>
               </label>
               <input type="text" id="name" name="name" placeholder="Enter name" required
                 value="{{ old('name', $user->name) }}"
@@ -96,7 +89,7 @@
 
             <div class="mb-2">
               <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Email <span class="text-red-500">*</span>
+                {{ __('message.email') }} <span class="text-red-500">*</span>
               </label>
               <input type="email" id="email" name="email" placeholder="Enter email" required
                 value="{{ old('email', $user->email) }}"
@@ -108,7 +101,7 @@
 
             <div class="mb-2">
               <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Password (New)
+                {{ __('message.password_(new)') }}
               </label>
               <input type="password" id="password" name="password" placeholder="Leave blank to keep current"
                 class="{{ $inputClasses }} @error('password') border-red-500 @enderror">
@@ -119,7 +112,7 @@
 
             <div class="mb-2">
               <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Confirm Password
+                {{ __('message.confirm_password') }}
               </label>
               <input type="password" id="password_confirmation" name="password_confirmation"
                 placeholder="Confirm new password"
@@ -132,7 +125,7 @@
             {{-- START MODIFICATION: Role Checkboxes --}}
             <div class="mb-2 col-span-1 md:col-span-2 lg:col-span-3">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                User Role(s) <span class="text-red-500">*</span>
+                {{ __('message.user_role(s)') }} <span class="text-red-500">*</span>
               </label>
               <div
                 class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600 @error('type') border-red-500 @enderror @error('type.*') border-red-500 @enderror">
@@ -161,7 +154,7 @@
 
             <div class="mb-2">
               <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Phone number
+                {{ __('message.phone_number') }}
               </label>
               <input type="tel" id="phone" name="phone" placeholder="Enter phone number"
                 value="{{ old('phone', $user->phone) }}"
@@ -173,7 +166,7 @@
 
             <div class="mb-2">
               <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Address
+                {{ __('message.address') }}
               </label>
               <input type="text" id="address" name="address" placeholder="Enter address"
                 value="{{ old('address', $user->address) }}"
@@ -185,7 +178,7 @@
 
             <div class="mb-2">
               <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Date of Birth
+                {{ __('message.date_of_birth') }}
               </label>
               <input type="date" id="date_of_birth" name="date_of_birth" placeholder="Enter Date of Birth"
                 value="{{ old('date_of_birth', $user->date_of_birth?->toDateString()) }}"
@@ -197,7 +190,7 @@
 
             <div class="mb-2">
               <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Gender
+                {{ __('message.gender') }}
               </label>
               <select id="gender" name="gender"
                 class="form-control form-select w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
@@ -216,7 +209,7 @@
 
             <div class="mb-2">
               <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Nationality
+                {{ __('message.nationality') }}
               </label>
               <input type="text" id="nationality" name="nationality" placeholder="Enter nationality"
                 value="{{ old('nationality', $user->nationality) }}"
@@ -228,7 +221,7 @@
 
             <div class="mb-2">
               <label for="religion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Religion
+                {{ __('message.religion') }}
               </label>
               <input type="text" id="religion" name="religion" placeholder="Enter religion"
                 value="{{ old('religion', $user->religion) }}"
@@ -242,13 +235,14 @@
         </div>
 
         <div class="pb-4 border-b border-slate-300 dark:border-slate-700" x-show="isEmployee()">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🧑‍💼 Employment/Academic
-            Details</h3>
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🧑‍💼
+            {{ __('message.employment/academic_details') }}
+          </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">
 
             <div class="mb-2">
               <label for="joining_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Joining Date
+                {{ __('message.joining_date') }}
               </label>
               <input type="date" id="joining_date" name="joining_date" placeholder="Enter Joining Date"
                 value="{{ old('joining_date', $user->joining_date?->toDateString()) }}"
@@ -260,7 +254,7 @@
 
             <div class="mb-2">
               <label for="qualification" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Qualification
+                {{ __('message.qualification') }}
               </label>
               <input type="text" id="qualification" name="qualification" placeholder="e.g., Master of Science"
                 value="{{ old('qualification', $user->qualification) }}"
@@ -272,7 +266,7 @@
 
             <div class="mb-2">
               <label for="experience" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Experience (Years)
+                {{ __('message.experience_(years)') }}
               </label>
               <input type="number" id="experience" name="experience" placeholder="e.g., 5" min="0"
                 step="0.5" value="{{ old('experience', $user->experience) }}"
@@ -284,7 +278,7 @@
 
             <div class="mb-2">
               <label for="specialization" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Specialization
+                {{ __('message.specialization') }}
               </label>
               <input type="text" id="specialization" name="specialization" placeholder="e.g., Computer Science"
                 value="{{ old('specialization', $user->specialization) }}"
@@ -296,7 +290,7 @@
 
             <div class="mb-2">
               <label for="salary" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Salary
+                {{ __('message.salary') }}
               </label>
               <input type="number" id="salary" name="salary" placeholder="Enter salary amount" min="0"
                 step="0.01" value="{{ old('salary', $user->salary) }}"
@@ -308,7 +302,7 @@
 
             <div class="mb-2">
               <label for="cv" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                CV/Resume
+                {{ __('message.cv/resume') }}
               </label>
               <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx"
                 class="{{ $fileClasses }}">
@@ -321,12 +315,13 @@
         </div>
 
         <div class="pb-4" x-show="isStudent()">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🎓 Student Details</h3>
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">🎓 {{ __('message.student_details') }}
+          </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-6">
 
             <div class="mb-2">
               <label for="admission_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Admission Date
+                {{ __('message.admission_date') }}
               </label>
               <input type="date" id="admission_date" name="admission_date" placeholder="Enter Admission Date"
                 value="{{ old('admission_date', $user->admission_date?->toDateString()) }}"
@@ -338,7 +333,7 @@
 
             <div class="mb-2">
               <label for="occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Parent/Guardian Occupation
+                {{ __('message.parent/guardian_occupation') }}
               </label>
               <input type="text" id="occupation" name="occupation" placeholder="Enter Occupation"
                 value="{{ old('occupation', $user->occupation) }}"
@@ -350,7 +345,7 @@
 
             <div class="mb-2">
               <label for="company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Parent/Guardian Company
+                {{ __('message.parent/guardian_company') }}
               </label>
               <input type="text" id="company" name="company" placeholder="Enter Company Name"
                 value="{{ old('company', $user->company) }}"
@@ -375,8 +370,8 @@
           {{ __('message.cancel') }}
         </a>
         <button type="submit"
-          class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Update
-          User</button>
+          class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">{{ __('message.update_user') }}
+        </button>
       </div>
 
       <input type="hidden" name="clear_avatar" :value="avatarCleared ? 1 : 0">

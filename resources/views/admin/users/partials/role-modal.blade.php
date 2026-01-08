@@ -8,7 +8,7 @@
               <i class="fas fa-user-tag text-white"></i>
             </div>
             <div>
-              <h2 class="text-xl font-bold">Assign Roles</h2>
+              <h2 class="text-xl font-bold">{{ __('message.assign_roles') }}</h2>
               <p class="text-indigo-100 text-sm font-bold" x-text="user.name"></p>
             </div>
           </div>
@@ -22,14 +22,14 @@
           <div class="mb-6">
             <div class="mb-4 flex justify-between items-center">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Select Role(s) <span class="text-red-500">*</span>
+                {{ __('message.select_role(s)') }} <span class="text-red-500">*</span>
               </label>
               <!-- Selection Status -->
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-500 dark:text-gray-400">
-                  Selected:
+                  {{ __('message.selected') }}:
                   <span x-text="selectedRoles.length" class="font-semibold text-indigo-600 dark:text-indigo-400"></span>
-                  role(s)
+                  {{ __('message.role(s)') }}
                 </span>
               </div>
             </div>
@@ -113,7 +113,7 @@
 
             <span x-show="selectedRoles.length === 0" class="text-red-500 text-xs font-medium">
               <i class="fas fa-exclamation-circle mr-1"></i>
-              Please select at least one role
+              {{ __('message.please_select_at_least_one_role') }}
             </span>
           </div>
 
@@ -134,7 +134,7 @@
                                disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed
                                rounded-lg transition-all duration-200 flex items-center gap-2">
               <i class="fas fa-check-circle"></i>
-              Update Roles
+              {{ __('message.update_roles') }}
             </button>
           </div>
         </form>

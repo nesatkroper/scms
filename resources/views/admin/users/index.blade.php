@@ -9,7 +9,7 @@
 
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-users me-2"></i>
-      Users List
+      {{ __('message.users_list') }}
     </h3>
 
     {{-- Session Messages --}}
@@ -32,7 +32,7 @@
         <a href="{{ route('admin.users.create') }}"
           class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 justify-center">
           <i class="fa-solid fa-plus me-2"></i>
-          Create New User
+          {{ __('message.create_new_user') }}
         </a>
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
@@ -194,8 +194,9 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Users Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create new users to manage your system.</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_users_found') }}</h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_new_users_to_manage_your_system') }}</p>
           </div>
         </div>
       @endforelse

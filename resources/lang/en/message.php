@@ -432,6 +432,77 @@ return [
 
 
   // new locale start from this line
+  'reset_password' => "Reset Password",
+  'close' => "Close",
+  'assign_roles' => "Assign Roles",
+  'update' => "Update",
+  'select_role(s)' => "Select Role(s)",
+  'selected' => "Selected",
+  'role(s)' => "role(s)",
+  'please_select_at_least_one_role' => "Please select at least one role",
+  'update_roles' => "Update Roles",
+  'create_new_user' => "Create New User",
+  'back_to_users_list' => "Back to Users List",
+  'basic_information' => "Basic Information",
+  'name' => "Name",
+  'email' => "Email",
+  'password' => "Password",
+  'user_role(s)' => "User Role(s)",
+  'address' => "Address",
+  'phone_number' => "Phone number",
+  'date_of_birth' => "Date of Birth",
+  'gender' => "Gender",
+  'nationality' => "Nationality",
+  'religion' => "Religion",
+  'employment/academic_details' => "Employment/Academic Details",
+  'joining_date' => "Joining Date",
+  'qualification' => "Qualification",
+  'experience_(years)' => "Experience (Years)",
+  'specialization' => "Specialization",
+  'salary' => "Salary",
+  'cv/resume' => "CV/Resume",
+  'student_details' => "Student Details",
+  'admission_date' => "Admission Date",
+  'parent/guardian_occupation' => "Parent/Guardian Occupation",
+  'parent/guardian_company' => "Parent/Guardian Company",
+  'create_user' => "Create User",
+  'user' => "User",
+  'password_(new)' => "Password (New)",
+  'confirm_password' => "Confirm Password",
+  'update_user' => "Update User",
+  'users_list' => "Users List",
+  'no_users_found' => "No Users Found",
+  'create_new_users_to_manage_your_system' => "Create new users to manage your system.",
+  'danger_zone' => "Danger Zone",
+  'permanently_delete_this_user_and_all_associated_records' => "Permanently delete this user and all associated records.",
+  'delete_user' => "Delete User",
+  'this_user_is_not_currently_assigned_to_teach_any_courses' => "This user is not currently assigned to teach any courses.",
+  'this_number_reflects_all_unique_students_enrolled_across_the_courses_taught_by_this_user' => "This number reflects all unique students enrolled across the courses taught by this user.",
+  'this_user_is_not_currently_enrolled_in_any_courses' => "This user is not currently enrolled in any courses.",
+  'no_exam_scores_found_for_this_user' => "No exam scores found for this user.",
+  'no_attendance_records_found_for_this_user' => "No attendance records found for this user.",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
