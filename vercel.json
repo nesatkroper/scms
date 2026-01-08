@@ -25,7 +25,7 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "true",
-    "APP_URL": "https://your-app-name.vercel.app",
+    "APP_URL": "https://scms.konkmeng.site/",
     "APP_KEY": "base64:9/AVjDZyefSZ0YbvwNPCYrlBTUcbupVL4o7eQX7//fE=",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
