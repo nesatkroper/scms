@@ -36,7 +36,7 @@
       </h3>
       <div class="flex gap-2">
         <button onclick="window.print()"
-          class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
+          class="text-nowrap p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
           <i class="fas fa-print"></i> {{ __('message.print_report') }}
         </button>
         <a href="{{ route('admin.expenses.index', ['category_id' => $expense->expense_category_id]) }}"

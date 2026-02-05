@@ -99,7 +99,7 @@
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('create_fee'))
                 <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeType->id]) }}"
-                  class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
@@ -111,21 +111,21 @@
 
             <div class="flex items-center">
               <a href="{{ route('admin.fee_types.show', $feeType->id) }}"
-                class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="View Details">
                 <span class="btn-content">
                   <i class="fa-solid fa-eye me-2"></i>
-                  {{-- Show --}}
+                  {{ __('message.details') }}
                 </span>
               </a>
 
               @if (Auth::user()->hasPermissionTo('create_fee-type'))
                 <a href="{{ route('admin.fee_types.edit', $feeType->id) }}"
-                  class="btn py-1 px-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
-                    {{-- {{ __('message.edit') }} --}}
+                    {{ __('message.edit') }}
                   </span>
                 </a>
               @endif

@@ -2,13 +2,13 @@
   <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
     <thead class="bg-gray-100 dark:bg-gray-700">
       <tr>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">#</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
+        <th class="p-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">#</th>
+        <th class="p-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
           {{ __('message.student') }}</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
+        <th class="p-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
           {{ __('message.course') }}</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">Date</th>
-        <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
+        <th class="p-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">Date</th>
+        <th class="p-2 text-left text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
           {{ __('message.status') }}</th>
       </tr>
     </thead>
@@ -16,11 +16,11 @@
     <tbody class="bg-white dark:bg-gray-800">
       @forelse ($data as $index => $row)
         <tr class="border-b dark:border-gray-700">
-          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $index + 1 }}</td>
-          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->student->name ?? __('message.n/a') }}</td>
-          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->course->name ?? __('message.n/a') }}</td>
-          <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $row->date }}</td>
-          <td class="px-4 py-2">
+          <td class="p-2 text-gray-700 dark:text-gray-300">{{ $index + 1 }}</td>
+          <td class="p-2 text-gray-700 dark:text-gray-300">{{ $row->student->name ?? __('message.n/a') }}</td>
+          <td class="p-2 text-gray-700 dark:text-gray-300">{{ $row->course->name ?? __('message.n/a') }}</td>
+          <td class="p-2 text-gray-700 dark:text-gray-300">{{ $row->date }}</td>
+          <td class="p-2">
             <span
               class="px-3 py-1 rounded-full text-sm
               @if ($row->status === 'present') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200

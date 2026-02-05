@@ -35,12 +35,12 @@
     <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
       <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
-          <th class="px-4 py-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.date') }}</th>
-          <th class="px-4 py-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.description') }}
           </th>
-          <th class="px-4 py-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.amount') }}</th>
         </tr>
       </thead>
@@ -48,9 +48,9 @@
       <tbody class="bg-white dark:bg-gray-800">
         @forelse($data['income'] ?? [] as $income)
           <tr class="border-b dark:border-gray-700">
-            <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $income->date ?? '-' }}</td>
-            <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $income->description ?? '-' }}</td>
-            <td class="px-4 py-2 text-green-600 dark:text-green-400">
+            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $income->date ?? '-' }}</td>
+            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $income->description ?? '-' }}</td>
+            <td class="p-2 text-green-600 dark:text-green-400">
               ${{ number_format($income->amount ?? 0, 2) }}
             </td>
           </tr>
@@ -72,11 +72,11 @@
     <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
       <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
-          <th class="px-4 py-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.date') }}</th>
-          <th class="px-4 py-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.category') }}</th>
-          <th class="px-4 py-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.amount') }}</th>
         </tr>
       </thead>
@@ -84,9 +84,9 @@
       <tbody class="bg-white dark:bg-gray-800">
         @forelse($data['expenses'] ?? [] as $expense)
           <tr class="border-b dark:border-gray-700">
-            <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $expense->date ?? '-' }}</td>
-            <td class="px-4 py-2 text-gray-700 dark:text-gray-300">{{ $expense->category->name ?? '-' }}</td>
-            <td class="px-4 py-2 text-red-600 dark:text-red-400">
+            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->date ?? '-' }}</td>
+            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->category->name ?? '-' }}</td>
+            <td class="p-2 text-red-600 dark:text-red-400">
               ${{ number_format($expense->amount ?? 0, 2) }}
             </td>
           </tr>

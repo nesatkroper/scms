@@ -14,7 +14,7 @@
           class="ml-1 text-indigo-600 dark:text-indigo-400">{{ $student->name }}</span>
       </h3>
       <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOffering->id]) }}"
-        class="px-4 py-2 text-sm bg-gray-200 text-gray-800 rounded shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+        class="p-2 text-sm bg-gray-200 text-gray-800 rounded shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
         <i class="fa-solid fa-arrow-left me-2"></i>
         {{ __('message.back_to_register') }}
       </a>

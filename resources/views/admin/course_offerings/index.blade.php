@@ -31,7 +31,7 @@
 
         @if (Auth::user()->hasPermissionTo('create_course-offering'))
           <a href="{{ route('admin.course_offerings.create') }}"
-            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus"></i>
             {{ __('message.create_new_offering') }}
           </a>
@@ -48,12 +48,12 @@
           </div>
 
           <button type="submit"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
+            class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.course_offerings.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
+            class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
             style="margin-top: 0 !important" title="Reset Search">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
@@ -67,7 +67,7 @@
           class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-400 dark:border-red-400 @endif">
 
           <div
-            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
+            class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
             <div class="flex flex-col">
               <div class="flex justify-between items-start gap-2">
                 <div>
@@ -103,7 +103,7 @@
               @if ($offering->attendances->count())
                 <a title="{{ __('message.export_score') }}"
                   href="{{ route('admin.attendances.export', $offering->id) }}"
-                  class="btn p-2 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                   title="{{ __('message.export_attendance') }}">
                   <i class="fa-solid fa-right-from-bracket me-2"></i>
                   {{ __('message.export_attendance') }}
@@ -112,7 +112,7 @@
 
               <a title="{{ __('message.export_score') }}"
                 href="{{ route('admin.course_offerings.export', $offering->id) }}"
-                class="btn p-2 h-8 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                 title="{{ __('message.export_score') }}">
                 <i class="fa-solid fa-right-from-bracket me-2"></i>
                 {{ __('message.export_score') }}
@@ -145,7 +145,7 @@
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                 @if (Auth::user()->hasPermissionTo('view_attendance'))
                   <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                    class="h-8 btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                    class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                     title="{{ __('message.attendance') }}">
                     <i class="fa-regular fa-calendar-days me-2"></i>
                     {{ __('message.attendance') }}
@@ -155,7 +155,7 @@
 
               @if (Auth::user()->hasPermissionTo('view_exam'))
                 <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
-                  class="h-8  btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  class=" btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                   title="Exam">
                   <i class="ri-contract-fill text-lg me-2"></i>
                   {{ __('message.exam') }}
@@ -166,14 +166,14 @@
                 @if (Auth::user()->hasPermissionTo('view_enrollment'))
                   @if ($offering->students->count() >= $offering->classroom?->capacity)
                     <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                      class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                      class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                       title="Admission Register">
                       <i class="fa-solid fa-check me-2"></i>
                       {{ __('message.class_full') }}
                     </a>
                   @else
                     <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                      class="h-8 btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                      class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                       title="Admission Register">
                       <i class="fa-solid fa-book-atlas me-2"></i>
                       {{ __('message.enroll') }}
@@ -189,6 +189,7 @@
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="Show Details">
                 <i class="fa-regular fa-eye me-2"></i>
+                {{ __('message.detail') }}
               </a>
 
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
@@ -197,6 +198,7 @@
                     class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-500 dark:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                     title="{{ __('message.edit') }}">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
+                    {{ __('message.edit') }}
                   </a>
                 @endif
               @endif
@@ -209,7 +211,7 @@
           <div
             class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
             <div class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400 dark:text-red-500" fill="none"
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 text-red-400 dark:text-red-500" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

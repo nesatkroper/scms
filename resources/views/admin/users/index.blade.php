@@ -30,7 +30,7 @@
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
         <a href="{{ route('admin.users.create') }}"
-          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 justify-center">
+          class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 justify-center">
           <i class="fa-solid fa-plus me-2"></i>
           {{ __('message.create_new_user') }}
         </a>
@@ -68,7 +68,7 @@
           class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-slate-300 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col @if ($user->hasRole('admin')) dark:border-red-700 border-dashed @endif
 ">
           <div
-            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-slate-300 dark:border-slate-600 flex items-center gap-4">
+            class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-slate-300 dark:border-slate-600 flex items-center gap-4">
             <img src="{{ $user->avatar_url }}"
               class="w-14 h-14 rounded-full object-cover border-2 border-white shadow @if ($user->deleted_at) border-red-600 @endif">
 
@@ -80,7 +80,7 @@
             <div class="mt-2 flex flex-wrap gap-1">
               @foreach ($user->roles as $role)
                 <span
-                  class="px-2 py-1 text-xs font-semibold rounded-full capitalize
+                  class="p-2 text-xs font-semibold rounded-full capitalize
                       @if ($role->name === 'admin') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
                       @elseif ($role->name === 'teacher') bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200
                       @elseif ($role->name === 'student') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
@@ -123,14 +123,14 @@
           {{-- Card Footer: Actions --}}
 
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
+            class="px-2 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between">
 
             <div class="flex">
               {{-- Password Button: Triggers Password Modal --}}
 
               @if (!$user->hasRole('admin'))
                 <button type="button" @click="openPasswordModal({{ $user->id }})"
-                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors">
+                  class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors">
                   <i class="fa-solid fa-unlock-keyhole me-2"></i>
                   Password
                 </button>
@@ -138,7 +138,7 @@
 
               @if (!$user->hasRole('admin'))
                 <button type="button" @click="openRoleModal({{ $user->id }})"
-                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors">
+                  class="btn p-2 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors">
                   <i class="fa-solid fa-fingerprint me-2"></i>
                   Role
                 </button>
@@ -149,20 +149,20 @@
               {{-- Show Button --}}
               @if (!$user->hasRole('admin'))
                 <a href="{{ route('admin.users.show', $user->id) }}"
-                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                   title="View User">
                   <i class="fa-regular fa-eye me-2"></i>
-                  {{-- Show --}}
+                  {{ __('message.details') }}
                 </a>
               @endif
 
               @if (!$user->hasRole('admin'))
                 {{-- {{ __('message.edit') }} Button --}}
                 <a href="{{ route('admin.users.edit', $user->id) }}"
-                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }} User">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- {{ __('message.edit') }} --}}
+                  {{ __('message.edit') }}
                 </a>
               @endif
 
@@ -172,7 +172,7 @@
                   @csrf
                   @method('DELETE')
                   <button type="submit"
-                    class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    class="delete-btn p-2 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                     title="Delete User">
                     <i class="fa-regular fa-trash-can me-2"></i>
                     Delete

@@ -2,7 +2,8 @@
     <div
       class="box bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden mb-4">
       <div class="p-4 md:flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">{{ __('message.recently_enrolled_students') }}
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 md:mb-0">
+          {{ __('message.recently_enrolled_students') }}
         </h2>
         <div class="flex items-center gap-2">
           <div class="relative">
@@ -49,7 +50,7 @@
                       </td>
                       <td class="px-6 py-4">
                         <span
-                          class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
+                          class="p-2 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
                       </td>
                       <td class="px-6 py-4">
                         {{ \Carbon\Carbon::parse($recent->created_at)->format('Y-m-d') }}</td>

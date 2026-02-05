@@ -14,7 +14,7 @@
     role="menu">
     <div class="py-1" role="none">
       <a href="#" title="{{ __('message.edit') }} Id({{ $id }})"
-        class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+        class="edit-btn text-gray-700 dark:text-gray-300 p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
         data-id="{{ $id }}">
         <span class="btn-content flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -25,7 +25,7 @@
         </span>
       </a>
       <a href="#" title="Details Id({{ $id }})"
-        class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
+        class="text-gray-700 dark:text-gray-300 p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
         data-id="{{ $id }}">
         <span class="btn-content flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -37,7 +37,7 @@
         </span>
       </a>
       <button title="Delete Id({{ $id }})"
-        class="delete-btn text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+        class="delete-btn text-red-600 dark:text-red-400 w-full text-left p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
         data-id="{{ $id }}">
         <span class="btn-content flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">

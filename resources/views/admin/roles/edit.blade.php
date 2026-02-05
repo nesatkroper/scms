@@ -14,7 +14,7 @@
         class="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-20 border p-2 rounded-md border-gray-300 bg-violet-50 dark:bg-slate-800 dark:border-gray-700">
         <div class="">
           <input type="text" id="name" name="name" value="{{ old('name', $role->name) }}"
-            class="w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
+            class="w-full p-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
             placeholder="Enter name" required maxlength="255">
           @error('name')
             <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -94,7 +94,7 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.roles.index') }}"
-          class="px-4 py-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
+          class="p-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -103,7 +103,7 @@
           {{ __('message.cancel') }}
         </a>
         <button type="submit"
-          class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+          class="p-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

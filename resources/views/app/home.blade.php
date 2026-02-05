@@ -15,7 +15,7 @@
               <h1 class="text-3xl md:text-5xl font-bold">Wat Damnak Learning Centre</h1>
               <p class="mt-3 max-w-2xl">A community place for learning, culture and togetherness.</p>
               <div class="mt-4">
-                <a href="#about" class="inline-block px-4 py-2 bg-indigo-600 rounded-md">Learn
+                <a href="#about" class="inline-block p-2 bg-indigo-600 rounded-md">Learn
                   More</a>
               </div>
             </div>
@@ -57,15 +57,13 @@
   <section id="news" class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Latest News</h2>
-      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto" data-aos="fade-up"
-        data-aos-delay="100">
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
         Stay updated with the latest happenings and achievements at Wat Damnak Learning Centre
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- News Card 1 -->
-        <div class="news-card bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up"
-          data-aos-delay="100">
+        <div class="news-card bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
           <div class="relative overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80"
@@ -86,8 +84,7 @@
         </div>
 
         <!-- News Card 2 -->
-        <div class="news-card bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up"
-          data-aos-delay="200">
+        <div class="news-card bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
           <div class="relative overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
@@ -108,8 +105,7 @@
         </div>
 
         <!-- News Card 3 -->
-        <div class="news-card bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up"
-          data-aos-delay="300">
+        <div class="news-card bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="300">
           <div class="relative overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"

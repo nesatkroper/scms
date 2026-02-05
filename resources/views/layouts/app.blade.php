@@ -117,25 +117,25 @@
             <ul class="flex gap-2 items-center">
               <li class="group relative">
                 <a href="{{ route('app.home') }}"
-                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">Home</a>
+                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 p-2 transition-colors duration-200">Home</a>
               </li>
               <li class="group relative">
                 <a href="{{ route('app.about') }}"
-                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2
+                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 p-2
                                 transition-colors duration-200">Who
                   i am</a>
               </li>
 
               <li class="group relative">
                 <a href="{{ route('app.whatwedo') }}"
-                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">
+                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 p-2 transition-colors duration-200">
                   What we do
                 </a>
               </li>
 
               <li class="group relative">
                 <button
-                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 flex items-center gap-2 submenu-toggle no-select transition-colors duration-200">Activity
+                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 p-2 flex items-center gap-2 submenu-toggle no-select transition-colors duration-200">Activity
                   <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20"
                     fill="currentColor">
                     <path fill-rule="evenodd"
@@ -144,19 +144,18 @@
                   </svg>
                 </button>
                 <ul class="submenu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 border border-gray-200">
-                  <li><a href="#events"
-                      class="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200">Events</a>
+                  <li><a href="#events" class="block p-2 hover:bg-gray-100 transition-colors duration-200">Events</a>
                   </li>
 
                   <li>
-                    <a href="#clubs" class="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200">News</a>
+                    <a href="#clubs" class="block p-2 hover:bg-gray-100 transition-colors duration-200">News</a>
                   </li>
                 </ul>
               </li>
 
               <li>
                 <a href="{{ route('app.contact') }}"
-                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 px-3 py-2 transition-colors duration-200">
+                  class="border-b-2 border-transparent hover:border-orange-500 hover:text-orange-500 p-2 transition-colors duration-200">
                   Contact Us
                 </a>
               </li>
@@ -164,13 +163,13 @@
           </nav>
           <div class="relative">
             {{-- <a href="{{ route('app.donation') }}"
-                        class="px-3 py-2 border border-orange-500 rounded-md bg-orange-500 hover:bg-transparent hover:text-orange-500 text-slate-100 transition-colors duration-200 cursor-pointer">
+                        class="p-2 border border-orange-500 rounded-md bg-orange-500 hover:bg-transparent hover:text-orange-500 text-slate-100 transition-colors duration-200 cursor-pointer">
                         <i
                             class="fas fa-hand-holding-heart w-5 group-hover:text-blue-500 transition-colors duration-200"></i>
                         Donation
                     </a> --}}
             <a href="{{ route('app.donation') }}"
-              class="group relative inline-flex items-center justify-center px-3 py-2 text-sm font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-md shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+              class="group relative inline-flex items-center justify-center p-2 text-sm font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-md shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
               <!-- Animated background -->
               <span
                 class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>

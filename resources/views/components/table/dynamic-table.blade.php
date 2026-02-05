@@ -23,7 +23,7 @@
       @foreach ($items as $item)
         <x-table.tr>
           @foreach ($headers as $key => $header)
-            <td class="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-white capitalize {{ $tdclass }}">
+            <td class="p-2 whitespace-nowrap text-gray-900 dark:text-white capitalize {{ $tdclass }}">
               @if (is_array($header) && isset($header['component']))
                 <x-dynamic-component :component="$header['component']" :item="$item" />
               @else
@@ -34,7 +34,7 @@
 
           @if ($actions)
             {{-- ACTIONS COLUMN: Replaced Dropdown with Direct Buttons --}}
-            <td class="px-4 py-2 text-right">
+            <td class="p-2 text-right">
               <div class="flex items-center justify-end space-x-2 text-nowrap">
 
                 @if (in_array('edit', $actionItems))
@@ -122,7 +122,7 @@
       @foreach ($items as $item)
         <x-table.tr>
           @foreach ($headers as $key => $header)
-            <td class="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-white capitalize {{ $tdclass }}">
+            <td class="p-2 whitespace-nowrap text-gray-900 dark:text-white capitalize {{ $tdclass }}">
               @if (is_array($header) && isset($header['component']))
                 <x-dynamic-component :component="$header['component']" :item="$item" />
               @else
@@ -132,7 +132,7 @@
           @endforeach
 
           @if ($actions)
-            <td class="px-4 py-2 text-right">
+            <td class="p-2 text-right">
               <div class="relative size-8">
                 <button
                   class="btn-toggle-dropdown btn-action font-medium text-indigo-600 dark:text-indigo-500 p-1 size-8 flex items-center justify-center
@@ -151,7 +151,7 @@
                     @if (in_array('edit', $actionItems))
                       <a href="{{ $endpoint ? route('admin.' . $endpoint . '.edit', $item->id) : '#' }}"
                         title="{{ __('message.edit') }} Id({{ $item->id }})"
-                        class="edit-btn text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                        class="edit-btn text-gray-700 dark:text-gray-300 p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                         data-id="{{ $item->id }}">
                         <span class="btn-content flex items-center gap-2">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
@@ -166,7 +166,7 @@
 
                     @if (in_array('detail', $actionItems))
                       <a href="#" title="Details Id({{ $item->id }})"
-                        class="text-gray-700 dark:text-gray-300 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
+                        class="text-gray-700 dark:text-gray-300 p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 detail-btn"
                         data-id="{{ $item->id }}">
                         <span class="btn-content flex items-center gap-2">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
@@ -182,7 +182,7 @@
 
                     @if (in_array('delete', $actionItems))
                       <button href="#" title="Delete Id({{ $item->id }})"
-                        class="delete-btn text-red-600 dark:text-red-400 w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                        class="delete-btn text-red-600 dark:text-red-400 w-full text-left p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                         data-id="{{ $item->id }}">
                         <span class="btn-content flex items-center gap-2">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"

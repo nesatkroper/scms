@@ -236,13 +236,13 @@
         <!-- GENERATE BUTTON -->
         <div class="flex justify-end gap-4">
           <a href="{{ route('admin.reports') }}"
-            class="px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-rotate"></i>
             {{ __('message.refresh') }}
           </a>
 
           <button type="submit"
-            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
             {{ __('message.generate_report') }}
           </button>
@@ -262,13 +262,13 @@
 
             <!-- Export Excel -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}"
-              class="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+              class="p-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
               {{ __('message.excel') }}
             </a>
 
             <!-- Export PDF -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'pdf']) }}"
-              class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+              class="p-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
               {{ __('message.pdf') }}
             </a>
 

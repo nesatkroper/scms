@@ -15,7 +15,7 @@
           <!-- Input -->
           <div class="relative mb-5">
             <input type="text" name="password"
-              class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600
+              class="w-full p-2.5 border border-gray-300 dark:border-gray-600
                            rounded-lg bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white
                            shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
                            transition-all duration-200"
@@ -26,14 +26,14 @@
           <!-- Buttons -->
           <div class="flex justify-end gap-2">
             <button @click.prevent="closeModals()" type="button"
-              class="px-3 py-2 text-sm font-medium rounded-lg
+              class="p-2 text-sm font-medium rounded-lg
                            bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300
                            hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200
                            flex items-center gap-2">
               <i class="fa-solid fa-xmark"></i> {{ __('message.close') }}
             </button>
             <button type="submit"
-              class="px-4 py-2 text-sm font-semibold text-white rounded-lg
+              class="p-2 text-sm font-semibold text-white rounded-lg
                            bg-gradient-to-r from-green-500 to-emerald-600
                            hover:from-green-600 hover:to-emerald-700
                            shadow-lg shadow-green-500/30

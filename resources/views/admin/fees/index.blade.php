@@ -29,7 +29,7 @@
 
         @if (Auth::user()->hasPermissionTo('create_fee'))
           <a href="{{ route('admin.fees.create', ['fee_type_id' => $feeTypeId]) }}"
-            class="lg:col-span-1 text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            class="lg:col-span-1 text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
             {{ __('message.create_new_fee') }}
           </a>
@@ -54,13 +54,13 @@
           </div>
 
           <button type="submit"
-            class="p-2 h-8 w-10 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
+            class="p-2  flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
 
           <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}" id="resetSearch"
-            class="p-2 h-8 w-10 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
+            class="p-2  flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
             title="Reset Filters">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
@@ -162,7 +162,7 @@
             @if ($fee->status != 'paid')
               <a href="#"
                 @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.fees.pay', $fee->id) }}')"
-                class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                 title="Add Payment">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
@@ -171,7 +171,7 @@
               </a>
             @else
               <a href="{{ route('admin.fees.show', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-                class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                 title="Paid">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
@@ -184,7 +184,7 @@
               <div class="flex">
                 @if (Auth::user()->hasPermissionTo('update_fee'))
                   <a href="{{ route('admin.fees.edit', ['fee' => $fee->id, 'fee_type_id' => $fee->fee_type_id]) }}"
-                    class="btn px-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                     title="{{ __('message.edit') }}">
                     <span class="btn-content flex items-center justify-center">
                       <i class="fa-solid fa-pen-to-square me-2"></i>
@@ -213,7 +213,7 @@
           <div
             class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700">
             <div class="mx-auto h-16 w-16 rounded-full bg-red-50 dark:bg-slate-700 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400 dark:text-red-500" fill="none"
+              <svg xmlns="http://www.w3.org/2000/svg" class=" w-8 text-red-400 dark:text-red-500" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

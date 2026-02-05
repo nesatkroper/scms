@@ -88,11 +88,11 @@
                 class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.score') }}</label>
               {{-- <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
                 name="fee" value="{{ old('fee') }}" value="{{ $scoreEntry->score ?? 0 }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
+                class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
                 text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"> --}}
               <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
                 value="{{ $scoreEntry->score ?? '' }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
+                class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
               text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
             </div>
@@ -102,7 +102,7 @@
               <label
                 class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
               <input type="text" name="remarks_{{ $student->id }}" value="{{ $scoreEntry->remarks ?? '' }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm
+                class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
                 text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             </div>
 

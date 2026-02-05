@@ -8,7 +8,8 @@
     {{-- Show initials container if no current image exists --}}
     <div id="{{ $name }}_initials"
       class="rounded-full absolute inset-0 w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-slate-600 {{ $currentImageUrl ? 'hidden' : '' }}">
-      <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"><i class="text-8xl ri-account-circle-fill"></i></span>
+      <span class="text-3xl font-bold text-indigo-600 dark:text-indigo-300"><i
+          class="text-8xl ri-account-circle-fill"></i></span>
     </div>
 
     <input type="file" id="upload_{{ $name }}" name="{{ $name }}" accept="image/*" class="hidden">
@@ -70,7 +71,7 @@
 
         <div class="flex gap-2 mt-auto pt-4">
           <button type="button" id="{{ $name }}ApplyCrop"
-            class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
+            class="cursor-pointer p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
             Apply
           </button>
         </div>

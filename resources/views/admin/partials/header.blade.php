@@ -109,7 +109,7 @@
         </div>
 
         @if (Auth::user()->notifications->count() > 0)
-          <div class="px-4 py-2 text-center text-sm">
+          <div class="p-2 text-center text-sm">
             <a href="{{ route('admin.notifications.index') }}"
               class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800">
               {{ __('message.view_all_notifications') }}
@@ -143,7 +143,7 @@
       <div id="user-dropdown"
         class="border border-gray-200 dark:border-gray-700 absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 hidden animate-fadeIn z-20">
         <a href="{{ route('admin.profile.show') }}"
-          class="flex items-center px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-gray-700">
+          class="flex items-center p-2 text-gray-800 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-gray-700">
           <svg class="w-5 h-5 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -156,7 +156,7 @@
 
         <form method="POST" action="{{ route('logout') }}" class="block hover:bg-indigo-100 dark:hover:bg-gray-700">
           @csrf
-          <button type="submit" class="flex items-center w-full pl-5 px-4 py-2 text-red-500 cursor-pointer">
+          <button type="submit" class="flex items-center w-full pl-5 p-2 text-red-500 cursor-pointer">
             <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

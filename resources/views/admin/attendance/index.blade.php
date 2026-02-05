@@ -54,11 +54,11 @@
 
       <div class="mb-4">
         <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ __('message.status_key') }}</span>
-        <span class="inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">L =
+        <span class="inline-block p-2 bg-green-100 text-green-800 rounded text-xs font-semibold">L =
           {{ __('message.attending_(1_score)') }} </span>
-        <span class="inline-block px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-semibold">P =
+        <span class="inline-block p-2 bg-yellow-100 text-yellow-800 rounded text-xs font-semibold">P =
           {{ __('message.permission_(05_score)') }}</span>
-        <span class="inline-block px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">A =
+        <span class="inline-block p-2 bg-red-100 text-red-800 rounded text-xs font-semibold">A =
           {{ __('message.absent_(0_score)') }}</span>
       </div>
     </form>
@@ -168,7 +168,7 @@
                 <label
                   class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
                 <input type="text" name="remarks_{{ $student->id }}" value="{{ $attendanceEntry->remarks ?? '' }}"
-                  class="w-full max-w-[150px] border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  class="w-full max-w-[150px] border border-gray-300 dark:border-gray-600 rounded p-2 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               </div>
             </div>
           </div>

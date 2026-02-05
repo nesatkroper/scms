@@ -27,7 +27,7 @@
         class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
         <a href="{{ route('admin.roles.create') }}"
-          class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+          class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <i class="fa-solid fa-plus me-2"></i>
           {{ __('message.create_new_role') }}
         </a>
@@ -56,7 +56,7 @@
     </form>
 
     {{-- START: Card View for Roles --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
       @forelse ($roles as $role)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -102,11 +102,11 @@
 
           {{-- Card Footer: Actions --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end">
+            class="px-2 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end">
 
             {{-- {{ __('message.edit') }} Button --}}
             <a href="{{ route('admin.roles.edit', $role->id) }}"
-              class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
               title="{{ __('message.edit') }} Role">
               <i class="fa-solid fa-pen-to-square me-2"></i>
               {{ __('message.edit') }}

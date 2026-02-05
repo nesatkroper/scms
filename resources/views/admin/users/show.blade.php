@@ -25,7 +25,7 @@
     <div class="flex space-x-3">
       @if (!Auth::user()->hasRole('admin'))
         <a href="{{ route('admin.users.edit', $user) }}"
-          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+          class="p-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path
               d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-7.5 7.5a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0L17 7.414V17a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1h6.586l-1-1H4z" />
@@ -34,7 +34,7 @@
         </a>
       @endif
       <a href="{{ route('admin.users.index') }}"
-        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-indigo-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+        class="p-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-indigo-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
           <path
             d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2.586l3-3V17a1 1 0 001 1h2a1 1 0 001-1v-6.586l1.293-1.293a1 1 0 000-1.414l-7-7z" />
@@ -137,7 +137,7 @@
               @csrf
               @method('DELETE')
               <button type="submit"
-                class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
+                class="w-full p-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
                 {{ __('message.delete_user') }}
               </button>
             </form>

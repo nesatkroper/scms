@@ -28,7 +28,7 @@
 
         @if (Auth::user()->hasPermissionTo('create_expense-category'))
           <a href="{{ route('admin.expense_categories.create') }}"
-            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
             {{ __('message.create_new_category') }}
           </a>
@@ -64,7 +64,7 @@
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
 
-          <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+          <div class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $category->name }}</h4>
@@ -98,12 +98,12 @@
 
           {{-- Actions ({{ __('message.edit') }} Link + Delete Form) --}}
           <div
-            class="px-4 py-0 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+            class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('view_expense'))
                 <a href="{{ route('admin.expenses.index', ['category_id' => $category->id]) }}"
-                  class="btn p-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="Admission Register">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
@@ -116,21 +116,21 @@
             <div class="flex">
               {{-- Detail Button (Redirects to Show Page) --}}
               <a href="{{ route('admin.expense_categories.show', $category->id) }}"
-                class="btn p-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="View Details">
                 <span class="btn-content">
                   <i class="fa-solid fa-eye me-2"></i>
-                  {{-- Show --}}
+                  {{ __('message.details') }}
                 </span>
               </a>
 
               @if (Auth::user()->hasPermissionTo('update_expense-category'))
                 <a href="{{ route('admin.expense_categories.edit', $category->id) }}"
-                  class="btn p-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>
-                    {{-- {{ __('message.edit') }} --}}
+                    {{ __('message.edit') }}
                   </span>
                 </a>
               @endif

@@ -13,7 +13,7 @@
       </h3>
       <div class="flex space-x-3 mt-1">
         <a href="{{ route('admin.students.show', $student) }}"
-          class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+          class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
           <i class="fa-solid fa-person me-2 text-lg"></i>
           {{ __('message.back_to_student_details') }}
         </a>
@@ -141,7 +141,7 @@
 
           {{-- Card Footer: Actions (View/{{ __('message.edit') }}/Add Payment) --}}
           <div
-            class="px-4 py-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            class="p-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
             {{-- Example: View Details Button --}}
             <a href="{{ route('admin.fees.show', $fee) }}"
@@ -165,7 +165,7 @@
               {{ __('message.there_are_no_financial_records_associated_with_this_student') }}
             </p>
             <a href="{{ route('admin.students.fees.create', $student) }}"
-              class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              class="mt-4 inline-flex items-center p-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd"
                   d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"

@@ -58,7 +58,7 @@
 
         <div class="flex gap-2 mt-auto pt-4">
           <button type="button" id="applyEditCrop"
-            class="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
+            class="cursor-pointer p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex-1">
             Apply
           </button>
         </div>

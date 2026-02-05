@@ -23,7 +23,7 @@
         </span>
       </h3>
       <a href="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}"
-        class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
+        class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors">
         {{ __('message.back_to_list') }}
       </a>
     </div>
@@ -54,7 +54,7 @@
           </label>
 
           <select id="type" name="type" required
-            class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
+            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
 
             <option value="" disabled>{{ __('message.select_exam_type') }}</option>
 
@@ -116,7 +116,7 @@
           <input type="date" id="date" name="date" required min="2025-01-01" max="2027-12-31"
             min="{{ now()->toDateString() }}"
             value="{{ old('date', $exam->date ? \Carbon\Carbon::parse($exam->date)->format('Y-m-d') : null) }}"
-            class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror">
+            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror">
           @error('date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -132,7 +132,7 @@
           </label>
           <input type="number" id="total_marks" name="total_marks" required min="1" max="100" maxlength="3"
             value="{{ old('total_marks', $exam->total_marks ?? 100) }}"
-            class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
+            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
             placeholder="e.g., 100">
           @error('total_marks')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -146,7 +146,7 @@
           </label>
           <input type="number" id="passing_marks" name="passing_marks" required min="0" max="100"
             maxlength="3" value="{{ old('passing_marks', $exam->passing_marks ?? '') }}"
-            class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('passing_marks') border-red-500 @enderror"
+            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('passing_marks') border-red-500 @enderror"
             placeholder="e.g., 60">
           @error('passing_marks')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -161,7 +161,7 @@
           {{ __('message.description_(optional)') }}
         </label>
         <textarea id="description" name="description" rows="3"
-          class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
+          class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
           placeholder="Provide a brief description or instruction for the exam.">{{ old('description', $exam->description ?? '') }}</textarea>
         @error('description')
           <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -170,7 +170,7 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.exams.index', ['course_offering_id' => $courseOfferingId]) }}"
-          class="px-4 py-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-lg flex items-center gap-2 transition-colors">
+          class="p-2 cursor-pointer border border-red-500 hover:border-red-600 text-red-600 rounded-lg flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -181,7 +181,7 @@
 
         @if (Auth::user()->hasPermissionTo('update_exam'))
           <button type="submit"
-            class="px-4 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd"
                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

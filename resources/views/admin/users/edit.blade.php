@@ -37,7 +37,7 @@
       $initialSelectedRolesJson = json_encode($selectedRoles);
 
       $inputClasses =
-          'form-control w-full px-3 py-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
+          'form-control w-full p-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
 
       $fileClasses =
           'form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600';
@@ -131,7 +131,7 @@
                 class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600 @error('type') border-red-500 @enderror @error('type.*') border-red-500 @enderror">
                 @foreach ($allRoles as $role)
                   <label
-                    class="flex items-center gap-3 px-4 py-2 rounded-lg border
+                    class="flex items-center gap-3 p-2 rounded-lg border
            border-gray-300 dark:border-gray-600 cursor-pointer
            bg-white dark:bg-gray-800
            hover:border-indigo-400 dark:hover:border-indigo-500
@@ -193,7 +193,7 @@
                 {{ __('message.gender') }}
               </label>
               <select id="gender" name="gender"
-                class="form-control form-select w-full px-3 py-2 border rounded-md focus:outline focus:outline-white
+                class="form-control form-select w-full p-2 border rounded-md focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">
@@ -361,7 +361,7 @@
 
       <div class="mb-8 sm:mb-0 py-4 border-t flex justify-end space-x-3 border-slate-300 dark:border-slate-700">
         <a href="{{ route('admin.users.index') }}"
-          class="cursor-pointer flex items-center justify-center rounded-md transition-colors px-4 py-2 border border-red-500 text-red-500 dark:text-red-600 hover:text-white hover:bg-red-600 gap-2">
+          class="cursor-pointer flex items-center justify-center rounded-md transition-colors p-2 border border-red-500 text-red-500 dark:text-red-600 hover:text-white hover:bg-red-600 gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -370,7 +370,7 @@
           {{ __('message.cancel') }}
         </a>
         <button type="submit"
-          class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">{{ __('message.update_user') }}
+          class="p-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">{{ __('message.update_user') }}
         </button>
       </div>
 

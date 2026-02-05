@@ -30,7 +30,7 @@
 
         @if (Auth::user()->hasPermissionTo('create_student'))
           <a href="{{ route('admin.students.create') }}"
-            class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
+            class="text-nowrap p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
             Enroll New Student
           </a>
@@ -67,7 +67,7 @@
 
           {{-- Card Header: Student Name and Actions --}}
           <div
-            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
+            class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
 
             <div class="flex items-center gap-3">
               <img src="{{ $student->avatar_url }}"
@@ -148,7 +148,7 @@
             <div class="flex items-center">
               @if (Auth::user()->hasPermissionTo('view_enrollment'))
                 <a href="{{ route('admin.students.enrollments.index', $student->id) }}"
-                  class="btn p-2 py-1 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }} Student">
                   <i class="fa-solid fa-file-circle-plus me-2"></i>
                   Enroll
@@ -157,7 +157,7 @@
 
               @if (Auth::user()->hasPermissionTo('view_fee'))
                 <a href="{{ route('admin.students.fees.index', $student->id) }}"
-                  class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }} Student">
                   <i class="fa-solid fa-dollar-sign me-2"></i>
                   Payment
@@ -169,18 +169,18 @@
             <div class="flex items-center">
               {{-- View Details Button --}}
               <a href="{{ route('admin.students.show', $student->id) }}"
-                class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                class="btn p-2 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                 title="View Student Details">
                 <i class="fa-regular fa-eye me-2"></i>
-                {{-- View --}}
+                {{ __('message.details') }}
               </a>
 
               @if (Auth::user()->hasPermissionTo('update_student'))
                 <a href="{{ route('admin.students.edit', $student->id) }}"
-                  class="btn px-2 py-1 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }} Student">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- {{ __('message.edit') }} --}}
+                  {{ __('message.edit') }}
                 </a>
               @endif
 
@@ -190,7 +190,7 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit"
-                  class="delete-btn px-2 py-1 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                  class="delete-btn p-2 rounded-full flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                   title="Delete Student">
                   <i class="fa-regular fa-trash-can me-2"></i>
                 </button>

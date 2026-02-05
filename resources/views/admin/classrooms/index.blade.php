@@ -34,7 +34,7 @@
         {{-- Create Button (Redirects to Create Page) --}}
         @if (Auth::user()->hasPermissionTo('create_classroom'))
           <a href="{{ route('admin.classrooms.create') }}"
-            class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
+            class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus"></i>
             {{ __('message.create_new') }}
           </a>
@@ -70,7 +70,7 @@
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($classroom->deleted_at) border-3 border-dashed border-red-400 dark:border-red-500 @endif">
 
-          <div class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
+          <div class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
             <div class="flex justify-between items-start gap-2">
               <div>
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $classroom->name }}

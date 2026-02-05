@@ -35,13 +35,13 @@
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.fees.index') }}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.view_details') }}
                 </a>
                 <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.export_data') }}
@@ -91,13 +91,13 @@
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.expenses.index') }}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.view_details') }}
                 </a>
                 <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.export_data') }}
@@ -144,13 +144,13 @@
               role="menu">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.students.index') }}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.view_details') }}
                 </a>
                 <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.export_data') }}
@@ -199,13 +199,13 @@
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.course_offerings.index') }}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-eye mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.view_details') }}
                 </a>
                 <a href="#"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   role="menuitem">
                   <i class="fas fa-file-export mr-3 text-indigo-500 w-4 text-center"></i>
                   {{ __('message.export_data') }}

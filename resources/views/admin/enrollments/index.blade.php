@@ -39,14 +39,14 @@
           <div class="flex gap-4">
             @if (Auth::user()->hasPermissionTo('create_enrollment'))
               <a href="{{ route('admin.enrollments.create', ['course_offering_id' => $courseOffering->id]) }}"
-                class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
+                class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
                 <i class="fa-solid fa-plus"></i>
                 {{ __('message.enrollment') }}
               </a>
             @endif
 
             <a href="{{ route('admin.course_offerings.index') }}"
-              class="text-nowrap px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
+              class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2 disabled">
               <i class="fa-solid fa-plus"></i>
               {{ __('message.back') }}
             </a>
@@ -64,12 +64,12 @@
           </div>
 
           <button type="submit"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
+            class="p-2 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="Search">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.enrollments.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
+            class="p-2 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
             title="Reset Search">
             <svg class="h-5 w-5 text-indigo-600 dark:text-gray-300" fill="none" stroke="currentColor"
               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +89,7 @@
 
           {{-- Header: Student Name & Course --}}
           <div
-            class="px-4 py-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
+            class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
             <div class="flex justify-between items-start gap-2">
               <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">
                 {{ $enrollment->student->name ?? 'Student Deleted' }}</h4>
@@ -106,7 +106,7 @@
           <div class="p-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
             {{-- Status and Payment Status (Flex for alignment) --}}
             <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
-              <p class="flex items-center gap-1 font-medium justify-between">
+              <p class="flex items-center gap-2 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
                 {{ __('message.status') }}
                 <span
@@ -124,7 +124,7 @@
             </div>
 
             {{-- <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
-              <p class="flex items-center gap-1 font-medium justify-between">
+              <p class="flex items-center gap-2 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
                 {{ __('message.status') }}
                 <span
@@ -141,7 +141,7 @@
 
             {{-- Final Grade --}}
             <div class="flex justify-between items-center">
-              <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
+              <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
                 <i class="fa-solid fa-graduation-cap text-purple-500"></i>
                 {{ __('message.final_grade') }}
               </span>
@@ -173,7 +173,7 @@
 
             {{-- Payment Status --}}
             <div class="flex justify-between items-center">
-              <p class="flex items-center gap-1 font-medium">
+              <p class="flex items-center gap-2 font-medium">
                 <i class="fa-solid fa-wallet text-teal-500"></i>
                 {{ __('message.payment') }}
               <p class="text-sm ">
@@ -200,7 +200,7 @@
             {{-- Remarks --}}
             {{-- @if ($enrollment->remarks)
               <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50">
-                <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1 mb-1">
+                <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2 mb-1">
                   <i class="fa-solid fa-comment-dots text-yellow-500"></i>
                   Remarks:
                 </span>
@@ -217,7 +217,7 @@
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('view_attendance'))
                 <a href="{{ route('admin.attendances.show', [$courseOffering->id, $enrollment->student->id]) }}"
-                  class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.attendance') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-book-atlas me-2"></i>
@@ -228,7 +228,7 @@
 
               @if (Auth::user()->hasPermissionTo('view_score'))
                 <a href="{{ route('admin.scores.show', [$courseOffering->id, $enrollment->student->id]) }}"
-                  class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.attendance') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-file-circle-plus me-2"></i>
@@ -241,7 +241,7 @@
             <div class="flex">
               @if (Auth::user()->hasPermissionTo('update_attendance'))
                 <a href="{{ route('admin.enrollments.edit', ['student_id' => $enrollment->student_id, 'course_offering_id' => $enrollment->course_offering_id]) }}"
-                  class="btn p-1 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }} Admission">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-pen-to-square me-2"></i>

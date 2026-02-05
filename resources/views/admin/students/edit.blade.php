@@ -64,7 +64,7 @@
               </label>
               <input type="text" id="name" name="name" placeholder="Enter full name" required
                 value="{{ old('name', $student->name) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('name') border-red-500 @enderror">
@@ -80,7 +80,7 @@
               </label>
               <input type="email" id="email" name="email" placeholder="Enter email address" required
                 value="{{ old('email', $student->email) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('email') border-red-500 @enderror">
@@ -96,7 +96,7 @@
               </label>
               <input type="tel" id="phone" name="phone" placeholder="Enter phone number"
                 value="{{ old('phone', $student->phone) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('phone') border-red-500 @enderror">
@@ -111,7 +111,7 @@
                 Gender (Optional)
               </label>
               <select id="gender" name="gender"
-                class="form-control form-select w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">
@@ -163,7 +163,7 @@
               </label>
               <input type="date" id="date_of_birth" name="date_of_birth" placeholder="Enter Date of Birth"
                 value="{{ old('date_of_birth', $student->date_of_birth) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('date_of_birth') border-red-500 @enderror">
@@ -210,7 +210,7 @@
               </label>
               <input type="date" id="admission_date" name="admission_date"
                 value="{{ old('admission_date', $student->admission_date) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('admission_date') border-red-500 @enderror">
@@ -226,7 +226,7 @@
               </label>
               <input type="text" id="nationality" name="nationality" placeholder="Enter nationality"
                 value="{{ old('nationality', $student->nationality) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('nationality') border-red-500 @enderror">
@@ -242,7 +242,7 @@
               </label>
               <input type="text" id="religion" name="religion" placeholder="Enter religion"
                 value="{{ old('religion', $student->religion) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('religion') border-red-500 @enderror">
@@ -258,7 +258,7 @@
               </label>
               <input type="text" id="occupation" name="occupation" placeholder="Student/Working/Other"
                 value="{{ old('occupation', $student->occupation) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('occupation') border-red-500 @enderror">
@@ -274,7 +274,7 @@
               </label>
               <input type="text" id="company" name="company" placeholder="Enter company name"
                 value="{{ old('company', $student->company) }}"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('company') border-red-500 @enderror">
@@ -289,7 +289,7 @@
                 Address (Optional)
               </label>
               <textarea id="address" name="address" placeholder="Enter full address" rows="2"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('address') border-red-500 @enderror">{{ old('address', $student->address) }}</textarea>
@@ -314,7 +314,7 @@
                 New Password
               </label>
               <input type="password" id="password" name="password" placeholder="Enter new password (optional)"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('password') border-red-500 @enderror">
@@ -331,7 +331,7 @@
               </label>
               <input type="password" id="password_confirmation" name="password_confirmation"
                 placeholder="Confirm new password"
-                class="form-control w-full px-3 py-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300">

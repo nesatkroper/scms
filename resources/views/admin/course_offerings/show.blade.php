@@ -27,7 +27,7 @@
         </div>
         <div>
           <a href="{{ route('admin.course_offerings.index') }}"
-            class="inline-flex items-center gap-2 px-4 py-2.5 dark:bg-gray-800 border border-gray-300
+            class="inline-flex items-center gap-2 p-2.5 dark:bg-gray-800 border border-gray-300
                      dark:border-gray-600 rounded-lg dark:hover:bg-gray-700 transition-colors text-gray-800
                      text-sm font-medium dark:text-gray-300">
             <i class="fas fa-arrow-left text-xs"></i>
@@ -171,7 +171,7 @@
             <!-- Enrollment Period Card -->
             <div
               class="bg-white dark:bg-gray-800 rounded-xl border border-slate-300 dark:border-slate-700 overflow-hidden">
-              <div class="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+              <div class="p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <i class="fas fa-calendar-alt text-cyan-500"></i>
                   {{ __('message.enrollment_period') }}
