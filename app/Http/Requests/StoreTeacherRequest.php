@@ -58,8 +58,6 @@ class StoreTeacherRequest extends FormRequest
             'gender.required' => 'Please select gender.',
             'date_of_birth.required' => 'Date of birth is required.',
             'date_of_birth.before_or_equal' => 'Date of birth cannot be in the future.',
-            // 'department_id.required' => 'Please select a department.',
-            // 'department_id.exists' => 'The selected department is invalid.',
             'joining_date.required' => 'Joining date is required.',
             'qualification.required' => 'Qualification is required.',
             'experience.required' => 'Experience is required.',
