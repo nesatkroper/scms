@@ -90,12 +90,26 @@
               <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Phone Number <span class="text-red-500">*</span>
               </label>
-              <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required
+              <input type="tel" id="phone" name="phone" placeholder="e.g., 012 345 678" required
                 value="{{ old('phone') }}"
+                x-on:input="
+                  let val = $el.value.replace(/[^\d+]/g, '');
+                  if (val.startsWith('+') && !val.startsWith('+855')) {
+                    val = '+855' + val.replace(/^\+/, '');
+                  }
+                  if (val.length > 1 && !val.startsWith('0') && !val.startsWith('+')) {
+                    val = '0' + val;
+                  }
+                  $el.value = val.slice(0, 15);
+                "
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('phone') border-red-500 @enderror">
+                       border-slate-300 @error('phone')
+border-red-500
+@enderror">
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Only Cambodian numbers allowed (0... or +855...)
+              </p>
               @error('phone')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -223,12 +237,25 @@
               <label for="experience" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Experience (Years) <span class="text-red-500">*</span>
               </label>
-              <input type="number" id="experience" name="experience" placeholder="Enter years of experience" required
+              <input type="number" id="experience" name="experience" placeholder="e.g., 5" required
                 value="{{ old('experience') }}" min="0"
+                x-on:input="
+                  if ($el.value > 60 && $el.value < 1900) $el.value = 60;
+                  if ($el.value > new Date().getFullYear()) $el.value = new Date().getFullYear() - 1980;
+                "
+                x-on:blur="
+                  if ($el.value >= 1900 && $el.value <= new Date().getFullYear()) { 
+                    $el.value = new Date().getFullYear() - $el.value; 
+                  }
+                "
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('experience') border-red-500 @enderror">
+                       border-slate-300 @error('experience')
+border-red-500
+@enderror">
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Maximum 60 years. Years like 1993 will
+                auto-convert.</p>
               @error('experience')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
