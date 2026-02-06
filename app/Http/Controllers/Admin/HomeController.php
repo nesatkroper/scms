@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Attendance;
+use App\Models\Classroom;
 use Carbon\Carbon;
 use App\Models\CourseOffering;
 use App\Models\Enrollment;
@@ -32,8 +33,8 @@ class HomeController extends BaseController
   {
     $students = User::role('student')->count();
     $teachers = User::role('teacher')->count();
-    // $course = CourseOffering::whereDate('join_end', '>=', Carbon::today())->count();
     $course = CourseOffering::active()->count();
+    $class = Classroom::count();
     $totalPaid = Fee::whereNotNull('payment_date')->sum('amount');
     $totalUnpaid = Fee::whereNull('payment_date')->sum('amount');
     $totalExpense = Expense::whereNotNull('approved_by')->sum('amount');
@@ -138,6 +139,7 @@ class HomeController extends BaseController
       'feesUnpaid' => $totalUnpaid,
       'recentStudents' => $recentEnrollments,
       'attendance' => $attendance,
+      'totalClassroom' => $class,
       'recentActivities' =>  Auth::user()->notifications()
         ->take(5)
         ->get()

@@ -78,6 +78,11 @@
             <i class="fas fa-book text-green-100 dark:text-green-200 text-xl"></i>
           </div>
         </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.classrooms') }}</p>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ number_format($totalClassroom, 0) }}
+          </h3>
+        </div>
 
       </div>
 
