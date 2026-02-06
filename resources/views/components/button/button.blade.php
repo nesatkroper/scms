@@ -1,7 +1,7 @@
 @props(['btnType' => 'primary', 'id' => null, 'type' => 'button'])
 
 @php
-  $base = 'cursor-pointer flex items-center justify-center rounded-md transition-colors';
+  $base = 'cursor-pointer flex items-center justify-center rounded-lg transition-colors';
 
   $variants = [
       'cancel' => 'p-2 border border-red-500 text-red-500 hover:text-white hover:bg-red-600',

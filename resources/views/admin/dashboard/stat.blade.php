@@ -31,7 +31,7 @@
 
             <!-- Dropdown menu -->
             <div
-              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.fees.index') }}"
@@ -87,7 +87,7 @@
 
             <!-- Dropdown menu -->
             <div
-              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.expenses.index') }}"
@@ -140,7 +140,7 @@
 
             <!-- Dropdown menu -->
             <div
-              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.students.index') }}"
@@ -195,7 +195,7 @@
 
             <!-- Dropdown menu -->
             <div
-              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
+              class="dropdown-menu hidden absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-gray-700 focus:outline-none"
               role="menu" aria-orientation="vertical" tabindex="-1">
               <div class="py-1" role="none">
                 <a href="{{ route('admin.course_offerings.index') }}"

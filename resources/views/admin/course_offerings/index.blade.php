@@ -27,7 +27,7 @@
 
     <form action="{{ route('admin.course_offerings.index') }}" method="GET">
       <div
-        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 
         @if (Auth::user()->hasPermissionTo('create_course-offering'))
           <a href="{{ route('admin.course_offerings.create') }}"
@@ -48,12 +48,12 @@
           </div>
 
           <button type="submit"
-            class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
+            class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.course_offerings.index') }}" id="resetSearch"
-            class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
+            class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors dark:text-white"
             style="margin-top: 0 !important" title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>

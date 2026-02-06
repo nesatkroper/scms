@@ -18,7 +18,7 @@
 
     <form action="{{ route('admin.subjects.index') }}" method="GET">
       <div
-        class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+        class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
         <a href="{{ route('admin.subjects.create') }}"
           class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <i class="fa-solid fa-plus me-2"></i>
@@ -34,12 +34,12 @@
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
           <button type="submit"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-lg transition-colors text-white"
             title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.subjects.index') }}" id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
             title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>

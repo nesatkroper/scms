@@ -27,7 +27,7 @@
             class="font-medium text-gray-700 dark:text-gray-300">{{ __('message.filter_by_role') }}</label>
           <select name="role" id="roleFilter"
             onchange="location.href='{{ route('admin.notifications.create') }}?role='+this.value"
-            class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
+            class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
             <option value="">-- {{ __('message.all') }} --</option>
             @foreach ($roles as $r)
               <option value="{{ $r }}" {{ $selectedRole == $r ? 'selected' : '' }}>{{ ucfirst($r) }}
@@ -42,7 +42,7 @@
               Offering</label>
             <select name="course_offering_id" id="courseFilter"
               onchange="location.href='{{ route('admin.notifications.create') }}?role={{ $selectedRole }}&course_offering_id='+this.value"
-              class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
+              class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
               <option value="">-- {{ __('message.all') }} --</option>
               @foreach ($courseOfferings as $co)
                 <option value="{{ $co->id }}" {{ $selectedCourseOffering == $co->id ? 'selected' : '' }}>
@@ -59,7 +59,7 @@
           <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('message.title') }} <span
               class="text-red-500">*</span></label>
           <input type="text" name="title" value="{{ old('title') }}"
-            class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
+            class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
             required>
         </div>
 
@@ -67,7 +67,7 @@
           <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('message.message') }} <span
               class="text-red-500">*</span></label>
           <textarea name="body" rows="5"
-            class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
+            class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
             required>{{ old('body') }}</textarea>
         </div>
       </div>
@@ -80,7 +80,7 @@
         </div>
 
         <button id="resetUserSearch"
-          class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+          class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors">
           <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
         </button>
       </div>
@@ -135,7 +135,7 @@
       </div>
 
       <div id="usersGrid"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 border p-3 rounded-md border-gray-300 dark:border-gray-700 max-h-96 overflow-y-auto h-full">
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 border p-3 rounded-lg border-gray-300 dark:border-gray-700 max-h-96 overflow-y-auto h-full">
 
         @forelse ($users as $u)
           <label for="user-{{ $u->id }}" class="flex items-center gap-2 user-item cursor-pointer">
@@ -153,12 +153,12 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t mt-4 border-gray-200 dark:border-gray-700">
         <a href="{{ url()->previous() }}"
-          class="p-2 border border-red-500 hover:bg-red-600 hover:text-white text-red-500 rounded-md flex items-center gap-2">
+          class="p-2 border border-red-500 hover:bg-red-600 hover:text-white text-red-500 rounded-lg flex items-center gap-2">
           {{ __('message.cancel') }}
         </a>
 
         <button type="submit"
-          class="p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+          class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
           {{ __('message.send_notification') }}
         </button>
       </div>

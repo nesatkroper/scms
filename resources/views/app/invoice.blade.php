@@ -166,7 +166,7 @@
             {{ $fee->transaction_id }}
           </p>
           {{-- @if ($fee->transaction_id)
-            <div class="mt-4 p-1 inline-block bg-white border border-gray-200 shadow-lg rounded-md">
+            <div class="mt-4 p-1 inline-block bg-white border border-gray-200 shadow-lg rounded-lg">
               <img
                 src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
                 alt="QR Code for Transaction {{ $fee->transaction_id }}" class="w-24 h-24 mx-auto" loading="lazy">
@@ -174,7 +174,7 @@
           @endif --}}
           @if ($fee->transaction_id)
             <div
-              class="mt-4 p-1 inline-block bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded-md">
+              class="mt-4 p-1 inline-block bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded-lg">
               <div class="relative w-24 h-24 mx-auto">
                 <img
                   src="https://tool.konkmeng.site/api/qrcode?size=500&fg=007A28&content={{ urlencode(route('invoice.check', ['transactionId' => $fee->transaction_id])) }}"
@@ -300,7 +300,7 @@
 
       <div class="mt-8 z-20">
         <h4 class="text-sm font-bold uppercase text-gray-700 mb-1">Remarks:</h4>
-        <p class="text-sm italic text-gray-700 bg-gray-100 p-3 rounded-md min-h-20">
+        <p class="text-sm italic text-gray-700 bg-gray-100 p-3 rounded-lg min-h-20">
           {{ $fee->remarks ?? 'Please ensure payment is made by the due date.' }}
         </p>
       </div>

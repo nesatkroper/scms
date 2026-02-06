@@ -14,14 +14,14 @@
           {{ __('message.role_name') }} <span class="text-red-500">*</span>
         </label>
         <input type="text" id="name" name="name" value="{{ old('name') }}"
-          class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
+          class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
           placeholder="{{ __('message.enter_role_name_example') }}" required maxlength="255">
         @error('name')
           <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
         @enderror
       </div>
 
-      <div class="mb-4 p-3 border rounded-md border-gray-300 dark:border-gray-700 bg-violet-50 dark:bg-slate-800/50">
+      <div class="mb-4 p-3 border rounded-lg border-gray-300 dark:border-gray-700 bg-violet-50 dark:bg-slate-800/50">
 
         <h3 class="text-lg font-bold text-gray-700 dark:text-gray-300 mb-3">
           {{ __('message.assign_permissions') }}
@@ -43,7 +43,7 @@
 
         {{-- *** START: Check All Option *** --}}
         <div
-          class="flex items-center space-x-2 mb-3 p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-md border border-indigo-300 dark:border-indigo-700">
+          class="flex items-center space-x-2 mb-3 p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg border border-indigo-300 dark:border-indigo-700">
           <input id="checkAllPermissions" type="checkbox"
             class="appearance-none size-4
                         border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
@@ -95,7 +95,7 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.roles.index') }}"
-          class="p-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2 transition-colors">
+          class="p-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-lg flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -104,7 +104,7 @@
           {{ __('message.cancel') }}
         </a>
         <button type="submit"
-          class="p-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
+          class="p-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

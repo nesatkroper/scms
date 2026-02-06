@@ -19,7 +19,7 @@
                            rounded-lg bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white
                            shadow-inner focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
                            transition-all duration-200"
-              placeholder="Enter new password">
+              placeholder="{{ __('message.enter_new_password') }}">
 
             <i class="fa-solid fa-lock absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
           </div>

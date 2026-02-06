@@ -15,7 +15,7 @@
               <h1 class="text-3xl md:text-5xl font-bold">Wat Damnak Learning Centre</h1>
               <p class="mt-3 max-w-2xl">A community place for learning, culture and togetherness.</p>
               <div class="mt-4">
-                <a href="#about" class="inline-block p-2 bg-indigo-600 rounded-md">Learn
+                <a href="#about" class="inline-block p-2 bg-indigo-600 rounded-lg">Learn
                   More</a>
               </div>
             </div>

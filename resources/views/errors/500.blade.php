@@ -34,7 +34,7 @@
       <!-- Action Buttons -->
       <div class="flex flex-col sm:flex-row gap-3 w-full">
         <a href="/"
-          class="flex-1 px-6 py-2 bg-school-primary text-white rounded-md hover:bg-school-secondary transition-all duration-300 flex items-center justify-center">
+          class="flex-1 px-6 py-2 bg-school-primary text-white rounded-lg hover:bg-school-secondary transition-all duration-300 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -43,7 +43,7 @@
           Back to Dashboard
         </a>
         <button onclick="window.history.back()"
-          class="flex-1 px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-all duration-300 flex items-center justify-center">
+          class="flex-1 px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />

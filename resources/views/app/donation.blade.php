@@ -84,8 +84,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Donation Form -->
           <div class="lg:col-span-2">
-            <div class="bg-white rounded-xl p-8 border border-slate-300 shadow-lg"
-              data-aos="fade-right">
+            <div class="bg-white rounded-xl p-8 border border-slate-300 shadow-lg" data-aos="fade-right">
               <h2 class="text-3xl font-bold mb-6 text-gray-800">Make a Donation</h2>
 
               <!-- Giving Options -->
@@ -172,50 +171,43 @@
 
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                    <input type="text" required
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="text" required class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="First Name">
                   </div>
 
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                    <input type="text" required
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="text" required class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="Last Name">
                   </div>
 
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-                    <input type="email" required
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="email" required class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="Email Address">
                   </div>
 
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                    <input type="tel"
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="tel" class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="Phone Number">
                   </div>
 
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Address *</label>
-                    <input type="text" required
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="text" required class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="Address 1">
                   </div>
 
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                    <input type="text" required
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="text" required class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="City">
                   </div>
 
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
-                    <input type="text" required
-                      class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
+                    <input type="text" required class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
                       placeholder="Postal Code">
                   </div>
                 </div>
@@ -251,15 +243,13 @@
                     <div>
                       <label class="block text-sm font-medium text-gray-700 mb-2">CVV *</label>
                       <input type="text" required
-                        class="form-input w-full px-4 py-3 rounded-lg border border-gray-300"
-                        placeholder="123">
+                        class="form-input w-full px-4 py-3 rounded-lg border border-gray-300" placeholder="123">
                     </div>
 
                     <div>
                       <label class="block text-sm font-medium text-gray-700 mb-2">Expiration *</label>
                       <div class="flex space-x-2">
-                        <select
-                          class="form-input flex-1 px-4 py-3 rounded-lg border border-gray-300">
+                        <select class="form-input flex-1 px-4 py-3 rounded-lg border border-gray-300">
                           <option value="01">01</option>
                           <option value="02">02</option>
                           <option value="03">03</option>
@@ -273,8 +263,7 @@
                           <option value="11">11</option>
                           <option value="12">12</option>
                         </select>
-                        <select
-                          class="form-input flex-1 px-4 py-3 rounded-lg border border-gray-300">
+                        <select class="form-input flex-1 px-4 py-3 rounded-lg border border-gray-300">
                           <option value="2024">2024</option>
                           <option value="2025">2025</option>
                           <option value="2026">2026</option>
@@ -319,13 +308,11 @@
 
           <!-- Contact Information -->
           <div class="lg:col-span-1">
-            <div
-              class="bg-white rounded-xl p-6 border border-slate-300 shadow-lg"
-              data-aos="fade-left">
+            <div class="bg-white rounded-xl p-6 border border-slate-300 shadow-lg" data-aos="fade-left">
               <h3 class="text-2xl font-bold mb-6 text-gray-800">Get In Touch</h3>
               <div class="space-y-4">
                 <div class="flex gap-3 items-start">
-                  <div class="p-2 rounded-md border border-gray-200">
+                  <div class="p-2 rounded-lg border border-gray-200">
                     <i class="fas fa-map-marker-alt text-blue-600"></i>
                   </div>
                   <div>
@@ -335,7 +322,7 @@
                 </div>
 
                 <div class="flex gap-3 items-start">
-                  <div class="p-2 rounded-md border border-gray-200">
+                  <div class="p-2 rounded-lg border border-gray-200">
                     <i class="fas fa-phone text-blue-600"></i>
                   </div>
                   <div>
@@ -347,19 +334,18 @@
                   </div>
                 </div>
                 <div class="flex gap-3 items-start">
-                  <div class="p-2 rounded-md border border-gray-200">
+                  <div class="p-2 rounded-lg border border-gray-200">
                     <i class="fas fa-envelope text-blue-600"></i>
                   </div>
                   <div>
                     <h4 class="font-bold text-gray-800">Email</h4>
                     <p class="text-gray-600">
-                      <a href="mailto:info@watdamnak.edu.kh"
-                        class="hover:text-blue-600">info@watdamnak.edu.kh</a>
+                      <a href="mailto:info@watdamnak.edu.kh" class="hover:text-blue-600">info@watdamnak.edu.kh</a>
                     </p>
                   </div>
                 </div>
                 <div class="flex gap-3 items-start">
-                  <div class="p-2 rounded-md border border-gray-200">
+                  <div class="p-2 rounded-lg border border-gray-200">
                     <i class="fas fa-clock text-blue-600"></i>
                   </div>
                   <div>

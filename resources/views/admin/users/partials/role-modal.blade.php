@@ -78,13 +78,13 @@
                           </span>
                           <span class="text-xs text-gray-500 dark:text-gray-400 block mt-1">
                             @if ($role->name === 'admin')
-                              Full system access
+                              {{ __('message.full_system_access') }}
                             @elseif($role->name === 'teacher')
-                              Teaching access
+                              {{ __('message.teaching_access') }}
                             @elseif($role->name === 'student')
-                              Learning access
+                              {{ __('message.learning_access') }}
                             @else
-                              Custom role permissions
+                              {{ __('message.custom_role_permissions') }}
                             @endif
                           </span>
                         </div>

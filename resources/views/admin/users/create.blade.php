@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Create User')
+@section('title', __('message.create_new_user'))
 @section('content')
 
   <div>
@@ -73,9 +73,9 @@
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.name') }} <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="name" name="name" placeholder="Enter name" required
+              <input type="text" id="name" name="name" placeholder="{{ __('message.enter_name') }}" required
                 value="{{ old('name') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('name') border-red-500 @enderror">
@@ -88,9 +88,9 @@
               <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.email') }} <span class="text-red-500">*</span>
               </label>
-              <input type="email" id="email" name="email" placeholder="Enter email" required
+              <input type="email" id="email" name="email" placeholder="{{ __('message.enter_email') }}" required
                 value="{{ old('email') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('email') border-red-500 @enderror">
@@ -103,8 +103,9 @@
               <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.password') }} <span class="text-red-500">*</span>
               </label>
-              <input type="password" id="password" name="password" placeholder="Enter password" required
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="password" id="password" name="password" placeholder="{{ __('message.enter_password') }}"
+                required
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('password') border-red-500 @enderror">
@@ -119,7 +120,7 @@
                 {{ __('message.user_role(s)') }} <span class="text-red-500">*</span>
               </label>
               <div
-                class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-md dark:border-gray-600 @error('type') border-red-500 @enderror">
+                class="flex flex-wrap gap-x-6 gap-y-2 p-3 border rounded-lg dark:border-gray-600 @error('type') border-red-500 @enderror">
                 @foreach ($roles as $role)
                   <label
                     class="flex items-center gap-3 p-2 rounded-lg border
@@ -152,9 +153,9 @@
               <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.phone_number') }}
               </label>
-              <input type="tel" id="phone" name="phone" placeholder="Enter phone number"
+              <input type="tel" id="phone" name="phone" placeholder="{{ __('message.enter_phone_number') }}"
                 value="{{ old('phone') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('phone') border-red-500 @enderror">
@@ -167,9 +168,9 @@
               <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.address') }}
               </label>
-              <input type="text" id="address" name="address" placeholder="Enter address"
+              <input type="text" id="address" name="address" placeholder="{{ __('message.enter_full_address') }}"
                 value="{{ old('address') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('address') border-red-500 @enderror">
@@ -182,9 +183,9 @@
               <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.date_of_birth') }}
               </label>
-              <input type="date" id="date_of_birth" name="date_of_birth" placeholder="Enter Date of Birth"
-                value="{{ old('date_of_birth') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="date" id="date_of_birth" name="date_of_birth"
+                placeholder="{{ __('message.enter_date_of_birth') }}" value="{{ old('date_of_birth') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('date_of_birth') border-red-500 @enderror">
@@ -198,7 +199,7 @@
                 {{ __('message.gender') }}
               </label>
               <select id="gender" name="gender"
-                class="form-control form-select w-full p-2 border rounded-md focus:outline focus:outline-white
+                class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">
@@ -216,9 +217,9 @@
               <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.nationality') }}
               </label>
-              <input type="text" id="nationality" name="nationality" placeholder="Enter nationality"
-                value="{{ old('nationality') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="text" id="nationality" name="nationality"
+                placeholder="{{ __('message.enter_nationality') }}" value="{{ old('nationality') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('nationality') border-red-500 @enderror">
@@ -231,9 +232,9 @@
               <label for="religion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.religion') }}
               </label>
-              <input type="text" id="religion" name="religion" placeholder="Enter religion"
+              <input type="text" id="religion" name="religion" placeholder="{{ __('message.enter_religion') }}"
                 value="{{ old('religion') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('religion') border-red-500 @enderror">
@@ -255,9 +256,9 @@
               <label for="joining_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.joining_date') }}
               </label>
-              <input type="date" id="joining_date" name="joining_date" placeholder="Enter Joining Date"
-                value="{{ old('joining_date') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="date" id="joining_date" name="joining_date"
+                placeholder="{{ __('message.enter_joining_date') }}" value="{{ old('joining_date') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('joining_date') border-red-500 @enderror">
@@ -270,9 +271,9 @@
               <label for="qualification" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.qualification') }}
               </label>
-              <input type="text" id="qualification" name="qualification" placeholder="e.g., Master of Science"
-                value="{{ old('qualification') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="text" id="qualification" name="qualification"
+                placeholder="{{ __('message.master_in_science_example') }}" value="{{ old('qualification') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('qualification') border-red-500 @enderror">
@@ -285,9 +286,10 @@
               <label for="experience" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.experience_(years)') }}
               </label>
-              <input type="number" id="experience" name="experience" placeholder="e.g., 5" min="0"
-                step="0.5" value="{{ old('experience') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="number" id="experience" name="experience"
+                placeholder="{{ __('message.experience_example') }}" min="0" step="0.5"
+                value="{{ old('experience') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('experience') border-red-500 @enderror">
@@ -300,9 +302,9 @@
               <label for="specialization" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.specialization') }}
               </label>
-              <input type="text" id="specialization" name="specialization" placeholder="e.g., Computer Science"
-                value="{{ old('specialization') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="text" id="specialization" name="specialization"
+                placeholder="{{ __('message.mathematics_example') }}" value="{{ old('specialization') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('specialization') border-red-500 @enderror">
@@ -315,9 +317,10 @@
               <label for="salary" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.salary') }}
               </label>
-              <input type="number" id="salary" name="salary" placeholder="Enter salary amount" min="0"
-                step="0.01" value="{{ old('salary') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="number" id="salary" name="salary"
+                placeholder="{{ __('message.enter_salary_amount') }}" min="0" step="0.01"
+                value="{{ old('salary') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('salary') border-red-500 @enderror">
@@ -331,7 +334,7 @@
                 {{ __('message.cv/resume') }}
               </label>
               <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx"
-                class="form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600">
+                class="form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600">
               @error('cv')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -349,9 +352,9 @@
               <label for="admission_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.admission_date') }}
               </label>
-              <input type="date" id="admission_date" name="admission_date" placeholder="Enter Admission Date"
-                value="{{ old('admission_date') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="date" id="admission_date" name="admission_date"
+                placeholder="{{ __('message.enter_admission_date') }}" value="{{ old('admission_date') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('admission_date') border-red-500 @enderror">
@@ -364,9 +367,9 @@
               <label for="occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.parent/guardian_occupation') }}
               </label>
-              <input type="text" id="occupation" name="occupation" placeholder="Enter Occupation"
-                value="{{ old('occupation') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="text" id="occupation" name="occupation"
+                placeholder="{{ __('message.enter_occupation') }}" value="{{ old('occupation') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('occupation') border-red-500 @enderror">
@@ -379,9 +382,9 @@
               <label for="company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.parent/guardian_company') }}
               </label>
-              <input type="text" id="company" name="company" placeholder="Enter Company Name"
-                value="{{ old('company') }}"
-                class="form-control w-full p-2 border rounded-md focus:outline focus:outline-white
+              <input type="text" id="company" name="company"
+                placeholder="{{ __('message.enter_company_name') }}" value="{{ old('company') }}"
+                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                        border-slate-300 @error('company') border-red-500 @enderror">
@@ -396,7 +399,7 @@
 
       <div class="mb-8 sm:mb-0 py-4 border-t flex justify-end space-x-3 border-slate-300 dark:border-slate-700">
         <a href="{{ route('admin.users.index') }}"
-          class="cursor-pointer flex items-center justify-center rounded-md transition-colors p-2 border border-red-500 text-red-500 dark:text-red-600 hover:text-white hover:bg-red-600 gap-2">
+          class="cursor-pointer flex items-center justify-center rounded-lg transition-colors p-2 border border-red-500 text-red-500 dark:text-red-600 hover:text-white hover:bg-red-600 gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -406,7 +409,7 @@
         </a>
 
         <button type="submit"
-          class="p-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">{{ __('message.create_user') }}
+          class="p-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">{{ __('message.create_user') }}
         </button>
       </div>
     </form>

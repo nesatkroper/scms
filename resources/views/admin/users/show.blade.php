@@ -1,7 +1,7 @@
 {{-- File: resources/views/admin/users/show.blade.php --}}
 
 @extends('layouts.admin')
-@section('title', 'User Details: ' . $user->name)
+@section('title', __('message.user_details') . ': ' . $user->name)
 @section('content')
 
   <div class="mb-6 flex justify-between items-center">
@@ -14,7 +14,7 @@
         <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
-      {{ $user->name }} Details
+      {{ $user->name }} {{ __('message.details') }}
       {{-- Display primary role for quick identification --}}
       @if ($user->roles->isNotEmpty())
         <span class="text-base font-semibold text-gray-500 dark:text-gray-400">
@@ -25,7 +25,7 @@
     <div class="flex space-x-3">
       @if (!Auth::user()->hasRole('admin'))
         <a href="{{ route('admin.users.edit', $user) }}"
-          class="p-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+          class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path
               d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-7.5 7.5a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0l.707-.707.707.707a1 1 0 001.414 0L17 7.414V17a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1h6.586l-1-1H4z" />
@@ -34,7 +34,7 @@
         </a>
       @endif
       <a href="{{ route('admin.users.index') }}"
-        class="p-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-indigo-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
+        class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-indigo-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
           <path
             d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2.586l3-3V17a1 1 0 001 1h2a1 1 0 001-1v-6.586l1.293-1.293a1 1 0 000-1.414l-7-7z" />
@@ -137,7 +137,7 @@
               @csrf
               @method('DELETE')
               <button type="submit"
-                class="w-full p-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
+                class="w-full p-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
                 {{ __('message.delete_user') }}
               </button>
             </form>
@@ -159,71 +159,73 @@
 
           {{-- General Info --}}
           @include('admin.components.detail-item', [
-              'label' => 'Gender',
-              'value' => $user->gender ?? __('message.n/a'),
+              'label' => __('message.gender'),
+              'value' => $user->gender ? __('message.' . strtolower($user->gender)) : __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Date of Birth',
+              'label' => __('message.date_of_birth'),
               'value' => $user->date_of_birth
                   ? \Carbon\Carbon::parse($user->date_of_birth)->format('M d, Y')
                   : __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Phone',
+              'label' => __('message.phone_number'),
               'value' => $user->phone ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Nationality',
+              'label' => __('message.nationality'),
               'value' => $user->nationality ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Religion',
+              'label' => __('message.religion'),
               'value' => $user->religion ?? __('message.n/a'),
           ])
 
           {{-- Role-Specific Dates --}}
           @if ($user->hasRole('student'))
             @include('admin.components.detail-item', [
-                'label' => 'Admission Date',
+                'label' => __('message.admission_date'),
                 'value' => $user->admission_date
                     ? \Carbon\Carbon::parse($user->admission_date)->format('M d, Y')
                     : __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
-                'label' => 'Parent Occupation',
+                'label' => __('message.parent_occupation'),
                 'value' =>
-                    ($user->occupation ?? __('message.n/a')) . ($user->company ? ' at ' . $user->company : ''),
+                    ($user->occupation ?? __('message.n/a')) .
+                    ($user->company ? ' ' . __('message.at') . ' ' . $user->company : ''),
             ])
           @else
             @include('admin.components.detail-item', [
-                'label' => 'Joining Date',
+                'label' => __('message.joining_date'),
                 'value' => $user->joining_date
                     ? \Carbon\Carbon::parse($user->joining_date)->format('M d, Y')
                     : __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
-                'label' => 'Occupation / Company',
+                'label' => __('message.occupation_/_company'),
                 'value' =>
-                    ($user->occupation ?? __('message.n/a')) . ($user->company ? ' at ' . $user->company : ''),
+                    ($user->occupation ?? __('message.n/a')) .
+                    ($user->company ? ' ' . __('message.at') . ' ' . $user->company : ''),
             ])
           @endif
 
           {{-- Teacher/Staff Specific Info --}}
           @if ($user->hasRole('teacher') || $user->hasRole('admin') || $user->hasRole('staff'))
             @include('admin.components.detail-item', [
-                'label' => 'Qualification',
+                'label' => __('message.qualification'),
                 'value' => $user->qualification ?? __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
-                'label' => 'Specialization',
+                'label' => __('message.specialization'),
                 'value' => $user->specialization ?? __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
-                'label' => 'Experience (Yrs)',
+                'label' => __('message.experience_(years)'),
                 'value' => $user->experience ?? __('message.n/a'),
             ])
             @include('admin.components.detail-item', [
-                'label' => 'Annual Salary',
+                'label' => __('message.annual_salary'),
                 'value' => $user->salary ? '$' . number_format($user->salary, 2) : __('message.n/a'),
             ])
             @if ($user->cv)

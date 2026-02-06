@@ -45,7 +45,7 @@
                   </div>
                   <input id="email" name="email" type="email" value="{{ old('email') }}"
                     placeholder="example@gmail.com"
-                    class="w-full pl-10 pr-3 py-2.5 border rounded-md focus:ring-1 focus:ring-indigo-500 focus:indigo--500 outline-none transition
+                    class="w-full pl-10 pr-3 py-2.5 border rounded-lg focus:ring-1 focus:ring-indigo-500 focus:indigo--500 outline-none transition
                                     @error('email') border-red-500 @else border-gray-300 dark:border-gray-700 @enderror
                                     bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 group-focus-within:border-indigo-600"
                     autocomplete="email" autofocus>
@@ -79,7 +79,7 @@
                     </svg>
                   </div>
                   <input id="password" name="password" type="password" placeholder="Enter your password"
-                    class="w-full pl-10 pr-10 py-2.5 border rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition
+                    class="w-full pl-10 pr-10 py-2.5 border rounded-lg focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition
                                     @error('password') border-red-500 @else border-gray-300 dark:border-gray-700 @enderror
                                     bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 group-focus-within:border-indigo-600"
                     autocomplete="current-password">
@@ -116,7 +116,7 @@
               </div>
 
               <button type="submit"
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-md font-medium transition duration-200 flex items-center justify-center gap-2">
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center gap-2">
                 Login
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform rotate-180" viewBox="0 0 20 20"
                   fill="currentColor">

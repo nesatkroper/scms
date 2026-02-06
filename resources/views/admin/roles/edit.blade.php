@@ -28,7 +28,7 @@
 
         {{-- Master Checkbox for All Permissions --}}
         <div
-          class="flex items-center space-x-2 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-md border border-indigo-200 dark:border-indigo-700">
+          class="flex items-center space-x-2 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-lg border border-indigo-200 dark:border-indigo-700">
           <input id="checkAllPermissions" type="checkbox"
             class="appearance-none size-4
                             border-2 border-gray-300 dark:border-gray-600 rounded-sm cursor-pointer transition-all duration-200 ease-in-out relative
@@ -43,7 +43,7 @@
         </div>
 
         <div id="permissionsGrid"
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 border p-2 rounded-md border-gray-300 dark:border-gray-700">
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 border p-2 rounded-lg border-gray-300 dark:border-gray-700">
 
           @php
             $rolePermissionIds = $role->permissions->pluck('id')->toArray();
@@ -81,7 +81,7 @@
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <a href="{{ route('admin.roles.index') }}"
-          class="p-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-md flex items-center gap-2">
+          class="p-2 cursor-pointer border border-red-500 hover:text-white hover:bg-red-600 text-red-500 rounded-lg flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -90,7 +90,7 @@
           {{ __('message.cancel') }}
         </a>
         <button type="submit"
-          class="p-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2">
+          class="p-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

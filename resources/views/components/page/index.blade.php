@@ -9,7 +9,7 @@
   </h3>
 
   <div
-    class="p-2 md:flex gap-2 justify-between items-center border rounded-md border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
+    class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
     @if ($btnCreate)
       <button id="openCreateModal" data-tooltip-target="tooltip" data-tooltip-placement="top"
         class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
@@ -26,7 +26,7 @@
     @endif
     @if ($btnLink)
       <a href="{{ $href }}"
-        class="p-2 cursor-pointer bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2 w-48"
+        class="p-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2 w-48"
         data-tooltip-target="tooltip" data-tooltip-placement="top">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd"
@@ -52,7 +52,7 @@
 
         @if ($showReset)
           <button id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
+            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors">
             <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
           </button>
         @endif
@@ -61,11 +61,11 @@
           <div
             class="switchtab flex items-center gap-1 dark:bg-gray-700 p-1 border border-gray-200 dark:border-gray-500 rounded-lg">
             <button id="listViewBtn"
-              class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-md transition-colors">
+              class="p-2 size-6 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-600 rounded-lg transition-colors">
               <i class="ri-list-check text-xl text-indigo-600 dark:text-indigo-300"></i>
             </button>
             <button id="cardViewBtn"
-              class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors">
+              class="p-2 size-6 flex items-center justify-center cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
               <i class="ri-grid-fill text-xl text-indigo-600 dark:text-indigo-300"></i>
             </button>
           </div>

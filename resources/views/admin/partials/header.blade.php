@@ -84,7 +84,7 @@
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95" id="notification-dropdown"
-        class="absolute right-0 z-50 mt-2 w-lg rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-700"
+        class="absolute right-0 z-50 mt-2 w-lg rounded-lg shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-700"
         role="menu" aria-orientation="vertical">
         <div class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 font-semibold">
           Notifications ({{ Auth::user()->unreadNotifications->count() }})

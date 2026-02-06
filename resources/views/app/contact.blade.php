@@ -15,7 +15,7 @@
     </div>
     <div class="container mx-auto mb-6 px-4">
       <div class="my-10 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-white rounded-md p-5 border border-slate-300" data-aos="fade">
+        <div class="bg-white rounded-lg p-5 border border-slate-300" data-aos="fade">
           <h3 class="text-2xl font-bold mb-6 text-gray-800">Send Us a Message</h3>
           <form class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
@@ -51,11 +51,11 @@
             </button>
           </form>
         </div>
-        <div class="bg-white rounded-md p-5 border border-slate-300" data-aos="fade">
+        <div class="bg-white rounded-lg p-5 border border-slate-300" data-aos="fade">
           <h3 class="text-2xl font-bold mb-6 text-gray-800">Get In Touch</h3>
           <div class="space-y-4">
             <div class="flex gap-3 items-start">
-              <div class="p-2 rounded-md border border-gray-200 text-indigo-600">
+              <div class="p-2 rounded-lg border border-gray-200 text-indigo-600">
                 <i class="fas fa-map-marker-alt text-blue-600"></i>
               </div>
               <div>
@@ -66,7 +66,7 @@
             </div>
 
             <div class="flex gap-3 items-start">
-              <div class="p-2 rounded-md border border-gray-200 text-indigo-600">
+              <div class="p-2 rounded-lg border border-gray-200 text-indigo-600">
                 <i class="fas fa-phone text-blue-600"></i>
               </div>
               <div>
@@ -77,7 +77,7 @@
               </div>
             </div>
             <div class="flex gap-3 items-start">
-              <div class="p-2 rounded-md border border-gray-200 text-indigo-600">
+              <div class="p-2 rounded-lg border border-gray-200 text-indigo-600">
                 <i class="fas fa-envelope text-blue-600"></i>
               </div>
               <div>
@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="flex gap-3 items-start">
-              <div class="p-2 rounded-md border border-gray-200 text-indigo-600">
+              <div class="p-2 rounded-lg border border-gray-200 text-indigo-600">
                 <i class="fas fa-clock text-blue-600"></i>
               </div>
               <div>

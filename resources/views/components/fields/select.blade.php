@@ -8,7 +8,7 @@
 
   @if (!$searchable)
     <select id="{{ $edit ? "edit_$name" : $name }}" name="{{ $name }}"
-      class="form-control form-select w-full p-2 border rounded-md focus:outline focus:outline-white
+      class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
                 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                 border-slate-300"
@@ -23,7 +23,7 @@
   @else
     {{-- Searchable select --}}
     <div data-name="{{ $name }}"
-      class="form-control custom-select relative w-full p-2 border rounded-md focus:outline focus:outline-white
+      class="form-control custom-select relative w-full p-2 border rounded-lg focus:outline focus:outline-white
                 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300">
 
@@ -39,7 +39,7 @@
 
         <div class="search-container p-2 sticky top-0 z-10 bg-white dark:bg-slate-700">
           <input type="search"
-            class="search-input text-sm w-full p-2 border rounded-md focus:outline focus:outline-white
+            class="search-input text-sm w-full p-2 border rounded-lg focus:outline focus:outline-white
                             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                             dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300"
             placeholder="Search {{ strtolower($label) }}...">
