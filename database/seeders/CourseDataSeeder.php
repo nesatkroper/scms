@@ -22,8 +22,9 @@ class CourseDataSeeder extends Seeder
       return;
     }
 
-    $this->command->info('Seeding 2 Classrooms...');
-    $classroomRoomNumbers = ['A145', 'B201'];
+    $this->command->info('Seeding 100 Classrooms...');
+    $classroomRoomNumbers = []; 
+    for ($i=1; $i<=100; $i++) $classroomRoomNumbers[] = 'R' . (100 + $i);
     $faker->unique(true);
     $classroomIds = [];
 
@@ -32,18 +33,35 @@ class CourseDataSeeder extends Seeder
         ['room_number' => $roomNumber],
         [
           'name' => 'Room ' . ($index + 100),
-          'capacity' => 25,
+          'capacity' => 50, // Capacity 50
         ]
       );
       $classroomIds[] = $classroom->id;
     }
 
 
-    $this->command->info('Seeding 3 Subjects...');
+    $this->command->info('Seeding 20 Subjects...');
     $subjectData = [
       ['name' => 'English Grammar', 'code' => 'ENGL102'],
       ['name' => 'World History', 'code' => 'HIST201'],
       ['name' => 'Microeconomics', 'code' => 'ECON305'],
+      ['name' => 'Mathematics I', 'code' => 'MATH101'],
+      ['name' => 'Physics I', 'code' => 'PHYS101'],
+      ['name' => 'Chemistry', 'code' => 'CHEM101'],
+      ['name' => 'Biology', 'code' => 'BIO101'],
+      ['name' => 'Computer Science', 'code' => 'CS101'],
+      ['name' => 'Art', 'code' => 'ART101'],
+      ['name' => 'Music', 'code' => 'MUS101'],
+      ['name' => 'Literature', 'code' => 'LIT102'],
+      ['name' => 'Geography', 'code' => 'GEOG201'],
+      ['name' => 'Psychology', 'code' => 'PSY305'],
+      ['name' => 'Sociology', 'code' => 'SOC101'],
+      ['name' => 'Philosophy', 'code' => 'PHIL101'],
+      ['name' => 'Political Science', 'code' => 'POLS101'],
+      ['name' => 'Economics', 'code' => 'ECON101'],
+      ['name' => 'Business', 'code' => 'BUS101'],
+      ['name' => 'Marketing', 'code' => 'MKT101'],
+      ['name' => 'Accounting', 'code' => 'ACC101'],
     ];
 
     $subjectIds = [];
@@ -59,9 +77,9 @@ class CourseDataSeeder extends Seeder
       $subjectIds[] = $subject->id;
     }
 
-    $this->command->info('Seeding 7 Course Offerings...');
+    $this->command->info('Seeding 100 Course Offerings...');
 
-    $totalOfferings = 7;
+    $totalOfferings = 100;
     $numSubjects = count($subjectIds);
     $subjectAssignments = [];
 

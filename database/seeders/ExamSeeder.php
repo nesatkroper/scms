@@ -13,11 +13,24 @@ class ExamSeeder extends Seeder
     $exams = [];
 
     foreach ($courseIds as $courseId) {
+      // Midterm
       $exams[] = [
         'type' => 'midterm',
         'course_offering_id' => $courseId,
         'description' => "Midterm exam for course offering {$courseId}",
-        'date' => now()->addWeeks(2),
+        'date' => now()->addWeeks(rand(4, 6)),
+        'total_marks' => 50,
+        'passing_marks' => 25,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ];
+
+       // Final
+       $exams[] = [
+        'type' => 'final',
+        'course_offering_id' => $courseId,
+        'description' => "Final exam for course offering {$courseId}",
+        'date' => now()->addWeeks(rand(10, 12)),
         'total_marks' => 100,
         'passing_marks' => 50,
         'created_at' => now(),

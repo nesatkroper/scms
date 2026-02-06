@@ -13,7 +13,7 @@ class ExpenseSeeder extends Seeder
     $userIds = DB::table('users')->pluck('id')->toArray();
     $expenses = [];
 
-    for ($i = 0; $i < 20; $i++) {
+    for ($i = 0; $i < 2500; $i++) {
       $expenses[] = [
         'title' => "Expense {$i}",
         'description' => "Description for expense {$i}",

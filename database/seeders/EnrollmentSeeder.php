@@ -38,7 +38,9 @@ class EnrollmentSeeder extends Seeder
         $enrollmentsToInsert[] = [
           'student_id' => $studentId,
           'course_offering_id' => $courseOfferingId,
-          'grade_final' => $faker->optional(0.7)->randomFloat(2, 60.00, 99.99),
+          'attendance_grade' => $faker->optional(0.7)->randomFloat(2, 5, 10),
+          'midterm_grade' => $faker->optional(0.7)->randomFloat(2, 20, 50),
+          'final_grade' => $faker->optional(0.7)->randomFloat(2, 20, 50),
           'status' => $faker->randomElement(['studying', 'completed']),
           'remarks' => $faker->optional(0.1)->sentence(),
           'created_at' => now(),
@@ -57,7 +59,9 @@ class EnrollmentSeeder extends Seeder
         $enrollmentsToInsert[] = [
           'student_id' => $studentId,
           'course_offering_id' => $courseOfferingId,
-          'grade_final' => $faker->optional(0.7)->randomFloat(2, 60.00, 99.99),
+          'attendance_grade' => $faker->optional(0.7)->randomFloat(2, 0, 10),
+          'midterm_grade' => $faker->optional(0.7)->randomFloat(2, 0, 50),
+          'final_grade' => $faker->optional(0.7)->randomFloat(2, 0, 50),
           'status' => $faker->randomElement(['studying', 'suspended', 'dropped', 'completed']),
           'remarks' => $faker->optional(0.1)->sentence(),
           'created_at' => now(),
