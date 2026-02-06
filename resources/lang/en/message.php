@@ -614,6 +614,13 @@ return [
   'curriculum_vitae_(pdf/doc)' => "Curriculum Vitae (PDF/DOC)",
   'create_teacher' => "Create Teacher",
   'phone_validation_note' => "Only Cambodian numbers allowed (0... or +855...)",
+  'confirm_deletion' => "Confirm Deletion",
+  'are_you_sure_to_delete' => "Are you sure you want to delete",
+  'this_action_cannot_be_undone' => "This action cannot be undone.",
+  'subjects_list' => "Subjects List",
+  'search' => "Search",
+  'reset_search' => "Reset Search",
+  'search_subjects' => "Search Subjects",
 ];
 
 
