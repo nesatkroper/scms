@@ -38,6 +38,10 @@ class ExamSeeder extends Seeder
       ];
     }
 
-    DB::table('exams')->insert($exams);
+    DB::table('exams')->upsert(
+        $exams, 
+        ['course_offering_id', 'type'], 
+        ['description', 'date', 'total_marks', 'passing_marks', 'updated_at']
+    );
   }
 }
