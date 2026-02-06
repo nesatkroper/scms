@@ -10,7 +10,8 @@ class DatabaseSeeder extends Seeder
   {
     $this->call([
       AttendanceSeeder::class,
-      FeeSeeder::class,
+      ExamSeeder::class,
+      ScoreSeeder::class,
     ]);
 
     // $this->call([
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
     //   ExamSeeder::class,
     //   FeeTypeSeeder::class,
     //   FeeSeeder::class,
+    // AttendanceSeeder::class,
     // ]);
   }
 }
