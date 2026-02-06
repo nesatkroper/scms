@@ -105,12 +105,21 @@
             class="px-2 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end">
 
             {{-- {{ __('message.edit') }} Button --}}
-            <a href="{{ route('admin.roles.edit', $role->id) }}"
-              class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="{{ __('message.edit') }} {{ __('message.role') }}">
-              <i class="fa-solid fa-pen-to-square me-2"></i>
-              {{ __('message.edit') }}
-            </a>
+            @if ($role->name !== 'admin')
+              <a href="{{ route('admin.roles.edit', $role->id) }}"
+                class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                title="{{ __('message.edit') }} {{ __('message.role') }}">
+                <i class="fa-solid fa-pen-to-square me-2"></i>
+                {{ __('message.edit') }}
+              </a>
+            @else
+              <button type="button" disabled
+                class="btn p-2 rounded-full flex items-center cursor-not-allowed text-gray-400 dark:text-gray-500 bg-gray-200 dark:bg-slate-600"
+                title="{{ __('message.edit') }} {{ __('message.role') }}">
+                <i class="fa-solid fa-pen-to-square me-2"></i>
+                {{ __('message.edit') }}
+              </button>
+            @endif
 
             {{-- Delete Form/Button --}}
             {{-- <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST"
