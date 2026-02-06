@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Attendance Register')
+@section('title', __('message.attendance_register'))
 
 @section('content')
   <div
@@ -42,7 +42,7 @@
            focus:ring-brand focus:border-brand
            shadow-xs placeholder:text-body
            dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            placeholder="Select date">
+            placeholder="{{ __('message.select_date') }}">
         </div>
 
         <button type="submit"

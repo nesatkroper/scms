@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Expense Categories List')
+@section('title', __('message.expense_categories_list'))
 
 @section('content')
 
@@ -36,7 +36,8 @@
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search categories..."
+            <input type="search" name="search" id="searchInput"
+              placeholder="{{ __('message.search_categories_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                     focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -87,7 +88,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Total Expenses Logged</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.total_expenses_logged') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   {{-- Changed $department->users_count to $category->expenses_count --}}
                   <span>{{ $category->expenses_count }}</span>

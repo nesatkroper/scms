@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Exams List')
+@section('title', __('message.exams_list'))
 @section('content')
 
   <div
@@ -48,7 +48,7 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="Search exams by name, course, or description..."
+              placeholder="{{ __('message.search_exams_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                     focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -91,7 +91,7 @@
               @if ($exam->scores->count())
                 <a href="{{ route('admin.scores.export', $exam->id) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Eport Result">
+                  title="{{ __('message.export_result') }}">
                   <span class="btn-content flex items-center justify-center">
                     <i class="fa-solid fa-download me-2"></i>
                     {{ __('message.eport') }}
@@ -166,7 +166,7 @@
 
             <a href="{{ route('admin.scores.index', ['exam_id' => $exam->id]) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-              title="Assign Score">
+              title="{{ __('message.assign_score') }}">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-book-atlas me-2"></i>
                 {{ __('message.assign_score') }}

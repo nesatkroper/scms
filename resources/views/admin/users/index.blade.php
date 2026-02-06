@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Users List')
+@section('title', __('message.users_list'))
 
 @section('content')
 
@@ -37,7 +37,8 @@
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search users by name, email, or phone..."
+            <input type="search" name="search" id="searchInput"
+              placeholder="{{ __('message.search_users_by_name_email_or_phone') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -46,12 +47,12 @@
 
           <button type="submit"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
-            title="Search">
+            title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.users.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
-            style="margin-top: 0 !important" title="Reset Search">
+            style="margin-top: 0 !important" title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
@@ -96,27 +97,27 @@
           <div class="p-4 space-y-3 flex-grow">
             {{-- Contact --}}
             <x-info.item
-              name="{{ $user->phone ?? __('message.n/a') }} | {{ Str::limit($user->address, 30) ?? 'No Address' }}"
-              icon="fa-solid fa-phone text-xl" label="Contact" labelcolor="text-gray-500 dark:text-gray-400"
-              color="" position="left" />
+              name="{{ $user->phone ?? __('message.n/a') }} | {{ Str::limit($user->address, 30) ?? __('message.no_address') }}"
+              icon="fa-solid fa-phone text-xl" label="{{ __('message.contact') }}"
+              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             {{-- Qualification (Teacher Only) --}}
             @if ($user->hasRole('teacher'))
               <x-info.item
-                name="{{ $user->qualification ?? 'Not Specified' }} | {{ $user->specialization ?? __('message.n/a') }}"
-                icon="fa-solid fa-graduation-cap text-xl" label="Qualification / Specialization"
+                name="{{ $user->qualification ?? __('message.not_specified') }} | {{ $user->specialization ?? __('message.n/a') }}"
+                icon="fa-solid fa-graduation-cap text-xl" label="{{ __('message.qualification_/_specialization') }}"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             @endif
             {{-- Admission & DOB (Student Only) --}}
             @if ($user->hasRole('student'))
               <x-info.item
                 name="Admission: {{ $user->admission_date ? $user->admission_date->format('Y-m-d') : __('message.n/a') }} | DOB: {{ $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : __('message.n/a') }}"
-                icon="fa-solid fa-calendar-alt text-xl" label="Admission / DOB"
+                icon="fa-solid fa-calendar-alt text-xl" label="{{ __('message.admission_/_dob') }}"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             @endif
             {{-- Joined & Gender --}}
             <x-info.item
               name="{{ $user->joining_date ? $user->joining_date->format('Y-m-d') : __('message.n/a') }} | {{ $user->gender ?? __('message.n/a') }}"
-              icon="fa-solid fa-calendar-check text-xl" label="Joined / Gender"
+              icon="fa-solid fa-calendar-check text-xl" label="{{ __('message.joined_/_gender') }}"
               labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
           </div>
 
@@ -132,7 +133,7 @@
                 <button type="button" @click="openPasswordModal({{ $user->id }})"
                   class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors">
                   <i class="fa-solid fa-unlock-keyhole me-2"></i>
-                  Password
+                  {{ __('message.password') }}
                 </button>
               @endif
 
@@ -140,7 +141,7 @@
                 <button type="button" @click="openRoleModal({{ $user->id }})"
                   class="btn p-2 rounded-full flex items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors">
                   <i class="fa-solid fa-fingerprint me-2"></i>
-                  Role
+                  {{ __('message.role') }}
                 </button>
               @endif
             </div>

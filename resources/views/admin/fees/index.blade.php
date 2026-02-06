@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Fees List')
+@section('title', __('message.fees_list'))
 
 @section('content')
 
@@ -47,7 +47,7 @@
 
           <div class="relative w-full flex-grow">
             <input type="search" name="search" id="searchInput"
-              placeholder="Search by remarks, amount, student name/email..."
+              placeholder="{{ __('message.search_fees_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -61,7 +61,7 @@
 
           <a href="{{ route('admin.fees.index', ['fee_type_id' => $feeTypeId]) }}" id="resetSearch"
             class="p-2  flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-lg transition-colors"
-            title="Reset Filters">
+            title="{{ __('message.reset_filters') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
@@ -163,7 +163,7 @@
               <a href="#"
                 @click.prevent="openModal({{ $fee }}, {{ $fee->feeType }},{{ $fee->student }}, '{{ route('admin.fees.pay', $fee->id) }}')"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-                title="Add Payment">
+                title="{{ __('message.add_payment') }}">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-money-bill-transfer me-2"></i>
                   {{ __('message.payment') }}

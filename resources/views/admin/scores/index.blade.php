@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Score Register')
+@section('title', __('message.score_register'))
 
 @section('content')
   <div

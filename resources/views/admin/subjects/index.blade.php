@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Subjects List')
+@section('title', __('message.subjects_list'))
 @section('content')
   <div
     class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
@@ -13,7 +13,7 @@
           d="M9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
         <path d="M6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
       </svg>
-      Subjects List
+      {{ __('message.subjects_list') }}
     </h3>
 
     <form action="{{ route('admin.subjects.index') }}" method="GET">
@@ -22,12 +22,12 @@
         <a href="{{ route('admin.subjects.create') }}"
           class="text-nowrap p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer transition-colors flex items-center gap-2">
           <i class="fa-solid fa-plus me-2"></i>
-          Create New
+          {{ __('message.create_new') }}
         </a>
 
         <div class="flex items-center mt-3 md:mt-0 gap-2  min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search subjects..."
+            <input type="search" name="search" id="searchInput" placeholder="{{ __('message.search_subjects') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                         focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -35,12 +35,12 @@
           </div>
           <button type="submit"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
-            title="Search">
+            title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.subjects.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors"
-            title="Reset Search">
+            title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
@@ -59,7 +59,7 @@
                 <div>
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $subject->name }}
                     @if ($subject->deleted_at)
-                      <strong class="text-red-400"> (Disabled)</strong>
+                      <strong class="text-red-400"> {{ __('message.disabled_label') }}</strong>
                     @endif
                   </h4>
                 </div>
@@ -76,7 +76,7 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Code</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.code') }}</p>
                   <p class="font-medium text-gray-700 dark:text-gray-200">
                     <span class="text-sm text-indigo-600 dark:text-indigo-400">{{ $subject->code }}</span>
                   </p>
@@ -92,7 +92,7 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Credit Hours</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.credit_hours') }}</p>
                   <p class="font-medium text-gray-700 dark:text-gray-200">
                     <span>{{ $subject->credit_hours }}</span>
                   </p>
@@ -150,8 +150,10 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Subjects Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">Create your first subject to get started</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_subjects_found') }}
+            </h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.create_your_first_subject_to_get_started') }}</p>
           </div>
         </div>
       @endif

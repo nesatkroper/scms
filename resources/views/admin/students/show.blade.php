@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Student Details: ' . $student->name)
+@section('title', __('message.student_details') . ': ' . $student->name)
 @section('content')
 
   <div class="mb-6 flex justify-between items-center">
@@ -8,7 +8,7 @@
         class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
         <i class="ri-user-2-fill text-2xl"></i>
       </div>
-      {{ $student->name }} Details
+      {{ $student->name }} {{ __('message.details') }}
     </h3>
     <div class="flex space-x-3">
       @if (Auth::user()->hasPermissionTo('update_student'))
@@ -22,7 +22,7 @@
       <a href="{{ route('admin.students.index') }}"
         class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
         <i class="fa-regular fa-house"></i>
-        Back to List
+        {{ __('message.back_to_list') }}
       </a>
     </div>
   </div>
@@ -40,14 +40,15 @@
           <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $student->email }}</p>
 
           <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Student Metrics</h3>
+            <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('message.student_metrics') }}
+            </h3>
             <div class="flex justify-around text-center">
               {{-- Ensure your controller loaded counts (e.g., withCount(['fees', 'attendances'])) --}}
               <div class="p-2">
                 <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                   {{ $student->fees_count ?? 0 }}
                 </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">Fee Records</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.fee_records') }}</div>
               </div>
               <div class="p-2">
                 <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
@@ -59,7 +60,7 @@
                 <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                   {{ $student->scores_count ?? 0 }}
                 </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">Scores</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.score') }}</div>
               </div>
             </div>
           </div>
@@ -68,9 +69,9 @@
         @if (Auth::user()->hasPermissionTo('delete_student'))
           <div
             class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-6">
-            <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
+            <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">{{ __('message.danger_zone') }}</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-              Permanently delete this student and all associated records. This action cannot be undone.
+              {{ __('message.permanently_delete_this_student_desc') }}
             </p>
             <form action="{{ route('admin.students.destroy', $student) }}" method="POST"
               onsubmit="return confirm('Are you sure you want to delete this student: {{ $student->name }}?');">
@@ -78,7 +79,7 @@
               @method('DELETE')
               <button type="submit"
                 class="w-full p-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
-                Delete Student
+                {{ __('message.delete_student') }}
               </button>
             </form>
           </div>
@@ -92,7 +93,8 @@
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
         <div class="flex justify-between items-center pb-2">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Personal & Contact Info</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.personal_&_contact_info') }}
+          </h3>
 
         </div>
 
@@ -101,51 +103,52 @@
 
           {{-- General Info --}}
           @include('admin.components.detail-item', [
-              'label' => 'Gender',
+              'label' => __('message.gender'),
               'value' => $student->gender ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Date of Birth',
+              'label' => __('message.date_of_birth'),
               'value' => $student->date_of_birth
                   ? \Carbon\Carbon::parse($student->date_of_birth)->format('M d, Y')
                   : __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Phone',
+              'label' => __('message.phone_number'),
               'value' => $student->phone ?? __('message.n/a'),
           ])
 
           {{-- Admission/Status Info --}}
           @include('admin.components.detail-item', [
-              'label' => 'Admission Date',
+              'label' => __('message.admission_date'),
               'value' => $student->admission_date
                   ? \Carbon\Carbon::parse($student->admission_date)->format('M d, Y')
                   : __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Account Created',
+              'label' => __('message.account_created'),
               'value' => \Carbon\Carbon::parse($student->created_at)->format('M d, Y'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Nationality',
+              'label' => __('message.nationality'),
               'value' => $student->nationality ?? __('message.n/a'),
           ])
           @include('admin.components.detail-item', [
-              'label' => 'Religion',
+              'label' => __('message.religion'),
               'value' => $student->religion ?? __('message.n/a'),
           ])
 
           {{-- Work/Address Info (Full Width) --}}
           @if ($student->occupation || $student->company)
             <div class="sm:col-span-2">
-              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Occupation / Company</dt>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.occupation_/_company') }}
+              </dt>
               <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
                 @if ($student->occupation)
                   {{ $student->occupation }}
                 @endif
                 @if ($student->company)
                   @if ($student->occupation)
-                    at
+                    {{ __('message.at') }}
                   @endif
                   {{ $student->company }}
                 @endif
@@ -156,7 +159,7 @@
             </div>
           @endif
           <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Address</dt>
+            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.address') }}</dt>
             <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $student->address ?? __('message.n/a') }}</dd>
           </div>
         </dl>
@@ -166,12 +169,12 @@
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
 
         <div class="flex justify-between items-center pb-2">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Assigned Courses</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.assigned_courses') }}</h3>
 
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Details about courses this student is currently enrolled in.
+          {{ __('message.details_about_courses_this_student_is_currently_enrolled_in') }}
         </p>
         @if ($student->courseOfferings->isEmpty())
           <p class="text-gray-500 dark:text-gray-400">This student is not currently enrolled in any courses.</p>
@@ -182,23 +185,23 @@
                 <tr>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Subject
+                    {{ __('message.subject') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Teacher
+                    {{ __('message.teacher') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
+                    {{ __('message.status') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Final Grade
+                    {{ __('message.final_grade') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Schedule
+                    {{ __('message.schedule') }}
                   </th>
                 </tr>
               </thead>
@@ -209,7 +212,7 @@
                       {{ $offering->subject->name ?? __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $offering->teacher->name ?? 'Unassigned' }}
+                      {{ $offering->teacher->name ?? __('message.unassigned') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {{ $offering?->enrollment?->status ? ucfirst(str_replace('_', ' ', $offering->enrollment->status)) : __('message.n/a') }}
@@ -237,16 +240,16 @@
       {{-- Fee Records (Invoices/Bills) --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <div class="flex justify-between items-center pb-2">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Fee Records</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.fee_records') }}</h3>
 
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          List of fees billed to this student, including payment status.
+          {{ __('message.list_of_fees_billed_to_this_student_including_payment_status') }}
         </p>
 
         @if ($student->fees->isEmpty())
-          <p class="text-gray-500 dark:text-gray-400">No fee records found for this student.</p>
+          <p class="text-gray-500 dark:text-gray-400">{{ __('message.no_fee_records_found_for_this_student') }}</p>
         @else
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -254,23 +257,23 @@
                 <tr>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Type
+                    {{ __('message.type') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Amount
+                    {{ __('message.amount') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Paid Amount
+                    {{ __('message.paid_amount') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Due Date
+                    {{ __('message.due_date') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
+                    {{ __('message.status') }}
                   </th>
                 </tr>
               </thead>
@@ -282,7 +285,7 @@
                   @endphp
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {{ $fee->feeType->name ?? 'General Fee' }}
+                      {{ $fee->feeType->name ?? __('message.general_fee') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       ${{ number_format($fee->amount, 2) }}
@@ -314,16 +317,16 @@
       {{-- Exam Scores --}}
       <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
         <div class="flex justify-between items-center pb-2">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Exam Scores</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.exam_scores') }}</h3>
 
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Individual scores recorded for exams in various courses.
+          {{ __('message.individual_scores_recorded_for_exams_in_various_courses') }}
         </p>
 
         @if ($student->scores->isEmpty())
-          <p class="text-gray-500 dark:text-gray-400">No exam scores found for this student.</p>
+          <p class="text-gray-500 dark:text-gray-400">{{ __('message.no_exam_scores_found_for_this_student') }}</p>
         @else
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -331,23 +334,23 @@
                 <tr>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Exam Type / Course
+                    {{ __('message.exam_type_/_course') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Date
+                    {{ __('message.date') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Score / Total
+                    {{ __('message.score_/_total') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Grade
+                    {{ __('message.grade') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Remarks
+                    {{ __('message.remarks') }}
                   </th>
                 </tr>
               </thead>
@@ -357,7 +360,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                       <span class="font-bold">{{ $score->exam->type ?? __('message.n/a') }}</span>
                       <p class="text-xs text-gray-500 dark:text-gray-400">
-                        ({{ $score->exam->courseOffering->subject->name ?? 'Unknown Course' }})
+                        ({{ $score->exam->courseOffering->subject->name ?? __('message.unknown_course') }})
                       </p>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -394,16 +397,18 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
       <div
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
         <div class="flex justify-between items-center pb-2">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.attendance') }} Log</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.attendance') }}
+            {{ __('message.log') }}</h3>
 
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          Daily attendance status for enrolled courses.
+          {{ __('message.daily_attendance_status_for_enrolled_courses') }}
         </p>
 
         @if ($student->attendances->isEmpty())
-          <p class="text-gray-500 dark:text-gray-400">No attendance records found for this student.</p>
+          <p class="text-gray-500 dark:text-gray-400">{{ __('message.no_attendance_records_found_for_this_student') }}
+          </p>
         @else
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -411,19 +416,19 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
                 <tr>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Date
+                    {{ __('message.date') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Course
+                    {{ __('message.course') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
+                    {{ __('message.status') }}
                   </th>
                   <th
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Remarks
+                    {{ __('message.remarks') }}
                   </th>
                 </tr>
               </thead>

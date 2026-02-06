@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Create New Student')
+@section('title', __('message.create_new_student'))
 @section('content')
 
   <div>
@@ -57,10 +57,10 @@
             {{-- Name --}}
             <div class="mb-2">
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Full Name <span class="text-red-500">*</span>
+                {{ __('message.full_name') }} <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="name" name="name" placeholder="Enter full name" required
-                value="{{ old('name') }}"
+              <input type="text" id="name" name="name" placeholder="{{ __('message.enter_full_name') }}"
+                required value="{{ old('name') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
@@ -73,10 +73,10 @@
             {{-- Email --}}
             <div class="mb-2">
               <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Email Address <span class="text-red-500">*</span>
+                {{ __('message.email_address') }} <span class="text-red-500">*</span>
               </label>
-              <input type="email" id="email" name="email" placeholder="Enter email address" required
-                value="{{ old('email') }}"
+              <input type="email" id="email" name="email" placeholder="{{ __('message.enter_email_address') }}"
+                required value="{{ old('email') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
@@ -89,9 +89,9 @@
             {{-- Phone --}}
             <div class="mb-2">
               <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Phone Number (Optional)
+                {{ __('message.phone_number_(optional)') }}
               </label>
-              <input type="tel" id="phone" name="phone" placeholder="Enter phone number"
+              <input type="tel" id="phone" name="phone" placeholder="{{ __('message.enter_phone_number') }}"
                 value="{{ old('phone') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
@@ -105,14 +105,14 @@
             {{-- Gender --}}
             <div class="mb-2">
               <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Gender (Optional)
+                {{ __('message.gender_(optional)') }}
               </label>
               <select id="gender" name="gender"
                 class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">
-                <option value="">Select Gender</option>
+                <option value="">{{ __('message.select_gender') }}</option>
                 @foreach (['male' => 'Male', 'female' => 'Female', 'monk' => 'Monk', 'other' => 'Other'] as $key => $label)
                   <option value="{{ $key }}" @selected(old('gender') == $key)>{{ $label }}
                   </option>
@@ -126,7 +126,7 @@
             {{-- Date of Birth --}}
             <div class="mb-2">
               <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Date of Birth (Optional)
+                {{ __('message.date_of_birth_(optional)') }}
               </label>
 
               <div class="relative">
@@ -139,7 +139,8 @@
                 </div>
 
                 <input type="text" id="date_of_birth" name="date_of_birth" datepicker datepicker-format="yyyy-mm-dd"
-                  placeholder="Enter Date of Birth" value="{{ old('date_of_birth') }}" min="{{ now()->toDateString() }}"
+                  placeholder="{{ __('message.enter_date_of_birth') }}" value="{{ old('date_of_birth') }}"
+                  min="{{ now()->toDateString() }}"
                   class="block w-full ps-9 pe-3 py-2.5
              bg-neutral-secondary-medium border border-default-medium
              text-heading text-sm rounded-base
@@ -172,7 +173,7 @@
             {{-- Admission Date --}}
             <div class="mb-2">
               <label for="admission_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Admission Date (Optional)
+                {{ __('message.admission_date_(optional)') }}
               </label>
 
               <div class="relative">
@@ -194,7 +195,7 @@
              shadow-xs placeholder:text-body
              dark:bg-gray-700 dark:border-gray-600 dark:text-white
              @error('admission_date') border-red-500 @enderror"
-                  placeholder="Enter Admission Date">
+                  placeholder="{{ __('message.enter_admission_date') }}">
               </div>
 
               @error('admission_date')
@@ -219,10 +220,10 @@
             {{-- Nationality --}}
             <div class="mb-2">
               <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Nationality (Optional)
+                {{ __('message.nationality_(optional)') }}
               </label>
-              <input type="text" id="nationality" name="nationality" placeholder="Enter nationality"
-                value="{{ old('nationality') }}"
+              <input type="text" id="nationality" name="nationality"
+                placeholder="{{ __('message.enter_nationality') }}" value="{{ old('nationality') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
@@ -235,9 +236,9 @@
             {{-- Religion --}}
             <div class="mb-2">
               <label for="religion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Religion (Optional)
+                {{ __('message.religion_(optional)') }}
               </label>
-              <input type="text" id="religion" name="religion" placeholder="Enter religion"
+              <input type="text" id="religion" name="religion" placeholder="{{ __('message.enter_religion') }}"
                 value="{{ old('religion') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
@@ -251,10 +252,10 @@
             {{-- Occupation --}}
             <div class="mb-2">
               <label for="occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Occupation (Optional)
+                {{ __('message.occupation_(optional)') }}
               </label>
-              <input type="text" id="occupation" name="occupation" placeholder="Student/Working/Other"
-                value="{{ old('occupation') }}"
+              <input type="text" id="occupation" name="occupation"
+                placeholder="{{ __('message.student/working/other') }}" value="{{ old('occupation') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
@@ -267,10 +268,10 @@
             {{-- Company --}}
             <div class="mb-2">
               <label for="company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Company (if applicable)
+                {{ __('message.company_(if_applicable)') }}
               </label>
-              <input type="text" id="company" name="company" placeholder="Enter company name"
-                value="{{ old('company') }}"
+              <input type="text" id="company" name="company"
+                placeholder="{{ __('message.enter_company_name') }}" value="{{ old('company') }}"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
@@ -283,9 +284,9 @@
             {{-- Address (Full Width) --}}
             <div class="mb-2 col-span-1 md:col-span-2 lg:col-span-3">
               <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Address (Optional)
+                {{ __('message.address_(optional)') }}
               </label>
-              <textarea id="address" name="address" placeholder="Enter full address" rows="2"
+              <textarea id="address" name="address" placeholder="{{ __('message.enter_full_address') }}" rows="2"
                 class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
                        focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                        dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
@@ -300,9 +301,7 @@
         {{-- Note about Default Password --}}
         <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            Note: The password for the new student will be automatically set to <code
-              class="font-mono text-sm font-semibold text-indigo-600 dark:text-indigo-400">password</code>.
-            The student can change this after logging in.
+            {{ __('message.note_password_default') }}
           </p>
         </div>
 
@@ -322,7 +321,7 @@
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                   clip-rule="evenodd" />
               </svg>
-              Create Student
+              {{ __('message.create_student') }}
             </span>
           </button>
         </div>

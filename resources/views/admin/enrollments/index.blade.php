@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admission Register')
+@section('title', __('message.admission_register'))
 @section('content')
 
   <div
@@ -8,7 +8,7 @@
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-clipboard-user"></i>
       @if ($courseOffering)
-        Admission Register for {{ $courseOffering->subject?->name }} -
+        {{ __('message.admission_register_for') }} {{ $courseOffering->subject?->name }} -
         {{ $courseOffering->teacher->name }} -
         {{ $courseOffering->classroom?->name }}
         ({{ $courseOffering->time_slot }}) -
@@ -56,7 +56,7 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="Search by student name, course, or status..."
+              placeholder="{{ __('message.search_enrollments_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">

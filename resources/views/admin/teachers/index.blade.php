@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Teachers List')
+@section('title', __('message.teachers_list'))
 @section('content')
 
   <div
@@ -10,7 +10,7 @@
         class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
         <i class="ri-user-2-fill text-2xl"></i>
       </div>
-      Teachers List
+      {{ __('message.teachers_list') }}
     </h3>
 
     @if (session('success'))
@@ -31,12 +31,13 @@
         <a href="{{ route('admin.teachers.create') }}"
           class="text-nowrap p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2">
           <i class="fa-solid fa-plus me-2"></i>
-          Enroll New Teacher
+          {{ __('message.enroll_new_teacher') }}
         </a>
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search teachers by name or email..."
+            <input type="search" name="search" id="searchInput"
+              placeholder="{{ __('message.search_teachers_by_name_or_email') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -45,12 +46,12 @@
 
           <button type="submit"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 rounded-lg transition-colors text-white"
-            title="Search">
+            title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.teachers.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-indigo-900 dark:hover:bg-indigo-600 rounded-lg transition-colors dark:text-white"
-            style="margin-top: 0 !important" title="Reset Search">
+            style="margin-top: 0 !important" title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
@@ -88,7 +89,7 @@
                 <i class="fa-solid fa-at size-5"></i>
               </div>
               <div class="truncate">
-                <p class="text-xs text-gray-500 dark:text-gray-400">Email</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.email') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200 truncate" title="{{ $teacher->email }}">
                   {{ $teacher->email }}
                 </p>
@@ -101,7 +102,7 @@
                 <i class="fa-solid fa-calendar-alt size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Joining Date</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.joining_date') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-cyan-600 dark:text-cyan-400">
                     {{ $teacher->joining_date ? $teacher->joining_date->format('M d, Y') : __('message.n/a') }}
@@ -116,10 +117,10 @@
                 <i class="fa-solid fa-book size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Courses Teaching</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.courses_teaching') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-blue-600 dark:text-blue-400">{{ $teacher->teachingCourses->count() }}</span>
-                  Courses
+                  {{ __('message.courses') }}
                 </p>
               </div>
             </div>
@@ -130,10 +131,10 @@
                 <i class="fa-solid fa-check-circle size-5"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Professional Experience</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.professional_experience') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-green-600 dark:text-green-400">{{ $teacher->experience ?? 0 }}</span>
-                  Years
+                  {{ __('message.years') }}
                 </p>
               </div>
             </div>
@@ -147,7 +148,7 @@
               {{-- View Details Button --}}
               <a href="{{ route('admin.teachers.show', $teacher->id) }}"
                 class="btn p-2 rounded-full flex items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                title="View Teacher Details">
+                title="{{ __('message.view_teacher_details') }}">
                 <i class="fa-regular fa-eye me-2"></i>
                 {{ __('message.details') }}
               </a>
@@ -189,8 +190,10 @@
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">No Teachers Found</h3>
-            <p class="mt-1 text-sm text-red-500 dark:text-red-500">There are no teachers matching your criteria.</p>
+            <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_teachers_found') }}
+            </h3>
+            <p class="mt-1 text-sm text-red-500 dark:text-red-500">
+              {{ __('message.there_are_no_teachers_matching_your_criteria') }}</p>
           </div>
         </div>
       @endforelse

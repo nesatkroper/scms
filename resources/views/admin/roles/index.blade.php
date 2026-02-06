@@ -34,7 +34,7 @@
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput" placeholder="Search roles by name..."
+            <input type="search" name="search" id="searchInput" placeholder="{{ __('message.search_roles_by_name') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
@@ -107,7 +107,7 @@
             {{-- {{ __('message.edit') }} Button --}}
             <a href="{{ route('admin.roles.edit', $role->id) }}"
               class="btn p-2 rounded-full flex items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
-              title="{{ __('message.edit') }} Role">
+              title="{{ __('message.edit') }} {{ __('message.role') }}">
               <i class="fa-solid fa-pen-to-square me-2"></i>
               {{ __('message.edit') }}
             </a>

@@ -349,6 +349,28 @@ return [
   'financial_summary' => "Financial Summary",
   'total_expenses_in_report_period' => "Total Expenses in Report Period",
   'no_expenses_found_matching_the_criteria' => "No expenses found matching the criteria.",
+  'there_are_no_students_matching_your_criteria' => "There are no students matching your criteria.",
+  'student_metrics' => "Student Metrics",
+  'permanently_delete_this_student_desc' => "Permanently delete this student and all associated records. This action cannot be undone.",
+  'delete_student' => "Delete Student",
+  'account_created' => "Account Created",
+  'occupation_/_company' => "Occupation / Company",
+  'at' => "at",
+  'assigned_courses' => "Assigned Courses",
+  'details_about_courses_this_student_is_currently_enrolled_in' => "Details about courses this student is currently enrolled in.",
+  'unassigned' => "Unassigned",
+  'list_of_fees_billed_to_this_student_including_payment_status' => "List of fees billed to this student, including payment status.",
+  'no_fee_records_found_for_this_student' => "No fee records found for this student.",
+  'type' => "Type",
+  'paid_amount' => "Paid Amount",
+  'general_fee' => "General Fee",
+  'individual_scores_recorded_for_exams_in_various_courses' => "Individual scores recorded for exams in various courses.",
+  'no_exam_scores_found_for_this_student' => "No exam scores found for this student.",
+  'exam_type_/_course' => "Exam Type / Course",
+  'score_/_total' => "Score / Total",
+  'unknown_course' => "Unknown Course",
+  'daily_attendance_status_for_enrolled_courses' => "Daily attendance status for enrolled courses.",
+  'no_attendance_records_found_for_this_student' => "No attendance records found for this student.",
   'total_income' => "Total Income",
   'income_breakdown' => "Income Breakdown",
   'no_income_records_found' => "No income records found.",
@@ -481,39 +503,106 @@ return [
   'this_user_is_not_currently_enrolled_in_any_courses' => "This user is not currently enrolled in any courses.",
   'no_exam_scores_found_for_this_user' => "No exam scores found for this user.",
   'no_attendance_records_found_for_this_user' => "No attendance records found for this user.",
+  'students_list' => "Students List",
+
+  'teachers_list' => "Teachers List",
+  'enroll_new_teacher' => "Enroll New Teacher",
+  'search_teachers_by_name_or_email' => "Search teachers by name or email...",
+  'courses_teaching' => "Courses Teaching",
+  'professional_experience' => "Professional Experience",
+  'years' => "Years",
+  'view_teacher_details' => "View Teacher Details",
+  'no_teachers_found' => "No Teachers Found",
+  'there_are_no_teachers_matching_your_criteria' => "There are no teachers matching your criteria.",
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  'search_users_by_name_email_or_phone' => "Search users by name, email, or phone...",
+  'contact' => "Contact",
+  'no_address' => "No Address",
+  'not_specified' => "Not Specified",
+  'qualification_/_specialization' => "Qualification / Specialization",
+  'admission_/_dob' => "Admission / DOB",
+  'joined_/_gender' => "Joined / Gender",
+  'role' => "Role",
+  'search_subjects' => "Search subjects...",
+  'disabled_label' => "(Disabled)",
+  'code' => "Code",
+  'no_subjects_found' => "No Subjects Found",
+  'create_your_first_subject_to_get_started' => "Create your first subject to get started",
+  'full_label' => "(Full)",
+  'subject_deleted' => "Subject Deleted",
+  'location_tbd' => "Location TBD",
+  'seats' => "Seats",
+  'search_roles_by_name' => "Search roles by name...",
+  'enter_name' => "Enter name",
+  'search_permissions' => "Search permissions ...",
+  'enter_role_name_example' => "Enter role name (e.g., administrator, teacher, student)",
+  'exams_list' => "Exams List",
+  'search_exams_placeholder' => "Search exams by name, course, or description...",
+  'export_result' => "Export Result",
+  'attendance_register' => "Attendance Register",
+  'select_date' => "Select date",
+  'score_register' => "Score Register",
+  'fees_list' => "Fees List",
+  'search_fees_placeholder' => "Search by remarks, amount, student name/email...",
+  'reset_filters' => "Reset Filters",
+  'add_payment' => "Add Payment",
+  'search_categories_placeholder' => "Search categories...",
+  'expense_ledger' => "Expense Ledger",
+  'search_expenses_placeholder_detail' => "Search by title, description, or category...",
+  'system_reports' => "System Reports",
+  'select_start_date' => "Select start date",
+  'select_end_date' => "Select end date",
+  'admission_register' => "Admission Register",
+  'admission_register_for' => "Admission Register for",
+  'search_enrollments_placeholder' => "Search by student name, course, or status...",
+  'student_deleted' => "Student Deleted",
+  'course_deleted' => "Course Deleted",
+  'admission' => "Admission",
+  'search_students_placeholder_simple' => "Search students...",
+  'active' => "Active",
+  'unknown' => "Unknown",
+  'system' => "System",
+  'full_name' => "Full Name",
+  'email_address' => "Email Address",
+  'phone_number_(optional)' => "Phone Number (Optional)",
+  'gender_(optional)' => "Gender (Optional)",
+  'select_gender' => "Select Gender",
+  'date_of_birth_(optional)' => "Date of Birth (Optional)",
+  'admission_date_(optional)' => "Admission Date (Optional)",
+  'nationality_(optional)' => "Nationality (Optional)",
+  'religion_(optional)' => "Religion (Optional)",
+  'occupation_(optional)' => "Occupation (Optional)",
+  'company_(if_applicable)' => "Company (if applicable)",
+  'address_(optional)' => "Address (Optional)",
+  'create_student' => "Create Student",
+  'enter_full_name' => "Enter full name",
+  'enter_email_address' => "Enter email address",
+  'enter_phone_number' => "Enter phone number",
+  'enter_date_of_birth' => "Enter Date of Birth",
+  'enter_admission_date' => "Enter Admission Date",
+  'enter_nationality' => "Enter nationality",
+  'enter_religion' => "Enter religion",
+  'student/working/other' => "Student/Working/Other",
+  'enter_company_name' => "Enter company name",
+  'enter_full_address' => "Enter full address",
+  'note_password_default' => "Note: The password for the new student will be automatically set to password. The student can change this after logging in.",
+  'back_to_teachers_list' => "Back to Teachers List",
+  'professional_information' => "Professional Information",
+  'joining_date' => "Joining Date",
+  'enter_joining_date' => "Enter Joining Date",
+  'qualification' => "Qualification",
+  'master_in_science_example' => "e.g. Master in Science",
+  'experience_(years)' => "Experience (Years)",
+  'experience_example' => "e.g., 5",
+  'experience_auto_convert_note' => "Maximum 60 years. Years like 1993 will auto-convert.",
+  'specialization' => "Specialization",
+  'mathematics_example' => "e.g. Mathematics",
+  'monthly_salary_($)' => "Monthly Salary ($)",
+  'curriculum_vitae_(pdf/doc)' => "Curriculum Vitae (PDF/DOC)",
+  'create_teacher' => "Create Teacher",
+  'phone_validation_note' => "Only Cambodian numbers allowed (0... or +855...)",
 ];
+
+
+

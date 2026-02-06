@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Course Offerings List')
+@section('title', __('message.course_offerings_list'))
 
 @section('content')
 
@@ -49,12 +49,12 @@
 
           <button type="submit"
             class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
-            title="Search">
+            title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.course_offerings.index') }}" id="resetSearch"
             class="p-2 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
-            style="margin-top: 0 !important" title="Reset Search">
+            style="margin-top: 0 !important" title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
@@ -72,15 +72,15 @@
               <div class="flex justify-between items-start gap-2">
                 <div>
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
-                    {{ $offering->subject->name ?? 'Subject Deleted' }}
+                    {{ $offering->subject->name ?? __('message.subject_deleted') }}
                     <span class="text-sm @if ($offering?->students->count() >= $offering->classroom?->capacity) dark:text-red-500 @endif">
                       @if ($offering->students->count() >= $offering->classroom?->capacity)
-                        (Full)
+                        {{ __('message.full_label') }}
                       @endif
 
                       @if (\Carbon\Carbon::parse($offering->join_end)->isPast())
                         <strong class="text-red-400 uppercase">
-                          ( This Course Has Completed)
+                          {{ __('message.this_course_has_completed') }}
                         </strong>
                       @endif
                     </span>
@@ -122,19 +122,20 @@
           </div>
 
           <div class="p-4 space-y-3">
-            <x-info.item name="{{ $offering->teacher->name ?? 'Unassigned' }}" icon="fa-solid fa-user-tie text-xl"
-              label="Teacher" labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
+            <x-info.item name="{{ $offering->teacher->name ?? __('message.unassigned') }}"
+              icon="fa-solid fa-user-tie text-xl" label="{{ __('message.teacher') }}"
+              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
 
             <x-info.item
-              name="{{ $offering->classroom->name ?? 'Location TBD' }}
+              name="{{ $offering->classroom->name ?? __('message.location_tbd') }}
                                         ({{ $offering->classroom?->capacity }}
-                                        Seats)"
-              icon="ri-door-open-fill text-xl" label="Classroom" labelcolor="text-gray-500 dark:text-gray-400"
-              color="" position="left" />
+                                        {{ __('message.seats') }})"
+              icon="ri-door-open-fill text-xl" label="{{ __('message.classroom') }}"
+              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             <x-info.item
               name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
-              icon="ri-currency-fill text-xl" label="Fee" labelcolor="text-gray-500 dark:text-gray-400" color=""
-              position="left" />
+              icon="ri-currency-fill text-xl" label="{{ __('message.fee') }}"
+              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
           </div>
 
           <div
@@ -156,7 +157,7 @@
               @if (Auth::user()->hasPermissionTo('view_exam'))
                 <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
                   class=" btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                  title="Exam">
+                  title="{{ __('message.exam') }}">
                   <i class="ri-contract-fill text-lg me-2"></i>
                   {{ __('message.exam') }}
                 </a>
@@ -187,7 +188,7 @@
             <div class="flex">
               <a href="{{ route('admin.course_offerings.show', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
-                title="Show Details">
+                title="{{ __('message.view_details') }}">
                 <i class="fa-regular fa-eye me-2"></i>
                 {{ __('message.detail') }}
               </a>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'System Reports')
+@section('title', __('message.system_reports'))
 
 @section('content')
 
@@ -71,7 +71,7 @@
                shadow-xs placeholder:text-body
                dark:bg-gray-700 dark:border-gray-600 dark:text-white
                @error('start_date') border-red-500 @enderror"
-                placeholder="Select start date">
+                placeholder="{{ __('message.select_start_date') }}">
             </div>
 
             @error('start_date')
@@ -104,7 +104,7 @@
                shadow-xs placeholder:text-body
                dark:bg-gray-700 dark:border-gray-600 dark:text-white
                @error('end_date') border-red-500 @enderror"
-                placeholder="Select end date">
+                placeholder="{{ __('message.select_end_date') }}">
             </div>
 
             @error('end_date')

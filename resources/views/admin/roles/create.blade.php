@@ -15,7 +15,7 @@
         </label>
         <input type="text" id="name" name="name" value="{{ old('name') }}"
           class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
-          placeholder="Enter role name (e.g., administrator, teacher, student)" required maxlength="255">
+          placeholder="{{ __('message.enter_role_name_example') }}" required maxlength="255">
         @error('name')
           <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
         @enderror
@@ -29,7 +29,7 @@
 
         <div class="flex items-center gap-2 mb-4">
           <div class="relative w-full sm:max-w-xs">
-            <input type="search" id="searchInput" placeholder="Search permissions..."
+            <input type="search" id="searchInput" placeholder="{{ __('message.search_permissions') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
             <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>

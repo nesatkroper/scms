@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Classrooms List')
+@section('title', __('message.classrooms_list'))
 
 @section('content')
 
@@ -52,12 +52,12 @@
 
           <button type="submit"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 rounded-md transition-colors text-white"
-            title="Search">
+            title="{{ __('message.search') }}">
             <i class="fas fa-search text-white text-xs"></i>
           </button>
           <a href="{{ route('admin.classrooms.index') }}" id="resetSearch"
             class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors dark:text-white"
-            style="margin-top: 0 !important" title="Reset Search">
+            style="margin-top: 0 !important" title="{{ __('message.reset_search') }}">
             <i class="fa-solid fa-arrow-rotate-right"></i>
           </a>
         </div>
@@ -75,7 +75,7 @@
               <div>
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">{{ $classroom->name }}
                   @if ($classroom->deleted_at)
-                    <strong class="text-red-400"> (Disabled)</strong>
+                    <strong class="text-red-400"> {{ __('message.disabled_label') }}</strong>
                   @endif
                 </h4>
               </div>
@@ -118,7 +118,7 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.capacity') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
                   <span class="text-sm text-indigo-600 dark:text-indigo-400">{{ $classroom->capacity }}
-                    Seats</span>
+                    {{ __('message.seats') }}</span>
                 </p>
               </div>
             </div>
