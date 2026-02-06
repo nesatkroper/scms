@@ -138,6 +138,8 @@ class FeeController extends BaseController
       'payment_method'  => 'required|string|max:50',
       'transaction_id'  => 'nullable|string|max:100',
       'payment_date'    => 'nullable|date',
+      'remarks'         => 'nullable|string',
+      'amount'          => 'nullable|numeric',
     ]);
 
     $validated['payment_date'] = $validated['payment_date'] ?? now();
