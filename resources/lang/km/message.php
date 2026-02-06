@@ -489,6 +489,7 @@ return [
   'enter_name' => "បញ្ចូលឈ្មោះ",
   'search_permissions' => "ស្វែងរកសិទ្ធិ...",
   'enter_role_name_example' => "បញ្ចូលឈ្មោះតួនាទី (ឧទាហរណ៍៖ អភិបាល, គ្រូបង្រៀន, សិស្ស)",
+  'role_name' => "ឈ្មោះតួនាទី",
   'exams_list' => "បញ្ជីការប្រឡង",
   'search_exams_placeholder' => "ស្វែងរកការប្រឡងតាមឈ្មោះ វគ្គសិក្សា ឬការពិពណ៌នា...",
   'export_result' => "នាំចេញលទ្ធផល",

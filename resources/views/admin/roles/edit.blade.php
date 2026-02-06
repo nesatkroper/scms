@@ -7,31 +7,18 @@
     <form action="{{ route('admin.roles.update', $role->id) }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg">
       @csrf
       @method('PUT')
-      <label for="name" class="block  font-medium text-gray-700 dark:text-gray-300 mb-1">
-        {{ __('message.name') }} <span class="text-red-500">*</span>
-      </label>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-20 border p-2 rounded-md border-gray-300 bg-violet-50 dark:bg-slate-800 dark:border-gray-700">
-        <div class="">
-          <input type="text" id="name" name="name" value="{{ old('name', $role->name) }}"
-            class="w-full p-2 border rounded-md focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white dark:focus:bg-slate-700 border-slate-300 dark:border-slate-500"
-            placeholder="{{ __('message.enter_name') }}" required maxlength="255">
-          @error('name')
-            <p class="mt-1  text-red-600 dark:text-red-500">{{ $message }}</p>
-          @enderror
-        </div>
-        <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
-          <div class="relative w-full">
-            <input type="search" id="searchInput" placeholder="{{ __('message.search_permissions') }}"
-              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 rounded-lg pl-8 pr-2 py-1.5
+
+      <div class="flex items-center my-5 md:mt-0 gap-2 min-w-2/3">
+        <div class="relative w-full">
+          <input type="search" id="searchInput" placeholder="{{ __('message.search_permissions') }}"
+            class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 rounded-lg pl-8 pr-2 py-1.5
             focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100">
-            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 "></i>
-          </div>
-          <button id="resetSearch"
-            class="p-2 h-8 w-8 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-md transition-colors">
-            <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
-          </button>
+          <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 "></i>
         </div>
+        <button id="resetSearch"
+          class="p-2 size-10 flex items-center justify-center cursor-pointer bg-indigo-100 dark:bg-indigo-700 hover:bg-gray-300 dark:hover:bg-indigo-600 rounded-full transition-colors">
+          <i class="ri-reset-right-line text-indigo-600 dark:text-gray-300 text-xl"></i>
+        </button>
       </div>
 
       <div class="mb-4">
