@@ -20,12 +20,12 @@
     {{-- Previous --}}
     @if ($paginator->onFirstPage())
       <span
-        class="flex items-center justify-center size-10 text-sm rounded-lg bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed">
+        class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm rounded-lg bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed">
         <i class="fa-solid fa-arrow-left"></i>
       </span>
     @else
       <a href="{{ $paginator->previousPageUrl() }}"
-        class="flex items-center justify-center size-10 text-sm rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 transition
+        class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 transition
                   dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
         <i class="fa-solid fa-arrow-left"></i>
       </a>
@@ -34,7 +34,7 @@
     {{-- First page --}}
     @if ($start > 1)
       <a href="{{ $paginator->url(1) }}"
-        class="flex items-center justify-center size-10 text-sm font-bold rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 transition
+        class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm font-bold rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 transition
                       dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
         1
       </a>
@@ -45,12 +45,12 @@
     @for ($page = $start; $page <= $end; $page++)
       @if ($page == $current)
         <span
-          class="flex items-center justify-center size-10 text-sm font-bold rounded-lg bg-indigo-600 text-white shadow">
+          class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm font-bold rounded-lg bg-indigo-600 text-white shadow">
           {{ $page }}
         </span>
       @else
         <a href="{{ $paginator->url($page) }}"
-          class="flex items-center justify-center size-10 text-sm font-bold rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 transition
+          class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm font-bold rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 transition
                       dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
           {{ $page }}
         </a>
@@ -61,7 +61,7 @@
     @if ($end < $last)
       <span class="px-2 text-gray-400 font-bold">…</span>
       <a href="{{ $paginator->url($last) }}"
-        class="flex items-center justify-center size-10 text-sm font-bold rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 transition
+        class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm font-bold rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 transition
                       dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
         {{ $last }}
       </a>
@@ -70,13 +70,13 @@
     {{-- Next --}}
     @if ($paginator->hasMorePages())
       <a href="{{ $paginator->nextPageUrl() }}"
-        class="flex items-center justify-center size-10 text-sm rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 transition
+        class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 transition
                   dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
         <i class="fa-solid fa-arrow-right"></i>
       </a>
     @else
       <span
-        class="flex items-center justify-center size-10 text-sm rounded-lg bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed">
+        class="flex items-center justify-center min-w-[40px] h-10 px-2 text-sm rounded-lg bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed">
         <i class="fa-solid fa-arrow-right"></i>
       </span>
     @endif

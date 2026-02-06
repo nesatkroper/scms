@@ -50,7 +50,8 @@
         <div class="flex justify-between">
           <div>
             <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.total_students') }}</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalStudents }}</h3>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ number_format($totalStudents, 0) }}
+            </h3>
           </div>
           <div class="h-12 w-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
             <i class="fas fa-user-graduate text-blue-100 dark:text-blue-200 text-xl"></i>
@@ -58,7 +59,7 @@
         </div>
         <div>
           <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.total_teachers') }}</p>
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $totalTeachers }}</h3>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ number_format($totalTeachers, 0) }}</h3>
         </div>
 
       </div>
@@ -70,7 +71,8 @@
         <div class="flex justify-between">
           <div>
             <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('message.active_course') }}</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ $activeCourse }}</h3>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">{{ number_format($activeCourse, 0) }}
+            </h3>
           </div>
           <div class="h-12 w-12 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
             <i class="fas fa-book text-green-100 dark:text-green-200 text-xl"></i>
