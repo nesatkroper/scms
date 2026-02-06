@@ -1,6 +1,6 @@
 <!-- {{ __('message.attendance') }} Chart -->
 <div
-  class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-sm">
+  class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-[2rem] p-5 border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
   <div class="flex justify-between items-center mb-6">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ __('message.attendance_overview') }}</h3>
 
