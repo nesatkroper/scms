@@ -121,7 +121,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.courses_enrolled') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  <span class="text-sm text-blue-600 dark:text-blue-400">{{ $student->courseOfferings->count() }}</span>
+                  <span class="text-sm text-blue-600 dark:text-blue-400">{{ $student->course_offerings_count }}</span>
                   {{ __('message.courses') }}
                 </p>
               </div>

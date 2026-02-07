@@ -64,18 +64,14 @@ class StudentController extends BaseController
     $user = Auth::user();
 
     $query = User::role('student')
+      ->select(['id', 'name', 'email', 'avatar', 'admission_date', 'created_at', 'deleted_at'])
       ->withCount(['fees', 'attendances', 'courseOfferings'])
       ->orderBy('created_at', 'desc');
 
     if ($user->hasRole('teacher')) {
-      $courseIds = $user->teachingCourses()->pluck('id')->toArray();
-
-      $studentIds = \App\Models\Enrollment::whereIn('course_offering_id', $courseIds)
-        ->pluck('student_id')
-        ->unique()
-        ->toArray();
-
-      $query->whereIn('id', $studentIds);
+      $query->whereHas('enrollments.courseOffering', function ($q) use ($user) {
+        $q->where('teacher_id', $user->id);
+      });
     }
 
     if ($search = $request->input('search')) {

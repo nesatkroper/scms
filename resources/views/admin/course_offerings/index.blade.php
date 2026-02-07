@@ -73,8 +73,8 @@
                 <div>
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
                     {{ $offering->subject->name ?? __('message.subject_deleted') }}
-                    <span class="text-sm @if ($offering?->students->count() >= $offering->classroom?->capacity) dark:text-red-500 @endif">
-                      @if ($offering->students->count() >= $offering->classroom?->capacity)
+                    <span class="text-sm @if ($offering->students_count >= $offering->classroom?->capacity) dark:text-red-500 @endif">
+                      @if ($offering->students_count >= $offering->classroom?->capacity)
                         {{ __('message.full_label') }}
                       @endif
 
@@ -100,7 +100,7 @@
             </div>
 
             <div class="flex flex-col items-end">
-              @if ($offering->attendances->count())
+              @if ($offering->attendances_count)
                 <a title="{{ __('message.export_score') }}"
                   href="{{ route('admin.attendances.export', $offering->id) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
@@ -165,7 +165,7 @@
 
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                 @if (Auth::user()->hasPermissionTo('view_enrollment'))
-                  @if ($offering->students->count() >= $offering->classroom?->capacity)
+                  @if ($offering->students_count >= $offering->classroom?->capacity)
                     <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
                       class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
                       title="Admission Register">

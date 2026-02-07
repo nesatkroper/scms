@@ -34,13 +34,14 @@ class CourseOfferingController extends BaseController
     $user = Auth::user();
 
     $courseOfferings = CourseOffering::withTrashed()
-      // ->with(['subject', 'teacher', 'classroom', 'attendances', 'exams'])
       ->with([
-        'subject' => fn($q) => $q->withTrashed(),
-        'teacher' => fn($q) => $q->withTrashed(),
-        'classroom' => fn($q) => $q->withTrashed(),
+        'subject' => fn($q) => $q->withTrashed()->select('id', 'name'),
+        'teacher' => fn($q) => $q->withTrashed()->select('id', 'name'),
+        'classroom' => fn($q) => $q->withTrashed()->select('id', 'name', 'capacity'),
+      ])
+      ->withCount([
+        'students' => fn($q) => $q->withTrashed(),
         'attendances' => fn($q) => $q->withTrashed(),
-        'exams' => fn($q) => $q->withTrashed(),
       ])
 
       ->when($user->hasRole('teacher'), function ($query) use ($user) {
