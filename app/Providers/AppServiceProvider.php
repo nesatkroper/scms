@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\StudentObserver;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -18,5 +20,8 @@ class AppServiceProvider extends ServiceProvider
     }
 
     Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+    
+    // Register StudentObserver for automatic cache invalidation
+    User::observe(StudentObserver::class);
   }
 }
