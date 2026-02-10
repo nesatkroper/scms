@@ -40,11 +40,11 @@ class UserSeeder extends Seeder
 
 
     // Scaled up as requested
-    $this->command->info('Seeding 20 Teachers...');
-    $this->seedTeachers($faker, 20);
+    $this->command->info('Seeding 10 Teachers...');
+    $this->seedTeachers($faker, 10);
 
-    $this->command->info('Seeding 50000 Students...');
-    $this->seedStudents($faker, 50000);
+    $this->command->info('Seeding 500 Students...');
+    $this->seedStudents($faker, 500);
   }
 
   protected function seedTeachers($faker, int $count): void
