@@ -21,7 +21,9 @@ return new class extends Migration
         // Add indexes to fees table for count queries
         Schema::table('fees', function (Blueprint $table) {
             $table->index('student_id', 'idx_fees_student_id');
-            $table->index(['student_id', 'status'], 'idx_fees_student_status');
+            $table->index('enrollment_id', 'idx_fees_enrollment_id');
+            $table->index('fee_type_id', 'idx_fees_fee_type_id');
+            $table->index('due_date', 'idx_fees_due_date');
         });
 
         // Add indexes to attendances table for count queries
@@ -56,7 +58,9 @@ return new class extends Migration
 
         Schema::table('fees', function (Blueprint $table) {
             $table->dropIndex('idx_fees_student_id');
-            $table->dropIndex('idx_fees_student_status');
+            $table->dropIndex('idx_fees_enrollment_id');
+            $table->dropIndex('idx_fees_fee_type_id');
+            $table->dropIndex('idx_fees_due_date');
         });
 
         Schema::table('attendances', function (Blueprint $table) {
