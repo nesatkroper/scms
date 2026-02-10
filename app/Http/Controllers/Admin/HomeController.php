@@ -109,19 +109,19 @@ class HomeController extends BaseController
     $attendance = [
       'daily' => [
         'labels' => $dailyLabels,
-        'attending' => $dailyCounts['attending'],
+        'attendance' => $dailyCounts['attending'],
         'absence' => $dailyCounts['absence'],
         'permission' => $dailyCounts['permission'],
       ],
       'weekly' => [
         'labels' => $weeklyLabels,
-        'attending' => $weeklyCounts['attending'],
+        'attendance' => $weeklyCounts['attending'],
         'absence' => $weeklyCounts['absence'],
         'permission' => $weeklyCounts['permission'],
       ],
       'monthly' => [
         'labels' => $monthlyLabels,
-        'attending' => $monthlyCounts['attending'],
+        'attendance' => $monthlyCounts['attending'],
         'absence' => $monthlyCounts['absence'],
         'permission' => $monthlyCounts['permission'],
       ],

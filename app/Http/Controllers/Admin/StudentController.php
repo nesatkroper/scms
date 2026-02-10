@@ -40,78 +40,58 @@ class StudentController extends BaseController
     $search = $request->input('search');
     $perPage = $request->input('per_page', 20);
 
-    // Create cache key based on user role, search, and page
-    $cacheKey = sprintf(
-      'students_index_%s_%s_page_%s_per_%s',
-      $user->id,
-      md5($search ?? 'all'),
-      $request->input('page', 1),
-      $perPage
-    );
+    $query = User::role('student')
+      ->select(['id', 'name', 'email', 'avatar', 'admission_date', 'created_at', 'deleted_at'])
+      // Optimize withCount using subqueries
+      ->selectRaw('(SELECT COUNT(*) FROM fees WHERE fees.student_id = users.id) as fees_count')
+      ->selectRaw('(SELECT COUNT(*) FROM attendances WHERE attendances.student_id = users.id) as attendances_count')
+      ->selectRaw('(SELECT COUNT(*) FROM enrollments WHERE enrollments.student_id = users.id) as course_offerings_count')
+      ->orderBy('created_at', 'desc');
 
-    // Cache for 5 minutes
-    $students = cache()->remember($cacheKey, 300, function () use ($user, $search, $perPage) {
-      $query = User::role('student')
-        ->select(['id', 'name', 'email', 'avatar', 'admission_date', 'created_at', 'deleted_at'])
-        // Optimize withCount using subqueries
-        ->selectRaw('(SELECT COUNT(*) FROM fees WHERE fees.student_id = users.id) as fees_count')
-        ->selectRaw('(SELECT COUNT(*) FROM attendances WHERE attendances.student_id = users.id) as attendances_count')
-        ->selectRaw('(SELECT COUNT(*) FROM enrollments WHERE enrollments.student_id = users.id) as course_offerings_count')
-        ->orderBy('created_at', 'desc');
+    if ($user->hasRole('teacher')) {
+      $query->whereHas('enrollments.courseOffering', function ($q) use ($user) {
+        $q->where('teacher_id', $user->id);
+      });
+    }
 
-      if ($user->hasRole('teacher')) {
-        $query->whereHas('enrollments.courseOffering', function ($q) use ($user) {
-          $q->where('teacher_id', $user->id);
-        });
-      }
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+        $q->where('name', 'like', "%{$search}%")
+          ->orWhere('email', 'like', "%{$search}%");
+      });
+    }
 
-      if ($search) {
-        $query->where(function ($q) use ($search) {
-          $q->where('name', 'like', "%{$search}%")
-            ->orWhere('email', 'like', "%{$search}%");
-        });
-      }
-
-      return $query->paginate($perPage);
-    });
+    $students = $query->paginate($perPage);
 
     return view('admin.students.index', compact('students'));
   }
 
   public function feesIndex(User $student)
   {
-    $cacheKey = "student_{$student->id}_fees_page_" . request('page', 1);
-    
-    $fees = cache()->remember($cacheKey, 300, function () use ($student) {
-      return $student->fees()
-        ->with(['feeType:id,name', 'creator:id,name'])
-        ->select(['id', 'student_id', 'fee_type_id', 'amount', 'status', 'due_date', 'created_by_id', 'created_at'])
-        ->latest()
-        ->paginate(15);
-    });
+    $fees = $student->fees()
+      ->with(['feeType:id,name', 'creator:id,name'])
+      ->select(['id', 'student_id', 'fee_type_id', 'amount', 'status', 'due_date', 'created_by_id', 'created_at'])
+      ->latest()
+      ->paginate(15);
 
     return view('admin.students.fees.index', compact('student', 'fees'));
   }
 
   public function coursesIndex(User $student)
   {
-    $cacheKey = "student_{$student->id}_enrollments_page_" . request('page', 1);
-    
-    $enrollments = cache()->remember($cacheKey, 300, function () use ($student) {
-      return $student->enrollments()
-        ->with([
-          'courseOffering' => function ($query) {
-            $query->select(['id', 'subject_id', 'teacher_id', 'classroom_id', 'schedule'])
-              ->with([
-                'subject:id,name,code',
-                'teacher:id,name',
-                'classroom:id,name'
-              ]);
-          }
-        ])
-        ->select(['id', 'student_id', 'course_offering_id', 'enrollment_date', 'status', 'payment_status'])
-        ->paginate(15);
-    });
+    $enrollments = $student->enrollments()
+      ->with([
+        'courseOffering' => function ($query) {
+          $query->select(['id', 'subject_id', 'teacher_id', 'classroom_id', 'schedule'])
+            ->with([
+              'subject:id,name,code',
+              'teacher:id,name',
+              'classroom:id,name'
+            ]);
+        }
+      ])
+      ->select(['id', 'student_id', 'course_offering_id', 'enrollment_date', 'status', 'payment_status'])
+      ->paginate(15);
 
     return view('admin.students.enrollments.index', compact('student', 'enrollments'));
   }
@@ -255,48 +235,42 @@ class StudentController extends BaseController
 
   public function show(User $student)
   {
-    $cacheKey = "student_{$student->id}_show_" . $student->updated_at->timestamp;
-    
-    $student = cache()->remember($cacheKey, 600, function () use ($student) {
-      // Load counts using Laravel's loadCount method
-      $student->loadCount(['fees', 'attendances', 'scores']);
-      
-      $student->load([
-        'courseOfferings' => function ($query) {
-          $query->select(['id', 'subject_id', 'teacher_id', 'schedule'])
-            ->with([
-              'subject:id,name,code',
-              'teacher:id,name'
-            ])
-            ->limit(10); // Limit to recent 10 courses
-        },
-        'fees' => function ($query) {
-          $query->select(['id', 'student_id', 'fee_type_id', 'amount', 'status', 'due_date'])
-            ->with('feeType:id,name')
-            ->latest()
-            ->limit(10); // Limit to recent 10 fees
-        },
-        'scores' => function ($query) {
-          $query->select(['id', 'student_id', 'exam_id', 'score'])
-            ->with([
-              'exam' => function ($q) {
-                $q->select(['id', 'course_offering_id', 'exam_type', 'exam_date'])
-                  ->with('courseOffering.subject:id,name');
-              }
-            ])
-            ->latest()
-            ->limit(10); // Limit to recent 10 scores
-        },
-        'attendances' => function ($query) {
-          $query->select(['id', 'student_id', 'course_offering_id', 'date', 'status'])
-            ->with('courseOffering.subject:id,name')
-            ->latest()
-            ->limit(10); // Limit to recent 10 attendances
-        },
-      ]);
-      
-      return $student;
-    });
+    // Load counts using Laravel's loadCount method
+    $student->loadCount(['fees', 'attendances', 'scores']);
+
+    $student->load([
+      'courseOfferings' => function ($query) {
+        $query->select(['id', 'subject_id', 'teacher_id', 'schedule'])
+          ->with([
+            'subject:id,name,code',
+            'teacher:id,name'
+          ])
+          ->limit(10); // Limit to recent 10 courses
+      },
+      'fees' => function ($query) {
+        $query->select(['id', 'student_id', 'fee_type_id', 'amount', 'status', 'due_date'])
+          ->with('feeType:id,name')
+          ->latest()
+          ->limit(10); // Limit to recent 10 fees
+      },
+      'scores' => function ($query) {
+        $query->select(['id', 'student_id', 'exam_id', 'score'])
+          ->with([
+            'exam' => function ($q) {
+              $q->select(['id', 'course_offering_id', 'exam_type', 'exam_date'])
+                ->with('courseOffering.subject:id,name');
+            }
+          ])
+          ->latest()
+          ->limit(10); // Limit to recent 10 scores
+      },
+      'attendances' => function ($query) {
+        $query->select(['id', 'student_id', 'course_offering_id', 'date', 'status'])
+          ->with('courseOffering.subject:id,name')
+          ->latest()
+          ->limit(10); // Limit to recent 10 attendances
+      },
+    ]);
 
     return view('admin.students.show', compact('student'));
   }

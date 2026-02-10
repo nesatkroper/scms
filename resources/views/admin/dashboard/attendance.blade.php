@@ -34,26 +34,7 @@
       // -------------------------
       // 3 DATASETS ({{ __('message.attendance') }}, Absence, Permission)
       // -------------------------
-      const dataSets = {
-        daily: {
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-          attendance: [45, 50, 48, 52, 47],
-          absence: [5, 3, 2, 4, 6],
-          permission: [2, 1, 3, 2, 1]
-        },
-        weekly: {
-          labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-          attendance: [220, 240, 230, 250],
-          absence: [20, 18, 22, 15],
-          permission: [8, 10, 12, 9]
-        },
-        monthly: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-          attendance: [900, 860, 940, 980, 1020],
-          absence: [80, 75, 90, 70, 65],
-          permission: [35, 40, 33, 45, 41]
-        }
-      };
+      const dataSets = @json($attendance);
 
       // -------------------------
       // Dark/Light Color Detection

@@ -101,7 +101,7 @@
 
       {{-- Users Grid with Toggle Cards --}}
       <div id="usersGrid"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 max-h-96 overflow-y-auto">
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 max-h-96 overflow-y-auto ">
 
         @forelse ($users as $u)
           <label for="user-{{ $u->id }}"

@@ -29,44 +29,52 @@
           </thead>
           <tbody>
 
-            @if (count($recentStudents) > 0)
-              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <tbody>
-                  @foreach ($recentStudents as $recent)
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                      <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                        <div class="flex items-center">
-                          <img class="w-9 h-9 rounded-full" src="{{ $recent->student->avatar_url }}"
-                            alt="{{ $recent->student->name }} image">
-                          <div class="pl-3">
-                            <div class="text-base font-semibold">
-                              {{ $recent->student->name }}
-                            </div>
-                            <div class="font-normal text-gray-500">
-                              {{ $recent->student->email }}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="px-6 py-4">
-                        <span
-                          class="p-2 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Active</span>
-                      </td>
-                      <td class="px-6 py-4">
-                        {{ \Carbon\Carbon::parse($recent->created_at)->format('Y-m-d') }}</td>
-                      <td class="px-6 py-4 text-right">
-                        <a href="{{ route('admin.students.show', $recent->student->id) }}"
-                          class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">{{ __('message.details') }}</a>
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            @else
-              <div class="p-4 text-center text-red-500 dark:text-gray-400">
-                {{ __('message.no_recent_students_found') }}
-              </div>
-            @endif
+            @forelse ($recentStudents as $recent)
+              <tr class="border-b border-gray-200 dark:border-gray-700">
+                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                  <div class="flex items-center">
+                    <img class="w-9 h-9 rounded-full object-cover" src="{{ $recent->student->avatar_url }}"
+                      alt="{{ $recent->student->name }} image">
+                    <div class="pl-3">
+                      <div class="text-base font-semibold">
+                        {{ $recent->student->name }}
+                      </div>
+                      <div class="font-normal text-gray-500">
+                        {{ $recent->student->email }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  @php
+                    $statusColors = [
+                        'studying' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+                        'suspended' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+                        'dropped' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+                        'completed' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+                    ];
+                    $colorClass =
+                        $statusColors[$recent->status] ??
+                        'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+                  @endphp
+                  <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $colorClass }}">
+                    {{ ucfirst($recent->status) }}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  {{ \Carbon\Carbon::parse($recent->created_at)->format('Y-m-d') }}</td>
+                <td class="px-6 py-4 text-right">
+                  <a href="{{ route('admin.students.show', $recent->student->id) }}"
+                    class="font-medium text-indigo-600 dark:text-indigo-500 hover:underline">{{ __('message.details') }}</a>
+                </td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="4" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
+                  {{ __('message.no_recent_students_found') }}
+                </td>
+              </tr>
+            @endforelse
           </tbody>
         </table>
       </div>

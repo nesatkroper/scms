@@ -46,10 +46,6 @@
           @endforeach
 
         </div>
-        {{-- <a href="{{ route('admin.notifications.index') }}"
-          class="w-full  mt-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors">
-          {{ __('message.view_all_activities') }}
-        </a> --}}
       </div>
     </div>
 
