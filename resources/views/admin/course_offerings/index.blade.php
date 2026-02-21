@@ -40,9 +40,8 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}"
-              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                    focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+              placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
@@ -73,7 +72,8 @@
                 <div>
                   <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
                     {{ $offering->subject->name ?? __('message.subject_deleted') }}
-                    <span class="text-sm @if ($offering->students_count >= $offering->classroom?->capacity) dark:text-red-500 @endif">
+                    <span
+                      class="text-sm @if ($offering->students_count >= $offering->classroom?->capacity) dark:text-red-500 @endif">
                       @if ($offering->students_count >= $offering->classroom?->capacity)
                         {{ __('message.full_label') }}
                       @endif
@@ -101,8 +101,7 @@
 
             <div class="flex flex-col items-end">
               @if ($offering->attendances_count)
-                <a title="{{ __('message.export_score') }}"
-                  href="{{ route('admin.attendances.export', $offering->id) }}"
+                <a title="{{ __('message.export_score') }}" href="{{ route('admin.attendances.export', $offering->id) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                   title="{{ __('message.export_attendance') }}">
                   <i class="fa-solid fa-right-from-bracket me-2"></i>
@@ -110,8 +109,7 @@
                 </a>
               @endif
 
-              <a title="{{ __('message.export_score') }}"
-                href="{{ route('admin.course_offerings.export', $offering->id) }}"
+              <a title="{{ __('message.export_score') }}" href="{{ route('admin.course_offerings.export', $offering->id) }}"
                 class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                 title="{{ __('message.export_score') }}">
                 <i class="fa-solid fa-right-from-bracket me-2"></i>
@@ -126,27 +124,25 @@
               icon="fa-solid fa-user-tie text-xl" label="{{ __('message.teacher') }}"
               labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
 
-            <x-info.item
-              name="{{ $offering->classroom->name ?? __('message.location_tbd') }}
-                                        ({{ $offering->classroom?->capacity }}
-                                        {{ __('message.seats') }})"
-              icon="ri-door-open-fill text-xl" label="{{ __('message.classroom') }}"
-              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
-            <x-info.item
-              name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
-              icon="ri-currency-fill text-xl" label="{{ __('message.fee') }}"
-              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
+            <x-info.item name="{{ $offering->classroom->name ?? __('message.location_tbd') }}
+                                                        ({{ $offering->classroom?->capacity }}
+                                                        {{ __('message.seats') }})" icon="ri-door-open-fill text-xl"
+              label="{{ __('message.classroom') }}" labelcolor="text-gray-500 dark:text-gray-400" color=""
+              position="left" />
+            <x-info.item name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
+              icon="ri-currency-fill text-xl" label="{{ __('message.fee') }}" labelcolor="text-gray-500 dark:text-gray-400"
+              color="" position="left" />
           </div>
 
           <div
-            class="items-center px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+            class="items-center px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <div class="flex gap-1">
 
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                 @if (Auth::user()->hasPermissionTo('view_attendance'))
                   <a href="{{ route('admin.attendances.index', ['course_offering_id' => $offering->id]) }}"
-                    class="btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                     title="{{ __('message.attendance') }}">
                     <i class="fa-regular fa-calendar-days me-2"></i>
                     {{ __('message.attendance') }}
@@ -156,9 +152,9 @@
 
               @if (Auth::user()->hasPermissionTo('view_exam'))
                 <a href="{{ route('admin.exams.index', ['course_offering_id' => $offering->id]) }}"
-                  class=" btn pl-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
+                  class=" btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.exam') }}">
-                  <i class="ri-contract-fill text-lg me-2"></i>
+                  <i class="ri-contract-fill me-2"></i>
                   {{ __('message.exam') }}
                 </a>
               @endif
@@ -219,7 +215,8 @@
               </svg>
             </div>
             <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">
-              {{ __('message.no_course_offerings_found') }}</h3>
+              {{ __('message.no_course_offerings_found') }}
+            </h3>
             <p class="mt-1 text-sm text-red-500 dark:text-red-500">
               {{ __('message.create_your_first_course_offering_to_schedule_a_class') }}
             </p>

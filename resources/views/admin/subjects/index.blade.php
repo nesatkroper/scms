@@ -2,15 +2,15 @@
 @section('title', __('message.subjects_list'))
 @section('content')
   <div x-data="{
-      showDeleteModal: false,
-      deleteUrl: '',
-      subjectName: '',
-      confirmDelete(url, name) {
-          this.deleteUrl = url;
-          this.subjectName = name;
-          this.showDeleteModal = true;
-      }
-  }">
+          showDeleteModal: false,
+          deleteUrl: '',
+          subjectName: '',
+          confirmDelete(url, name) {
+              this.deleteUrl = url;
+              this.subjectName = name;
+              this.showDeleteModal = true;
+          }
+      }">
     <div
       class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
       <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -37,9 +37,8 @@
 
           <div class="flex items-center mt-3 md:mt-0 gap-2  min-w-2/3">
             <div class="relative w-full">
-              <input type="search" name="search" id="searchInput" placeholder="{{ __('message.search_subjects') }}"
-                class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+              <input type="search" name="search" id="searchInput" placeholder="{{ __('message.search_subjects') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
                 value="{{ request('search') }}">
               <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
             </div>
@@ -112,7 +111,7 @@
 
               {{-- Actions --}}
               <div
-                class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+                class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
                 <a href="{{ route('admin.subjects.edit', $subject->id) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.edit') }}">
@@ -163,7 +162,8 @@
               <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_subjects_found') }}
               </h3>
               <p class="mt-1 text-sm text-red-500 dark:text-red-500">
-                {{ __('message.create_your_first_subject_to_get_started') }}</p>
+                {{ __('message.create_your_first_subject_to_get_started') }}
+              </p>
             </div>
           </div>
         @endif
@@ -214,4 +214,4 @@
         </div>
       </div>
     </div>
-  @endsection
+@endsection

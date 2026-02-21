@@ -10,15 +10,11 @@
     @endif
   </label>
 
-  <textarea id="{{ $id }}" name="{{ $name }}" rows="{{ $rows }}"
-    class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
+  <textarea id="{{ $id }}" name="{{ $name }}" rows="{{ $rows }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-               border-slate-300 @if ($readonly || $disabled) bg-gray-50 @endif"
-    placeholder="{{ $placeholder }}" @if ($required) required @endif
-    @if ($readonly) readonly @endif @if ($disabled) disabled @endif
-    @if ($maxlength !== null) maxlength="{{ $maxlength }}" @endif
-    @if ($autocomplete !== null) autocomplete="{{ $autocomplete }}" @endif
+               border-slate-300 @if ($readonly || $disabled) bg-gray-50 @endif" placeholder="{{ $placeholder }}" @if ($required) required @endif @if ($readonly) readonly @endif @if ($disabled) disabled @endif @if ($maxlength !== null)
+              maxlength="{{ $maxlength }}" @endif @if ($autocomplete !== null) autocomplete="{{ $autocomplete }}" @endif
     @if ($pattern !== null) pattern="{{ $pattern }}" @endif>{{ old($name, $value) }}</textarea>
 
   <p id="{{ $errorId }}" class="error-{{ $name }} mt-1 text-sm text-red-600 dark:text-red-500"></p>

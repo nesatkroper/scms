@@ -35,16 +35,16 @@
         <div class="lg:col-span-1">
           @php
             $examTypes = [
-                'midterm' => 'Midterm',
-                'final' => 'Final',
-                'speaking' => 'Speaking',
-                'listening' => 'Listening',
-                'reading' => 'Reading',
-                'writing' => 'Writing',
+              'midterm' => 'Midterm',
+              'final' => 'Final',
+              'speaking' => 'Speaking',
+              'listening' => 'Listening',
+              'reading' => 'Reading',
+              'writing' => 'Writing',
             ];
 
             if ($courseOffering->is_final_only) {
-                $examTypes = ['final' => 'Final'];
+              $examTypes = ['final' => 'Final'];
             }
           @endphp
 
@@ -57,7 +57,7 @@
           </label>
 
           <select id="type" name="type" required
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('type') border-red-500 @enderror">
 
             @foreach ($examTypes as $key => $label)
               <option value="{{ $key }}" @selected(old('type') == $key)>
@@ -74,8 +74,8 @@
         {{-- 4. Exam Date --}}
         @php
           $maxDate = $courseOffering->join_end
-              ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d')
-              : '2027-12-31';
+            ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d')
+            : '2027-12-31';
         @endphp
 
         <div>
@@ -93,15 +93,13 @@
             </div>
 
             <input type="text" id="date" name="date" datepicker datepicker-format="yyyy-mm-dd"
-              value="{{ old('date', $maxDate) }}" max="{{ $maxDate }}" min="{{ now()->toDateString() }}" required
-              class="block w-full ps-9 pe-3 py-2.5
-             bg-neutral-secondary-medium border border-default-medium
-             text-heading text-sm rounded-base
-             focus:ring-brand focus:border-brand
-             shadow-xs placeholder:text-body
-             dark:bg-gray-700 dark:border-gray-600 dark:text-white
-             @error('date') border-red-500 @enderror"
-              placeholder="Select exam date">
+              value="{{ old('date', $maxDate) }}" max="{{ $maxDate }}" min="{{ now()->toDateString() }}" required class="block w-full ps-9 pe-3 py-2.5
+               bg-neutral-secondary-medium border border-default-medium
+               text-heading text-sm rounded-base
+               focus:ring-brand focus:border-brand
+               shadow-xs placeholder:text-body
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white
+               @error('date') border-red-500 @enderror" placeholder="Select exam date">
           </div>
 
           <p class="mt-1 text-xs text-gray-500">
@@ -115,9 +113,9 @@
         </div>
 
         {{-- @php
-          $maxDate = $courseOffering->join_end
-              ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d')
-              : '2027-12-31';
+        $maxDate = $courseOffering->join_end
+        ? \Carbon\Carbon::parse($courseOffering->join_end)->format('Y-m-d')
+        : '2027-12-31';
         @endphp
 
         <div>
@@ -125,17 +123,17 @@
             {{ __('message.exam_date') }} <span class="text-red-500">*</span>
           </label>
 
-          <input type="date" id="date" name="date" value="{{ old('date', $maxDate) }}"
-            max="{{ $maxDate }}"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror"
+          <input type="date" id="date" name="date" value="{{ old('date', $maxDate) }}" max="{{ $maxDate }}"
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('date') border-red-500 @enderror"
             required>
 
           <p class="mt-1 text-xs text-gray-500">
-            {{ __('message.the_exam_must_be_held_**on_or_before') }} {{ \Carbon\Carbon::parse($maxDate)->format('d-m-Y') }}**.
+            {{ __('message.the_exam_must_be_held_**on_or_before') }} {{ \Carbon\Carbon::parse($maxDate)->format('d-m-Y')
+            }}**.
           </p>
 
           @error('date')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div> --}}
 
@@ -148,9 +146,9 @@
           <label for="total_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {{ __('message.total_marks') }} <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}"
-            max="100" min="1"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
+          <input type="number" id="total_marks" name="total_marks" value="{{ old('total_marks') ?? 100 }}" max="100"
+            min="1"
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('total_marks') border-red-500 @enderror"
             placeholder="e.g., 100" required>
           @error('total_marks')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -162,9 +160,9 @@
           <label for="passing_marks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {{ __('message.passing_marks') }} <span class="text-red-500">*</span>
           </label>
-          <input type="number" id="passing_marks" name="passing_marks" value="{{ old('passing_marks') ?? 60 }}"
-            min="0" max="100"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('passing_marks') border-red-500 @enderror"
+          <input type="number" id="passing_marks" name="passing_marks" value="{{ old('passing_marks') ?? 60 }}" min="0"
+            max="100"
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('passing_marks') border-red-500 @enderror"
             placeholder="e.g., 60" required>
           @error('passing_marks')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -178,7 +176,7 @@
           {{ __('message.description_(optional)') }}
         </label>
         <textarea id="description" name="description" rows="3"
-          class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
+          class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('description') border-red-500 @enderror"
           placeholder="Provide a brief description or instruction for the exam.">{{ old('description') }}</textarea>
         @error('description')
           <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

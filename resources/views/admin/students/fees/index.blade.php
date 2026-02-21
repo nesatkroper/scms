@@ -13,8 +13,8 @@
       </h3>
       <div class="flex space-x-3 mt-1">
         <a href="{{ route('admin.students.show', $student) }}"
-          class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-          <i class="fa-solid fa-person me-2 text-lg"></i>
+          class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 capitalize">
+          <i class="fa-solid fa-home me-2"></i>
           {{ __('message.back_to_student_details') }}
         </a>
       </div>
@@ -40,10 +40,10 @@
 
           // Status Color Logic
           $statusColor = [
-              'Paid' => 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100',
-              'Due' => 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100',
-              'Partial' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100',
-              'Draft' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+            'paid' => 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100',
+            'unpaid' => 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100',
+            'Partial' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100',
+            'Draft' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
           ];
           $badgeClass = $statusColor[$fee->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
         @endphp
@@ -58,7 +58,7 @@
               title="{{ $fee->feeType->name ?? __('message.n/a') }}">
               {{ $fee->feeType->name ?? 'N/A Fee' }}
             </h4>
-            <span class="px-3 py-1 text-xs leading-5 font-semibold rounded-full {{ $badgeClass }}">
+            <span class="px-2 py-1 text-xs leading-5 font-semibold rounded-full capitalize {{ $badgeClass }}">
               {{ $fee->status }}
             </span>
           </div>
@@ -141,11 +141,11 @@
 
           {{-- Card Footer: Actions (View/{{ __('message.edit') }}/Add Payment) --}}
           <div
-            class="p-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            class="p-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
             {{-- Example: View Details Button --}}
             <a href="{{ route('admin.fees.show', $fee) }}"
-              class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
+              class="btn px-3 py-2 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
               title="View Fee Details">
               <i class="fa-solid fa-eye me-2"></i>
               {{ __('message.view') }}

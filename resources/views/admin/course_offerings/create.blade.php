@@ -26,7 +26,7 @@
             {{ __('message.subject') }} <span class="text-red-500">*</span>
           </label>
           <select id="subject_id" name="subject_id" required
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('subject_id') border-red-500 @enderror">
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('subject_id') border-red-500 @enderror">
             @foreach ($subjects as $subject)
               <option value="{{ $subject->id }}" @selected(old('subject_id') == $subject->id)>{{ $subject->name }}
                 ({{ $subject->code ?? '' }})
@@ -44,7 +44,7 @@
             {{ __('message.teacher') }} <span class="text-red-500">*</span>
           </label>
           <select id="teacher_id" name="teacher_id" required
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('teacher_id') border-red-500 @enderror">
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('teacher_id') border-red-500 @enderror">
             @foreach ($teachers as $teacher)
               <option value="{{ $teacher->id }}" @selected(old('teacher_id') == $teacher->id)>{{ $teacher->name }}
                 ({{ $teacher->specialization }})
@@ -62,7 +62,7 @@
             {{ __('message.classroom') }} <span class="text-red-500">*</span>
           </label>
           <select id="classroom_id" name="classroom_id" required
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('classroom_id') border-red-500 @enderror">
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('classroom_id') border-red-500 @enderror">
             @foreach ($classrooms as $classroom)
               <option value="{{ $classroom->id }}" @selected(old('classroom_id') == $classroom->id)>{{ $classroom->name }}</option>
             @endforeach
@@ -81,7 +81,7 @@
           </label>
 
           <select id="payment_type" name="payment_type" required
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500
            dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300
            @error('payment_type') border-red-500 @enderror">
 
@@ -161,7 +161,7 @@
           </label>
           <input type="date" id="join_start" name="join_start" value="{{ old('join_start', now()->toDateString()) }}"
             min="{{ now()->toDateString() }}" max="2027-12-31"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_start') border-red-500 @enderror">
           @error('join_start')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -205,7 +205,7 @@
           </label>
           <input type="date" id="join_end" name="join_end" value="{{ old('join_end', now()->toDateString()) }}"
             min="{{ now()->toDateString() }}" max="2027-12-31"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('join_end') border-red-500 @enderror">
           @error('join_end')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
@@ -219,7 +219,7 @@
             {{ __('message.schedule') }} <span class="text-red-500">*</span>
           </label>
           <select id="schedule" name="schedule" required
-            class="w-full p-2 border  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            class="w-full p-2 border px-4  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             @foreach (['mon-wed', 'mon-fri', 'wed-fri', 'sat-sun'] as $sch)
               <option value="{{ $sch }}" @selected(old('schedule') == $sch)>
                 {{ strtoupper($sch) }}
@@ -237,7 +237,7 @@
             {{ __('message.time_slot_category') }} <span class="text-red-500">*</span>
           </label>
           <select id="time_slot" name="time_slot" required
-            class="w-full p-2 border  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
+            class="w-full p-2 border px-4  rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('time_slot') border-red-500 @enderror">
             @foreach (['morning', 'afternoon', 'evening'] as $slot)
               <option value="{{ $slot }}">
                 {{ ucfirst($slot) }}
@@ -286,7 +286,7 @@
           </label>
           <input type="time" id="start_time" name="start_time" value="{{ old('start_time') ?? '06:00' }}"
             min="06:00" max="21:00"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('start_time') border-red-500 @enderror"
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('start_time') border-red-500 @enderror"
             required>
           @error('start_time')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -330,7 +330,7 @@
           </label>
           <input type="time" id="end_time" name="end_time" value="{{ old('end_time') ?? '06:00' }}"
             min="06:00" max="21:00"
-            class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('end_time') border-red-500 @enderror"
+            class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('end_time') border-red-500 @enderror"
             required>
           @error('end_time')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

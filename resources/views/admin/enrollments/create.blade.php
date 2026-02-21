@@ -52,22 +52,22 @@
 
             {{-- 1. Student Field (Select) --}}
             <div x-data="{
-                open: false,
-                search: '',
-                selectedId: '{{ old('student_id') }}',
-                selectedName: '',
-                students: @js(
-    $students->map(
-        fn($s) => [
-            'id' => $s->id,
-            'name' => $s->name,
-        ],
-    ),
-)
-            }" x-init="if (selectedId) {
-                const s = students.find(i => i.id == selectedId);
-                if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
-            }" class="relative">
+                  open: false,
+                  search: '',
+                  selectedId: '{{ old('student_id') }}',
+                  selectedName: '',
+                  students: @js(
+                    $students->map(
+                      fn($s) => [
+                        'id' => $s->id,
+                        'name' => $s->name,
+                      ],
+                    ),
+                  )
+              }" x-init="if (selectedId) {
+                  const s = students.find(i => i.id == selectedId);
+                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+              }" class="relative">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.student') }} <span class="text-red-500">*</span>
               </label>
@@ -76,35 +76,28 @@
               <input type="hidden" name="student_id" :value="selectedId" required>
 
               <!-- Button -->
-              <button type="button" @click="open = !open"
-                class="w-full p-2 border rounded-lg text-left
-           bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <button type="button" @click="open = !open" class="w-full p-2 border px-4 rounded-lg text-left
+             bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <span x-text="selectedName || 'Select Student'"></span>
               </button>
 
               <!-- Dropdown -->
-              <div x-show="open" @click.outside="open = false"
-                class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border
-           dark:border-gray-600 rounded-lg shadow-lg">
+              <div x-show="open" @click.outside="open = false" class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border
+             dark:border-gray-600 rounded-lg shadow-lg">
                 <!-- Search -->
-                <input type="text" x-model="search" placeholder="Search student..."
-                  class="w-full p-2 border-b dark:border-gray-600
-             dark:bg-gray-700 dark:text-white">
+                <input type="text" x-model="search" placeholder="Search student..." class="w-full p-2 border px-4-b dark:border-gray-600
+               dark:bg-gray-700 dark:text-white">
 
                 <!-- List -->
                 <ul class="max-h-60 overflow-y-auto">
-                  <template
-                    x-for="student in students.filter(s =>
-        (s.name + s.id).toLowerCase().includes(search.toLowerCase())
-      )"
-                    :key="student.id">
-                    <li
-                      @click="
-            selectedId = student.id;
-            selectedName = student.name + ' (ID: ' + student.id + ')';
-            open = false;
-          "
-                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                  <template x-for="student in students.filter(s =>
+          (s.name + s.id).toLowerCase().includes(search.toLowerCase())
+        )" :key="student.id">
+                    <li @click="
+              selectedId = student.id;
+              selectedName = student.name + ' (ID: ' + student.id + ')';
+              open = false;
+            " class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                       <span x-text="student.name"></span>
                       <span class="text-xs text-gray-500">({{ __('message.id') }} <span
                           x-text="student.id"></span>)</span>
@@ -124,17 +117,17 @@
               </label>
 
               <select name="student_id" id="student_id" required
-                class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
+                class="w-full p-2 border px-4 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300">
 
                 <option value="">{{ __('message.select_student') }}</option>
 
                 @foreach ($students as $student)
-                  <option value="{{ $student->id }}">{{ $student->name }} (ID: {{ $student->id }})</option>
+                <option value="{{ $student->id }}">{{ $student->name }} (ID: {{ $student->id }})</option>
                 @endforeach
               </select>
 
               @error('student_id')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
             </div> --}}
 
@@ -187,38 +180,38 @@
 @endsection
 
 {{-- @push('script')
-  <script>
-    new SlimSelect({
-      select: '#student_id',
-      settings: {
-        placeholderText: 'Search student…',
-        searchPlaceholder: 'Type to search...',
-        searchHighlight: true,
-      }
-    })
-  </script>
+<script>
+  new SlimSelect({
+    select: '#student_id',
+    settings: {
+      placeholderText: 'Search student…',
+      searchPlaceholder: 'Type to search...',
+      searchHighlight: true,
+    }
+  })
+</script>
 @endpush
 
 @push('style')
-  <style>
-    .ss-main {
-      @apply w-full px-3 py-[6px] border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300;
-    }
+<style>
+  .ss-main {
+    @apply w-full px-3 py-[6px] border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300;
+  }
 
-    .ss-main .ss-values .ss-placeholder {
-      @apply text-gray-500 dark:text-gray-300;
-    }
+  .ss-main .ss-values .ss-placeholder {
+    @apply text-gray-500 dark:text-gray-300;
+  }
 
-    .ss-list {
-      @apply bg-white dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg mt-1;
-    }
+  .ss-list {
+    @apply bg-white dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg mt-1;
+  }
 
-    .ss-option {
-      @apply p-2 hover:bg-indigo-50 dark:hover:bg-gray-600 cursor-pointer;
-    }
+  .ss-option {
+    @apply p-2 hover:bg-indigo-50 dark:hover:bg-gray-600 cursor-pointer;
+  }
 
-    .ss-option.selected {
-      @apply bg-indigo-100 dark:bg-gray-600;
-    }
-  </style>
+  .ss-option.selected {
+    @apply bg-indigo-100 dark:bg-gray-600;
+  }
+</style>
 @endpush --}}

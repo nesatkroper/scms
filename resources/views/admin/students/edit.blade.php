@@ -13,7 +13,7 @@
         {{ __('message.edit') }} Student: {{ $student->name }}
       </h3>
       <a href="{{ route('admin.students.index') }}"
-        class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
+        class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white  rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
           class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         <span class="relative flex items-center">
@@ -63,11 +63,10 @@
                 Full Name <span class="text-red-500">*</span>
               </label>
               <input type="text" id="name" name="name" placeholder="Enter full name" required
-                value="{{ old('name', $student->name) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('name') border-red-500 @enderror">
+                value="{{ old('name', $student->name) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('name') border-red-500 @enderror">
               @error('name')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -79,11 +78,10 @@
                 Email Address <span class="text-red-500">*</span>
               </label>
               <input type="email" id="email" name="email" placeholder="Enter email address" required
-                value="{{ old('email', $student->email) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('email') border-red-500 @enderror">
+                value="{{ old('email', $student->email) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('email') border-red-500 @enderror">
               @error('email')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -95,11 +93,10 @@
                 Phone Number (Optional)
               </label>
               <input type="tel" id="phone" name="phone" placeholder="Enter phone number"
-                value="{{ old('phone', $student->phone) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('phone') border-red-500 @enderror">
+                value="{{ old('phone', $student->phone) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('phone') border-red-500 @enderror">
               @error('phone')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -110,11 +107,10 @@
               <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Gender (Optional)
               </label>
-              <select id="gender" name="gender"
-                class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                    border-slate-300 @error('gender') border-red-500 @enderror">
+              <select id="gender" name="gender" class="form-control form-select w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                      focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                      border-slate-300 @error('gender') border-red-500 @enderror">
                 <option value="">Select Gender</option>
                 @foreach (['male' => 'Male', 'female' => 'Female', 'monk' => 'Monk', 'other' => 'Other'] as $key => $label)
                   <option value="{{ $key }}" @selected(old('gender', strtolower($student->gender)) == $key)>{{ $label }}
@@ -143,14 +139,13 @@
 
                 <input type="text" id="date_of_birth" name="date_of_birth" datepicker datepicker-format="yyyy-mm-dd"
                   placeholder="Enter Date of Birth" value="{{ old('date_of_birth', $student->date_of_birth) }}"
-                  min="{{ now()->toDateString() }}"
-                  class="block w-full ps-9 pe-3 py-2.5
-             bg-neutral-secondary-medium border border-default-medium
-             text-heading text-sm rounded-base
-             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-             shadow-xs placeholder:text-body
-             dark:bg-gray-700 dark:border-gray-600 dark:text-white
-             @error('date_of_birth') border-red-500 @enderror">
+                  min="{{ now()->toDateString() }}" class="block w-full ps-9 pe-3 py-2.5
+               bg-neutral-secondary-medium border border-default-medium
+               text-heading text-sm rounded-base
+               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+               shadow-xs placeholder:text-body
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white
+               @error('date_of_birth') border-red-500 @enderror">
               </div>
 
               @error('date_of_birth')
@@ -162,13 +157,12 @@
                 Date of Birth (Optional)
               </label>
               <input type="date" id="date_of_birth" name="date_of_birth" placeholder="Enter Date of Birth"
-                value="{{ old('date_of_birth', $student->date_of_birth) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('date_of_birth') border-red-500 @enderror">
+                value="{{ old('date_of_birth', $student->date_of_birth) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('date_of_birth') border-red-500 @enderror">
               @error('date_of_birth')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+              <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
             </div> --}}
 
@@ -187,17 +181,14 @@
                   </svg>
                 </div>
 
-                <input type="text" id="admission_date" name="admission_date" datepicker
-                  min="{{ now()->toDateString() }}" datepicker-format="yyyy-mm-dd"
-                  value="{{ old('admission_date', $student->admission_date) }}"
-                  class="block w-full ps-9 pe-3 py-2.5
-             bg-neutral-secondary-medium border border-default-medium
-             text-heading text-sm rounded-base
-             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-             shadow-xs placeholder:text-body
-             dark:bg-gray-700 dark:border-gray-600 dark:text-white
-             @error('admission_date') border-red-500 @enderror"
-                  placeholder="Enter Admission Date">
+                <input type="text" id="admission_date" name="admission_date" datepicker min="{{ now()->toDateString() }}"
+                  datepicker-format="yyyy-mm-dd" value="{{ old('admission_date', $student->admission_date) }}" class="block w-full ps-9 pe-3 py-2.5
+               bg-neutral-secondary-medium border border-default-medium
+               text-heading text-sm rounded-base
+               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+               shadow-xs placeholder:text-body
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white
+               @error('admission_date') border-red-500 @enderror" placeholder="Enter Admission Date">
               </div>
 
               @error('admission_date')
@@ -209,13 +200,12 @@
                 Admission Date (Optional)
               </label>
               <input type="date" id="admission_date" name="admission_date"
-                value="{{ old('admission_date', $student->admission_date) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('admission_date') border-red-500 @enderror">
+                value="{{ old('admission_date', $student->admission_date) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('admission_date') border-red-500 @enderror">
               @error('admission_date')
-                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+              <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
             </div> --}}
 
@@ -225,11 +215,10 @@
                 Nationality (Optional)
               </label>
               <input type="text" id="nationality" name="nationality" placeholder="Enter nationality"
-                value="{{ old('nationality', $student->nationality) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('nationality') border-red-500 @enderror">
+                value="{{ old('nationality', $student->nationality) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('nationality') border-red-500 @enderror">
               @error('nationality')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -241,11 +230,10 @@
                 Religion (Optional)
               </label>
               <input type="text" id="religion" name="religion" placeholder="Enter religion"
-                value="{{ old('religion', $student->religion) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('religion') border-red-500 @enderror">
+                value="{{ old('religion', $student->religion) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('religion') border-red-500 @enderror">
               @error('religion')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -257,11 +245,10 @@
                 Occupation (Optional)
               </label>
               <input type="text" id="occupation" name="occupation" placeholder="Student/Working/Other"
-                value="{{ old('occupation', $student->occupation) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('occupation') border-red-500 @enderror">
+                value="{{ old('occupation', $student->occupation) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('occupation') border-red-500 @enderror">
               @error('occupation')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -273,11 +260,10 @@
                 Company (if applicable)
               </label>
               <input type="text" id="company" name="company" placeholder="Enter company name"
-                value="{{ old('company', $student->company) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('company') border-red-500 @enderror">
+                value="{{ old('company', $student->company) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('company') border-red-500 @enderror">
               @error('company')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -289,10 +275,10 @@
                 Address (Optional)
               </label>
               <textarea id="address" name="address" placeholder="Enter full address" rows="2"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('address') border-red-500 @enderror">{{ old('address', $student->address) }}</textarea>
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('address') border-red-500 @enderror">{{ old('address', $student->address) }}</textarea>
               @error('address')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -313,11 +299,10 @@
               <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 New Password
               </label>
-              <input type="password" id="password" name="password" placeholder="Enter new password (optional)"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('password') border-red-500 @enderror">
+              <input type="password" id="password" name="password" placeholder="Enter new password (optional)" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300 @error('password') border-red-500 @enderror">
               @error('password')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -325,16 +310,14 @@
 
             {{-- Confirm Password --}}
             <div class="mb-2">
-              <label for="password_confirmation"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Confirm New Password
               </label>
               <input type="password" id="password_confirmation" name="password_confirmation"
-                placeholder="Confirm new password"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300">
+                placeholder="Confirm new password" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                         dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                         border-slate-300">
             </div>
 
           </div>

@@ -13,7 +13,7 @@
         Edit Teacher: {{ $teacher->name }}
       </h3>
       <a href="{{ route('admin.teachers.index') }}"
-        class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
+        class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white  rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
           class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         <span class="relative flex items-center">
@@ -35,8 +35,7 @@
     @endif
 
     <form action="{{ route('admin.teachers.update', $teacher->id) }}" method="POST"
-      class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6" enctype="multipart/form-data" novalidate
-      x-data="{}">
+      class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6" enctype="multipart/form-data" novalidate x-data="{}">
       @csrf
       @method('PUT')
 
@@ -61,11 +60,10 @@
                 Full Name <span class="text-red-500">*</span>
               </label>
               <input type="text" id="name" name="name" placeholder="Enter full name" required
-                value="{{ old('name', $teacher->name) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('name') border-red-500 @enderror">
+                value="{{ old('name', $teacher->name) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('name') border-red-500 @enderror">
               @error('name')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -77,11 +75,10 @@
                 Email Address <span class="text-red-500">*</span>
               </label>
               <input type="email" id="email" name="email" placeholder="Enter email address" required
-                value="{{ old('email', $teacher->email) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('email') border-red-500 @enderror">
+                value="{{ old('email', $teacher->email) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('email') border-red-500 @enderror">
               @error('email')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -93,23 +90,21 @@
                 Phone Number <span class="text-red-500">*</span>
               </label>
               <input type="tel" id="phone" name="phone" placeholder="e.g., 012 345 678" required
-                value="{{ old('phone', $teacher->phone) }}"
-                x-on:input="
-                  let val = $el.value.replace(/[^\d+]/g, '');
-                  if (val.startsWith('+') && !val.startsWith('+855')) {
-                    val = '+855' + val.replace(/^\+/, '');
-                  }
-                  if (val.length > 1 && !val.startsWith('0') && !val.startsWith('+')) {
-                    val = '0' + val;
-                  }
-                  $el.value = val.slice(0, 15);
-                "
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('phone')
-border-red-500
-@enderror">
+                value="{{ old('phone', $teacher->phone) }}" x-on:input="
+                          let val = $el.value.replace(/[^\d+]/g, '');
+                          if (val.startsWith('+') && !val.startsWith('+855')) {
+                            val = '+855' + val.replace(/^\+/, '');
+                          }
+                          if (val.length > 1 && !val.startsWith('0') && !val.startsWith('+')) {
+                            val = '0' + val;
+                          }
+                          $el.value = val.slice(0, 15);
+                        " class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('phone')
+                                border-red-500
+                              @enderror">
               <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Only Cambodian numbers allowed (0... or +855...)
               </p>
               @error('phone')
@@ -122,11 +117,10 @@ border-red-500
               <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Gender <span class="text-red-500">*</span>
               </label>
-              <select id="gender" name="gender" required
-                class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
-                    focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                    dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                    border-slate-300 @error('gender') border-red-500 @enderror">
+              <select id="gender" name="gender" required class="form-control form-select w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                            focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                            dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                            border-slate-300 @error('gender') border-red-500 @enderror">
                 <option value="">Select Gender</option>
                 @foreach (['male' => 'Male', 'female' => 'Female', 'other' => 'Other'] as $key => $label)
                   <option value="{{ $key }}" @selected(old('gender', strtolower($teacher->gender)) == $key)>{{ $label }}
@@ -155,12 +149,12 @@ border-red-500
                   placeholder="Enter Date of Birth" required
                   value="{{ old('date_of_birth', $teacher->date_of_birth ? \Carbon\Carbon::parse($teacher->date_of_birth)->toDateString() : '') }}"
                   class="block w-full ps-9 pe-3 py-2.5
-             bg-neutral-secondary-medium border border-default-medium
-             text-heading text-sm rounded-base
-             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-             shadow-xs placeholder:text-body
-             dark:bg-gray-700 dark:border-gray-600 dark:text-white
-             @error('date_of_birth') border-red-500 @enderror">
+                     bg-neutral-secondary-medium border border-default-medium
+                     text-heading text-sm rounded-base
+                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                     shadow-xs placeholder:text-body
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                     @error('date_of_birth') border-red-500 @enderror">
               </div>
               @error('date_of_birth')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -173,10 +167,10 @@ border-red-500
                 Address <span class="text-red-500">*</span>
               </label>
               <textarea id="address" name="address" placeholder="Enter full address" rows="2" required
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('address') border-red-500 @enderror">{{ old('address', $teacher->address) }}</textarea>
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('address') border-red-500 @enderror">{{ old('address', $teacher->address) }}</textarea>
               @error('address')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -206,12 +200,12 @@ border-red-500
                   placeholder="Enter Joining Date" required
                   value="{{ old('joining_date', $teacher->joining_date ? \Carbon\Carbon::parse($teacher->joining_date)->toDateString() : '') }}"
                   class="block w-full ps-9 pe-3 py-2.5
-             bg-neutral-secondary-medium border border-default-medium
-             text-heading text-sm rounded-base
-             focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-             shadow-xs placeholder:text-body
-             dark:bg-gray-700 dark:border-gray-600 dark:text-white
-             @error('joining_date') border-red-500 @enderror">
+                     bg-neutral-secondary-medium border border-default-medium
+                     text-heading text-sm rounded-base
+                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                     shadow-xs placeholder:text-body
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                     @error('joining_date') border-red-500 @enderror">
               </div>
               @error('joining_date')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -223,12 +217,11 @@ border-red-500
               <label for="qualification" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Qualification <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="qualification" name="qualification" placeholder="e.g. Master in Science"
-                required value="{{ old('qualification', $teacher->qualification) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('qualification') border-red-500 @enderror">
+              <input type="text" id="qualification" name="qualification" placeholder="e.g. Master in Science" required
+                value="{{ old('qualification', $teacher->qualification) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('qualification') border-red-500 @enderror">
               @error('qualification')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -240,22 +233,19 @@ border-red-500
                 Experience (Years) <span class="text-red-500">*</span>
               </label>
               <input type="number" id="experience" name="experience" placeholder="e.g., 5" required
-                value="{{ old('experience', $teacher->experience) }}" min="0"
-                x-on:input="
-                  if ($el.value > 60 && $el.value < 1900) $el.value = 60;
-                  if ($el.value > new Date().getFullYear()) $el.value = new Date().getFullYear() - 1980;
-                "
-                x-on:blur="
-                  if ($el.value >= 1900 && $el.value <= new Date().getFullYear()) { 
-                    $el.value = new Date().getFullYear() - $el.value; 
-                  }
-                "
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('experience')
-border-red-500
-@enderror">
+                value="{{ old('experience', $teacher->experience) }}" min="0" x-on:input="
+                          if ($el.value > 60 && $el.value < 1900) $el.value = 60;
+                          if ($el.value > new Date().getFullYear()) $el.value = new Date().getFullYear() - 1980;
+                        " x-on:blur="
+                          if ($el.value >= 1900 && $el.value <= new Date().getFullYear()) { 
+                            $el.value = new Date().getFullYear() - $el.value; 
+                          }
+                        " class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('experience')
+                                border-red-500
+                              @enderror">
               <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Maximum 60 years. Years like 1993 will
                 auto-convert.</p>
               @error('experience')
@@ -269,11 +259,10 @@ border-red-500
                 Specialization
               </label>
               <input type="text" id="specialization" name="specialization" placeholder="e.g. Mathematics"
-                value="{{ old('specialization', $teacher->specialization) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('specialization') border-red-500 @enderror">
+                value="{{ old('specialization', $teacher->specialization) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('specialization') border-red-500 @enderror">
               @error('specialization')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -285,11 +274,10 @@ border-red-500
                 Monthly Salary ($)
               </label>
               <input type="number" id="salary" name="salary" placeholder="0.00" step="0.01"
-                value="{{ old('salary', $teacher->salary) }}"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('salary') border-red-500 @enderror">
+                value="{{ old('salary', $teacher->salary) }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('salary') border-red-500 @enderror">
               @error('salary')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -300,14 +288,13 @@ border-red-500
               <label for="cv" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Curriculum Vitae (PDF/DOC)
               </label>
-              <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx"
-                class="w-full text-sm text-gray-500 dark:text-gray-400
-                       file:mr-4 file:py-2 file:px-4
-                       file:rounded-lg file:border-0
-                       file:text-sm file:font-semibold
-                       file:bg-indigo-50 file:text-indigo-700
-                       hover:file:bg-indigo-100
-                       dark:file:bg-gray-700 dark:file:text-indigo-400">
+              <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" class="w-full text-sm text-gray-500 dark:text-gray-400
+                               file:mr-4 file:py-2 file:px-4
+                               file:rounded-lg file:border-0
+                               file:text-sm file:font-semibold
+                               file:bg-indigo-50 file:text-indigo-700
+                               hover:file:bg-indigo-100
+                               dark:file:bg-gray-700 dark:file:text-indigo-400">
               @if ($teacher->cv)
                 <p class="mt-1 text-xs text-gray-500">Current CV: {{ basename($teacher->cv) }}</p>
               @endif
@@ -331,11 +318,10 @@ border-red-500
               <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 New Password
               </label>
-              <input type="password" id="password" name="password" placeholder="Enter new password (optional)"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300 @error('password') border-red-500 @enderror">
+              <input type="password" id="password" name="password" placeholder="Enter new password (optional)" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300 @error('password') border-red-500 @enderror">
               @error('password')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
               @enderror
@@ -343,16 +329,14 @@ border-red-500
 
             {{-- Confirm Password --}}
             <div class="mb-2">
-              <label for="password_confirmation"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Confirm New Password
               </label>
               <input type="password" id="password_confirmation" name="password_confirmation"
-                placeholder="Confirm new password"
-                class="form-control w-full p-2 border rounded-lg focus:outline focus:outline-white
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
-                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
-                       border-slate-300">
+                placeholder="Confirm new password" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
+                               dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
+                               border-slate-300">
             </div>
 
           </div>

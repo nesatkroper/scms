@@ -47,10 +47,9 @@
 
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
-            <input type="search" name="search" id="searchInput"
-              placeholder="{{ __('message.search_exams_placeholder') }}"
+            <input type="search" name="search" id="searchInput" placeholder="{{ __('message.search_exams_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                    focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+                      focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
@@ -79,7 +78,8 @@
             <div class="flex justify-between items-start gap-2">
               <div class="">
                 <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200 capitalize">{{ $exam->type }} -
-                  {{ $exam->courseOffering?->teacher?->name }}</h4>
+                  {{ $exam->courseOffering?->teacher?->name }}
+                </h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   {{ __('message.course') }} <span
                     class="font-semibold text-indigo-600 dark:text-indigo-400 capitalize">{{ $exam->courseOffering->subject->name ?? 'Course Deleted' }}
@@ -162,7 +162,7 @@
 
           {{-- Actions ({{ __('message.edit') }} Link + Delete Form) --}}
           <div
-            class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
+            class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-between gap-2">
 
             <a href="{{ route('admin.scores.index', ['exam_id' => $exam->id]) }}"
               class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
@@ -217,7 +217,8 @@
             </div>
             <h3 class="mt-4 text-lg font-medium text-red-500 dark:text-red-500">{{ __('message.no_exams_found') }}</h3>
             <p class="mt-1 text-sm text-red-500 dark:text-red-500">
-              {{ __('message.create_your_first_exam_to_begin_recording_scores') }}</p>
+              {{ __('message.create_your_first_exam_to_begin_recording_scores') }}
+            </p>
           </div>
         </div>
       @endforelse

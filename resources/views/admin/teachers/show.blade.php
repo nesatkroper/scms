@@ -84,7 +84,7 @@
 
         @if (Auth::user()->hasPermissionTo('delete_teacher'))
           <div
-            class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-6">
+            class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-4">
             <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">Danger Zone</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
               Permanently delete this teacher and all associated records. This action cannot be undone.
@@ -164,7 +164,7 @@
       </div>
 
       {{-- Assigned Courses --}}
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-4">
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Teaching Assignments</h3>
         </div>
@@ -209,7 +209,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {{ $course->classroom->name ?? 'Online/Var' }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">
                       {{ $course->schedule ?? __('message.n/a') }}
                       ({{ $course->start_time ? \Carbon\Carbon::parse($course->start_time)->format('h:i A') : 'N/A' }}
                       -

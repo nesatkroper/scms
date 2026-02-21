@@ -28,7 +28,7 @@
           <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject Name <span
               class="text-red-500">*</span></label>
           <input type="text" name="name" id="name" value="{{ old('name', $subject->name) }}"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('name') border-red-500 @else border-gray-400 @enderror"
@@ -43,7 +43,7 @@
           <label for="code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject Code <span
               class="text-red-500">*</span></label>
           <input type="text" name="code" id="code" value="{{ old('code', $subject->code) }}"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('code') border-red-500 @else border-gray-400 @enderror"
@@ -59,7 +59,7 @@
             <span class="text-red-500">*</span></label>
           <input type="number" name="credit_hours" id="credit_hours" max="10"
             value="{{ old('credit_hours', $subject->credit_hours) }}"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                      dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('credit_hours') border-red-500 @else border-gray-400 @enderror"
@@ -75,7 +75,7 @@
         <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description
           (Optional)</label>
         <textarea name="description" id="description" rows="3"
-          class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+          class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                  dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('description') border-red-500 @else border-gray-400 @enderror">{{ old('description', $subject->description) }}</textarea>

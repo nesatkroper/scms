@@ -14,14 +14,14 @@
       @if (Auth::user()->hasPermissionTo('update_student'))
         <a href="{{ route('admin.students.edit', $student) }}"
           class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-          <i class="fa-solid fa-user-pen"></i>
+          <i class="fa-solid fa-user-pen me-2"></i>
           {{ __('message.edit') }}
         </a>
       @endif
 
       <a href="{{ route('admin.students.index') }}"
         class="p-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600 transition-colors flex items-center gap-1">
-        <i class="fa-regular fa-house"></i>
+        <i class="fa-solid fa-house me-2"></i>
         {{ __('message.back_to_list') }}
       </a>
     </div>
@@ -39,7 +39,7 @@
           <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ $student->name }}</h2>
           <p class="text-sm text-indigo-600 dark:text-indigo-400 font-medium">{{ $student->email }}</p>
 
-          <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div class="mt-4 pt-2 border-t border-gray-200 dark:border-gray-700">
             <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('message.student_metrics') }}
             </h3>
             <div class="flex justify-around text-center">
@@ -68,7 +68,7 @@
 
         @if (Auth::user()->hasPermissionTo('delete_student'))
           <div
-            class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-6">
+            class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-2 border-dashed border-red-500 dark:border-red-700 mt-4">
             <h3 class="text-md font-semibold text-red-600 dark:text-red-400 mb-3">{{ __('message.danger_zone') }}</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
               {{ __('message.permanently_delete_this_student_desc') }}
@@ -95,13 +95,10 @@
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.personal_&_contact_info') }}
           </h3>
-
         </div>
 
-        {{-- Details Grid --}}
-        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-4">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-2">
 
-          {{-- General Info --}}
           @include('admin.components.detail-item', [
               'label' => __('message.gender'),
               'value' => $student->gender ?? __('message.n/a'),
@@ -117,7 +114,6 @@
               'value' => $student->phone ?? __('message.n/a'),
           ])
 
-          {{-- Admission/Status Info --}}
           @include('admin.components.detail-item', [
               'label' => __('message.admission_date'),
               'value' => $student->admission_date
@@ -137,7 +133,6 @@
               'value' => $student->religion ?? __('message.n/a'),
           ])
 
-          {{-- Work/Address Info (Full Width) --}}
           @if ($student->occupation || $student->company)
             <div class="sm:col-span-2">
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('message.occupation_/_company') }}
@@ -165,8 +160,7 @@
         </dl>
       </div>
 
-      {{-- Assigned Courses --}}
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-4">
 
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.assigned_courses') }}</h3>
@@ -223,7 +217,7 @@
                         {{ $offering->enrollment->grade_final ?? __('message.n/a') }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">
                       {{ $offering->schedule ?? __('message.n/a') }}
                       ({{ $offering->start_time ? \Carbon\Carbon::parse($offering->start_time)->format('h:i A') : __('message.n/a') }}
                       -
@@ -238,7 +232,7 @@
       </div>
 
       {{-- Fee Records (Invoices/Bills) --}}
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-4">
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.fee_records') }}</h3>
 
@@ -298,7 +292,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                       <span
-                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full capitalize
                                         @if ($status === 'paid') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
                                         @elseif ($status === 'unpaid') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
                                         @elseif ($status === 'partially_paid') bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100
@@ -315,7 +309,7 @@
       </div>
 
       {{-- Exam Scores --}}
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-4">
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.exam_scores') }}</h3>
 
@@ -357,7 +351,7 @@
               <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach ($student->scores as $score)
                   <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">
                       <span class="font-bold">{{ $score->exam->type ?? __('message.n/a') }}</span>
                       <p class="text-xs text-gray-500 dark:text-gray-400">
                         ({{ $score->exam->courseOffering->subject->name ?? __('message.unknown_course') }})
@@ -395,7 +389,7 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
 
       {{-- {{ __('message.attendance') }} Log --}}
       <div
-        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6 mb-10">
+        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-4 mb-10">
         <div class="flex justify-between items-center pb-2">
           <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">{{ __('message.attendance') }}
             {{ __('message.log') }}</h3>
@@ -443,9 +437,9 @@ bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                       <span
-                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        @if ($attendance->status === 'Present') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
-                                        @elseif ($attendance->status === 'Absent') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full capitalize
+                                        @if ($attendance->status === 'attending') bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
+                                        @elseif ($attendance->status === 'absent') bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100
                                         @else bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 @endif">
                         {{ $attendance->status }}
                       </span>

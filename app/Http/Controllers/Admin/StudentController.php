@@ -70,7 +70,7 @@ class StudentController extends BaseController
   {
     $fees = $student->fees()
       ->with(['feeType:id,name', 'creator:id,name'])
-      ->select(['id', 'student_id', 'fee_type_id', 'amount', 'status', 'due_date', 'created_by_id', 'created_at'])
+      ->select(['id', 'student_id', 'fee_type_id', 'amount', 'payment_date', 'due_date', 'created_by', 'created_at'])
       ->latest()
       ->paginate(15);
 
@@ -90,7 +90,7 @@ class StudentController extends BaseController
             ]);
         }
       ])
-      ->select(['id', 'student_id', 'course_offering_id', 'enrollment_date', 'status', 'payment_status'])
+      ->select(['id', 'student_id', 'course_offering_id', 'created_at', 'status'])
       ->paginate(15);
 
     return view('admin.students.enrollments.index', compact('student', 'enrollments'));
@@ -221,9 +221,9 @@ class StudentController extends BaseController
         'fee_type_id' => $validated['fee_type_id'],
         'amount' => $validated['amount'],
         'due_date' => $validated['due_date'],
-        'status' => $validated['status'],
-        'description' => $validated['description'],
-        'created_by_id' => Auth::id(),
+        'payment_date' => $validated['status'] === 'Paid' ? now() : null,
+        'remarks' => $validated['description'],
+        'created_by' => Auth::id(),
       ]);
 
       return redirect()->route('admin.students.fees.index', $student)
@@ -240,7 +240,7 @@ class StudentController extends BaseController
 
     $student->load([
       'courseOfferings' => function ($query) {
-        $query->select(['id', 'subject_id', 'teacher_id', 'schedule'])
+        $query->select(['course_offerings.id', 'course_offerings.subject_id', 'course_offerings.teacher_id', 'course_offerings.schedule'])
           ->with([
             'subject:id,name,code',
             'teacher:id,name'
@@ -248,7 +248,7 @@ class StudentController extends BaseController
           ->limit(10); // Limit to recent 10 courses
       },
       'fees' => function ($query) {
-        $query->select(['id', 'student_id', 'fee_type_id', 'amount', 'status', 'due_date'])
+        $query->select(['id', 'student_id', 'fee_type_id', 'amount', 'payment_date', 'due_date'])
           ->with('feeType:id,name')
           ->latest()
           ->limit(10); // Limit to recent 10 fees
@@ -257,7 +257,7 @@ class StudentController extends BaseController
         $query->select(['id', 'student_id', 'exam_id', 'score'])
           ->with([
             'exam' => function ($q) {
-              $q->select(['id', 'course_offering_id', 'exam_type', 'exam_date'])
+              $q->select(['id', 'course_offering_id', 'type', 'date'])
                 ->with('courseOffering.subject:id,name');
             }
           ])

@@ -35,12 +35,10 @@
       </div>
 
       {{-- Form action uses the pivot keys (student_id, course_offering_id) --}}
-      <form
-        action="{{ route('admin.enrollments.update', [
-            'student_id' => $enrollment->student_id,
-            'course_offering_id' => $courseOfferingId,
-        ]) }}"
-        method="POST" class="p-0">
+      <form action="{{ route('admin.enrollments.update', [
+    'student_id' => $enrollment->student_id,
+    'course_offering_id' => $courseOfferingId,
+  ]) }}" method="POST" class="p-0">
 
         @csrf
         @method('PUT')
@@ -56,10 +54,9 @@
               {{ __('message.admission_status') }} <span class="text-red-500">*</span>
             </label>
             <select name="status" id="status" required
-              class="w-full p-2 border rounded-lg focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('status') border-red-500 @enderror">
+              class="w-full p-2 border px-4 rounded-lg focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('status') border-red-500 @enderror">
               @foreach ($statuses as $status)
-                <option value="{{ $status }}"
-                  {{ old('status', $enrollment->status) == $status ? 'selected' : '' }}>
+                <option value="{{ $status }}" {{ old('status', $enrollment->status) == $status ? 'selected' : '' }}>
                   {{ ucfirst($status) }}
                 </option>
               @endforeach

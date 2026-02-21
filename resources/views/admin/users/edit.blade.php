@@ -6,7 +6,7 @@
     <div class="flex items-center justify-between mb-6 px-3 md:px-0">
       <h1 class="text-2xl font-semibold">{{ __('message.edit') }} {{ __('message.user') }}: {{ $user->name }}</h1>
       <a href="{{ route('admin.users.index') }}"
-        class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
+        class="group relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white  rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out overflow-hidden">
         <span
           class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         <span class="relative flex items-center">
@@ -37,7 +37,7 @@
       $initialSelectedRolesJson = json_encode($selectedRoles);
 
       $inputClasses =
-          'form-control w-full p-2 border rounded-lg focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
+          'form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
 
       $fileClasses =
           'form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600';
@@ -195,7 +195,7 @@
                 {{ __('message.gender') }}
               </label>
               <select id="gender" name="gender"
-                class="form-control form-select w-full p-2 border rounded-lg focus:outline focus:outline-white
+                class="form-control form-select w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                     dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                     border-slate-300 @error('gender') border-red-500 @enderror">

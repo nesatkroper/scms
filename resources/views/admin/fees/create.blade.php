@@ -41,7 +41,7 @@
             {{ __('message.student') }} <span class="text-red-500">*</span>
           </label>
           <select id="student_id" name="student_id"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('student_id') border-red-500 @else border-gray-400 @enderror"
@@ -66,7 +66,7 @@
             {{ __('message.fee_type') }} <span class="text-red-500">*</span>
           </label>
           <select id="fee_type_id" name="fee_type_id"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('fee_type_id') border-red-500 @else border-gray-400 @enderror"
@@ -89,7 +89,7 @@
             {{ __('message.amount') }} ($) <span class="text-red-500">*</span>
           </label>
           <input type="number" step="0.01" min="0" id="amount" name="amount" value="{{ old('amount') }}"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('amount') border-red-500 @else border-gray-400 @enderror"
@@ -105,7 +105,7 @@
             {{ __('message.due_date_(optional)') }}
           </label>
           <input type="date" id="due_date" name="due_date" value="{{ old('due_date') }}"
-            class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+            class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                     @error('due_date') border-red-500 @else border-gray-400 @enderror">
@@ -122,7 +122,7 @@
           {{ __('message.remarks_(optional)') }}
         </label>
         <textarea id="remarks" name="remarks" rows="3"
-          class="w-full p-2 border rounded-lg focus:outline focus:outline-white
+          class="w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300
                 @error('remarks') border-red-500 @else border-gray-400 @enderror"

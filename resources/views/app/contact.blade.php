@@ -23,26 +23,26 @@
                 <label for="name" class="block text-gray-700 mb-2">Full
                   Name</label>
                 <input type="text" id="name"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  class="w-full p-2 border px-4 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
               <div class="mb-2">
                 <label for="email" class="block text-gray-700 mb-2">Email
                   Address</label>
                 <input type="email" id="email"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  class="w-full p-2 border px-4 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
             </div>
 
             <div>
               <label for="subject" class="block text-gray-700 mb-2">Subject</label>
               <input type="text" id="subject"
-                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full p-2 border px-4 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
             <div>
               <label for="message" class="block text-gray-700 mb-2">Message</label>
               <textarea id="message" rows="5"
-                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                class="w-full p-2 border px-4 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             </div>
 
             <button type="submit"

@@ -14,7 +14,7 @@
           {{ __('message.role_name') }} <span class="text-red-500">*</span>
         </label>
         <input type="text" id="name" name="name" value="{{ old('name') }}"
-          class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
+          class="w-full p-2 border px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500"
           placeholder="{{ __('message.enter_role_name_example') }}" required maxlength="255">
         @error('name')
           <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>

@@ -27,7 +27,7 @@
             class="font-medium text-gray-700 dark:text-gray-300">{{ __('message.filter_by_role') }}</label>
           <select name="role" id="roleFilter"
             onchange="location.href='{{ route('admin.notifications.create') }}?role='+this.value"
-            class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
+            class="w-full p-2 border px-4 rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
             <option value="">-- {{ __('message.all') }} --</option>
             @foreach ($roles as $r)
               <option value="{{ $r }}" {{ $selectedRole == $r ? 'selected' : '' }}>{{ ucfirst($r) }}
@@ -42,7 +42,7 @@
               Offering</label>
             <select name="course_offering_id" id="courseFilter"
               onchange="location.href='{{ route('admin.notifications.create') }}?role={{ $selectedRole }}&course_offering_id='+this.value"
-              class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
+              class="w-full p-2 border px-4 rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500">
               <option value="">-- {{ __('message.all') }} --</option>
               @foreach ($courseOfferings as $co)
                 <option value="{{ $co->id }}" {{ $selectedCourseOffering == $co->id ? 'selected' : '' }}>
@@ -59,7 +59,7 @@
           <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('message.title') }} <span
               class="text-red-500">*</span></label>
           <input type="text" name="title" value="{{ old('title') }}"
-            class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
+            class="w-full p-2 border px-4 rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
             required>
         </div>
 
@@ -67,7 +67,7 @@
           <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('message.message') }} <span
               class="text-red-500">*</span></label>
           <textarea name="body" rows="5"
-            class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
+            class="w-full p-2 border px-4 rounded-lg dark:bg-gray-700 dark:text-white border-slate-300 dark:border-slate-500 focus:ring-indigo-500"
             required>{{ old('body') }}</textarea>
         </div>
       </div>
@@ -113,8 +113,7 @@
             </div>
 
             <div class="relative inline-flex items-center">
-              <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}"
-                class="sr-only peer" {{ in_array($u->id, old('user_ids', [])) ? 'checked' : '' }}>
+              <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}" class="sr-only peer" {{ in_array($u->id, old('user_ids', [])) ? 'checked' : '' }}>
 
               <div
                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
@@ -123,14 +122,14 @@
           </label>
         @empty
           <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">
-            {{ __('message.no_users_found_for_the_selected_filter(s)') }}</p>
+            {{ __('message.no_users_found_for_the_selected_filter(s)') }}
+          </p>
         @endforelse
       </div>
 
       {{-- <div class="mb-4 flex gap-4">
-        <input type="checkbox" id="checkAllUsers"
-          class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
-            checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
+        <input type="checkbox" id="checkAllUsers" class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
+              checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
         <label for="checkAllUsers" class="font-bold cursor-pointer">Select All / Unselect All (Visible)</label>
       </div>
 
@@ -138,16 +137,15 @@
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 border p-3 rounded-lg border-gray-300 dark:border-gray-700 max-h-96 overflow-y-auto h-full">
 
         @forelse ($users as $u)
-          <label for="user-{{ $u->id }}" class="flex items-center gap-2 user-item cursor-pointer">
-            <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}"
-              class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
-            checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
-            <span class="text-sm text-gray-800 dark:text-gray-200 capitalize font-bold">
-              {{ $u->name }} ({{ $u->roles->pluck('name')->join(', ') }})
-            </span>
-          </label>
+        <label for="user-{{ $u->id }}" class="flex items-center gap-2 user-item cursor-pointer">
+          <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}" class="user-checkbox appearance-none size-5 border-2 border-gray-300 dark:border-gray-600 rounded-sm
+              checked:bg-indigo-600 dark:checked:bg-indigo-500 checked:border-indigo-600 dark:checked:border-indigo-500">
+          <span class="text-sm text-gray-800 dark:text-gray-200 capitalize font-bold">
+            {{ $u->name }} ({{ $u->roles->pluck('name')->join(', ') }})
+          </span>
+        </label>
         @empty
-          <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">No users found for the selected filter(s).</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">No users found for the selected filter(s).</p>
         @endforelse
       </div> --}}
 
@@ -157,8 +155,7 @@
           {{ __('message.cancel') }}
         </a>
 
-        <button type="submit"
-          class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+        <button type="submit" class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
           {{ __('message.send_notification') }}
         </button>
       </div>
@@ -169,7 +166,7 @@
 
 @push('scripts')
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       var $search = $('#searchUsers');
       var $reset = $('#resetUserSearch');
       var $items = $('.user-item');
@@ -181,27 +178,27 @@
           .filter(':checked').length);
       }
 
-      $search.on('keyup', function() {
+      $search.on('keyup', function () {
         var keyword = $(this).val().toLowerCase().trim();
-        $items.each(function() {
+        $items.each(function () {
           $(this).toggle($(this).text().toLowerCase().includes(keyword));
         });
         updateSelectAll();
       });
 
-      $reset.on('click', function(e) {
+      $reset.on('click', function (e) {
         e.preventDefault();
         $search.val('');
         $items.show();
         updateSelectAll();
       });
 
-      $checkAll.on('change', function() {
+      $checkAll.on('change', function () {
         var isChecked = $(this).prop('checked');
         $('.user-item:visible input[type="checkbox"]').prop('checked', isChecked);
       });
 
-      $('.user-item input[type="checkbox"]').on('change', function() {
+      $('.user-item input[type="checkbox"]').on('change', function () {
         updateSelectAll();
       });
 

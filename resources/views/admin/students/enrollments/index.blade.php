@@ -53,13 +53,13 @@
 
           $gradeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
           if (in_array($enrollment?->grade_final, ['A', 'B', 'C'])) {
-              $gradeColor = 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
+            $gradeColor = 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
           } elseif (in_array($enrollment?->grade_final, ['D', 'E'])) {
-              $gradeColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
+            $gradeColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
           } elseif ($enrollment?->grade_final === 'F') {
-              $gradeColor = 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+            $gradeColor = 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
           } else {
-              $gradeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
+            $gradeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
           }
         @endphp
 
@@ -70,11 +70,11 @@
           <div
             class="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
             <h4 class="font-bold text-xl text-gray-800 dark:text-gray-200 capitalize truncate"
-              title="{{ $enrollment->subject->name ?? 'N/A Subject' }}">
-              {{ $enrollment->subject->name ?? 'N/A Subject' }}
+              title="{{ $enrollment->courseOffering->subject->name ?? 'N/A Subject' }}">
+              {{ $enrollment->courseOffering->subject->name ?? 'N/A Subject' }}
             </h4>
-            <span class="p-1 rounded text-lg font-bold {{ $gradeColor }}">
-              {{ $enrollment->grade_final ?? 'Pending' }}
+            <span class="p-1 px-2 rounded font-bold {{ $gradeColor }}">
+              {{ $enrollment->grade_final ?? 'Pending' }} points
             </span>
           </div>
 
@@ -88,7 +88,7 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.teacher') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $enrollment->teacher->name ?? 'Unassigned' }}
+                  {{ $enrollment->courseOffering->teacher->name ?? 'Unassigned' }}
                 </p>
               </div>
             </div>
@@ -101,7 +101,8 @@
               <div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('message.classroom_/_schedule') }}</p>
                 <p class="font-medium text-gray-700 dark:text-gray-200">
-                  {{ $enrollment->classroom->name ?? __('message.n/a') }} ({{ $enrollment->schedule ?? 'TBA' }})
+                  {{ $enrollment->courseOffering->classroom->name ?? __('message.n/a') }}
+                  ({{ $enrollment->courseOffering->schedule ?? 'TBA' }})
                 </p>
               </div>
             </div>
@@ -122,10 +123,10 @@
 
           {{-- Card Footer: Actions ({{ __('message.edit') }}/Delete Enrollment, or View Course Details) --}}
           <div
-            class="p-2 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+            class="p-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
-            <a href="{{ route('admin.course_offerings.show', $enrollment) }}"
-              class="btn px-3 py-1 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
+            <a href="{{ route('admin.course_offerings.show', $enrollment->courseOffering) }}"
+              class="btn px-3 py-2 rounded-full flex items-center cursor-pointer text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors"
               title="View Course Details">
               <i class="fa-solid fa-eye me-2"></i>
               {{ __('message.view_course') }}

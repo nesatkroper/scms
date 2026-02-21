@@ -4,15 +4,15 @@
 
 @section('content')
   <div x-data="{
-      showDeleteModal: false,
-      deleteUrl: '',
-      classroomName: '',
-      confirmDelete(url, name) {
-          this.deleteUrl = url;
-          this.classroomName = name;
-          this.showDeleteModal = true;
-      }
-  }">
+        showDeleteModal: false,
+        deleteUrl: '',
+        classroomName: '',
+        confirmDelete(url, name) {
+            this.deleteUrl = url;
+            this.classroomName = name;
+            this.showDeleteModal = true;
+        }
+    }">
 
     <div
       class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
@@ -53,9 +53,8 @@
           <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
             <div class="relative w-full">
               <input type="search" name="search" id="searchInput"
-                placeholder="{{ __('message.search_classrooms_(name_or_room_number)') }}"
-                class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+                placeholder="{{ __('message.search_classrooms_(name_or_room_number)') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                  focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
                 value="{{ request('search') }}">
               <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
             </div>
@@ -98,18 +97,18 @@
 
                 {{-- Detail Button (Redirects to Show Page) --}}
                 {{-- <a href="{{ route('admin.classrooms.show', $classroom->id) }}"
-                class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
-                title="View Details">
-                <span class="btn-content">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </span>
-              </a> --}}
+                  class="btn p-2 flex items-center justify-center rounded-full size-8 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-900 transition-colors"
+                  title="View Details">
+                  <span class="btn-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </span>
+                </a> --}}
               </div>
 
             </div>
@@ -136,7 +135,7 @@
 
             {{-- Actions ({{ __('message.edit') }} Link + Delete Form) --}}
             <div
-              class="px-4 py-0.5 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
+              class="px-4 py-1 bg-gray-50 dark:bg-slate-700/50 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-2">
 
               @if (Auth::user()->hasPermissionTo('update_classroom'))
                 <a href="{{ route('admin.classrooms.edit', $classroom->id) }}"
@@ -192,7 +191,8 @@
                 {{ __('message.no_classrooms_found') }}
               </h3>
               <p class="mt-1 text-sm text-red-500 dark:text-red-500">
-                {{ __('message.create_your_first_classroom_to_get_started') }}</p>
+                {{ __('message.create_your_first_classroom_to_get_started') }}
+              </p>
             </div>
           </div>
         @endforelse
@@ -216,8 +216,7 @@
         x-transition:leave-end="opacity-0 scale-95" @click.away="showDeleteModal = false"
         class="bg-white dark:bg-gray-800 p-4 rounded-[2rem] shadow-2xl border border-white/20 dark:border-gray-700 w-full max-w-md">
         <div class="text-center">
-          <div
-            class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
+          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
             <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400 text-3xl"></i>
           </div>
           <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('message.confirm_deletion') }}</h3>

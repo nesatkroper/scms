@@ -57,7 +57,7 @@
                 {{ __('message.select_course_offering') }} <span class="text-red-500">*</span>
               </label>
               <select id="course_offering_id" name="course_offering_id" required
-                class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
+                class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('course_offering_id') border-red-500 @enderror">
                 <option value="">-- {{ __('message.choose_a_course') }} --</option>
                 @foreach ($availableCourses as $course)
                   <option value="{{ $course->id }}" {{ old('course_offering_id') == $course->id ? 'selected' : '' }}>
@@ -78,7 +78,7 @@
                 {{ __('message.payment_status') }} <span class="text-red-500">*</span>
               </label>
               <select id="payment_status" name="payment_status" required
-                class="w-full p-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('payment_status') border-red-500 @enderror">
+                class="w-full p-2 border px-4 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('payment_status') border-red-500 @enderror">
                 <option value="" disabled>{{ __('message.select_payment_status') }}</option>
                 @foreach (['pending', 'paid', 'overdue', 'free'] as $p)
                   <option value="{{ $p }}" {{ old('payment_status', 'pending') == $p ? 'selected' : '' }}>
@@ -98,7 +98,8 @@
             <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {{ __('message.remarks_(optional)') }}
             </label>
-            <textarea name="remarks" id="remarks" rows="5" placeholder="Any special notes about this student's enrollment."
+            <textarea name="remarks" id="remarks" rows="5"
+              placeholder="Any special notes about this student's enrollment."
               class="w-full border-gray-300 p-3 dark:border-gray-600 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('remarks') border-red-500 @enderror">{{ old('remarks') }}</textarea>
             @error('remarks')
               <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
