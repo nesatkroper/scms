@@ -30,19 +30,28 @@
             <select class="form-control-tailwind rounded-lg" id="report_type" name="report_type" required>
 
               <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
-                {{ __('message.student_enrollment') }}</option>
+                {{ __('message.student_enrollment') }}
+              </option>
 
               <option value="attendance" {{ request('report_type') == 'attendance' ? 'selected' : '' }}>
-                {{ __('message.attendance') }} {{ __('message.report') }}</option>
+                {{ __('message.attendance') }} {{ __('message.report') }}
+              </option>
 
               <option value="scores" {{ request('report_type') == 'scores' ? 'selected' : '' }}>
-                {{ __('message.score_report') }}</option>
+                {{ __('message.score_report') }}
+              </option>
+
+              <option value="financial_income" {{ request('report_type') == 'financial_income' ? 'selected' : '' }}>
+                {{ __('message.financial_income') }}
+              </option>
 
               <option value="financial_expenses" {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
-                {{ __('message.financial_expenses') }}</option>
+                {{ __('message.financial_expenses') }}
+              </option>
 
               <option value="financial_summary" {{ request('report_type') == 'financial_summary' ? 'selected' : '' }}>
-                {{ __('message.financial_summary') }}</option>
+                {{ __('message.financial_summary') }}
+              </option>
             </select>
           </div>
 
@@ -65,13 +74,12 @@
                 min="{{ now()->toDateString() }}" max="2027-12-31"
                 value="{{ old('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '') }}"
                 class="block w-full ps-9 pe-3 py-2.5
-               bg-neutral-secondary-medium border border-default-medium
-               text-heading text-sm rounded-base
-               focus:ring-brand focus:border-brand
-               shadow-xs placeholder:text-body
-               dark:bg-gray-700 dark:border-gray-600 dark:text-white
-               @error('start_date') border-red-500 @enderror"
-                placeholder="{{ __('message.select_start_date') }}">
+                 bg-neutral-secondary-medium border border-default-medium
+                 text-heading text-sm rounded-base
+                 focus:ring-brand focus:border-brand
+                 shadow-xs placeholder:text-body
+                 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                 @error('start_date') border-red-500 @enderror" placeholder="{{ __('message.select_start_date') }}">
             </div>
 
             @error('start_date')
@@ -98,13 +106,12 @@
                 min="{{ now()->toDateString() }}" max="2027-12-31"
                 value="{{ old('end_date', $defaultEnd ? \Carbon\Carbon::parse($defaultEnd)->format('Y-m-d') : '') }}"
                 class="block w-full ps-9 pe-3 py-2.5
-               bg-neutral-secondary-medium border border-default-medium
-               text-heading text-sm rounded-base
-               focus:ring-brand focus:border-brand
-               shadow-xs placeholder:text-body
-               dark:bg-gray-700 dark:border-gray-600 dark:text-white
-               @error('end_date') border-red-500 @enderror"
-                placeholder="{{ __('message.select_end_date') }}">
+                 bg-neutral-secondary-medium border border-default-medium
+                 text-heading text-sm rounded-base
+                 focus:ring-brand focus:border-brand
+                 shadow-xs placeholder:text-body
+                 dark:bg-gray-700 dark:border-gray-600 dark:text-white
+                 @error('end_date') border-red-500 @enderror" placeholder="{{ __('message.select_end_date') }}">
             </div>
 
             @error('end_date')
@@ -145,7 +152,8 @@
                   <option value="">{{ __('message.all_courses') }}</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}</option>
+                      {{ $name }}
+                    </option>
                   @endforeach
                 </select>
               </div>
@@ -158,7 +166,8 @@
                   <option value="">{{ __('message.all') }}</option>
                   @foreach (['studying', 'suspended', 'dropped', 'completed'] as $status)
                     <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
-                      {{ ucfirst($status) }}</option>
+                      {{ ucfirst($status) }}
+                    </option>
                   @endforeach
                 </select>
               </div>
@@ -176,7 +185,8 @@
                   <option value="">{{ __('message.all_courses') }}</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}</option>
+                      {{ $name }}
+                    </option>
                   @endforeach
                 </select>
               </div>
@@ -188,7 +198,8 @@
                   <option value="">{{ __('message.all') }}</option>
                   @foreach (['present', 'absent', 'late'] as $status)
                     <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
-                      {{ ucfirst($status) }}</option>
+                      {{ ucfirst($status) }}
+                    </option>
                   @endforeach
                 </select>
               </div>
@@ -206,7 +217,8 @@
                   <option value="">{{ __('message.all_courses') }}</option>
                   @foreach ($courses as $id => $name)
                     <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}</option>
+                      {{ $name }}
+                    </option>
                   @endforeach
                 </select>
               </div>
@@ -217,11 +229,46 @@
                   <option value="">{{ __('message.all') }}</option>
                   @foreach (['quiz', 'midterm', 'final'] as $type)
                     <option value="{{ $type }}" {{ request('exam_type') == $type ? 'selected' : '' }}>
-                      {{ ucfirst($type) }}</option>
+                      {{ ucfirst($type) }}
+                    </option>
                   @endforeach
                 </select>
               </div>
 
+            </div>
+
+            {{-- Financial Income Filters --}}
+          @elseif (request('report_type') == 'financial_income')
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.fee_type') }}</label>
+                <select class="form-control-tailwind rounded-lg" name="fee_type_id">
+                  <option value="">{{ __('message.all_types') }}</option>
+                  @foreach ($feeTypes as $id => $name)
+                    <option value="{{ $id }}" {{ request('fee_type_id') == $id ? 'selected' : '' }}>
+                      {{ $name }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+            {{-- Financial Expense Filters --}}
+          @elseif (request('report_type') == 'financial_expenses')
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.expense_category') }}</label>
+                <select class="form-control-tailwind rounded-lg" name="expense_category_id">
+                  <option value="">{{ __('message.all_categories') }}</option>
+                  @foreach ($expenseCategories as $id => $name)
+                    <option value="{{ $id }}" {{ request('expense_category_id') == $id ? 'selected' : '' }}>
+                      {{ $name }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
             </div>
 
             {{-- No filters --}}
@@ -316,11 +363,11 @@
 
 @push('scripts')
   <script>
-    document.getElementById('report_type').addEventListener('change', function() {
+    document.getElementById('report_type').addEventListener('change', function () {
       const url = new URL(window.location.href);
 
-      ['course_offering_id', 'status', 'exam_type', 'expense_category_id']
-      .forEach(param => url.searchParams.delete(param));
+      ['course_offering_id', 'status', 'exam_type', 'expense_category_id', 'fee_type_id']
+        .forEach(param => url.searchParams.delete(param));
 
       url.searchParams.set('report_type', this.value);
       window.location.href = url.toString();

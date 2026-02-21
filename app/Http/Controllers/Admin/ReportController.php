@@ -12,6 +12,8 @@ use App\Models\Score;
 use App\Models\Subject;
 use App\Models\CourseOffering;
 use App\Models\Fee;
+use App\Models\FeeType;
+use App\Models\ExpenseCategory;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -37,6 +39,8 @@ class ReportController extends BaseController
         ->mapWithKeys(fn($c) => [
           $c->id => $c->subject->name . " ({$c->time_slot})"
         ]),
+      'feeTypes' => FeeType::pluck('name', 'id'),
+      'expenseCategories' => ExpenseCategory::pluck('name', 'id'),
 
       'reportType' => null,
       'data'       => null,
@@ -63,6 +67,7 @@ class ReportController extends BaseController
       'financial_expenses' => 'reportFinancialExpenses',
       'attendance'        => 'reportAttendance',
       'scores'            => 'reportScores',
+      'financial_income'   => 'reportFinancialIncome',
       'financial_summary' => 'reportFinancialSummary',
     ];
 
@@ -83,8 +88,8 @@ class ReportController extends BaseController
         break;
 
       case 'financial_expenses':
-        $defaultStart = Expense::min('date');
-        $defaultEnd   = Expense::max('date');
+        $defaultStart = Expense::whereNotNull('approved_by')->min('date');
+        $defaultEnd   = Expense::whereNotNull('approved_by')->max('date');
         break;
 
       case 'attendance':
@@ -95,6 +100,11 @@ class ReportController extends BaseController
       case 'scores':
         $defaultStart = Score::min('created_at');
         $defaultEnd   = Score::max('created_at');
+        break;
+
+      case 'financial_income':
+        $defaultStart = Fee::whereNotNull('payment_date')->min('payment_date');
+        $defaultEnd   = Fee::whereNotNull('payment_date')->max('payment_date');
         break;
 
       case 'financial_summary':
@@ -119,6 +129,8 @@ class ReportController extends BaseController
         ->mapWithKeys(fn($c) => [
           $c->id => $c->subject->name . " ({$c->time_slot})"
         ]),
+      'feeTypes'          => FeeType::pluck('name', 'id'),
+      'expenseCategories' => ExpenseCategory::pluck('name', 'id'),
       'reportType'    => $type,
       'data'          => $response['data'],
       'title'         => $response['title'],
@@ -161,6 +173,7 @@ class ReportController extends BaseController
   private function reportFinancialExpenses($request)
   {
     $query = Expense::with(['category', 'creator'])
+      ->whereNotNull('approved_by')
       ->orderBy('date', 'desc');
 
     if ($request->expense_category_id) {
@@ -181,7 +194,38 @@ class ReportController extends BaseController
       'data'  => [
         'list' => $query->paginate(50),
         'summary' => [
-          'total' => (clone $query)->sum('amount'),
+          'total_expenses' => (clone $query)->sum('amount'),
+          'count' => (clone $query)->count(),
+        ]
+      ]
+    ];
+  }
+
+  private function reportFinancialIncome($request)
+  {
+    $query = Fee::with(['student', 'feeType', 'receiver'])
+      ->whereNotNull('payment_date')
+      ->orderBy('payment_date', 'desc');
+
+    if ($request->fee_type_id) {
+      $query->where('fee_type_id', $request->fee_type_id);
+    }
+
+    if ($request->start_date) {
+      $query->whereDate('payment_date', '>=', $request->start_date);
+    }
+
+    if ($request->end_date) {
+      $query->whereDate('payment_date', '<=', $request->end_date);
+    }
+
+    return [
+      'title' => 'Financial Income Report',
+      'view'  => 'admin.reports.partials.income_report',
+      'data'  => [
+        'list' => $query->paginate(50),
+        'summary' => [
+          'total_income' => (clone $query)->sum('amount'),
           'count' => (clone $query)->count(),
         ]
       ]
@@ -297,6 +341,14 @@ class ReportController extends BaseController
 
     if ($type === 'excel') {
       $export = match ($reportType) {
+        'financial_income'   => new GenericReportExport($data, [
+          'Payment Date' => 'payment_date',
+          'Student'      => 'student.name',
+          'Amount'       => 'amount',
+          'Fee Type'     => 'feeType.name',
+          'Method'       => 'payment_method',
+          'Received By'  => 'receiver.name',
+        ]),
         'financial_summary'  => new \App\Exports\FinancialSummaryExport($data),
         'student_enrollment' => new \App\Exports\EnrollmentReportExport($data),
         default              => new GenericReportExport($data, ['ID' => 'id', 'Date' => 'created_at']),
