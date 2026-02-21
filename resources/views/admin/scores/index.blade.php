@@ -29,8 +29,7 @@
       <div class="flex justify-between mb-2">
         <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
           <svg class="size-8 p-1 rounded-full bg-indigo-50 text-indigo-600 dark:text-indigo-50 dark:bg-indigo-900"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor">
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M16.5 6.75A.75.75 0 0 1 17.25 7.5v6A.75.75 0 0 1 16.5 15h-9a.75.75 0 0 1-.75-.75v-6A.75.75 0 0 1 7.5 6.75h9Z" />
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -50,7 +49,7 @@
 
         <div class="flex gap-4">
           <a href="{{ route('admin.exams.index', ['exam_id' => $exam->id, 'course_offering_id' => $exam->courseOffering->id]) }}"
-            class="px-5 py-1 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+            class="px-5 py-1 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700 flex items-center">
             <span class="btn-content flex items-center justify-center">
               <i class="fa-solid fa-arrow-left me-2"></i>
               {{ __('message.back_to_exam') }}
@@ -86,14 +85,13 @@
             <div class="flex flex-col">
               <label
                 class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.score') }}</label>
-              {{-- <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
-                name="fee" value="{{ old('fee') }}" value="{{ $scoreEntry->score ?? 0 }}"
-                class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
-                text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"> --}}
+              {{-- <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}" name="fee"
+                value="{{ old('fee') }}" value="{{ $scoreEntry->score ?? 0 }}" class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
+                    text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"> --}}
               <input type="number" name="score_{{ $student->id }}" min="0" max="{{ $exam->total_marks }}"
                 value="{{ $scoreEntry->score ?? '' }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
-              text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
             </div>
 
@@ -103,7 +101,7 @@
                 class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('message.remarks') }}</label>
               <input type="text" name="remarks_{{ $student->id }}" value="{{ $scoreEntry->remarks ?? '' }}"
                 class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm
-                text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    text-gray-800 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             </div>
 
           </div>

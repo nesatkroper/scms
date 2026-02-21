@@ -37,9 +37,8 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="{{ __('message.search_expenses_placeholder_detail') }}"
-              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                       focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-800 dark:text-gray-100"
+              placeholder="{{ __('message.search_expenses_placeholder_detail') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                         focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
@@ -171,8 +170,7 @@
           </div>
         </div>
       @empty
-        <div
-          class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
           {{ __('message.no_expense_records_found_click_record_new_expense_to_start') }}
         </div>
       @endforelse

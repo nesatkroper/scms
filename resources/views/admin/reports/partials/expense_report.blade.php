@@ -20,6 +20,7 @@
         <th scope="col" class="px-6 py-3">{{ __('message.amount') }}</th>
         <th scope="col" class="px-6 py-3">{{ __('message.category') }}</th>
         <th scope="col" class="px-6 py-3">{{ __('message.recorded_by') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.approved_by') }}</th>
         <th scope="col" class="px-6 py-3">{{ __('message.description') }}</th>
       </tr>
     </thead>
@@ -40,11 +41,14 @@
           </td>
           {{-- Category --}}
           <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
-            {{ $expense->expenseCategory->name ?? __('message.n/a') }}
+            {{ $expense->category->name ?? __('message.n/a') }}
           </td>
           {{-- Created By --}}
           <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
-            {{ $expense->createdBy->name ?? 'System' }}
+            {{ $expense->creator->name ?? __('message.n/a') }}
+          </td>
+          <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+            {{ $expense->approver->name ?? __('message.n/a') }}
           </td>
           {{-- Description --}}
           <td class="px-6 py-4 italic text-gray-500 dark:text-gray-400">
