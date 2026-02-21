@@ -296,6 +296,8 @@ return [
   'create_new_admission_record' => "បង្កើតកំណត់ត្រាការចូលរៀនថ្មី",
   'final_only_course' => "វគ្គសិក្សាសម្រាប់តែការប្រឡងបញ្ចប់",
   'exams_list_for' => "បញ្ជីប្រឡងសម្រាប់",
+  'total_expenses' => "ចំណាយសរុប",
+  'net_balance' => "សមតុល្យសុទ្ធ",
   'total_expenses_logged' => "ចំណាយសរុបដែលបានកត់ត្រា",
   'cash' => "សាច់ប្រាក់",
   'card' => "កាត",
@@ -612,5 +614,3 @@ return [
   'create_teacher' => "បង្កើតគ្រូបង្រៀន",
   'phone_validation_note' => "អនុញ្ញាតតែលេខទូរស័ព្ទកម្ពុជាប៉ុណ្ណោះ (០... ឬ +៨៥៥...)",
 ];
-
-

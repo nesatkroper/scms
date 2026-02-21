@@ -296,10 +296,12 @@ return [
   'create_new_admission_record' => "Create New Admission Record",
   'final_only_course' => "Final Only Course",
   'exams_list_for' => "Exams List for",
+  'total_expenses' => "Total Expenses",
   'total_expenses_logged' => "Total Expenses Logged",
   'cash' => "Cash",
   'card' => "Card",
   'send_notification' => "Send Notification",
+  'net_balance' => "Net Balance",
   'filter_by_role' => "Filter by Role",
   'all' => "All",
   'title' => "Title",
@@ -622,6 +624,3 @@ return [
   'reset_search' => "Reset Search",
   'search_subjects' => "Search Subjects",
 ];
-
-
-
