@@ -50,10 +50,10 @@
         @forelse($data['income'] ?? [] as $income)
           <tr class="border-b dark:border-gray-700">
             <td class="p-2 text-gray-700 dark:text-gray-300">
-              {{ $income->payment_date ?? '-' }}
+              {{ date('Y-m-d', strtotime($income->payment_date)) ?? '-' }}
             </td>
             <td class="p-2 text-gray-700 dark:text-gray-300">
-              {{ $income->description ?? '-' }}
+              {{ $income->remarks ?? '-' }}
             </td>
             <td class="p-2 text-green-600 dark:text-green-400">
               ${{ number_format($income->amount ?? 0, 2) }}
