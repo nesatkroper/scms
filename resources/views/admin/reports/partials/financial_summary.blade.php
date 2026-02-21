@@ -25,89 +25,92 @@
         ${{ number_format(($data['total_income'] ?? 0) - ($data['total_expenses'] ?? 0), 2) }}
       </p>
     </div>
-
   </div>
 
-  <div class="overflow-x-auto">
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.income_breakdown') }}</h3>
+  <div class="flex gap-4">
+    <div class="overflow-x-auto w-1/2">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.income_breakdown') }}</h3>
 
-    <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
-      <thead class="bg-gray-100 dark:bg-gray-700">
-        <tr>
-          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.date') }}
-          </th>
-          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.description') }}
-          </th>
-          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.amount') }}
-          </th>
-        </tr>
-      </thead>
-
-      <tbody class="bg-white dark:bg-gray-800">
-        @forelse($data['income'] ?? [] as $income)
-          <tr class="border-b dark:border-gray-700">
-            <td class="p-2 text-gray-700 dark:text-gray-300">
-              {{ date('Y-m-d', strtotime($income->payment_date)) ?? '-' }}
-            </td>
-            <td class="p-2 text-gray-700 dark:text-gray-300">
-              {{ $income->remarks ?? '-' }}
-            </td>
-            <td class="p-2 text-green-600 dark:text-green-400">
-              ${{ number_format($income->amount ?? 0, 2) }}
-            </td>
-          </tr>
-        @empty
+      <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
+        <thead class="bg-gray-100 dark:bg-gray-700">
           <tr>
-            <td colspan="3" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">
-              {{ __('message.no_income_records_found') }}
-            </td>
+            <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+              {{ __('message.date') }}
+            </th>
+            <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+              {{ __('message.description') }}
+            </th>
+            <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+              {{ __('message.amount') }}
+            </th>
           </tr>
-        @endforelse
-      </tbody>
+        </thead>
 
-    </table>
-  </div>
+        <tbody class="bg-white dark:bg-gray-800">
+          @forelse($data['income'] ?? [] as $income)
+            <tr class="border-b dark:border-gray-700">
+              <td class="p-2 text-gray-700 dark:text-gray-300">
+                {{ date('Y-m-d', strtotime($income->payment_date)) ?? '-' }}
+              </td>
+              <td class="p-2 text-gray-700 dark:text-gray-300">
+                {{ $income->remarks ?? '-' }}
+              </td>
+              <td class="p-2 text-green-600 dark:text-green-400">
+                ${{ number_format($income->amount ?? 0, 2) }}
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="3" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">
+                {{ __('message.no_income_records_found') }}
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
 
-  <div class="overflow-x-auto mt-6">
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.expense_breakdown') }}</h3>
+      </table>
+    </div>
 
-    <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
-      <thead class="bg-gray-100 dark:bg-gray-700">
-        <tr>
-          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.date') }}
-          </th>
-          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.category') }}
-          </th>
-          <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.amount') }}
-          </th>
-        </tr>
-      </thead>
+    <div class="overflow-x-auto w-1/2">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.expense_breakdown') }}</h3>
 
-      <tbody class="bg-white dark:bg-gray-800">
-        @forelse($data['expenses'] ?? [] as $expense)
-          <tr class="border-b dark:border-gray-700">
-            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->date ?? '-' }}</td>
-            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->category->name ?? '-' }}</td>
-            <td class="p-2 text-red-600 dark:text-red-400">
-              ${{ number_format($expense->amount ?? 0, 2) }}
-            </td>
-          </tr>
-        @empty
+      <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
+        <thead class="bg-gray-100 dark:bg-gray-700">
           <tr>
-            <td colspan="3" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">
-              {{ __('message.no_expense_records_found') }}
-            </td>
+            <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+              {{ __('message.date') }}
+            </th>
+            <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+              {{ __('message.category') }}
+            </th>
+            <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
+              {{ __('message.amount') }}
+            </th>
           </tr>
-        @endforelse
-      </tbody>
+        </thead>
 
-    </table>
+        <tbody class="bg-white dark:bg-gray-800">
+          @forelse($data['expenses'] ?? [] as $expense)
+            <tr class="border-b dark:border-gray-700">
+              <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->date ?? '-' }}</td>
+              <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->category->name ?? '-' }}</td>
+              <td class="p-2 text-red-600 dark:text-red-400">
+                ${{ number_format($expense->amount ?? 0, 2) }}
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="3" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">
+                {{ __('message.no_expense_records_found') }}
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
+
+      </table>
+    </div>
   </div>
+
+
 
 </div>

@@ -99,10 +99,10 @@ class ReportController extends BaseController
 
       case 'financial_summary':
 
-        $start1 = Fee::min('created_at');
-        $start2 = Expense::min('date');
-        $end1   = Fee::max('created_at');
-        $end2   = Expense::max('date');
+        $start1 = Fee::whereNotNull('payment_date')->min('payment_date');
+        $start2 = Expense::whereNotNull('approved_by')->min('date');
+        $end1   = Fee::whereNotNull('payment_date')->max('payment_date');
+        $end2   = Expense::whereNotNull('approved_by')->max('date');
 
         $defaultStart = min(array_filter([$start1, $start2]));
         $defaultEnd   = max(array_filter([$end1, $end2]));
@@ -247,21 +247,23 @@ class ReportController extends BaseController
 
   private function reportFinancialSummary($request)
   {
-    $incomeQuery = Fee::query();
-    $expenseQuery = Expense::with('category');
+    $incomeQuery = Fee::query()->whereNotNull('payment_date');
+    $expenseQuery = Expense::with('category')->whereNotNull('approved_by');
 
     if ($request->start_date) {
-      $incomeQuery->whereDate('created_at', '>=', $request->start_date);
+      $incomeQuery->whereDate('payment_date', '>=', $request->start_date);
       $expenseQuery->whereDate('date', '>=', $request->start_date);
     }
 
     if ($request->end_date) {
-      $incomeQuery->whereDate('created_at', '<=', $request->end_date);
+      $incomeQuery->whereDate('payment_date', '<=', $request->end_date);
       $expenseQuery->whereDate('date', '<=', $request->end_date);
     }
 
-    $incomeList = $incomeQuery->orderBy('created_at')->get();
+    $incomeList = $incomeQuery->orderBy('payment_date')->get();
     $expenseList = $expenseQuery->orderBy('date')->get();
+
+    // dd($incomeList, $expenseList);
 
     $totalIncome = $incomeList->sum('amount');
     $totalExpenses = $expenseList->sum('amount');
@@ -297,72 +299,10 @@ class ReportController extends BaseController
       $export = match ($reportType) {
         'financial_summary'  => new \App\Exports\FinancialSummaryExport($data),
         'student_enrollment' => new \App\Exports\EnrollmentReportExport($data),
-        // 'financial_expenses' => new \App\Exports\ExpenseReportExport($data),
-        // 'attendance'         => new \App\Exports\AttendanceReportExport($data),
-        // 'scores'             => new \App\Exports\ScoreReportExport($data),
         default              => new GenericReportExport($data, ['ID' => 'id', 'Date' => 'created_at']),
       };
 
       return Excel::download($export, "{$title}.xlsx");
     }
   }
-
-  // private function exportReport($response, $type)
-  // {
-  //   $view = $response['view'];
-  //   $data = $response['data'];
-  //   $title = $response['title'];
-  //   $reportType = request('report_type');
-
-  //   if ($type === 'pdf') {
-  //     return Pdf::loadView('admin.reports.pdf.master', [
-  //       'view'  => $view,
-  //       'data'  => $data,
-  //       'title' => $title,
-  //     ])->setPaper('a4', 'portrait')->download("{$title}.pdf");
-  //   }
-
-  //   if ($type === 'excel') {
-  //     if ($reportType === 'financial_summary') {
-  //       return Excel::download(new \App\Exports\FinancialSummaryExport($data), "{$title}.xlsx");
-  //     }
-
-  //     $mapping = match ($reportType) {
-  //       'student_enrollment' => [
-  //         'Student Name' => 'student.name',
-  //         'Course'       => 'courseOffering.subject.name',
-  //         'Date'         => 'created_at',
-  //         'Status'       => 'status',
-  //       ],
-  //       'attendance' => [
-  //         'Student Name' => 'student.name',
-  //         'Course'       => 'courseOffering.subject.name',
-  //         'Date'         => 'date',
-  //         'Status'       => 'status',
-  //       ],
-  //       'scores' => [
-  //         'Student Name' => 'student.name',
-  //         'Exam'         => 'exam.type',
-  //         'Subject'      => 'exam.courseOffering.subject.name',
-  //         'Score'        => 'score',
-  //         'Grade'        => 'grade',
-  //       ],
-  //       'financial_expenses' => [
-  //         'Category' => 'category.name',
-  //         'Amount'   => 'amount',
-  //         'Date'     => 'date',
-  //         'Notes'    => 'notes',
-  //       ],
-  //       default => [
-  //         'ID'   => 'id',
-  //         'Date' => 'created_at'
-  //       ]
-  //     };
-
-  //     return Excel::download(
-  //       new GenericReportExport($data, $mapping),
-  //       "{$title}.xlsx"
-  //     );
-  //   }
-  // }
 }
