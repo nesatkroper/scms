@@ -18,11 +18,10 @@
 
     <div class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm">
       <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">{{ __('message.net_balance') }}</h4>
-      <p
-        class="text-2xl font-bold
+      <p class="text-2xl font-bold
         @if (($data['total_income'] ?? 0) - ($data['total_expenses'] ?? 0) >= 0) text-blue-600 dark:text-blue-400
         @else
-          text-red-600 dark:text-red-400 @endif">
+        text-red-600 dark:text-red-400 @endif">
         ${{ number_format(($data['total_income'] ?? 0) - ($data['total_expenses'] ?? 0), 2) }}
       </p>
     </div>
@@ -36,20 +35,26 @@
       <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
           <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.date') }}</th>
+            {{ __('message.date') }}
+          </th>
           <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
             {{ __('message.description') }}
           </th>
           <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.amount') }}</th>
+            {{ __('message.amount') }}
+          </th>
         </tr>
       </thead>
 
       <tbody class="bg-white dark:bg-gray-800">
         @forelse($data['income'] ?? [] as $income)
           <tr class="border-b dark:border-gray-700">
-            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $income->date ?? '-' }}</td>
-            <td class="p-2 text-gray-700 dark:text-gray-300">{{ $income->description ?? '-' }}</td>
+            <td class="p-2 text-gray-700 dark:text-gray-300">
+              {{ $income->payment_date ?? '-' }}
+            </td>
+            <td class="p-2 text-gray-700 dark:text-gray-300">
+              {{ $income->description ?? '-' }}
+            </td>
             <td class="p-2 text-green-600 dark:text-green-400">
               ${{ number_format($income->amount ?? 0, 2) }}
             </td>
@@ -73,11 +78,14 @@
       <thead class="bg-gray-100 dark:bg-gray-700">
         <tr>
           <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.date') }}</th>
+            {{ __('message.date') }}
+          </th>
           <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.category') }}</th>
+            {{ __('message.category') }}
+          </th>
           <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">
-            {{ __('message.amount') }}</th>
+            {{ __('message.amount') }}
+          </th>
         </tr>
       </thead>
 
