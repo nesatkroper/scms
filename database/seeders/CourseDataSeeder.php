@@ -22,9 +22,9 @@ class CourseDataSeeder extends Seeder
       return;
     }
 
-    $this->command->info('Seeding 100 Classrooms...');
-    $classroomRoomNumbers = []; 
-    for ($i=1; $i<=100; $i++) $classroomRoomNumbers[] = 'R' . (100 + $i);
+    $this->command->info('Seeding 10 Classrooms...');
+    $classroomRoomNumbers = [];
+    for ($i = 1; $i <= 10; $i++) $classroomRoomNumbers[] = 'R' . (10 + $i);
     $faker->unique(true);
     $classroomIds = [];
 
@@ -32,8 +32,8 @@ class CourseDataSeeder extends Seeder
       $classroom = Classroom::updateOrCreate(
         ['room_number' => $roomNumber],
         [
-          'name' => 'Room ' . ($index + 100),
-          'capacity' => 50, // Capacity 50
+          'name' => 'Room ' . ($index + 10),
+          'capacity' => 50,
         ]
       );
       $classroomIds[] = $classroom->id;
@@ -77,9 +77,9 @@ class CourseDataSeeder extends Seeder
       $subjectIds[] = $subject->id;
     }
 
-    $this->command->info('Seeding 100 Course Offerings...');
+    $this->command->info('Seeding 10 Course Offerings...');
 
-    $totalOfferings = 100;
+    $totalOfferings = 10;
     $numSubjects = count($subjectIds);
     $subjectAssignments = [];
 
@@ -102,7 +102,6 @@ class CourseDataSeeder extends Seeder
       $teacherId = $teacherIds[$teacherIndex % count($teacherIds)];
       $classroomId = $classroomIds[$classroomIndex % count($classroomIds)];
 
-      // Pick schedule and time_slot that don't violate unique constraint
       foreach ($schedules as $schedule) {
         foreach ($timeSlots as $timeSlot) {
           $teacherKey = "{$teacherId}-{$schedule}-{$timeSlot}";
@@ -126,10 +125,10 @@ class CourseDataSeeder extends Seeder
               'end_time' => $endTime,
               'join_start' => $faker->dateTimeBetween('-1 year', '-6 months')->format('Y-m-d'),
               'join_end' => $faker->dateTimeBetween('-6 months', '+3 months')->format('Y-m-d'),
-              'fee' => $faker->randomFloat(2, 50, 300),
+              'fee' => $faker->randomFloat(2, 10, 30),
             ]);
 
-            break 2; // exit both loops once we have a valid combination
+            break 2;
           }
         }
       }
