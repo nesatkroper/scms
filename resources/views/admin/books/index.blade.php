@@ -15,61 +15,67 @@
                 this.showDeleteModal = true;
             },
             async handleFiles(event) {
+                const files = Array.from(event.target.files);
+                if (files.length === 0) return;
+
+                const MAX_TOTAL_SIZE = 200 * 1024 * 1024;
+                let currentTotalSize = 0;
                 this.previews = [];
-                const files = event.target.files;
-                let totalSize = 0;
-                const MAX_TOTAL_SIZE = 200 * 1024 * 1024; // 200MB limit matching post_max_size
 
                 for (let file of files) {
-                    totalSize += file.size;
-                    if (file.type === 'application/pdf') {
-                        try {
-                            const thumb = await this.generateThumb(file);
-                            this.previews.push({
-                                name: file.name,
-                                thumb: thumb,
-                                size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
-                            });
-                        } catch (e) {
-                            console.error('Error generating preview:', e);
-                            this.previews.push({
-                                name: file.name,
-                                thumb: null,
-                                size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
-                            });
-                        }
+                    if (currentTotalSize + file.size > MAX_TOTAL_SIZE) {
+                        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+                        this.sizeWarningMsg = `{{ __('message.upload_size_warning') }}`.replace(':size', sizeMB).replace(':limit', '200');
+                        this.showSizeWarning = true;
+                        continue;
+                    }
+                    currentTotalSize += file.size;
+
+                    const previewItem = {
+                        file: file,
+                        name: file.name,
+                        thumb: null,
+                        size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
+                    };
+                    this.previews.push(previewItem);
+
+                    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+                        this.generateThumb(file).then(thumb => {
+                            previewItem.thumb = thumb;
+                        }).catch(e => console.warn('Thumbnail generation failed', e));
                     }
                 }
-
-                if (totalSize > MAX_TOTAL_SIZE) {
-                    const sizeMB = (totalSize / 1024 / 1024).toFixed(2);
-                    this.sizeWarningMsg = `{{ __('message.upload_size_warning') }}`.replace(':size', sizeMB).replace(':limit', '200');
-                    this.showSizeWarning = true;
-                }
+                this.syncFileInput();
             },
             async generateThumb(file) {
-                const arrayBuffer = await file.arrayBuffer();
-                const loadingTask = pdfjsLib.getDocument({
-                    data: arrayBuffer
-                });
-                const pdf = await loadingTask.promise;
-                const page = await pdf.getPage(1);
-                const viewport = page.getViewport({
-                    scale: 0.4
-                });
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                await page.render({
-                    canvasContext: context,
-                    viewport: viewport
-                }).promise;
-                return canvas.toDataURL();
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                    const pdf = await loadingTask.promise;
+                    const page = await pdf.getPage(1);
+                    const viewport = page.getViewport({ scale: 0.4 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    await page.render({ canvasContext: context, viewport: viewport }).promise;
+                    return canvas.toDataURL();
+                } catch (e) {
+                    return null;
+                }
             },
             removePreview(index) {
                 this.previews.splice(index, 1);
+                this.syncFileInput();
+            },
+            syncFileInput() {
+                const input = document.querySelector('input[name=\'books[]\']');
+                if (!input) return;
+                const dt = new DataTransfer();
+                this.previews.forEach(item => {
+                    if (item.file) dt.items.add(item.file);
+                });
+                input.files = dt.files;
             }
         }">
     <div
@@ -133,7 +139,13 @@
                 <template x-for="(item, index) in previews" :key="index">
                   <div class="relative group animate-in fade-in zoom-in duration-300">
                     <div
-                      class="aspect-[3/4] rounded-lg border-2 border-indigo-100 dark:border-gray-700 overflow-hidden bg-gray-50 dark:bg-gray-800 shadow-sm transition-all group-hover:border-indigo-400">
+                      class="aspect-[3/4] rounded-lg border-2 border-indigo-100 dark:border-gray-700 overflow-hidden bg-gray-50 dark:bg-gray-800 shadow-sm transition-all group-hover:border-indigo-400 relative">
+                      {{-- Remove Button --}}
+                      <button type="button" @click="removePreview(index)"
+                        class="absolute top-1 right-1 z-10 size-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-md">
+                        <i class="fa-solid fa-xmark text-[10px]"></i>
+                      </button>
+
                       <template x-if="item.thumb">
                         <img :src="item.thumb" class="w-full h-full object-cover">
                       </template>
@@ -173,13 +185,13 @@
               <div
                 class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                 <a href="{{ $book['url'] }}" target="_blank"
-                  class="p-2 bg-white rounded-full text-indigo-600 hover:scale-110 transition-transform shadow-lg"
+                  class="p-6 bg-white rounded-lg text-indigo-600 hover:scale-110 transition-transform shadow-lg"
                   title="{{ __('message.view_pdf') }}">
                   <i class="fa-solid fa-eye text-xl"></i>
                 </a>
                 <button type="button"
                   @click="confirmDelete('{{ route('admin.books.destroy', $book['filename']) }}', '{{ $book['name'] }}')"
-                  class="p-2 bg-white rounded-full text-red-600 hover:scale-110 transition-transform shadow-lg"
+                  class="p-6 bg-white rounded-lg text-red-600 hover:scale-110 transition-transform shadow-lg"
                   title="{{ __('message.delete') }}">
                   <i class="fa-solid fa-trash text-xl"></i>
                 </button>

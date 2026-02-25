@@ -18,32 +18,27 @@ class BookController extends Controller
       $directory = public_path('assets/books');
 
       if (!File::exists($directory)) {
-        return response()->json([
-          'status'  => false,
-          'message' => 'Books directory not found',
-          'books'   => [],
-        ], 404);
+        File::makeDirectory($directory, 0755, true);
       }
 
       $files = File::files($directory);
       $books = [];
 
       foreach ($files as $file) {
-        // Only include common document formats if needed, or all files
-        // For now, including all files in that directory
-        $filename = $file->getFilename();
-        $thumbnailName = str_replace('.pdf', '.png', $filename);
-        $thumbnailPath = public_path('assets/books/thumbnails/' . $thumbnailName);
+        if ($file->getExtension() === 'pdf') {
+          $filename = $file->getFilename();
+          $thumbnailName = str_replace('.pdf', '.png', $filename);
+          $thumbnailPath = public_path('assets/books/thumbnails/' . $thumbnailName);
 
-        $books[] = [
-          'name'      => $file->getFilenameWithoutExtension(),
-          'filename'  => $filename,
-          'url'       => asset('assets/books/' . $filename),
-          'thumbnail' => File::exists($thumbnailPath) ? asset('assets/books/thumbnails/' . $thumbnailName) : null,
-          'size'      => $this->formatBytes($file->getSize()),
-          'extension' => $file->getExtension(),
-          'last_modified' => date("Y-m-d H:i:s", $file->getMTime()),
-        ];
+          $books[] = [
+            'name'      => $file->getFilenameWithoutExtension(),
+            'filename'  => $filename,
+            'url'       => asset('assets/books/' . $filename),
+            'thumbnail' => File::exists($thumbnailPath) ? asset('assets/books/thumbnails/' . $thumbnailName) : null,
+            'size'      => $this->formatBytes($file->getSize()),
+            'last_modified' => date("Y-m-d H:i:s", $file->getMTime()),
+          ];
+        }
       }
 
       return response()->json([
