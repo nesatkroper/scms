@@ -514,6 +514,7 @@ return [
   'students_list' => "Students List",
 
   'teachers_list' => "Teachers List",
+  'enroll_new_student' => "Enroll New Student",
   'enroll_new_teacher' => "Enroll New Teacher",
   'search_teachers_by_name_or_email' => "Search teachers by name or email...",
   'courses_teaching' => "Courses Teaching",
@@ -569,6 +570,7 @@ return [
   'course_deleted' => "Course Deleted",
   'admission' => "Admission",
   'search_students_placeholder_simple' => "Search students...",
+  'search_students_by_name_or_email' => "Search students by name or email ...",
   'active' => "Active",
   'unknown' => "Unknown",
   'system' => "System",
