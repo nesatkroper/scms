@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseOfferingController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\SubjectController;
+use App\Http\Controllers\Api\BookController;
 
 Route::post('/v1/login', [AuthController::class, 'login']);
 
@@ -19,4 +20,5 @@ Route::middleware(['auth:sanctum'])
 
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/courses', [CourseOfferingController::class, 'index']);
+    Route::get('/books', [BookController::class, 'index']);
   });
