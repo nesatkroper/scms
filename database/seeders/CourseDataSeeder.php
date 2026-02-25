@@ -22,9 +22,9 @@ class CourseDataSeeder extends Seeder
       return;
     }
 
-    $this->command->info('Seeding 10 Classrooms...');
+    $this->command->info('Seeding 8 Classrooms...');
     $classroomRoomNumbers = [];
-    for ($i = 1; $i <= 10; $i++) $classroomRoomNumbers[] = 'R' . (10 + $i);
+    for ($i = 1; $i <= 8; $i++) $classroomRoomNumbers[] = 'R' . (8 + $i);
     $faker->unique(true);
     $classroomIds = [];
 
@@ -32,7 +32,7 @@ class CourseDataSeeder extends Seeder
       $classroom = Classroom::updateOrCreate(
         ['room_number' => $roomNumber],
         [
-          'name' => 'Room ' . ($index + 10),
+          'name' => 'Room ' . ($index + 8),
           'capacity' => 50,
         ]
       );
@@ -49,19 +49,6 @@ class CourseDataSeeder extends Seeder
       ['name' => 'Physics I', 'code' => 'PHYS101'],
       ['name' => 'Chemistry', 'code' => 'CHEM101'],
       ['name' => 'Biology', 'code' => 'BIO101'],
-      ['name' => 'Computer Science', 'code' => 'CS101'],
-      ['name' => 'Art', 'code' => 'ART101'],
-      ['name' => 'Music', 'code' => 'MUS101'],
-      ['name' => 'Literature', 'code' => 'LIT102'],
-      ['name' => 'Geography', 'code' => 'GEOG201'],
-      ['name' => 'Psychology', 'code' => 'PSY305'],
-      ['name' => 'Sociology', 'code' => 'SOC101'],
-      ['name' => 'Philosophy', 'code' => 'PHIL101'],
-      ['name' => 'Political Science', 'code' => 'POLS101'],
-      ['name' => 'Economics', 'code' => 'ECON101'],
-      ['name' => 'Business', 'code' => 'BUS101'],
-      ['name' => 'Marketing', 'code' => 'MKT101'],
-      ['name' => 'Accounting', 'code' => 'ACC101'],
     ];
 
     $subjectIds = [];
