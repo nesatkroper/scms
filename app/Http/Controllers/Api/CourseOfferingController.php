@@ -27,7 +27,7 @@ class CourseOfferingController extends Controller
         'teacher',
         'classroom'
       ])
-        ->where('end_time', '>', now())
+        ->where('join_end', '>', now())
         ->latest()
         ->get();
 
