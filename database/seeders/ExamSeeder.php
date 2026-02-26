@@ -13,7 +13,6 @@ class ExamSeeder extends Seeder
     $exams = [];
 
     foreach ($courseIds as $courseId) {
-      // Midterm
       $exams[] = [
         'type' => 'midterm',
         'course_offering_id' => $courseId,
@@ -25,8 +24,7 @@ class ExamSeeder extends Seeder
         'updated_at' => now(),
       ];
 
-       // Final
-       $exams[] = [
+      $exams[] = [
         'type' => 'final',
         'course_offering_id' => $courseId,
         'description' => "Final exam for course offering {$courseId}",
@@ -39,9 +37,9 @@ class ExamSeeder extends Seeder
     }
 
     DB::table('exams')->upsert(
-        $exams, 
-        ['course_offering_id', 'type'], 
-        ['description', 'date', 'total_marks', 'passing_marks', 'updated_at']
+      $exams,
+      ['course_offering_id', 'type'],
+      ['description', 'date', 'total_marks', 'passing_marks', 'updated_at']
     );
   }
 }

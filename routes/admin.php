@@ -22,7 +22,8 @@ use App\Http\Controllers\Admin\{
   FeeTypeController,
   FeeController,
   NotificationController,
-  ReportController
+  ReportController,
+  BookController
 };
 
 
@@ -160,4 +161,12 @@ Route::prefix('admin')
       Route::post('/bulk-data', [TeacherController::class, 'getBulkData'])->name('getBulkData');
       Route::post('/bulk-update', [TeacherController::class, 'bulkUpdate'])->name('bulkUpdate');
     });
+
+    Route::prefix('books')
+      ->as('books.')
+      ->group(function () {
+        Route::get('/', [BookController::class, 'index'])->name('index');
+        Route::post('/', [BookController::class, 'store'])->name('store');
+        Route::delete('/{filename}', [BookController::class, 'destroy'])->name('destroy');
+      });
   });

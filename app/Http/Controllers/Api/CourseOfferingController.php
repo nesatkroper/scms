@@ -8,14 +8,39 @@ use Illuminate\Http\Request;
 
 class CourseOfferingController extends Controller
 {
+  // public function index()
+  // {
+  //   $offerings = CourseOffering::with([
+  //     'subject',
+  //     'teacher',
+  //     'classroom'
+  //   ])->latest()->get();
+
+  //   return response()->json($offerings);
+  // }
+
   public function index()
   {
-    $offerings = CourseOffering::with([
-      'subject',
-      'teacher',
-      'classroom'
-    ])->latest()->get();
+    try {
+      $offerings = CourseOffering::with([
+        'subject',
+        'teacher',
+        'classroom'
+      ])
+        ->where('join_end', '>', now())
+        ->latest()
+        ->get();
 
-    return response()->json($offerings);
+      return response()->json([
+        'success' => true,
+        'data' => $offerings
+      ], 200);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Failed to fetch course offerings',
+        'error' => $e->getMessage()
+      ], 500);
+    }
   }
 }

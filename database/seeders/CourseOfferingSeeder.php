@@ -34,9 +34,9 @@ class CourseOfferingSeeder extends Seeder
         'time_slot' => 'morning',
         'start_time' => '08:00:00',
         'end_time' => '10:00:00',
-        'join_start' => now()->subDays(10),
-        'join_end' => now()->addDays(30),
-        'fee' => rand(1000, 5000),
+        'join_start' => now()->subDays(100),
+        'join_end' => now()->addDays(300),
+        'fee' => rand(10, 50),
         'created_at' => now(),
         'updated_at' => now(),
       ];

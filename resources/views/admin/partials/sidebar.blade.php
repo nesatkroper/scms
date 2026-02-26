@@ -1,12 +1,13 @@
 @php
   $academicsRoutes = [
-      'admin.subjects.*',
-      'admin.exams.*',
-      'admin.scores.*',
-      'admin.course_offerings.*',
-      'admin.classrooms.*',
-      'admin.attendances.*',
-      'admin.enrollments.*',
+    'admin.subjects.*',
+    'admin.exams.*',
+    'admin.scores.*',
+    'admin.course_offerings.*',
+    'admin.classrooms.*',
+    'admin.attendances.*',
+    'admin.enrollments.*',
+    'admin.books.*',
   ];
   $isAcademicsActive = request()->routeIs($academicsRoutes);
 
@@ -41,9 +42,8 @@
     <ul>
       @if (Auth::user()->hasPermissionTo('view_dashboard'))
         <li class="menu-item relative">
-          <a href="{{ route('admin.deshboard') }}"
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
-          {{ request()->routeIs('admin.deshboard*') ? 'bg-indigo-700' : '' }}">
+          <a href="{{ route('admin.deshboard') }}" class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+                      {{ request()->routeIs('admin.deshboard*') ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fas fa-tachometer-alt text-center"></i>
               <span class="ml-3 sidebar-text text-hidden">{{ __('message.dashboard') }}</span>
@@ -53,15 +53,16 @@
         </li>
       @endif
 
-      @if (Auth::user()->hasPermissionTo('view_classroom') ||
-              Auth::user()->hasPermissionTo('view_subject') ||
-              Auth::user()->hasPermissionTo('view_course-offering'))
+      @if (
+          Auth::user()->hasPermissionTo('view_classroom') ||
+          Auth::user()->hasPermissionTo('view_subject') ||
+          Auth::user()->hasPermissionTo('view_course-offering')
+        )
         <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
 
         <li class="menu-item relative">
-          <div
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
-          {{ $isAcademicsActive ? 'bg-indigo-700' : '' }}">
+          <div class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+                              {{ $isAcademicsActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="ri-graduation-cap-fill text-lg"></i>
               <span class="ml-3 sidebar-text text-hidden">{{ __('message.academics') }}</span>
@@ -75,7 +76,7 @@
                 <li>
                   <a href="{{ route('admin.classrooms.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.classrooms') }}</a>
+                                                {{ request()->routeIs('admin.classrooms.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.classrooms') }}</a>
                 </li>
               @endif
 
@@ -83,7 +84,7 @@
                 <li>
                   <a href="{{ route('admin.subjects.index') }}"
                     class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
-                {{ request()->routeIs('admin.subjects.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                                                {{ request()->routeIs('admin.subjects.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                     {{ __('message.subjects') }}
                   </a>
                 </li>
@@ -93,10 +94,18 @@
                 <li>
                   <a href="{{ route('admin.course_offerings.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.course_offering') }}
+                                                {{ request()->routeIs('admin.course_offerings.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.course_offering') }}
                   </a>
                 </li>
               @endif
+
+              <li>
+                <a href="{{ route('admin.books.index') }}"
+                  class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
+                                  {{ request()->routeIs('admin.books.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                  {{ __('message.books_library') }}
+                </a>
+              </li>
 
             </ul>
           </div>
@@ -105,9 +114,8 @@
 
       @if (Auth::user()->hasPermissionTo('view_teacher') || Auth::user()->hasPermissionTo('view_student'))
         <li class="menu-item relative">
-          <div
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
-          {{ $isOrganizationActive ? 'bg-indigo-700' : '' }}">
+          <div class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+                      {{ $isOrganizationActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fa-solid fa-lock"></i>
               <span class="ml-3 sidebar-text text-hidden">{{ __('message.organization') }}</span>
@@ -121,7 +129,7 @@
                 <li>
                   <a href="{{ route('admin.teachers.index') }}"
                     class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
-                {{ request()->routeIs('admin.teachers.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                                        {{ request()->routeIs('admin.teachers.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                     <span class="ml-2">{{ __('message.teachers') }}</span>
                   </a>
                 </li>
@@ -131,7 +139,7 @@
                 <li>
                   <a href="{{ route('admin.students.index') }}"
                     class="flex items-center justify-between py-2 hover:text-indigo-300 dark:hover:text-indigo-300 capitalize
-                {{ request()->routeIs('admin.students.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                                        {{ request()->routeIs('admin.students.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                     <span class="ml-2">{{ __('message.students') }}</span>
                   </a>
                 </li>
@@ -147,10 +155,9 @@
 
       @if (Auth::user()->hasPermissionTo('view_fee-type') || Auth::user()->hasPermissionTo('view_expense-category'))
         <li class="menu-item relative">
-          <div
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg
-                            mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
-                            {{ $isFinanceActive ? 'bg-indigo-700' : '' }}">
+          <div class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg
+                                        mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+                                        {{ $isFinanceActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fas fa-money-bill-wave text-center"></i>
               <span class="ml-3 sidebar-text text-hidden">{{ __('message.finance') }}</span>
@@ -165,7 +172,7 @@
                 <li>
                   <a href="{{ route('admin.fee_types.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.fee_types.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                                        {{ request()->routeIs('admin.fee_types.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                     {{ __('message.fee_collection') }}
                   </a>
                 </li>
@@ -175,7 +182,7 @@
                 <li>
                   <a href="{{ route('admin.expense_categories.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                {{ request()->routeIs('admin.expense_categories.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
+                                        {{ request()->routeIs('admin.expense_categories.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">
                     {{ __('message.expense_cost') }}
                   </a>
                 </li>
@@ -187,8 +194,7 @@
       @endif
 
       <li class="menu-item relative">
-        <a href="{{ route('admin.notifications.create') }}"
-          class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+        <a href="{{ route('admin.notifications.create') }}" class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
           {{ request()->routeIs('admin.notifications*') ? 'bg-indigo-700' : '' }}">
           <div class="wr-icon flex items-center">
             <i class="fa-regular fa-bell"></i>
@@ -200,9 +206,8 @@
 
       @if (Auth::user()->hasPermissionTo('view_report'))
         <li class="menu-item relative">
-          <a href="{{ route('admin.reports') }}"
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
-          {{ request()->routeIs('admin.reports') ? 'bg-indigo-700' : '' }}">
+          <a href="{{ route('admin.reports') }}" class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 transition-all duration-200
+                      {{ request()->routeIs('admin.reports') ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fas fa-tachometer-alt text-center"></i>
               <span class="ml-3 sidebar-text text-hidden">{{ __('message.report') }}</span>
@@ -217,9 +222,8 @@
 
       @if (Auth::user()->hasRole('admin'))
         <li class="menu-item relative">
-          <div
-            class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
-            {{ $isAdministratorActive ? 'bg-indigo-700' : '' }}">
+          <div class="flex items-center justify-between px-4 py-3 hover:bg-indigo-700 dark:hover:bg-gray-700 rounded-lg mx-2 cursor-pointer transition-all duration-200 js-submenu-toggle
+                        {{ $isAdministratorActive ? 'bg-indigo-700' : '' }}">
             <div class="wr-icon flex items-center">
               <i class="fa-solid fa-lock"></i>
               <span class="ml-3 sidebar-text text-hidden">{{ __('message.administrator') }}</span>
@@ -233,7 +237,7 @@
                 <li>
                   <a href="{{ route('admin.users.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                  {{ request()->routeIs('admin.users.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.users') }}</a>
+                                          {{ request()->routeIs('admin.users.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.users') }}</a>
                 </li>
               @endif
 
@@ -241,7 +245,7 @@
                 <li>
                   <a href="{{ route('admin.roles.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
-                  {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.roles') }}</a>
+                                          {{ request()->routeIs('admin.roles.*') ? 'text-indigo-300 font-semibold bg-indigo-700 dark:bg-gray-700 text-white dark:text-indigo-400 rounded-lg px-3 mt-1' : '' }}">{{ __('message.roles') }}</a>
                 </li>
               @endif
           </div>
