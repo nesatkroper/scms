@@ -56,6 +56,49 @@ class BookController extends Controller
   }
 
   /**
+   * Get book by its name
+   */
+  public function show($name)
+  {
+    try {
+      $directory = public_path('assets/books');
+      $filename = $name . '.pdf';
+      $path = $directory . '/' . $filename;
+
+      if (!File::exists($path)) {
+        return response()->json([
+          'status'  => false,
+          'message' => 'Book not found',
+        ], 404);
+      }
+
+      $thumbnailName = str_replace('.pdf', '.png', $filename);
+      $thumbnailPath = public_path('assets/books/thumbnails/' . $thumbnailName);
+
+      $book = [
+        'name'      => $name,
+        'filename'  => $filename,
+        'url'       => asset('assets/books/' . $filename),
+        'thumbnail' => File::exists($thumbnailPath) ? asset('assets/books/thumbnails/' . $thumbnailName) : null,
+        'size'      => $this->formatBytes(File::size($path)),
+        'last_modified' => date("Y-m-d H:i:s", File::lastModified($path)),
+      ];
+
+      return response()->json([
+        'status'  => true,
+        'message' => 'Book retrieved successfully',
+        'book'   => $book,
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'status'  => false,
+        'message' => 'Failed to retrieve book',
+        'error'   => $e->getMessage(),
+      ], 500);
+    }
+  }
+
+  /**
    * Format bytes to readable size
    */
   private function formatBytes($bytes, $precision = 2)
