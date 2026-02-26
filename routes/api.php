@@ -20,6 +20,9 @@ Route::middleware(['auth:sanctum'])
 
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/courses', [CourseOfferingController::class, 'index']);
-    Route::get('/books', [BookController::class, 'index']);
-    Route::get('/books/{name}', [BookController::class, 'show']);
   });
+
+Route::prefix('/v1')->group(function () {
+  Route::get('/books', [BookController::class, 'index']);
+  Route::get('/books/{name}', [BookController::class, 'show']);
+});
