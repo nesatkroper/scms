@@ -26,10 +26,10 @@
     @endif
 
     <div x-data="{ 
-                      showModal: false, 
-                      actionUrl: '', 
-                      courseName: ''
-                  }" x-cloak>
+                                          showModal: false, 
+                                          actionUrl: '', 
+                                          courseName: ''
+                                      }" x-cloak>
       <form action="{{ route('admin.course_offerings.index') }}" method="GET">
         <div
           class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -47,7 +47,7 @@
               <input type="search" name="search" id="searchInput"
                 placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}"
                 class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                                                      focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100" value="{{ request('search') }}">
+                                                                          focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100" value="{{ request('search') }}">
               <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
             </div>
 
@@ -132,8 +132,8 @@
 
               <x-info.item
                 name="{{ $offering->classroom->name ?? __('message.location_tbd') }}
-                                                                                                            ({{ $offering->classroom?->capacity }}
-                                                                                                            {{ __('message.seats') }})"
+                                                                                                                                                    ({{ $offering->classroom?->capacity }}
+                                                                                                                                                    {{ __('message.seats') }})"
                 icon="ri-door-open-fill text-xl" label="{{ __('message.classroom') }}"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
               <x-info.item name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
@@ -187,12 +187,22 @@
               </div>
 
               <div class="flex">
+                @if (\Carbon\Carbon::parse($offering->join_end)->isPast())
+                  <a href="{{ route('admin.enrollments.bulk_certificate', $offering->id) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Full Course Certificate">
+                    <i class="fa-solid fa-certificate me-2"></i>
+                    Create Cert
+                  </a>
+                @endif
                 <a href="{{ route('admin.course_offerings.show', $offering->id) }}"
                   class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-600 transition-colors"
                   title="{{ __('message.view_details') }}">
                   <i class="fa-regular fa-eye me-2"></i>
                   {{ __('message.detail') }}
                 </a>
+
+
 
                 @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                   @if (Auth::user()->hasPermissionTo('update_course-offering'))

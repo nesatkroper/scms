@@ -138,6 +138,11 @@ class EnrollmentController extends BaseController
   }
 
 
+  public function show($student_id, $course_offering_id)
+  {
+    return redirect()->route('admin.enrollments.certificate', [$student_id, $course_offering_id]);
+  }
+
   public function edit($student_id, $course_offering_id)
   {
     $enrollment = Enrollment::where('student_id', $student_id)
@@ -230,6 +235,38 @@ class EnrollmentController extends BaseController
       'enrollment' => $enrollment,
       'is_pdf'     => false,
       'b64Images'  => $images
+    ]);
+  }
+
+  public function bulkCertificate($course_offering_id)
+  {
+    $enrollments = Enrollment::where('course_offering_id', $course_offering_id)
+      ->with(['student', 'courseOffering.subject', 'courseOffering.teacher'])
+      ->get();
+
+    if ($enrollments->isEmpty()) {
+      return back()->with('error', 'No students enrolled in this course.');
+    }
+
+    // Base images
+    $images = [];
+    $imageFiles = [
+      'frame' => public_path('assets/images/frame.png'),
+      'logo'  => public_path('assets/images/scms.png'),
+      'stamp' => public_path('assets/images/stamp.png'),
+    ];
+
+    foreach ($imageFiles as $key => $filePath) {
+      if (file_exists($filePath)) {
+        $images[$key] = 'data:image/png;base64,' . base64_encode(file_get_contents($filePath));
+      } else {
+        $images[$key] = null;
+      }
+    }
+
+    return view('admin.enrollments.bulk_certificate', [
+      'enrollments' => $enrollments,
+      'b64Images'   => $images
     ]);
   }
 

@@ -70,6 +70,7 @@ Route::prefix('admin')
         Route::get('/', [EnrollmentController::class, 'index'])->name('index');
         Route::get('/create', [EnrollmentController::class, 'create'])->name('create');
         Route::post('/', [EnrollmentController::class, 'store'])->name('store');
+        Route::get('/{course_offering_id}/bulk-certificate', [EnrollmentController::class, 'bulkCertificate'])->name('bulk_certificate');
         Route::get('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'show'])->name('show');
         Route::get('/{student_id}/{course_offering_id}/edit', [EnrollmentController::class, 'edit'])->name('edit');
         Route::get('/{student_id}/{course_offering_id}/certificate', [EnrollmentController::class, 'showCertificate'])->name('certificate');
