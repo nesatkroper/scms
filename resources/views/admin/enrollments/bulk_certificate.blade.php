@@ -84,6 +84,10 @@
       <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 uppercase">Bulk Certificates Preview
         ({{ $enrollments->count() }} Students)</h2>
       <div class="flex gap-4">
+        <button id="save-all-png-btn"
+          class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
+          <i class="fa-solid fa-file-image"></i> រក្សាទុកទាំងអស់ (Save All PNG)
+        </button>
         <button onclick="window.print()"
           class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
           <i class="fa-solid fa-print"></i> បោះពុម្ពទាំងអស់ (Print All)
@@ -98,7 +102,8 @@
 
   <div class="flex flex-col items-center w-full overflow-x-auto pb-10">
     @foreach ($enrollments as $enrollment)
-      <div id="capture-area-{{ $enrollment->id }}"
+      <div id="capture-area-{{ $enrollment->id }}" data-student-id="{{ $enrollment->student_id }}"
+        data-offering-id="{{ $enrollment->course_offering_id }}" data-student-name="{{ $enrollment->student->name }}"
         class="certificate-container shadow-2xl overflow-hidden shrink-0 bulk-preview-item">
         <div class="inner-frame-content">
           <div class="inner-content relative">
@@ -228,4 +233,116 @@
       </div>
     @endforeach
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.getElementById('save-all-png-btn').addEventListener('click', async function () {
+      const btn = this;
+      const originalText = btn.innerHTML;
+
+      const captureAreas = document.querySelectorAll('.certificate-container');
+      const total = captureAreas.length;
+
+      const result = await Swal.fire({
+        title: 'តើអ្នកប្រាកដទេ?',
+        text: `តើអ្នកចង់រក្សាទុកវិញ្ញាបនបត្រចំនួន ${total} ដែរឬទេ?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#16a34a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'បាទ/ចាស, រក្សាទុកទាំងអស់',
+        cancelButtonText: 'បោះបង់'
+      });
+
+      if (!result.isConfirmed) return;
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+      // Show progress dialog
+      Swal.fire({
+        title: 'កំពុងរក្សាទុក...',
+        html: `កំពុងរៀបចំវិញ្ញាបនបត្រ (0/${total})`,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      try {
+        await document.fonts.ready;
+
+        for (let i = 0; i < total; i++) {
+          const area = captureAreas[i];
+          const studentId = area.dataset.studentId;
+          const offeringId = area.dataset.offeringId;
+          const studentName = area.dataset.studentName;
+
+          // Update progress
+          Swal.update({
+            html: `កំពុងរក្សាទុកវិញ្ញាបនបត្ររបស់ <b>${studentName}</b> (${i + 1}/${total})`
+          });
+
+          // Style forcing logic (same as single certificate)
+          const allElements = area.querySelectorAll('*');
+          allElements.forEach(el => {
+            const computed = getComputedStyle(el);
+            if (computed.color) el.style.color = computed.color;
+            if (el.classList.contains('khmer-moul')) {
+              el.style.setProperty('font-family', "'Moul', cursive", 'important');
+            } else if (el.classList.contains('khmer-siemreap')) {
+              el.style.setProperty('font-family', "'Siemreap', cursive", 'important');
+            } else if (computed.fontFamily) {
+              el.style.fontFamily = computed.fontFamily;
+            }
+            if (computed.backgroundColor && computed.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+              el.style.backgroundColor = computed.backgroundColor;
+            }
+            if (computed.borderColor) el.style.borderColor = computed.borderColor;
+          });
+
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          const dataUrl = await htmlToImage.toPng(area, {
+            quality: 1.0,
+            pixelRatio: 4,
+            backgroundColor: '#ffffff',
+            skipAutoScale: true,
+            cacheBust: true,
+          });
+
+          const response = await fetch(`/admin/enrollments/${studentId}/${offeringId}/generate-image`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: JSON.stringify({ image: dataUrl })
+          });
+
+          const data = await response.json();
+          if (!data.success) throw new Error(`Error for ${studentName}: ${data.message}`);
+        }
+
+        Swal.fire({
+          title: 'ជោគជ័យ!',
+          text: `បានរក្សាទុកវិញ្ញាបនបត្រទាំង ${total} ដោយជោគជ័យ!`,
+          icon: 'success',
+          confirmButtonColor: '#16a34a',
+        }).then(() => {
+          window.location.href = "{{ route('admin.course_offerings.index') }}";
+        });
+
+      } catch (err) {
+        console.error("Error:", err);
+        Swal.fire({
+          title: 'មានបញ្ហា!',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#dc2626'
+        });
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
+    });
+  </script>
 @endsection
