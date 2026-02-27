@@ -210,7 +210,60 @@ class EnrollmentController extends BaseController
       ->with(['student', 'courseOffering.subject', 'courseOffering.teacher'])
       ->firstOrFail();
 
-    return view('admin.enrollments.certificate', compact('enrollment'));
+    return view('admin.enrollments.certificate', [
+      'enrollment' => $enrollment,
+      'is_pdf'     => false
+    ]);
+  }
+
+  public function generateSingleCertificate($student_id, $course_offering_id)
+  {
+    try {
+      set_time_limit(60); // 1 minute should be plenty
+      ini_set('memory_limit', '512M');
+      Log::info("Starting PDF generation for Student: {$student_id}, Offering: {$course_offering_id}");
+
+      $enrollment = Enrollment::where('student_id', $student_id)
+        ->where('course_offering_id', $course_offering_id)
+        ->with(['student', 'courseOffering.subject', 'courseOffering.teacher'])
+        ->firstOrFail();
+
+      $directory = public_path('uploads/certificates');
+      if (! file_exists($directory)) {
+        mkdir($directory, 0755, true);
+      }
+
+      Log::info("Loading PDF view...");
+      $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.enrollments.certificate_pdf', [
+        'enrollment' => $enrollment,
+        'is_pdf'     => true
+      ]);
+
+      $pdf->setPaper('a4', 'landscape')
+        ->setOptions([
+          'isHtml5ParserEnabled' => true,
+          'isRemoteEnabled'      => true, // Enabled for QR code; fonts are now local
+          'defaultFont'          => 'sans-serif',
+          'tempDir'              => storage_path('app'),
+        ]);
+
+      $filename = 'cert_' . $student_id . '_' . $course_offering_id . '.pdf';
+      $path = 'uploads/certificates/' . $filename;
+
+      Log::info("Saving PDF to: " . public_path($path));
+      $pdf->save(public_path($path));
+      Log::info("PDF saved successfully.");
+
+      $enrollment->update(['certificate' => $path]);
+
+      return back()->with('success', 'Certificate generated and saved successfully.');
+    } catch (\Exception $e) {
+      Log::error("Failed to generate certificate: " . $e->getMessage());
+      return "Error: " . $e->getMessage();
+    } catch (\Throwable $t) {
+      Log::error("Critical error in PDF generation: " . $t->getMessage());
+      return "Critical Error: " . $t->getMessage();
+    }
   }
 
   public function destroy($student_id, $course_offering_id)

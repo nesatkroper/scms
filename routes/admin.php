@@ -73,6 +73,7 @@ Route::prefix('admin')
         Route::get('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'show'])->name('show');
         Route::get('/{student_id}/{course_offering_id}/edit', [EnrollmentController::class, 'edit'])->name('edit');
         Route::get('/{student_id}/{course_offering_id}/certificate', [EnrollmentController::class, 'showCertificate'])->name('certificate');
+        Route::post('/{student_id}/{course_offering_id}/generate', [EnrollmentController::class, 'generateSingleCertificate'])->name('generate_certificate');
         Route::put('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'update'])->name('update');
         Route::delete('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'destroy'])->name('destroy');
       });

@@ -11,15 +11,22 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Certificate Preview</h2>
       <div class="flex gap-4">
+        <form
+          action="{{ route('admin.enrollments.generate_certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}"
+          method="POST">
+          @csrf
+          <button type="submit"
+            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
+            <i class="fa-solid fa-file-pdf"></i> បង្កើត PDF (Save PDF)
+          </button>
+        </form>
         <button onclick="window.print()"
           class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
-          <i class="fa-solid fa-print"></i>
-          បោះពុម្ព (Print)
+          <i class="fa-solid fa-print"></i> បោះពុម្ព (Print)
         </button>
         <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $enrollment->course_offering_id]) }}"
           class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2">
-          <i class="fa-solid fa-arrow-left"></i>
-          ត្រឡប់ក្រោយ (Back)
+          <i class="fa-solid fa-arrow-left"></i> ត្រឡប់ក្រោយ (Back)
         </a>
       </div>
     </div>
@@ -43,10 +50,6 @@
           </div>
 
           <div class="text-right flex flex-col items-end">
-            {{-- <div class="flex flex-col items-center">
-              <span class="text-xl font-bold tracking-tighter text-blue-900 italic">SCMS</span>
-              <span class="text-[8px] uppercase tracking-widest text-blue-800 font-bold">Kingdom of Excellence</span>
-            </div> --}}
           </div>
         </div>
 
