@@ -3,31 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\CourseOffering;
+use App\Models\Classroom;
 use Illuminate\Http\Request;
 
-class CourseOfferingController extends Controller
+class ClassroomController extends Controller
 {
   public function index()
   {
     try {
-      $offerings = CourseOffering::with([
-        'subject',
-        'teacher',
-        'classroom'
-      ])
-        ->where('join_end', '>', now())
-        ->latest()
-        ->get();
-
+      $classrooms = Classroom::all();
       return response()->json([
         'success' => true,
-        'data' => $offerings
+        'data' => $classrooms
       ], 200);
     } catch (\Exception $e) {
       return response()->json([
         'success' => false,
-        'message' => 'Failed to fetch course offerings',
+        'message' => 'Failed to fetch classrooms',
         'error' => $e->getMessage()
       ], 500);
     }

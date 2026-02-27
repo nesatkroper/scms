@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\CourseOfferingController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\ClassroomController;
+
+
 
 Route::post('/v1/login', [AuthController::class, 'login']);
 
@@ -20,9 +23,9 @@ Route::middleware(['auth:sanctum'])
 
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/courses', [CourseOfferingController::class, 'index']);
+    Route::get('/classrooms', [ClassroomController::class, 'index']);
+    Route::get('/books', [BookController::class, 'index']);
+    Route::get('/books/{name}', [BookController::class, 'show']);
   });
 
-Route::prefix('/v1')->group(function () {
-  Route::get('/books', [BookController::class, 'index']);
-  Route::get('/books/{name}', [BookController::class, 'show']);
-});
+// Route::prefix('/v1')->group(function () {});
