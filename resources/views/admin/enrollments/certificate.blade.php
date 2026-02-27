@@ -240,25 +240,24 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     document.getElementById('save-image-btn').addEventListener('click', async function () {
       const btn = this;
       const originalText = btn.innerHTML;
-      console.log("Saving image process started...");
+
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
       const captureArea = document.getElementById('capture-area');
       try {
-        // Wait for all fonts to be fully loaded
         await document.fonts.ready;
 
-        // Convert computed styles to inline styles to ensure html-to-image captures them correctly
         const allElements = captureArea.querySelectorAll('*');
         allElements.forEach(el => {
           const computed = getComputedStyle(el);
           if (computed.color) el.style.color = computed.color;
 
-          // Force font-family for Khmer fonts specifically
           if (el.classList.contains('khmer-moul')) {
             el.style.setProperty('font-family', "'Moul', cursive", 'important');
           } else if (el.classList.contains('khmer-siemreap')) {
@@ -273,17 +272,16 @@
           if (computed.borderColor) el.style.borderColor = computed.borderColor;
         });
 
-        // Small delay to ensure styles are applied
         await new Promise(resolve => setTimeout(resolve, 500));
 
         const dataUrl = await htmlToImage.toPng(captureArea, {
           quality: 1.0,
-          pixelRatio: 4, // Ultra-high resolution
+          pixelRatio: 4,
           backgroundColor: '#ffffff',
           skipAutoScale: true,
           cacheBust: true,
         });
-        console.log("Image captured, uploading...");
+
         const response = await fetch("{{ route('admin.enrollments.generate_image_certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}", {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
@@ -291,14 +289,29 @@
         });
         const data = await response.json();
         if (data.success) {
-          alert('Success! Certificate image saved.');
-          window.location.reload();
+          Swal.fire({
+            title: 'ជោគជ័យ!',
+            text: 'រក្សាទុកវិញ្ញាបនបត្របានដោយជោគជ័យ។ (Certificate saved successfully!)',
+            icon: 'success',
+            confirmButtonText: 'យល់ព្រម',
+            confirmButtonColor: '#16a34a',
+            timer: 3000,
+            timerProgressBar: true
+          }).then(() => {
+            window.location.reload();
+          });
         } else {
           throw new Error(data.message || 'Server error');
         }
       } catch (err) {
         console.error("Error:", err);
-        alert('Error: ' + err.message);
+        Swal.fire({
+          title: 'មានបញ្ហា!',
+          text: 'បញ្ហា: ' + err.message,
+          icon: 'error',
+          confirmButtonText: 'បិទ',
+          confirmButtonColor: '#dc2626'
+        });
       } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
