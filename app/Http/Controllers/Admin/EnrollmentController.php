@@ -224,7 +224,7 @@ class EnrollmentController extends BaseController
         $avatarUrl = 'data:image/' . pathinfo($avatarPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode(file_get_contents($avatarPath));
       }
     }
-    $images['avatar'] = $avatarUrl;
+    $images['avatar_url'] = $avatarUrl;
 
     return view('admin.enrollments.certificate', [
       'enrollment' => $enrollment,

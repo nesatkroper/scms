@@ -2,6 +2,8 @@
 
 @section('title', 'វិញ្ញាបនបត្រ - Certificate')
 
+
+
 @section('content')
   <link
     href="https://fonts.googleapis.com/css2?family=Dangrek&family=Freehand&family=Kantumruy+Pro:wght@400;700&family=Moul&family=Siemreap&display=swap"
@@ -27,7 +29,7 @@
     </div>
   </div>
 
-  <div class="flex justify-center w-full overflow-x-auto pb-10">
+  <div class="flex justify-center w-full overflow-x-auto pb-20">
     <div id="capture-area" class="certificate-container shadow-2xl overflow-hidden shrink-0">
       <div class="inner-frame-content">
         <div class="inner-content relative">
@@ -124,8 +126,8 @@
             <div class="col-span-1 flex justify-center">
               <div
                 class="w-32 h-40 bg-gray-100 border border-gray-300 relative overflow-hidden flex flex-col items-center justify-center p-1">
-                @if ($b64Images['avatar'])
-                  <img src="{{ $b64Images['avatar'] }}" alt="Student Photo" class="w-full h-full object-cover">
+                @if (!empty($enrollment->student->avatar_url))
+                  <img src="{{ $enrollment->student->avatar_url }}" alt="Student Photo" class="w-full h-full object-cover">
                 @else
                   <div class="text-center">
                     <i class="fa-solid fa-user text-gray-300 text-4xl"></i>
