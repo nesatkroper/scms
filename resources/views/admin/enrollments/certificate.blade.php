@@ -2,12 +2,92 @@
 
 @section('title', 'វិញ្ញាបនបត្រ - Certificate')
 
-
-
 @section('content')
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dangrek&family=Freehand&family=Kantumruy+Pro:wght@400;700&family=Moul&family=Siemreap&display=swap"
-    rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dangrek&family=Freehand&family=Kantumruy+Pro:wght@400;700&family=Moul&family=Siemreap&display=swap');
+
+    .khmer-moul {
+      font-family: 'Moul', cursive !important;
+    }
+
+    .khmer-siemreap {
+      font-family: 'Siemreap', cursive;
+    }
+
+    .serif {
+      font-family: 'Times New Roman', serif;
+    }
+
+    .certificate-container {
+      width: 297mm;
+      height: 210mm;
+      background-color: white;
+      position: relative;
+      background-image: url('{{ $b64Images['frame'] ?? asset('assets/images/frame.png') }}');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      padding: 30mm;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inner-frame-content {
+      height: 100%;
+      padding: 2px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inner-content {
+      height: 100%;
+      padding: 10px 30px;
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(200, 200, 255, 0.03) 0%, transparent 80%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      .certificate-container,
+      .certificate-container * {
+        visibility: visible;
+      }
+
+      .certificate-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 297mm;
+        height: 210mm;
+        margin: 0;
+        padding: 30mm;
+        box-shadow: none;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+        background-image: url('{{ asset('assets/images/frame.png') }}') !important;
+        background-size: 100% 100% !important;
+      }
+
+      .certificate-container {
+        content-visibility: visible;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
 
   <div class="container mx-auto px-4 py-8 no-print">
     <div class="flex justify-between items-center mb-6">
@@ -29,7 +109,7 @@
     </div>
   </div>
 
-  <div class="flex justify-center w-full overflow-x-auto pb-20">
+  <div class="flex justify-center w-full overflow-x-auto pb-10">
     <div id="capture-area" class="certificate-container shadow-2xl overflow-hidden shrink-0">
       <div class="inner-frame-content">
         <div class="inner-content relative">
@@ -158,89 +238,7 @@
       </div>
     </div>
   </div>
-  <style>
-    .khmer-moul {
-      font-family: 'Moul', cursive;
-    }
 
-    .khmer-siemreap {
-      font-family: 'Siemreap', cursive;
-    }
-
-    .serif {
-      font-family: 'Times New Roman', serif;
-    }
-
-    .certificate-container {
-      width: 297mm;
-      height: 210mm;
-      background-color: white;
-      position: relative;
-      background-image: url('{{ $b64Images['frame'] ?? asset('assets/images/frame.png') }}');
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      padding: 30mm;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .inner-frame-content {
-      height: 100%;
-      padding: 2px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .inner-content {
-      height: 100%;
-      padding: 10px 30px;
-      background-image:
-        radial-gradient(circle at 50% 50%, rgba(200, 200, 255, 0.03) 0%, transparent 80%);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    @media print {
-      @page {
-        size: A4 landscape;
-        margin: 0;
-      }
-
-      body * {
-        visibility: hidden;
-      }
-
-      .certificate-container,
-      .certificate-container * {
-        visibility: visible;
-      }
-
-      .certificate-container {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 297mm;
-        height: 210mm;
-        margin: 0;
-        padding: 30mm;
-        box-shadow: none;
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-        background-image: url('{{ asset('assets/images/frame.png') }}') !important;
-        background-size: 100% 100% !important;
-      }
-
-      .certificate-container {
-        content-visibility: visible;
-      }
-
-      .no-print {
-        display: none !important;
-      }
-    }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
   <script>
     document.getElementById('save-image-btn').addEventListener('click', async function () {
@@ -251,20 +249,39 @@
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
       const captureArea = document.getElementById('capture-area');
       try {
-        // Convert oklch() colors to rgb before capture (Tailwind v4 fix)
+        // Wait for all fonts to be fully loaded
+        await document.fonts.ready;
+
+        // Convert computed styles to inline styles to ensure html-to-image captures them correctly
         const allElements = captureArea.querySelectorAll('*');
         allElements.forEach(el => {
           const computed = getComputedStyle(el);
           if (computed.color) el.style.color = computed.color;
+
+          // Force font-family for Khmer fonts specifically
+          if (el.classList.contains('khmer-moul')) {
+            el.style.setProperty('font-family', "'Moul', cursive", 'important');
+          } else if (el.classList.contains('khmer-siemreap')) {
+            el.style.setProperty('font-family', "'Siemreap', cursive", 'important');
+          } else if (computed.fontFamily) {
+            el.style.fontFamily = computed.fontFamily;
+          }
+
           if (computed.backgroundColor && computed.backgroundColor !== 'rgba(0, 0, 0, 0)') {
             el.style.backgroundColor = computed.backgroundColor;
           }
           if (computed.borderColor) el.style.borderColor = computed.borderColor;
         });
+
+        // Small delay to ensure styles are applied
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         const dataUrl = await htmlToImage.toPng(captureArea, {
           quality: 1.0,
           pixelRatio: 4, // Ultra-high resolution
           backgroundColor: '#ffffff',
+          skipAutoScale: true,
+          cacheBust: true,
         });
         console.log("Image captured, uploading...");
         const response = await fetch("{{ route('admin.enrollments.generate_image_certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}", {
