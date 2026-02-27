@@ -77,8 +77,9 @@
             <div class="flex items-baseline gap-2">
               <span class="khmer-moul text-sm text-blue-900 w-24 whitespace-nowrap">អាសយដ្ឋាន៖</span>
               <span
-                class="font-serif font-bold text-lg flex-1 border-b border-dotted border-gray-600 pb-0.5 text-center text-blue-900">រាជធានីភ្នំពេញ,
-                ប្រទេសកម្ពុជា</span>
+                class="font-serif font-bold text-lg flex-1 border-b border-dotted border-gray-600 pb-0.5 text-center text-blue-900">
+                សៀមរាប, ប្រទេសកម្ពុជា
+              </span>
             </div>
           </div>
 
@@ -101,8 +102,9 @@
             <div class="flex items-baseline gap-2">
               <span class="font-serif font-bold text-gray-700 w-24 whitespace-nowrap italic text-sm">Location:</span>
               <span
-                class="font-serif font-bold text-lg flex-1 border-b border-dotted border-gray-600 pb-0.5 text-center text-blue-900">Phnom
-                Penh, Cambodia</span>
+                class="font-serif font-bold text-lg flex-1 border-b border-dotted border-gray-600 pb-0.5 text-center text-blue-900">
+                Siem Reap, Cambodia
+              </span>
             </div>
           </div>
         </div>
@@ -123,8 +125,8 @@
 
           <div class="col-span-1 flex justify-center">
             <div
-              class="w-32 h-40 bg-gray-100 border-2 border-gray-300 relative overflow-hidden flex flex-col items-center justify-center p-1">
-              @if($enrollment->student->avatar_url)
+              class="w-32 h-40 bg-gray-100 border border-gray-300 relative overflow-hidden flex flex-col items-center justify-center p-1">
+              @if ($enrollment->student->avatar_url)
                 <img src="{{ $enrollment->student->avatar_url }}" alt="Student Photo" class="w-full h-full object-cover">
               @else
                 <div class="text-center">
@@ -137,10 +139,18 @@
 
           <div class="col-span-1 relative text-right pr-6">
             <div class="khmer-siemreap text-[12px] mb-2 text-black">
-              ធ្វើនៅរាជធានីភ្នំពេញ, ថ្ងៃទី {{ now()->format('d') }} ខែ {{ now()->format('m') }} ឆ្នាំ ២០២៥
+              ធ្វើនៅសៀមរាប, ថ្ងៃទី {{ now()->format('d') }} ខែ {{ now()->format('m') }} ឆ្នាំ {{ now()->format('Y') }}
             </div>
             <div class="khmer-siemreap font-bold mb-16 text-black">សាកលវិទ្យាធិការ (Director)</div>
-            <div class="khmer-moul text-lg text-blue-900 border-b border-gray-300 inline-block px-4">លោកនាយកសាលា</div>
+
+            <div class="absolute right-12 bottom-4 w-32 h-32 opacity-90 pointer-events-none z-20">
+              <img src="{{ asset('assets/images/stamp.png') }}" alt="Stamp" class="w-full h-full object-contain">
+            </div>
+
+            <div class="khmer-moul text-lg text-blue-900 border-b border-gray-300 inline-block px-4">
+              លោកនាយកសាលា
+            </div>
+
           </div>
         </div>
       </div>
@@ -196,22 +206,36 @@
           margin: 0;
         }
 
-        body {
+        body * {
+          visibility: hidden;
+        }
+
+        .certificate-container,
+        .certificate-container * {
+          visibility: visible;
+        }
+
+        .certificate-container {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 297mm;
+          height: 210mm;
           margin: 0;
-          padding: 0;
+          padding: 30mm;
+          box-shadow: none;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+          background-image: url('{{ asset('assets/images/frame.png') }}') !important;
+          background-size: 100% 100% !important;
+        }
+
+        .certificate-container {
+          content-visibility: visible;
         }
 
         .no-print {
           display: none !important;
-        }
-
-        .certificate-container {
-          width: 100%;
-          height: 100vh;
-          box-shadow: none;
-          margin: 0;
-          print-color-adjust: exact;
-          -webkit-print-color-adjust: exact;
         }
       }
     </style>
