@@ -40,9 +40,9 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                            focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
-              value="{{ request('search') }}">
+              placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}"
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                                    focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100" value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
 
@@ -125,10 +125,10 @@
               labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
 
             <x-info.item name="{{ $offering->classroom->name ?? __('message.location_tbd') }}
-                                                        ({{ $offering->classroom?->capacity }}
-                                                        {{ __('message.seats') }})" icon="ri-door-open-fill text-xl"
-              label="{{ __('message.classroom') }}" labelcolor="text-gray-500 dark:text-gray-400" color=""
-              position="left" />
+                                                                        ({{ $offering->classroom?->capacity }}
+                                                                        {{ __('message.seats') }})"
+              icon="ri-door-open-fill text-xl" label="{{ __('message.classroom') }}"
+              labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             <x-info.item name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
               icon="ri-currency-fill text-xl" label="{{ __('message.fee') }}" labelcolor="text-gray-500 dark:text-gray-400"
               color="" position="left" />
@@ -160,22 +160,22 @@
               @endif
 
               @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
-                @if (Auth::user()->hasPermissionTo('view_enrollment'))
-                  @if ($offering->students_count >= $offering->classroom?->capacity)
-                    <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                      class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                      title="Admission Register">
-                      <i class="fa-solid fa-check me-2"></i>
-                      {{ __('message.class_full') }}
-                    </a>
-                  @else
-                    <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
-                      class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                      title="Admission Register">
-                      <i class="fa-solid fa-book-atlas me-2"></i>
-                      {{ __('message.enroll') }}
-                    </a>
-                  @endif
+              @endif
+              @if (Auth::user()->hasPermissionTo('view_enrollment'))
+                @if ($offering->students_count >= $offering->classroom?->capacity)
+                  <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Admission Register">
+                    <i class="fa-solid fa-check me-2"></i>
+                    {{ __('message.class_full') }}
+                  </a>
+                @else
+                  <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $offering->id]) }}"
+                    class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                    title="Admission Register">
+                    <i class="fa-solid fa-book-atlas me-2"></i>
+                    {{ __('message.enroll') }}
+                  </a>
                 @endif
               @endif
 

@@ -58,8 +58,7 @@
             <input type="search" name="search" id="searchInput"
               placeholder="{{ __('message.search_enrollments_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
-              value="{{ request('search') }}">
+                                     focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100" value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
 
@@ -88,13 +87,16 @@
             class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between">
             <div class="flex justify-between items-start gap-2">
               <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">
-                {{ $enrollment->student->name ?? 'Student Deleted' }}</h4>
+                {{ $enrollment->student->name ?? 'Student Deleted' }}
+              </h4>
             </div>
             <div class="">
               <p class="text-sm text-gray-700 dark:text-gray-300 mt-1 font-semibold">
-                {{ $enrollment->courseOffering->subject->name ?? 'Course Deleted' }}</p>
+                {{ $enrollment->courseOffering->subject->name ?? 'Course Deleted' }}
+              </p>
               <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">{{ __('message.time_slot') }}
-                {{ $enrollment->courseOffering->time_slot ?? __('message.n/a') }}</p>
+                {{ $enrollment->courseOffering->time_slot ?? __('message.n/a') }}
+              </p>
             </div>
           </div>
 
@@ -105,35 +107,18 @@
               <p class="flex items-center gap-2 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
                 {{ __('message.status') }}
-                <span
-                  class="font-semibold px-2 py-0.5 rounded-full text-xs
-            @if ($enrollment->status === 'completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
-            @elseif ($enrollment->status === 'studying')
-                bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
-            @elseif ($enrollment->status === 'suspended')
-                bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300
-            @else
-                bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
+                <span class="font-semibold px-2 py-0.5 rounded-full text-xs
+                                @if ($enrollment->status === 'completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
+                                @elseif ($enrollment->status === 'studying')
+                                  bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
+                                @elseif ($enrollment->status === 'suspended')
+                                  bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300
+                                @else
+                                bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
                   {{ ucfirst($enrollment->status ?? __('message.n/a')) }}
                 </span>
               </p>
             </div>
-
-            {{-- <div class="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-700/50">
-              <p class="flex items-center gap-2 font-medium justify-between">
-                <i class="fa-solid fa-circle-info text-indigo-500"></i>
-                {{ __('message.status') }}
-                <span
-                  class="font-semibold px-2 py-0.5 rounded-full text-xs
-                  @if ($enrollment->status === 'Completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
-                  @elseif ($enrollment->status === 'In Progress')
-                    bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
-                  @else
-                    bg-blue-100 text-blue-700 dark:bg-blue-700 dark:text-blue-300 @endif">
-                  {{ $enrollment->status ?? __('message.n/a') }}
-                </span>
-              </p>
-            </div> --}}
 
             {{-- Final Grade --}}
             <div class="flex justify-between items-center">
@@ -144,13 +129,13 @@
 
               @php
                 $grades = [
-                    $enrollment->attendance_grade,
-                    $enrollment->listening_grade,
-                    $enrollment->writing_grade,
-                    $enrollment->reading_grade,
-                    $enrollment->speaking_grade,
-                    $enrollment->midterm_grade,
-                    $enrollment->final_grade,
+                  $enrollment->attendance_grade,
+                  $enrollment->listening_grade,
+                  $enrollment->writing_grade,
+                  $enrollment->reading_grade,
+                  $enrollment->speaking_grade,
+                  $enrollment->midterm_grade,
+                  $enrollment->final_grade,
                 ];
 
                 $sum = collect($grades)->filter(fn($g) => !is_null($g))->sum();
@@ -192,19 +177,6 @@
                 @endif
               </p>
             </div>
-
-            {{-- Remarks --}}
-            {{-- @if ($enrollment->remarks)
-              <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50">
-                <span class="font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2 mb-1">
-                  <i class="fa-solid fa-comment-dots text-yellow-500"></i>
-                  Remarks:
-                </span>
-                <p class="text-xs italic text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
-                  {{ Str::limit($enrollment->remarks, 100) }}
-                </p>
-              </div>
-            @endif --}}
           </div>
 
           <div
