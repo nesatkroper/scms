@@ -72,6 +72,7 @@ Route::prefix('admin')
         Route::post('/', [EnrollmentController::class, 'store'])->name('store');
         Route::get('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'show'])->name('show');
         Route::get('/{student_id}/{course_offering_id}/edit', [EnrollmentController::class, 'edit'])->name('edit');
+        Route::get('/{student_id}/{course_offering_id}/certificate', [EnrollmentController::class, 'showCertificate'])->name('certificate');
         Route::put('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'update'])->name('update');
         Route::delete('/{student_id}/{course_offering_id}', [EnrollmentController::class, 'destroy'])->name('destroy');
       });

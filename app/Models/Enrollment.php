@@ -23,6 +23,7 @@ class Enrollment extends Model
     'speaking_grade',
     'midterm_grade',
     'final_grade',
+    'certificate',
   ];
 
   protected $casts = [

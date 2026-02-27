@@ -203,6 +203,16 @@ class EnrollmentController extends BaseController
     }
   }
 
+  public function showCertificate($student_id, $course_offering_id)
+  {
+    $enrollment = Enrollment::where('student_id', $student_id)
+      ->where('course_offering_id', $course_offering_id)
+      ->with(['student', 'courseOffering.subject', 'courseOffering.teacher'])
+      ->firstOrFail();
+
+    return view('admin.enrollments.certificate', compact('enrollment'));
+  }
+
   public function destroy($student_id, $course_offering_id)
   {
     $enrollment = Enrollment::where('student_id', $student_id)

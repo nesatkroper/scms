@@ -232,6 +232,17 @@
                   </span>
                 </a>
               @endif
+
+              @if ($enrollment->status === 'completed')
+                <a href="{{ route('admin.enrollments.certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}"
+                  class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-slate-600 transition-colors"
+                  title="View Certificate">
+                  <span class="btn-content flex items-center justify-center">
+                    <i class="fa-solid fa-certificate me-2"></i>
+                    Certificate
+                  </span>
+                </a>
+              @endif
             </div>
 
             <div class="flex">

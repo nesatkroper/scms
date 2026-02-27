@@ -66,6 +66,19 @@
             @enderror
           </div>
 
+          {{-- Certificate Path Field --}}
+          <div>
+            <label for="certificate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Certificate Path (File name or URL)
+            </label>
+            <input type="text" name="certificate" id="certificate"
+              value="{{ old('certificate', $enrollment->certificate) }}" placeholder="e.g. certificates/student-name.pdf"
+              class="w-full p-2 border px-4 rounded-lg focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('certificate') border-red-500 @enderror">
+            @error('certificate')
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+            @enderror
+          </div>
+
           {{-- 6. Remarks Field (Textarea) --}}
           <div class="border-t pt-6 border-gray-200 dark:border-gray-700">
             <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
