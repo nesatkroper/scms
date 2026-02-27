@@ -11,15 +11,10 @@
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Certificate Preview</h2>
       <div class="flex gap-4">
-        <form
-          action="{{ route('admin.enrollments.generate_certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}"
-          method="POST">
-          @csrf
-          <button type="submit"
-            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
-            <i class="fa-solid fa-file-pdf"></i> បង្កើត PDF (Save PDF)
-          </button>
-        </form>
+        <button id="save-image-btn"
+          class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
+          <i class="fa-solid fa-file-image"></i> រក្សាទុកជាជារូបភាព (Save as PNG)
+        </button>
         <button onclick="window.print()"
           class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
           <i class="fa-solid fa-print"></i> បោះពុម្ព (Print)
@@ -32,13 +27,14 @@
     </div>
   </div>
 
-  <div class="certificate-container shadow-2xl mx-auto mb-10">
+  <div id="capture-area" class="certificate-container shadow-2xl mx-auto mb-10 overflow-hidden">
     <div class="inner-frame-content">
       <div class="inner-content relative">
 
         <div class="grid grid-cols-3 items-start mb-4">
           <div class="text-center flex flex-col items-center">
-            <img src="{{ asset('assets/images/scms.png') }}" alt="School Logo" class="h-24 object-contain mb-1">
+            <img src="{{ $b64Images['logo'] ?? asset('assets/images/scms.png') }}" alt="School Logo"
+              class="h-24 object-contain mb-1">
             <h4 class="khmer-moul text-[12px] text-blue-900">មជ្ឈមណ្ឌលសិក្សាវត្តដំណាក់</h4>
             <p class="khmer-siemreap text-[10px] text-red-800 font-bold">
               លេខ:......{{ str_pad($enrollment->id, 7, '0', STR_PAD_LEFT) }}......ម.ស.វ.ដ</p>
@@ -120,17 +116,15 @@
         <div class="grid grid-cols-3 items-end mt-6">
           <div class="col-span-1">
             <div class="w-40 h-40 bg-white border border-gray-200 p-1">
-              <img
-                src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ route('admin.enrollments.certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}"
-                alt="Verification QR" class="w-full h-full">
+              <img src="{{ $b64Images['qr'] ?? '' }}" alt="Verification QR" class="w-full h-full">
             </div>
           </div>
 
           <div class="col-span-1 flex justify-center">
             <div
               class="w-32 h-40 bg-gray-100 border border-gray-300 relative overflow-hidden flex flex-col items-center justify-center p-1">
-              @if ($enrollment->student->avatar_url)
-                <img src="{{ $enrollment->student->avatar_url }}" alt="Student Photo" class="w-full h-full object-cover">
+              @if ($b64Images['avatar'])
+                <img src="{{ $b64Images['avatar'] }}" alt="Student Photo" class="w-full h-full object-cover">
               @else
                 <div class="text-center">
                   <i class="fa-solid fa-user text-gray-300 text-4xl"></i>
@@ -147,7 +141,8 @@
             <div class="khmer-siemreap font-bold mb-16 text-black">សាកលវិទ្យាធិការ (Director)</div>
 
             <div class="absolute right-12 bottom-4 w-32 h-32 opacity-90 pointer-events-none z-20">
-              <img src="{{ asset('assets/images/stamp.png') }}" alt="Stamp" class="w-full h-full object-contain">
+              <img src="{{ $b64Images['stamp'] ?? asset('assets/images/stamp.png') }}" alt="Stamp"
+                class="w-full h-full object-contain">
             </div>
 
             <div class="khmer-moul text-lg text-blue-900 border-b border-gray-300 inline-block px-4">
@@ -177,7 +172,7 @@
         height: 210mm;
         background-color: white;
         position: relative;
-        background-image: url('{{ asset('assets/images/frame.png') }}');
+        background-image: url('{{ $b64Images['frame'] ?? asset('assets/images/frame.png') }}');
         background-size: 100% 100%;
         background-repeat: no-repeat;
         padding: 30mm;
@@ -242,4 +237,52 @@
         }
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <script>
+      document.getElementById('save-image-btn').addEventListener('click', async function () {
+        const btn = this;
+        const originalText = btn.innerHTML;
+        console.log("Saving image process started...");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        const captureArea = document.getElementById('capture-area');
+        try {
+          // Convert oklch() colors to rgb before capture (Tailwind v4 fix)
+          const allElements = captureArea.querySelectorAll('*');
+          allElements.forEach(el => {
+            const computed = getComputedStyle(el);
+            if (computed.color) el.style.color = computed.color;
+            if (computed.backgroundColor && computed.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+              el.style.backgroundColor = computed.backgroundColor;
+            }
+            if (computed.borderColor) el.style.borderColor = computed.borderColor;
+          });
+          const dataUrl = await htmlToImage.toPng(captureArea, {
+            quality: 1.0,
+            pixelRatio: 2,
+            backgroundColor: '#ffffff',
+            skipFonts: true,
+          });
+          console.log("Image captured, uploading...");
+          const response = await fetch("{{ route('admin.enrollments.generate_image_certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: JSON.stringify({ image: dataUrl })
+          });
+          const data = await response.json();
+          if (data.success) {
+            alert('Success! Certificate image saved.');
+            window.location.reload();
+          } else {
+            throw new Error(data.message || 'Server error');
+          }
+        } catch (err) {
+          console.error("Error:", err);
+          alert('Error: ' + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      });
+    </script>
 @endsection

@@ -161,25 +161,6 @@ class EnrollmentController extends BaseController
     ));
   }
 
-  // public function update(EnrollmentRequest $request, $student_id, $course_offering_id)
-  // {
-  //   $enrollment = Enrollment::where('student_id', $student_id)
-  //     ->where('course_offering_id', $course_offering_id)
-  //     ->firstOrFail();
-
-  //   $safe = collect($request->validated())->except(['student_id', 'course_offering_id'])->toArray();
-
-  //   try {
-  //     $enrollment->update($safe);
-
-  //     return redirect()->route('admin.enrollments.index', ['course_offering_id' => $course_offering_id])
-  //       ->with('success', 'Enrollment updated successfully');
-  //   } catch (\Exception $e) {
-  //     dd('Error updating Enrollment: ' . $e->getMessage());
-  //     return redirect()->back()->with('error', 'Error updating enrollment.')->withInput();
-  //   }
-  // }
-
   public function update(EnrollmentRequest $request, $student_id, $course_offering_id)
   {
     $enrollment = Enrollment::where('student_id', $student_id)
@@ -210,16 +191,52 @@ class EnrollmentController extends BaseController
       ->with(['student', 'courseOffering.subject', 'courseOffering.teacher'])
       ->firstOrFail();
 
+    // Convert images to Base64 for a smooth "Capture" experience in the browser
+    $images = [];
+    $imageFiles = [
+      'frame' => public_path('assets/images/frame.png'),
+      'logo'  => public_path('assets/images/scms.png'),
+      'stamp' => public_path('assets/images/stamp.png'),
+    ];
+
+    foreach ($imageFiles as $key => $filePath) {
+      if (file_exists($filePath)) {
+        $images[$key] = 'data:image/png;base64,' . base64_encode(file_get_contents($filePath));
+      } else {
+        $images[$key] = null;
+      }
+    }
+
+    // Pre-fetch QR code as Base64
+    $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode(route('admin.enrollments.certificate', [$enrollment->student_id, $enrollment->course_offering_id]));
+    try {
+      $qrContent = @file_get_contents($qrUrl);
+      $images['qr'] = $qrContent ? 'data:image/png;base64,' . base64_encode($qrContent) : null;
+    } catch (\Exception $e) {
+      $images['qr'] = null;
+    }
+
+    // Convert student avatar to Base64
+    $avatarUrl = null;
+    if ($enrollment->student->avatar) {
+      $avatarPath = public_path('storage/' . $enrollment->student->avatar);
+      if (file_exists($avatarPath)) {
+        $avatarUrl = 'data:image/' . pathinfo($avatarPath, PATHINFO_EXTENSION) . ';base64,' . base64_encode(file_get_contents($avatarPath));
+      }
+    }
+    $images['avatar'] = $avatarUrl;
+
     return view('admin.enrollments.certificate', [
       'enrollment' => $enrollment,
-      'is_pdf'     => false
+      'is_pdf'     => false,
+      'b64Images'  => $images
     ]);
   }
 
   public function generateSingleCertificate($student_id, $course_offering_id)
   {
     try {
-      set_time_limit(60); // 1 minute should be plenty
+      set_time_limit(120);
       ini_set('memory_limit', '512M');
       Log::info("Starting PDF generation for Student: {$student_id}, Offering: {$course_offering_id}");
 
@@ -233,16 +250,26 @@ class EnrollmentController extends BaseController
         mkdir($directory, 0755, true);
       }
 
+      Log::info("Preparing QR Code...");
+      $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode(route('admin.enrollments.certificate', [$enrollment->student_id, $enrollment->course_offering_id]));
+      try {
+        $qrContent = @file_get_contents($qrUrl);
+        $qrBase64 = $qrContent ? 'data:image/png;base64,' . base64_encode($qrContent) : null;
+      } catch (\Exception $e) {
+        $qrBase64 = null;
+      }
+
       Log::info("Loading PDF view...");
       $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.enrollments.certificate_pdf', [
         'enrollment' => $enrollment,
-        'is_pdf'     => true
+        'is_pdf'     => true,
+        'qrBase64'   => $qrBase64
       ]);
 
       $pdf->setPaper('a4', 'landscape')
         ->setOptions([
           'isHtml5ParserEnabled' => true,
-          'isRemoteEnabled'      => true, // Enabled for QR code; fonts are now local
+          'isRemoteEnabled'      => false, // Important: keep false for stability
           'defaultFont'          => 'sans-serif',
           'tempDir'              => storage_path('app'),
         ]);
@@ -263,6 +290,48 @@ class EnrollmentController extends BaseController
     } catch (\Throwable $t) {
       Log::error("Critical error in PDF generation: " . $t->getMessage());
       return "Critical Error: " . $t->getMessage();
+    }
+  }
+
+  public function generateImageCertificate(Request $request, $student_id, $course_offering_id)
+  {
+    $request->validate([
+      'image' => 'required|string',
+    ]);
+
+    $enrollment = Enrollment::where('student_id', $student_id)
+      ->where('course_offering_id', $course_offering_id)
+      ->firstOrFail();
+
+    $directory = public_path('uploads/certificates');
+    if (! file_exists($directory)) {
+      mkdir($directory, 0755, true);
+    }
+
+    try {
+      $imageData = $request->input('image');
+      $imageData = str_replace('data:image/png;base64,', '', $imageData);
+      $imageData = str_replace(' ', '+', $imageData);
+      $imageBinary = base64_decode($imageData);
+
+      $filename = 'cert_' . $student_id . '_' . $course_offering_id . '.png';
+      $path = 'uploads/certificates/' . $filename;
+
+      file_put_contents(public_path($path), $imageBinary);
+
+      $enrollment->update(['certificate' => $path]);
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Certificate image saved successfully.',
+        'url'     => asset($path)
+      ]);
+    } catch (\Exception $e) {
+      Log::error("Failed to save certificate image: " . $e->getMessage());
+      return response()->json([
+        'success' => false,
+        'message' => 'Failed to save image: ' . $e->getMessage()
+      ], 500);
     }
   }
 

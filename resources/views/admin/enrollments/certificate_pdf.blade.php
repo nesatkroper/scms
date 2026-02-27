@@ -197,9 +197,11 @@
       <tr>
         <td width="30%">
           <div style="width: 120px; height: 120px; background: white; border: 1px solid #ddd; padding: 5px;">
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data={{ route('admin.enrollments.certificate', [$enrollment->student_id, $enrollment->course_offering_id]) }}"
-              style="width: 100%;">
+            @if(isset($qrBase64))
+              <img src="{{ $qrBase64 }}" style="width: 100%;">
+            @else
+              <div style="font-size: 8px; text-align: center; padding-top: 40px;">QR CODE<br>(Error)</div>
+            @endif
           </div>
         </td>
         <td width="30%" class="text-center">
