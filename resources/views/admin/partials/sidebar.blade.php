@@ -3,12 +3,13 @@
       'admin.subjects.*',
       'admin.exams.*',
       'admin.scores.*',
-      'admin.course_offerings.*',
       'admin.classrooms.*',
       'admin.attendances.*',
       'admin.enrollments.*',
       'admin.books.*',
+      Auth::user()->hasRole('admin') ?? 'admin.course_offerings.*',
   ];
+
   $isAcademicsActive = request()->routeIs($academicsRoutes);
 
   $organizationRoutes = ['admin.teachers.*', 'admin.students.*'];
