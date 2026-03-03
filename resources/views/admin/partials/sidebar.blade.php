@@ -70,7 +70,7 @@
 
       @if (Auth::user()->hasPermissionTo('view_classroom') ||
               Auth::user()->hasPermissionTo('view_subject') ||
-              (Auth::user()->hasPermissionTo('view_course-offering') && Auth::user()->hasRole('admin')))
+              Auth::user()->hasPermissionTo('view_course-offering'))
         <li class="separator border-b border-white/10 dark:border-gray-700/50 px-2 pb-2 my-2"></li>
 
         <li class="menu-item relative">
@@ -104,7 +104,7 @@
                 </li>
               @endif
 
-              @if (Auth::user()->hasPermissionTo('view_course-offering'))
+              @if (Auth::user()->hasPermissionTo('view_course-offering') && Auth::user()->hasRole('admin'))
                 <li>
                   <a href="{{ route('admin.course_offerings.index') }}"
                     class="block py-2 hover:text-indigo-300 dark:hover:text-gray-300 capitalize
