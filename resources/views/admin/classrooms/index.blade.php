@@ -4,15 +4,15 @@
 
 @section('content')
   <div x-data="{
-        showDeleteModal: false,
-        deleteUrl: '',
-        classroomName: '',
-        confirmDelete(url, name) {
-            this.deleteUrl = url;
-            this.classroomName = name;
-            this.showDeleteModal = true;
-        }
-    }">
+      showDeleteModal: false,
+      deleteUrl: '',
+      classroomName: '',
+      confirmDelete(url, name) {
+          this.deleteUrl = url;
+          this.classroomName = name;
+          this.showDeleteModal = true;
+      }
+  }">
 
     <div
       class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
@@ -53,7 +53,8 @@
           <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
             <div class="relative w-full">
               <input type="search" name="search" id="searchInput"
-                placeholder="{{ __('message.search_classrooms_(name_or_room_number)') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+                placeholder="{{ __('message.search_classrooms_(name_or_room_number)') }}"
+                class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                   focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
                 value="{{ request('search') }}">
               <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -149,29 +150,31 @@
               @endif
 
               {{-- Delete Button (Full form submission) --}}
-              @if ($classroom->deleted_at)
-                <form action="{{ route('admin.classrooms.restore', $classroom->id) }}" method="POST">
-                  @csrf
-                  @method('PATCH')
-                  <button type="submit"
-                    class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Delete">
-                    <i class="fa-solid fa-trash-arrow-up me-2"></i>
-                    {{ __('message.restore') }}
-                  </button>
-                </form>
-              @else
-                <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"
-                  @submit.prevent="confirmDelete($el.action, '{{ $classroom->name }}')">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit"
-                    class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
-                    title="Delete">
-                    <i class="fa-solid fa-ban me-2"></i>
-                    {{ __('message.disabled') }}
-                  </button>
-                </form>
+              @if (Auth::user()->hasPermissionTo('delete_classroom'))
+                @if ($classroom->deleted_at)
+                  <form action="{{ route('admin.classrooms.restore', $classroom->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit"
+                      class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors"
+                      title="Delete">
+                      <i class="fa-solid fa-trash-arrow-up me-2"></i>
+                      {{ __('message.restore') }}
+                    </button>
+                  </form>
+                @else
+                  <form action="{{ route('admin.classrooms.destroy', $classroom->id) }}" method="POST"
+                    @submit.prevent="confirmDelete($el.action, '{{ $classroom->name }}')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                      class="delete-btn p-2 rounded-full flex justify-center items-center cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-600 transition-colors"
+                      title="Delete">
+                      <i class="fa-solid fa-ban me-2"></i>
+                      {{ __('message.disabled') }}
+                    </button>
+                  </form>
+                @endif
               @endif
 
             </div>
@@ -216,7 +219,8 @@
         x-transition:leave-end="opacity-0 scale-95" @click.away="showDeleteModal = false"
         class="bg-white dark:bg-gray-800 p-4 rounded-[2rem] shadow-2xl border border-white/20 dark:border-gray-700 w-full max-w-md">
         <div class="text-center">
-          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
+          <div
+            class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
             <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400 text-3xl"></i>
           </div>
           <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('message.confirm_deletion') }}</h3>

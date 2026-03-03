@@ -650,4 +650,13 @@ return [
   'certificate_path' => 'Certificate Path',
   'current_file' => 'Current File',
   'certificate' => 'Certificate',
+  'subject_created' => 'Subject created successfully.',
+  'subject_updated' => 'Subject updated successfully.',
+  'subject_restored' => 'Subject restored successfully.',
+  'book_uploaded' => 'Book uploaded successfully.',
+  'book_deleted' => 'Book deleted successfully.',
+  'book_restored' => 'Book restored successfully.',
+  'book_failed' => 'Book upload failed.',
+  'book_upload_failed' => 'Book upload failed.',
+  'failed' => 'Failed',
 ];
