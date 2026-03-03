@@ -633,4 +633,7 @@ return [
   'can_select_multiple_pdf' => 'អ្នកអាចជ្រើសរើសឯកសារ PDF ច្រើនក្នុងពេលតែមួយ។',
   'no_thumbnail' => 'គ្មានរូបភាពតំណាង',
   'do_not_close_window' => 'សូមកុំបិទបង្អួចនេះ។',
+  'certificate_path' => 'ផ្លូវឯកសារវិញ្ញាបនបត្រ',
+  'current_file' => 'ឯកសារបច្ចុប្បន្ន',
+  'certificate' => 'វិញ្ញាបនបត្រ',
 ];

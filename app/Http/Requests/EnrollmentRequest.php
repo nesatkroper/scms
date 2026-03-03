@@ -54,7 +54,7 @@ class EnrollmentRequest extends FormRequest
       ],
 
       'remarks' => ['nullable', 'string', 'max:500'],
-      'certificate' => ['nullable', 'string', 'max:255'],
+      'certificate' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2048'],
     ];
   }
 

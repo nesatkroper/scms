@@ -647,4 +647,7 @@ return [
   'can_select_multiple_pdf' => 'You can select multiple PDF files at once.',
   'no_thumbnail' => 'No Thumbnail',
   'do_not_close_window' => 'Please do not close this window.',
+  'certificate_path' => 'Certificate Path',
+  'current_file' => 'Current File',
+  'certificate' => 'Certificate',
 ];

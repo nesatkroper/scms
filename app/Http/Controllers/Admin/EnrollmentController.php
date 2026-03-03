@@ -174,10 +174,23 @@ class EnrollmentController extends BaseController
 
     // Only update fields allowed
     $safe = collect($request->validated())
-      ->except(['student_id', 'course_offering_id'])
+      ->except(['student_id', 'course_offering_id', 'certificate'])
       ->toArray();
 
     try {
+      if ($request->hasFile('certificate')) {
+        // Delete old file if exists
+        if ($enrollment->certificate && file_exists(public_path($enrollment->certificate))) {
+          unlink(public_path($enrollment->certificate));
+        }
+
+        $file = $request->file('certificate');
+        $filename = 'cert_' . time() . '_' . $student_id . '_' . $course_offering_id . '.' . $file->getClientOriginalExtension();
+        $path = 'uploads/certificates/' . $filename;
+        $file->move(public_path('uploads/certificates'), $filename);
+        $safe['certificate'] = $path;
+      }
+
       $enrollment->update($safe);
 
       return redirect()->route('admin.enrollments.index', [
