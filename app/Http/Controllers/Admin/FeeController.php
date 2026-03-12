@@ -109,6 +109,9 @@ class FeeController extends BaseController
 
   public function store(FeeRequest $request)
   {
+
+    dd($request->all());
+
     try {
       $data = $request->validated();
       $data['created_by'] = Auth::id();

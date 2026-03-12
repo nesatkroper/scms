@@ -10,7 +10,7 @@
     $courseOffering = $enrollment?->courseOffering;
     $subject = $courseOffering?->subject;
     $teacher = $courseOffering?->teacher;
-    $currency = $currency ?? '$'; // Default currency if not set
+    $currency = $currency ?? '$';
   @endphp
 
   <div
@@ -37,13 +37,13 @@
       <div class="flex gap-2">
         @if ($fee->status == 'paid')
           <button onclick="window.print()"
-            class="text-nowrap px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
+            class="text-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1 text-sm font-semibold">
             <i class="fas fa-print"></i> {{ __('message.print_invoice') }}
           </button>
         @endif
 
-        <a href="{{ route('admin.fees.index') }}"
-          class="text-nowrap px-3 py-1 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
+        <a href="{{ route('admin.fees.index', ['fee_type_id' => $fee->fee_type_id]) }}"
+          class="text-nowrap px-3 py-2 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-1 text-sm">
           <i class="fas fa-arrow-left text-xs"></i> {{ __('message.back_to_fees') }}
         </a>
       </div>

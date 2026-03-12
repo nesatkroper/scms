@@ -28,7 +28,7 @@
 
         @if (Auth::user()->hasPermissionTo('create_expense'))
           <a href="{{ route('admin.expenses.create', ['category_id' => request('category_id')]) }}"
-            class="text-nowrap px-4 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors flex items-center gap-2">
+            class="text-nowrap px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors flex items-center gap-2">
             <i class="fa-solid fa-plus me-2"></i>
             {{ __('message.record_new_expense') }}
           </a>

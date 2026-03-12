@@ -166,20 +166,15 @@
     </div>
 
     {{-- Action Buttons (Visible only on screen) --}}
-    <div class="mt-8 flex justify-end gap-3 print:hidden z-20">
+    <div x-data="{ showApproveModal: false, showDeleteModal: false }" class="mt-8 flex justify-end gap-3 print:hidden z-20">
 
       @unless ($isApproved)
-        {{-- Approval Button (Only visible if NOT approved) --}}
-        <form action="{{ route('admin.expenses.approve', $expense->id) }}" method="POST"
-          onsubmit="return confirm('Are you sure you want to approve this expense?');">
-          @csrf
-          <button type="submit"
-            class="p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-teal-600 text-white hover:bg-teal-700 transition-colors font-semibold"
-            title="Approve Expense">
-            <i class="fa-solid fa-thumbs-up mr-2"></i>
-            {{ __('message.approve_expense') }}
-          </button>
-        </form>
+        <button type="button" @click="showApproveModal = true"
+          class="p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-teal-600 text-white hover:bg-teal-700 transition-colors font-semibold"
+          title="Approve Expense">
+          <i class="fa-solid fa-thumbs-up mr-2"></i>
+          {{ __('message.approve_expense') }}
+        </button>
       @endunless
 
       @if (!$isApproved)
@@ -190,18 +185,84 @@
           {{ __('message.edit') }}
         </a>
 
-        <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST"
-          onsubmit="return confirm('Are you sure you want to permanently delete this expense record?');">
-          @csrf
-          @method('DELETE')
-          <button type="submit"
-            class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors font-semibold"
-            title="Delete Expense">
-            <i class="fa-regular fa-trash-can mr-2"></i>
-            {{ __('message.delete') }}
-          </button>
-        </form>
+        <button type="button" @click="showDeleteModal = true"
+          class="delete-btn p-2 px-4 rounded-lg flex justify-center items-center cursor-pointer bg-red-600 text-white hover:bg-red-700 transition-colors font-semibold"
+          title="Delete Expense">
+          <i class="fa-regular fa-trash-can mr-2"></i>
+          {{ __('message.delete') }}
+        </button>
       @endif
+
+      {{-- Approve Confirmation Modal --}}
+      <div x-show="showApproveModal" style="display: none;"
+        class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.5);"
+          @click="showApproveModal = false"></div>
+        <div x-transition class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+          <div class="px-6 py-4 bg-teal-600 dark:bg-teal-800 text-white">
+            <h3 class="text-xl font-bold flex items-center gap-2">
+              <i class="fa-solid fa-circle-check"></i>
+              Confirm Approval
+            </h3>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-700 dark:text-gray-300">
+              Are you sure you want to approve this expense record? This will mark it as officially recorded and approved
+              by your account.
+            </p>
+          </div>
+          <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 flex justify-end gap-3">
+            <button @click="showApproveModal = false"
+              class="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+              {{ __('message.cancel') }}
+            </button>
+            <form action="{{ route('admin.expenses.approve', $expense->id) }}" method="POST">
+              @csrf
+              <button type="submit"
+                class="px-4 py-2 text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 rounded-lg transition-colors">
+                Yes, Approve
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {{-- Delete Confirmation Modal --}}
+      <div x-show="showDeleteModal" style="display: none;"
+        class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.5);"
+          @click="showDeleteModal = false"></div>
+        <div x-transition class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+          <div class="px-6 py-4 bg-red-600 dark:bg-red-800 text-white">
+            <h3 class="text-xl font-bold flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              {{ __('message.confirm_deletion') }}
+            </h3>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-700 dark:text-gray-300">
+              {{ __('message.are_you_sure_to_delete') }} this expense record?
+              <span class="block mt-2 font-semibold text-red-600 dark:text-red-400">
+                {{ __('message.this_action_cannot_be_undone') }}
+              </span>
+            </p>
+          </div>
+          <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 flex justify-end gap-3">
+            <button @click="showDeleteModal = false"
+              class="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+              {{ __('message.cancel') }}
+            </button>
+            <form action="{{ route('admin.expenses.destroy', $expense->id) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit"
+                class="px-4 py-2 text-sm font-semibold bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors">
+                {{ __('message.delete') }}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="mt-10 pt-2 border-t border-gray-200 dark:border-gray-700/50 text-center z-20">
