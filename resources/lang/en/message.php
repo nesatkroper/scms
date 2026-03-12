@@ -528,6 +528,7 @@ return [
   'search_users_by_name_email_or_phone' => "Search users by name, email, or phone...",
   'contact' => "Contact",
   'listening' => "Listening",
+  'passed' => "Passed",
   'no_address' => "No Address",
   'not_specified' => "Not Specified",
   'qualification_/_specialization' => "Qualification / Specialization",

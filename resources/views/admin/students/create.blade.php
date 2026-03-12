@@ -2,9 +2,9 @@
 @section('title', __('message.create_new_student'))
 @section('content')
 
-  <div>
+  <div class="mb-10">
     {{-- Page Header --}}
-    <div class="flex items-center justify-between px-3 md:px-0 mb-6">
+    <div class="flex items-center justify-between px-3 md:px-0 mb-4">
       <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
         <div
           class="size-10 p-2 flex justify-center items-center rounded-full bg-blue-50 text-blue-600 border border-indigo-300 dark:border-indigo-800 dark:text-blue-50 dark:bg-slate-800">
@@ -35,7 +35,8 @@
     @endif
 
     <form action="{{ route('admin.students.store') }}" method="POST"
-      class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6" enctype="multipart/form-data" novalidate x-data="{}">
+      class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6" enctype="multipart/form-data" novalidate
+      x-data="{}">
       {{-- Alpine data is simple since we don't have conditional fields --}}
       @csrf
 
@@ -59,8 +60,9 @@
               <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.full_name') }} <span class="text-red-500">*</span>
               </label>
-              <input type="text" id="name" name="name" placeholder="{{ __('message.enter_full_name') }}" required
-                value="{{ old('name') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <input type="text" id="name" name="name" placeholder="{{ __('message.enter_full_name') }}"
+                required value="{{ old('name') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('name') border-red-500 @enderror">
@@ -74,8 +76,9 @@
               <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.email_address') }} <span class="text-red-500">*</span>
               </label>
-              <input type="email" id="email" name="email" placeholder="{{ __('message.enter_email_address') }}" required
-                value="{{ old('email') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <input type="email" id="email" name="email" placeholder="{{ __('message.enter_email_address') }}"
+                required value="{{ old('email') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('email') border-red-500 @enderror">
@@ -90,7 +93,8 @@
                 {{ __('message.phone_number_(optional)') }}
               </label>
               <input type="tel" id="phone" name="phone" placeholder="{{ __('message.enter_phone_number') }}"
-                value="{{ old('phone') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                value="{{ old('phone') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('phone') border-red-500 @enderror">
@@ -104,7 +108,8 @@
               <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.gender_(optional)') }}
               </label>
-              <select id="gender" name="gender" class="form-control form-select w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <select id="gender" name="gender"
+                class="form-control form-select w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                       dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                       border-slate-300 @error('gender') border-red-500 @enderror">
@@ -136,7 +141,8 @@
 
                 <input type="text" id="date_of_birth" name="date_of_birth" datepicker datepicker-format="yyyy-mm-dd"
                   placeholder="{{ __('message.enter_date_of_birth') }}" value="{{ old('date_of_birth') }}"
-                  min="{{ now()->toDateString() }}" class="block w-full ps-9 pe-3 py-2.5
+                  min="{{ now()->toDateString() }}"
+                  class="block w-full ps-9 pe-3 py-2.5
                bg-neutral-secondary-medium border border-default-medium
                text-heading text-sm rounded-base
                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
@@ -179,14 +185,17 @@
                   </svg>
                 </div>
 
-                <input type="text" id="admission_date" name="admission_date" datepicker min="{{ now()->toDateString() }}"
-                  datepicker-format="yyyy-mm-dd" value="{{ old('admission_date') }}" class="block w-full ps-9 pe-3 py-2.5
+                <input type="text" id="admission_date" name="admission_date" datepicker
+                  min="{{ now()->toDateString() }}" datepicker-format="yyyy-mm-dd"
+                  value="{{ old('admission_date') }}"
+                  class="block w-full ps-9 pe-3 py-2.5
                bg-neutral-secondary-medium border border-default-medium
                text-heading text-sm rounded-base
                focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
                shadow-xs placeholder:text-body
                dark:bg-gray-700 dark:border-gray-600 dark:text-white
-               @error('admission_date') border-red-500 @enderror" placeholder="{{ __('message.enter_admission_date') }}">
+               @error('admission_date') border-red-500 @enderror"
+                  placeholder="{{ __('message.enter_admission_date') }}">
               </div>
 
               @error('admission_date')
@@ -212,8 +221,9 @@
               <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.nationality_(optional)') }}
               </label>
-              <input type="text" id="nationality" name="nationality" placeholder="{{ __('message.enter_nationality') }}"
-                value="{{ old('nationality') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <input type="text" id="nationality" name="nationality"
+                placeholder="{{ __('message.enter_nationality') }}" value="{{ old('nationality') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('nationality') border-red-500 @enderror">
@@ -228,7 +238,8 @@
                 {{ __('message.religion_(optional)') }}
               </label>
               <input type="text" id="religion" name="religion" placeholder="{{ __('message.enter_religion') }}"
-                value="{{ old('religion') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+                value="{{ old('religion') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('religion') border-red-500 @enderror">
@@ -242,8 +253,9 @@
               <label for="occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.occupation_(optional)') }}
               </label>
-              <input type="text" id="occupation" name="occupation" placeholder="{{ __('message.student/working/other') }}"
-                value="{{ old('occupation') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <input type="text" id="occupation" name="occupation"
+                placeholder="{{ __('message.student/working/other') }}" value="{{ old('occupation') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('occupation') border-red-500 @enderror">
@@ -257,8 +269,9 @@
               <label for="company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.company_(if_applicable)') }}
               </label>
-              <input type="text" id="company" name="company" placeholder="{{ __('message.enter_company_name') }}"
-                value="{{ old('company') }}" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <input type="text" id="company" name="company"
+                placeholder="{{ __('message.enter_company_name') }}" value="{{ old('company') }}"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('company') border-red-500 @enderror">
@@ -272,7 +285,8 @@
               <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ __('message.address_(optional)') }}
               </label>
-              <textarea id="address" name="address" placeholder="{{ __('message.enter_full_address') }}" rows="2" class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
+              <textarea id="address" name="address" placeholder="{{ __('message.enter_full_address') }}" rows="2"
+                class="form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white
                          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700
                          dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700
                          border-slate-300 @error('address') border-red-500 @enderror">{{ old('address') }}</textarea>

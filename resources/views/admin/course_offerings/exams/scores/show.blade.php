@@ -3,6 +3,54 @@
 @section('title', 'Student Score Report')
 
 @section('content')
+  @php
+    $gradeItems = [
+        [
+            'label' => __('message.attendance'),
+            'val' => $enrollment->attendance_grade,
+            'max' => 10,
+            'color' => 'bg-blue-500',
+        ],
+        [
+            'label' => __('message.listening'),
+            'val' => $enrollment->listening_grade,
+            'max' => 10,
+            'color' => 'bg-purple-500',
+        ],
+        [
+            'label' => __('message.reading'),
+            'val' => $enrollment->reading_grade,
+            'max' => 10,
+            'color' => 'bg-teal-500',
+        ],
+        [
+            'label' => 'Writing',
+            'val' => $enrollment->writing_grade,
+            'max' => 10,
+            'color' => 'bg-indigo-500',
+        ],
+        [
+            'label' => 'Speaking',
+            'val' => $enrollment->speaking_grade,
+            'max' => 10,
+            'color' => 'bg-orange-500',
+        ],
+        [
+            'label' => 'Midterm Exam',
+            'val' => $enrollment->midterm_grade,
+            'max' => 20,
+            'color' => 'bg-yellow-500',
+        ],
+        [
+            'label' => 'Final Exam',
+            'val' => $enrollment->final_grade,
+            'max' => 30,
+            'color' => 'bg-red-500',
+        ],
+    ];
+
+    $cappedTotal = collect($gradeItems)->sum(fn($item) => min($item['val'] ?? 0, $item['max']));
+  @endphp
   <div class="mx-auto space-y-6">
 
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -35,7 +83,7 @@
           <div class="bg-black/10 p-6 flex justify-around border-t border-white/10">
             <div class="text-center">
               <p class="text-xs uppercase opacity-70 mb-1">{{ __('message.total_score') }}</p>
-              <p class="text-2xl font-black">{{ number_format($enrollment->manual_sum, 1) }}</p>
+              <p class="text-2xl font-black">{{ number_format($cappedTotal, 1) }}</p>
             </div>
             <div class="w-px bg-white/10"></div>
             <div class="text-center">
@@ -48,14 +96,14 @@
         {{-- Course Details Card --}}
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
           <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
-            {{ __('Course Information') }}</h4>
+            {{ __('message.course_information') }}</h4>
           <div class="space-y-4">
             <div class="flex items-center gap-3">
               <div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600">
                 <i class="fa-solid fa-chalkboard-user"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500">{{ __('Teacher') }}</p>
+                <p class="text-xs text-gray-500">{{ __('message.teacher') }}</p>
                 <p class="text-sm font-semibold dark:text-gray-200">{{ $courseOffering?->teacher?->name }}</p>
               </div>
             </div>
@@ -64,7 +112,7 @@
                 <i class="fa-solid fa-circle-check"></i>
               </div>
               <div>
-                <p class="text-xs text-gray-500">{{ __('Status') }}</p>
+                <p class="text-xs text-gray-500">{{ __('message.status') }}</p>
                 <span
                   class="px-2 py-0.5 text-xs font-bold rounded-full {{ $enrollment->manual_sum >= 50 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
                   {{ $enrollment->manual_sum >= 50 ? __('message.passed') : __('message.failed') }}
@@ -83,67 +131,22 @@
           </div>
 
           <div class="p-6 space-y-8">
-            @php
-              $gradeItems = [
-                  [
-                      'label' => __('message.attendance'),
-                      'val' => $enrollment->attendance_grade,
-                      'max' => 10,
-                      'color' => 'bg-blue-500',
-                  ],
-                  [
-                      'label' => __('message.listening'),
-                      'val' => $enrollment->listening_grade,
-                      'max' => 10,
-                      'color' => 'bg-purple-500',
-                  ],
-                  [
-                      'label' => __('message.reading'),
-                      'val' => $enrollment->reading_grade,
-                      'max' => 10,
-                      'color' => 'bg-teal-500',
-                  ],
-                  [
-                      'label' => 'Writing',
-                      'val' => $enrollment->writing_grade,
-                      'max' => 10,
-                      'color' => 'bg-indigo-500',
-                  ],
-                  [
-                      'label' => 'Speaking',
-                      'val' => $enrollment->speaking_grade,
-                      'max' => 10,
-                      'color' => 'bg-orange-500',
-                  ],
-                  [
-                      'label' => 'Midterm Exam',
-                      'val' => $enrollment->midterm_grade,
-                      'max' => 20,
-                      'color' => 'bg-yellow-500',
-                  ],
-                  [
-                      'label' => 'Final Exam',
-                      'val' => $enrollment->final_grade,
-                      'max' => 30,
-                      'color' => 'bg-red-500',
-                  ],
-              ];
-            @endphp
 
             @foreach ($gradeItems as $item)
+              @php
+                $displayVal = min($item['val'] ?? 0, $item['max']);
+                $percentage = min((($item['val'] ?? 0) / $item['max']) * 100, 100);
+              @endphp
               <div>
                 <div class="flex justify-between items-end">
                   <span class="text-sm font-bold text-gray-700 dark:text-gray-300">{{ $item['label'] }}</span>
                   <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
                     <span
-                      class="text-gray-900 dark:text-white font-bold">{{ number_format($item['val'] ?? 0, 1) }}</span> /
+                      class="text-gray-900 dark:text-white font-bold">{{ number_format($displayVal, 1) }}</span> /
                     {{ $item['max'] }}
                   </span>
                 </div>
                 <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-4">
-                  @php
-                    $percentage = ($item['val'] / $item['max']) * 100;
-                  @endphp
                   <div class="{{ $item['color'] }} h-4 rounded-full" style="width: {{ $percentage }}%"></div>
                 </div>
               </div>
