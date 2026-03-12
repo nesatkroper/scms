@@ -79,7 +79,7 @@ class FeeController extends BaseController
 
     $statuses = ['unpaid', 'paid'];
 
-    return view('admin.fees.index', compact(
+    return view('admin.fee_types.fees.index', compact(
       'fees',
       'feeTypes',
       'feeTypeId',
@@ -103,7 +103,7 @@ class FeeController extends BaseController
         ->with('error', 'No students found. Please create a student first.');
     }
 
-    return view('admin.fees.create', compact('students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
+    return view('admin.fee_types.fees.create', compact('students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
   }
 
 
@@ -159,7 +159,7 @@ class FeeController extends BaseController
   public function show(Fee $fee)
   {
     $fee->load(['student', 'feeType', 'creator']);
-    return view('admin.fees.show', compact('fee'));
+    return view('admin.fee_types.fees.show', compact('fee'));
   }
 
   public function edit(Fee $fee)
@@ -175,7 +175,7 @@ class FeeController extends BaseController
         ->with('error', 'No students found. Please create a student first.');
     }
 
-    return view('admin.fees.edit', compact('fee', 'students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
+    return view('admin.fee_types.fees.edit', compact('fee', 'students', 'feeTypes', 'selectedFeeType', 'feeTypeId'));
   }
 
   public function update(FeeRequest $request, Fee $fee)

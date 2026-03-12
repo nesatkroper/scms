@@ -227,7 +227,7 @@
         </div>
       @endforelse
 
-      @include('admin.fees.payment-modal')
+      @include('admin.fee_types.fees.payment-modal')
 
     </div>
 

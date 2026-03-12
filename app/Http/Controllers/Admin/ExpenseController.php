@@ -76,7 +76,7 @@ class ExpenseController extends BaseController
 
     $categories = ExpenseCategory::orderBy('name')->get(['id', 'name']);
 
-    return view('admin.expenses.index', compact('expenses', 'categories'));
+    return view('admin.expense_categories.expenses.index', compact('expenses', 'categories'));
   }
 
 
@@ -92,7 +92,7 @@ class ExpenseController extends BaseController
       $payrollUsers = User::role(['teacher', 'staff'])->get();
     }
 
-    return view('admin.expenses.create', compact('category', 'payrollUsers'));
+    return view('admin.expense_categories.expenses.create', compact('category', 'payrollUsers'));
   }
 
   public function store(ExpenseRequest $request)
@@ -141,7 +141,7 @@ class ExpenseController extends BaseController
 
   public function show(Expense $expense)
   {
-    return view('admin.expenses.show', compact('expense'));
+    return view('admin.expense_categories.expenses.show', compact('expense'));
   }
 
   public function approve(Expense $expense)
@@ -166,7 +166,7 @@ class ExpenseController extends BaseController
     $category = $expense->category;
     $approvers = User::role(['admin', 'staff'])->get(['id', 'name']);
 
-    return view('admin.expenses.edit', compact('expense', 'category', 'approvers'));
+    return view('admin.expense_categories.expenses.edit', compact('expense', 'category', 'approvers'));
   }
 
 
