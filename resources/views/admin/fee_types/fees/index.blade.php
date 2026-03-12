@@ -68,7 +68,7 @@
       </div>
     </form>
 
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2"
       x-data="paymentsModal()">
       @forelse ($fees as $fee)
 

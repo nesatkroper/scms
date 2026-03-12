@@ -5,9 +5,8 @@
 @section('content')
 
   @php
-    // Check if the expense is approved for the watermark logic
     $isApproved = !empty($expense->approved_by);
-    $currency = $currency ?? '$'; // Assuming currency is available or default to $
+    $currency = $currency ?? '$';
     $school_address = $school_address ?? '123 Finance Office, Central Admin, City';
     $school_contact = $school_contact ?? 'Email: finance@school.com | Phone: (123) 456-7890';
   @endphp
@@ -15,7 +14,6 @@
   <div
     class="report-container max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg border border-gray-200 dark:border-gray-700 relative">
 
-    {{-- 1. APPROVED Watermark Implementation --}}
     @if ($isApproved)
       <div
         class="report-watermark absolute inset-0 flex items-center justify-center pointer-events-none opacity-10 z-10 text-teal-600 dark:text-teal-400">
@@ -25,9 +23,7 @@
         </span>
       </div>
     @endif
-    {{-- End Watermark --}}
 
-    {{-- Header & Actions --}}
     <div
       class="flex items-center justify-between mb-8 border-b pb-4 border-gray-100 dark:border-gray-700/50 print:hidden z-20">
       <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
@@ -79,7 +75,7 @@
 
     {{-- Status Block --}}
     <div
-      class="flex justify-between gap-2 text-sm mb-8 p-3 py-6 bg-red-50 dark:bg-red-900/30 rounded-lg border border-l-4 border-red-500 dark:border-red-400 z-20">
+      class="flex justify-between gap-2 text-sm mb-3 p-3 py-6 bg-red-50 dark:bg-red-900/30 rounded-lg border border-l-4 border-red-500 dark:border-red-400 z-20">
 
       <div>
         <h4 class="font-bold uppercase text-gray-700 dark:text-gray-300 mb-1">{{ __('message.expense_title') }}</h4>

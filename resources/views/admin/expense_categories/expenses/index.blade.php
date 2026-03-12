@@ -37,7 +37,8 @@
         <div class="flex items-center mt-3 md:mt-0 gap-2 min-w-2/3">
           <div class="relative w-full">
             <input type="search" name="search" id="searchInput"
-              placeholder="{{ __('message.search_expenses_placeholder_detail') }}" class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
+              placeholder="{{ __('message.search_expenses_placeholder_detail') }}"
+              class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
                          focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-800 dark:text-gray-100"
               value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
@@ -58,10 +59,10 @@
     </form>
 
     {{-- Expense Cards --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
       @forelse($expenses as $expense)
         <div
-          class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($expense->approved_by) border-3 border-dashed border-green-400 dark:border-green-400 @endif">
+          class="bg-white dark:bg-slate-800 rounded-lg shadow border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($expense->approved_by) border-3 border-dashed border-green-400 dark:border-green-400 @endif">
 
           {{-- Header: Title & Amount --}}
           <div class="px-4 py-3 bg-red-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
@@ -141,7 +142,7 @@
               title="{{ __('message.details') }}">
               <span class="btn-content flex items-center justify-center">
                 <i class="fa-solid fa-eye me-2"></i>
-                {{-- Show --}}
+                {{ __('message.detail') }}
               </span>
             </a>
 
@@ -151,7 +152,7 @@
                 title="{{ __('message.edit') }}">
                 <span class="btn-content flex items-center justify-center">
                   <i class="fa-solid fa-pen-to-square me-2"></i>
-                  {{-- {{ __('message.edit') }} --}}
+                  {{ __('message.edit') }}
                 </span>
               </a>
             @endif
@@ -170,7 +171,8 @@
           </div>
         </div>
       @empty
-        <div class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div
+          class="col-span-full p-6 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg">
           {{ __('message.no_expense_records_found_click_record_new_expense_to_start') }}
         </div>
       @endforelse
