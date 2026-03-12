@@ -1,25 +1,29 @@
+
 <div class="space-y-6">
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pdf-grid">
 
-    <div class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm">
-      <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">{{ __('message.total_income') }}</h4>
-      <p class="text-2xl font-bold text-green-600 dark:text-green-400">
+    <div
+      class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm pdf-col-3 pdf-box">
+      <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1 pdf-title">{{ __('message.total_income') }}</h4>
+      <p class="text-2xl font-bold text-green-600 dark:text-green-400 pdf-value">
         ${{ number_format($data['total_income'] ?? 0, 2) }}
       </p>
     </div>
 
-    <div class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm">
-      <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">{{ __('message.total_expenses') }}</h4>
-      <p class="text-2xl font-bold text-red-600 dark:text-red-400">
+    <div
+      class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm pdf-col-3 pdf-box">
+      <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1 pdf-title">{{ __('message.total_expenses') }}</h4>
+      <p class="text-2xl font-bold text-red-600 dark:text-red-400 pdf-value">
         ${{ number_format($data['total_expenses'] ?? 0, 2) }}
       </p>
     </div>
 
-    <div class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm">
-      <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">{{ __('message.net_balance') }}</h4>
+    <div
+      class="p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm pdf-col-3 pdf-box">
+      <h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1 pdf-title">{{ __('message.net_balance') }}</h4>
       <p
-        class="text-2xl font-bold
+        class="text-2xl font-bold pdf-value
         @if (($data['total_income'] ?? 0) - ($data['total_expenses'] ?? 0) >= 0) text-blue-600 dark:text-blue-400
         @else
         text-red-600 dark:text-red-400 @endif">
@@ -28,8 +32,8 @@
     </div>
   </div>
 
-  <div class="flex gap-4">
-    <div class="overflow-x-auto w-1/2">
+  <div class="flex gap-4 pdf-grid">
+    <div class="overflow-x-auto w-full md:w-1/2 pdf-col-2">
       <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.income_breakdown') }}</h3>
 
       <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
@@ -72,7 +76,7 @@
       </table>
     </div>
 
-    <div class="overflow-x-auto w-1/2">
+    <div class="overflow-x-auto w-full md:w-1/2 pdf-col-2">
       <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.expense_breakdown') }}
       </h3>
 

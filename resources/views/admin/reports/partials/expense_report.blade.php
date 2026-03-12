@@ -1,9 +1,10 @@
 @if (isset($data['summary']))
-  <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-    <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.financial_summary') }}</h4>
+  <div
+    class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 pdf-grid pdf-box">
+    <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2 pdf-title">{{ __('message.financial_summary') }}</h4>
     <p class="text-sm text-gray-600 dark:text-gray-300">
       {{ __('message.total_expenses_in_report_period') }}:
-      <span class="text-2xl font-extrabold text-red-700 dark:text-red-300 ml-2">
+      <span class="text-2xl font-extrabold text-red-700 dark:text-red-300 ml-2 pdf-value">
         ${{ number_format($data['summary']['total_expenses'] ?? 0, 2) }}
       </span>
     </p>

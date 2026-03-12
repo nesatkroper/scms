@@ -347,11 +347,13 @@ class ReportController extends BaseController
     $reportType = request('report_type');
 
     if ($type === 'pdf') {
+      $orientation = in_array($reportType, ['financial_summary', 'expense_report', 'student_enrollment', 'attendance', 'scores']) ? 'landscape' : 'portrait';
+
       return Pdf::loadView('admin.reports.pdf.master', [
         'view'  => $view,
         'data'  => $data,
         'title' => $title,
-      ])->setPaper('a4', 'portrait')->download("{$title}.pdf");
+      ])->setPaper('a4', $orientation)->download("{$title}.pdf");
     }
 
     if ($type === 'excel') {
