@@ -55,7 +55,7 @@ class EnrollmentController extends BaseController
 
     $enrollments = $query->orderBy('created_at', 'desc')->get();
 
-    return view('admin.enrollments.index', compact('enrollments', 'courseOffering'));
+    return view('admin.course_offerings.enrollments.index', compact('enrollments', 'courseOffering'));
   }
 
 
@@ -86,7 +86,7 @@ class EnrollmentController extends BaseController
     $statuses = ['studying', 'suspended', 'dropped', 'completed'];
     $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];
 
-    return view('admin.enrollments.create', compact(
+    return view('admin.course_offerings.enrollments.create', compact(
       'students',
       'courseOffering',
       'statuses',
@@ -157,7 +157,7 @@ class EnrollmentController extends BaseController
     $statuses = ['studying', 'suspended', 'dropped', 'completed'];
     $paymentStatuses = ['pending', 'paid', 'overdue', 'free'];
 
-    return view('admin.enrollments.edit', compact(
+    return view('admin.course_offerings.enrollments.edit', compact(
       'enrollment',
       'student',
       'courseOffering',
@@ -244,7 +244,7 @@ class EnrollmentController extends BaseController
     }
     $images['avatar_url'] = $avatarUrl;
 
-    return view('admin.enrollments.certificate', [
+    return view('admin.course_offerings.enrollments.certificate', [
       'enrollment' => $enrollment,
       'is_pdf'     => false,
       'b64Images'  => $images
@@ -277,7 +277,7 @@ class EnrollmentController extends BaseController
       }
     }
 
-    return view('admin.enrollments.bulk_certificate', [
+    return view('admin.course_offerings.enrollments.bulk_certificate', [
       'enrollments' => $enrollments,
       'b64Images'   => $images
     ]);

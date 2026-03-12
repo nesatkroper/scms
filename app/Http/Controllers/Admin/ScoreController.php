@@ -55,7 +55,7 @@ class ScoreController extends BaseController
       }
     ])->get();
 
-    return view('admin.scores.index', compact('students', 'exam'));
+    return view('admin.course_offerings.exams.scores.index', compact('students', 'exam'));
   }
 
   public function show($courseOfferingId, $studentId)
@@ -67,7 +67,7 @@ class ScoreController extends BaseController
       ->where('course_offering_id', $courseOfferingId)
       ->firstOrFail();
 
-    return view('admin.scores.show', compact('student', 'courseOffering', 'enrollment'));
+    return view('admin.course_offerings.exams.scores.show', compact('student', 'courseOffering', 'enrollment'));
   }
 
   public function exportCourseScores($courseOfferingId)

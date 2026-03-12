@@ -89,7 +89,7 @@ class ExamController extends BaseController
       ->orderBy('date', 'desc')
       ->get(); // ✅ no pagination
 
-    return view('admin.exams.index', compact('exams', 'courseOfferingId', 'courses'));
+    return view('admin.course_offerings.exams.index', compact('exams', 'courseOfferingId', 'courses'));
   }
 
 
@@ -105,7 +105,7 @@ class ExamController extends BaseController
         ->with('error', 'Invalid course offering.');
     }
 
-    return view('admin.exams.create', compact('courseOffering', 'courseOfferingId'));
+    return view('admin.course_offerings.exams.create', compact('courseOffering', 'courseOfferingId'));
   }
 
   public function store(ExamRequest $request)
@@ -135,7 +135,7 @@ class ExamController extends BaseController
 
     $exam->load(['courseOffering', 'scores']);
 
-    return view('admin.exams.show', compact('exam', 'courseOfferingId'));
+    return view('admin.course_offerings.exams.show', compact('exam', 'courseOfferingId'));
   }
 
   public function edit(Request $request, Exam $exam)
@@ -149,7 +149,7 @@ class ExamController extends BaseController
     $courseOffering = CourseOffering::with(['subject', 'teacher', 'classroom'])
       ->find($courseOfferingId);
 
-    return view('admin.exams.edit', compact('exam', 'courseOffering', 'courseOfferingId'));
+    return view('admin.course_offerings.exams.edit', compact('exam', 'courseOffering', 'courseOfferingId'));
   }
 
   public function update(ExamRequest $request, Exam $exam)

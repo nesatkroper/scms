@@ -62,7 +62,7 @@ class AttendanceController extends BaseController
       }
     ])->get();
 
-    return view('admin.attendance.index', compact(
+    return view('admin.course_offerings.attendance.index', compact(
       'students',
       'courseOffering',
       'date'
@@ -95,7 +95,7 @@ class AttendanceController extends BaseController
       ->first();
 
 
-    return view('admin.attendance.show', compact('student', 'courseOffering', 'attendances', 'enrollment'));
+    return view('admin.course_offerings.attendance.show', compact('student', 'courseOffering', 'attendances', 'enrollment'));
   }
 
   public function saveAll(Request $request)
