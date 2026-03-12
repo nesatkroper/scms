@@ -9,7 +9,7 @@ class ExpenseCategorySeeder extends Seeder
 {
   public function run(): void
   {
-    $categories = ['Maintenance', 'Utilities', 'Events', 'Supplies'];
+    $categories = ['Maintenance', 'Supplies', 'Utilities',];
     foreach ($categories as $cat) {
       DB::table('expense_categories')->updateOrInsert(
         ['name' => $cat],

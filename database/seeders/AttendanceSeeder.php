@@ -13,7 +13,6 @@ class AttendanceSeeder extends Seeder
     $this->command->info('Seeding Attendances...');
 
     $faker = Faker::create();
-
     $courseSchedules = DB::table('course_offerings')->pluck('schedule', 'id')->toArray();
 
     DB::table('enrollments')->orderBy('id')->chunk(500, function ($enrollments) use ($faker, $courseSchedules) {

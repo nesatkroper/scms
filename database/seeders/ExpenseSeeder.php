@@ -17,7 +17,7 @@ class ExpenseSeeder extends Seeder
       $expenses[] = [
         'title' => "Expense {$i}",
         'description' => "Description for expense {$i}",
-        'amount' => rand(50, 500),
+        'amount' => rand(5, 50),
         'date' => now()->subDays(rand(0, 30)),
         'expense_category_id' => $categoryIds[array_rand($categoryIds)],
         'approved_by' => $userIds[array_rand($userIds)],

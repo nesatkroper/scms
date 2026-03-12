@@ -30,7 +30,7 @@ class FeeSeeder extends Seeder
           'student_id' => $enrollment->student_id,
           'enrollment_id' => $enrollment->id,
           'fee_type_id' => $feeTypeIds[array_rand($feeTypeIds)],
-          'amount' => rand(10, 100),
+          'amount' => rand(5, 50),
           'due_date' => $now->copy()->addMonth(),
           'created_by' => 1,
           'payment_date' => $isPaid ? $now->copy()->subDays(rand(1, 10)) : null,

@@ -7,7 +7,7 @@
       'admin.attendances.*',
       'admin.enrollments.*',
       'admin.books.*',
-      Auth::user()->hasRole('admin') ?? 'admin.course_offerings.*',
+      Auth::user()->hasRole('admin') ? 'admin.course_offerings.*' : '',
   ];
 
   $isAcademicsActive = request()->routeIs($academicsRoutes);

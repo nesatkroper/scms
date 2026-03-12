@@ -9,7 +9,7 @@ class FeeTypeSeeder extends Seeder
 {
   public function run(): void
   {
-    $types = ['Tuition', 'Library', 'Lab', 'Sports'];
+    $types = ['Tuition', 'Lab'];
     foreach ($types as $name) {
       DB::table('fee_types')->updateOrInsert(
         ['name' => $name],

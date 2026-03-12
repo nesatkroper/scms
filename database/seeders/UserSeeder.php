@@ -11,20 +11,56 @@ use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
+
+
   public function run(): void
   {
     $faker = Faker::create();
 
     $roles = ['admin', 'teacher', 'student', 'staff'];
+
     foreach ($roles as $roleName) {
       Role::firstOrCreate(['name' => $roleName]);
     }
 
     $adminRole = Role::where('name', 'admin')->first();
+    $staffRole = Role::where('name', 'staff')->first();
 
-    Permission::firstOrCreate(['name' => 'view_dashboard']);
-    Permission::firstOrCreate(['name' => 'view_report']);
+    $modules = [
+      'attendance',
+      'student',
+      'teacher',
+      'classroom',
+      'course-offering',
+      'enrollment',
+      'score',
+      'subject',
+      'fee',
+      'expense',
+      'expense-category',
+      'fee-type',
+    ];
 
+    $actions = ['view', 'create', 'update'];
+
+    $permissions = collect();
+
+    foreach ($modules as $module) {
+      foreach ($actions as $action) {
+        $permissions->push(
+          Permission::firstOrCreate([
+            'name' => "{$action}_{$module}"
+          ])
+        );
+      }
+    }
+
+    $permissions->push(
+      Permission::firstOrCreate(['name' => 'view_dashboard']),
+      Permission::firstOrCreate(['name' => 'view_report'])
+    );
+
+    $staffRole->syncPermissions($permissions);
     $adminRole->syncPermissions(Permission::all());
 
     $admin = User::updateOrCreate(
@@ -35,13 +71,13 @@ class UserSeeder extends Seeder
         'email_verified_at' => now(),
       ]
     );
+
     $admin->assignRole('admin');
 
-
-    $this->command->info('Seeding 10 Teachers...');
+    $this->command->info('Seeding 5 Teachers...');
     $this->seedTeachers($faker, 5);
 
-    $this->command->info('Seeding 500 Students...');
+    $this->command->info('Seeding 50 Students...');
     $this->seedStudents($faker, 50);
   }
 
@@ -50,27 +86,65 @@ class UserSeeder extends Seeder
     $teacherRole = Role::where('name', 'teacher')->first();
     $password = Hash::make('password');
 
+    $modules = [
+      'attendance',
+      'student',
+      'classroom',
+      'course-offering',
+      'enrollment',
+      'exam',
+      'score',
+      'subject',
+    ];
+
+    $actions = ['view', 'create', 'update'];
+
+    $permissions = collect();
+
+    foreach ($modules as $module) {
+      foreach ($actions as $action) {
+        $permissions->push(
+          Permission::firstOrCreate([
+            'name' => "{$action}_{$module}"
+          ])
+        );
+      }
+    }
+
+    $teacherRole->syncPermissions($permissions);
+
     for ($i = 1; $i <= $count; $i++) {
       $gender = $faker->randomElement(['male', 'female']);
+
       $user = User::updateOrCreate(
-        ['email' => 'teacher' . $i . '@example.com'],
+        ['email' => "teacher{$i}@example.com"],
         [
           'name' => $faker->name($gender),
           'password' => $password,
           'email_verified_at' => now(),
           'phone' => $faker->phoneNumber,
           'address' => $faker->address,
-          'date_of_birth' => $faker->dateTimeBetween('-40 years', '-25 years')->format('Y-m-d'),
+          'date_of_birth' => $faker->dateTimeBetween('-40 years', '-30 years')->format('Y-m-d'),
           'gender' => $gender,
           'joining_date' => $faker->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
-          'qualification' => $faker->randomElement(['Master in Education', 'PhD in Science', 'Bachelor in Arts']),
+          'qualification' => $faker->randomElement([
+            'Master in Education',
+            'PhD in Science',
+            'Bachelor in Arts'
+          ]),
           'experience' => $faker->numberBetween(1, 5) . ' years',
-          'specialization' => $faker->randomElement(['Mathematics', 'Physics', 'English Literature', 'History']),
-          'salary' => $faker->randomFloat(2, 400, 1200),
+          'specialization' => $faker->randomElement([
+            'Mathematics',
+            'Physics',
+            'English Literature',
+            'History'
+          ]),
+          'salary' => $faker->randomFloat(2, 200, 500),
           'nationality' => 'Cambodian',
           'religion' => 'Buddhism',
         ]
       );
+
       $user->assignRole($teacherRole);
     }
   }
@@ -79,14 +153,10 @@ class UserSeeder extends Seeder
   {
     $studentRole = Role::where('name', 'student')->first();
     $password = Hash::make('password');
-
     $chunkSize = 1000;
 
     for ($i = 0; $i < $count; $i += $chunkSize) {
-      $usersData = [];
-      $roleData = [];
       $currentChunkSize = min($chunkSize, $count - $i);
-
 
       for ($j = 0; $j < $currentChunkSize; $j++) {
         $index = $i + $j + 1;

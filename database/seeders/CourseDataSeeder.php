@@ -22,9 +22,9 @@ class CourseDataSeeder extends Seeder
       return;
     }
 
-    $this->command->info('Seeding 8 Classrooms...');
+    $this->command->info('Seeding 5 Classrooms...');
     $classroomRoomNumbers = [];
-    for ($i = 1; $i <= 8; $i++) $classroomRoomNumbers[] = 'R' . (8 + $i);
+    for ($i = 1; $i <= 5; $i++) $classroomRoomNumbers[] = 'R' . (5 + $i);
     $faker->unique(true);
     $classroomIds = [];
 
@@ -32,8 +32,8 @@ class CourseDataSeeder extends Seeder
       $classroom = Classroom::updateOrCreate(
         ['room_number' => $roomNumber],
         [
-          'name' => 'Room ' . ($index + 8),
-          'capacity' => 50,
+          'name' => 'Room ' . ($index + 5),
+          'capacity' => 30,
         ]
       );
       $classroomIds[] = $classroom->id;
@@ -42,13 +42,10 @@ class CourseDataSeeder extends Seeder
 
     $this->command->info('Seeding 20 Subjects...');
     $subjectData = [
-      ['name' => 'English Grammar', 'code' => 'ENGL102'],
-      ['name' => 'World History', 'code' => 'HIST201'],
-      ['name' => 'Microeconomics', 'code' => 'ECON305'],
-      ['name' => 'Mathematics I', 'code' => 'MATH101'],
-      ['name' => 'Physics I', 'code' => 'PHYS101'],
-      ['name' => 'Chemistry', 'code' => 'CHEM101'],
-      ['name' => 'Biology', 'code' => 'BIO101'],
+      ['name' => 'English', 'code' => 'ENGL102'],
+      ['name' => 'Office Word', 'code' => 'OFFI101'],
+      ['name' => 'Office Excel', 'code' => 'OFFI102'],
+      ['name' => 'Office PowerPoint', 'code' => 'OFFI103'],
     ];
 
     $subjectIds = [];
