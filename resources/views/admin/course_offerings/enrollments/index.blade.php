@@ -58,7 +58,8 @@
             <input type="search" name="search" id="searchInput"
               placeholder="{{ __('message.search_enrollments_placeholder') }}"
               class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                                     focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100" value="{{ request('search') }}">
+                                     focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+              value="{{ request('search') }}">
             <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
           </div>
 
@@ -77,7 +78,7 @@
     </form>
 
     {{-- Admission Register Cards --}}
-    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
       @forelse($enrollments as $enrollment)
         <div
           class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -107,7 +108,8 @@
               <p class="flex items-center gap-2 font-medium justify-between">
                 <i class="fa-solid fa-circle-info text-indigo-500"></i>
                 {{ __('message.status') }}
-                <span class="font-semibold px-2 py-0.5 rounded-full text-xs
+                <span
+                  class="font-semibold px-2 py-0.5 rounded-full text-xs
                                 @if ($enrollment->status === 'completed') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
                                 @elseif ($enrollment->status === 'studying')
                                   bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300
@@ -129,13 +131,13 @@
 
               @php
                 $grades = [
-                  $enrollment->attendance_grade,
-                  $enrollment->listening_grade,
-                  $enrollment->writing_grade,
-                  $enrollment->reading_grade,
-                  $enrollment->speaking_grade,
-                  $enrollment->midterm_grade,
-                  $enrollment->final_grade,
+                    $enrollment->attendance_grade,
+                    $enrollment->listening_grade,
+                    $enrollment->writing_grade,
+                    $enrollment->reading_grade,
+                    $enrollment->speaking_grade,
+                    $enrollment->midterm_grade,
+                    $enrollment->final_grade,
                 ];
 
                 $sum = collect($grades)->filter(fn($g) => !is_null($g))->sum();

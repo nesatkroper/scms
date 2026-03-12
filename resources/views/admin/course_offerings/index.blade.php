@@ -85,7 +85,7 @@
 
                         @if (\Carbon\Carbon::parse($offering->join_end)->isPast())
                           <strong class="text-red-400 uppercase">
-                            {{ __('message.this_course_has_completed') }}
+                            {{ __('message.completed') }}
                           </strong>
                         @endif
                       </span>

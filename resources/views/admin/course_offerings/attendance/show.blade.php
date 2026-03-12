@@ -14,7 +14,7 @@
           class="ml-1 text-indigo-600 dark:text-indigo-400">{{ $student->name }}</span>
       </h3>
       <a href="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOffering->id]) }}"
-        class="p-2 text-sm bg-gray-200 text-gray-800 rounded shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+        class="p-2 text-sm bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
         <i class="fa-solid fa-arrow-left me-2"></i>
         {{ __('message.back_to_register') }}
       </a>
@@ -41,13 +41,13 @@
       ( {{ $enrollment->attendance_grade }} Points )</h4>
 
     {{-- {{ __('message.attendance') }} Records - Grid/Card View --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-1">
       @forelse ($attendances as $attendance)
         @php
           $statusClasses = [
-              'attending' => 'bg-green-50 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-              'permission' => 'bg-yellow-50 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-              'absence' => 'bg-red-50 text-red-800 dark:bg-red-900/50 dark:text-red-300',
+              'attending' => 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300',
+              'permission' => 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-300',
+              'absence' => 'bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-300',
           ];
 
           $statusColor =

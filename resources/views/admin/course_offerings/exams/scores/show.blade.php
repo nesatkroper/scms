@@ -94,35 +94,45 @@
                   [
                       'label' => __('message.listening'),
                       'val' => $enrollment->listening_grade,
-                      'max' => 15,
+                      'max' => 10,
                       'color' => 'bg-purple-500',
                   ],
                   [
                       'label' => __('message.reading'),
                       'val' => $enrollment->reading_grade,
-                      'max' => 15,
+                      'max' => 10,
                       'color' => 'bg-teal-500',
                   ],
-                  ['label' => 'Writing', 'val' => $enrollment->writing_grade, 'max' => 15, 'color' => 'bg-indigo-500'],
+                  [
+                      'label' => 'Writing',
+                      'val' => $enrollment->writing_grade,
+                      'max' => 10,
+                      'color' => 'bg-indigo-500',
+                  ],
                   [
                       'label' => 'Speaking',
                       'val' => $enrollment->speaking_grade,
-                      'max' => 15,
+                      'max' => 10,
                       'color' => 'bg-orange-500',
                   ],
                   [
                       'label' => 'Midterm Exam',
                       'val' => $enrollment->midterm_grade,
-                      'max' => 15,
+                      'max' => 20,
                       'color' => 'bg-yellow-500',
                   ],
-                  ['label' => 'Final Exam', 'val' => $enrollment->final_grade, 'max' => 15, 'color' => 'bg-red-500'],
+                  [
+                      'label' => 'Final Exam',
+                      'val' => $enrollment->final_grade,
+                      'max' => 30,
+                      'color' => 'bg-red-500',
+                  ],
               ];
             @endphp
 
             @foreach ($gradeItems as $item)
               <div>
-                <div class="flex justify-between items-end mb-2">
+                <div class="flex justify-between items-end">
                   <span class="text-sm font-bold text-gray-700 dark:text-gray-300">{{ $item['label'] }}</span>
                   <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
                     <span
@@ -130,11 +140,11 @@
                     {{ $item['max'] }}
                   </span>
                 </div>
-                <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2.5">
+                <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-4">
                   @php
                     $percentage = ($item['val'] / $item['max']) * 100;
                   @endphp
-                  <div class="{{ $item['color'] }} h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
+                  <div class="{{ $item['color'] }} h-4 rounded-full" style="width: {{ $percentage }}%"></div>
                 </div>
               </div>
             @endforeach

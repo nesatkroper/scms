@@ -527,6 +527,7 @@ return [
 
   'search_users_by_name_email_or_phone' => "Search users by name, email, or phone...",
   'contact' => "Contact",
+  'listening' => "Listening",
   'no_address' => "No Address",
   'not_specified' => "Not Specified",
   'qualification_/_specialization' => "Qualification / Specialization",
@@ -540,6 +541,7 @@ return [
   'create_your_first_subject_to_get_started' => "Create your first subject to get started",
   'full_label' => "(Full)",
   'subject_deleted' => "Subject Deleted",
+  'completed' => "(Completed)",
   'location_tbd' => "Location TBD",
   'seats' => "Seats",
   'search_roles_by_name' => "Search roles by name...",
