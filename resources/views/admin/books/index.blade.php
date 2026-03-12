@@ -2,82 +2,82 @@
 @section('title', __('message.books_management'))
 @section('content')
   <div x-data="{
-            showDeleteModal: false,
-            deleteUrl: '',
-            bookName: '',
-            previews: [],
-            isUploading: false,
-            showSizeWarning: false,
-            sizeWarningMsg: '',
-            confirmDelete(url, name) {
-                this.deleteUrl = url;
-                this.bookName = name;
-                this.showDeleteModal = true;
-            },
-            async handleFiles(event) {
-                const files = Array.from(event.target.files);
-                if (files.length === 0) return;
-
-                const MAX_TOTAL_SIZE = 200 * 1024 * 1024;
-                let currentTotalSize = 0;
-                this.previews = [];
-
-                for (let file of files) {
-                    if (currentTotalSize + file.size > MAX_TOTAL_SIZE) {
-                        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
-                        this.sizeWarningMsg = `{{ __('message.upload_size_warning') }}`.replace(':size', sizeMB).replace(':limit', '200');
-                        this.showSizeWarning = true;
-                        continue;
-                    }
-                    currentTotalSize += file.size;
-
-                    const previewItem = {
-                        file: file,
-                        name: file.name,
-                        thumb: null,
-                        size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
-                    };
-                    this.previews.push(previewItem);
-
-                    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-                        this.generateThumb(file).then(thumb => {
-                            previewItem.thumb = thumb;
-                        }).catch(e => console.warn('Thumbnail generation failed', e));
-                    }
-                }
-                this.syncFileInput();
-            },
-            async generateThumb(file) {
-                try {
-                    const arrayBuffer = await file.arrayBuffer();
-                    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-                    const pdf = await loadingTask.promise;
-                    const page = await pdf.getPage(1);
-                    const viewport = page.getViewport({ scale: 0.4 });
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    await page.render({ canvasContext: context, viewport: viewport }).promise;
-                    return canvas.toDataURL();
-                } catch (e) {
-                    return null;
-                }
-            },
-            removePreview(index) {
-                this.previews.splice(index, 1);
-                this.syncFileInput();
-            },
-            syncFileInput() {
-                const input = document.querySelector('input[name=\'books[]\']');
-                if (!input) return;
-                const dt = new DataTransfer();
-                this.previews.forEach(item => {
-                    if (item.file) dt.items.add(item.file);
-                });
-                input.files = dt.files;
-            }
-        }">
+      showDeleteModal: false,
+      deleteUrl: '',
+      bookName: '',
+      previews: [],
+      isUploading: false,
+      showSizeWarning: false,
+      sizeWarningMsg: '',
+      confirmDelete(url, name) {
+          this.deleteUrl = url;
+          this.bookName = name;
+          this.showDeleteModal = true;
+      },
+      async handleFiles(event) {
+          const files = Array.from(event.target.files);
+          if (files.length === 0) return;
+  
+          const MAX_TOTAL_SIZE = 200 * 1024 * 1024;
+          let currentTotalSize = 0;
+          this.previews = [];
+  
+          for (let file of files) {
+              if (currentTotalSize + file.size > MAX_TOTAL_SIZE) {
+                  const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+                  this.sizeWarningMsg = `{{ __('message.upload_size_warning') }}`.replace(':size', sizeMB).replace(':limit', '200');
+                  this.showSizeWarning = true;
+                  continue;
+              }
+              currentTotalSize += file.size;
+  
+              const previewItem = {
+                  file: file,
+                  name: file.name,
+                  thumb: null,
+                  size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
+              };
+              this.previews.push(previewItem);
+  
+              if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+                  this.generateThumb(file).then(thumb => {
+                      previewItem.thumb = thumb;
+                  }).catch(e => console.warn('Thumbnail generation failed', e));
+              }
+          }
+          this.syncFileInput();
+      },
+      async generateThumb(file) {
+          try {
+              const arrayBuffer = await file.arrayBuffer();
+              const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+              const pdf = await loadingTask.promise;
+              const page = await pdf.getPage(1);
+              const viewport = page.getViewport({ scale: 0.4 });
+              const canvas = document.createElement('canvas');
+              const context = canvas.getContext('2d');
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+              await page.render({ canvasContext: context, viewport: viewport }).promise;
+              return canvas.toDataURL();
+          } catch (e) {
+              return null;
+          }
+      },
+      removePreview(index) {
+          this.previews.splice(index, 1);
+          this.syncFileInput();
+      },
+      syncFileInput() {
+          const input = document.querySelector('input[name=\'books[]\']');
+          if (!input) return;
+          const dt = new DataTransfer();
+          this.previews.forEach(item => {
+              if (item.file) dt.items.add(item.file);
+          });
+          input.files = dt.files;
+      }
+  }">
     <div
       class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
       <div class="flex justify-between items-center mb-6">
@@ -169,7 +169,7 @@
       </div>
 
       {{-- Books Grid --}}
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
         @forelse ($books as $book)
           <div
             class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow group">
@@ -198,7 +198,8 @@
               </div>
             </div>
             <div class="p-4">
-              <h5 class="font-bold text-gray-800 dark:text-gray-200 line-clamp-2 min-h-[3rem]" title="{{ $book['name'] }}">
+              <h5 class="font-bold text-gray-800 dark:text-gray-200 line-clamp-2 min-h-[3rem]"
+                title="{{ $book['name'] }}">
                 {{ $book['name'] }}
               </h5>
               <div class="mt-2 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
@@ -219,7 +220,8 @@
               <div class="mx-auto h-16 w-16 rounded-full bg-gray-50 dark:bg-slate-700 flex items-center justify-center">
                 <i class="fa-solid fa-book-open text-gray-400 text-3xl"></i>
               </div>
-              <h3 class="mt-4 text-lg font-medium text-gray-500 dark:text-gray-400">{{ __('message.no_books_found') }}</h3>
+              <h3 class="mt-4 text-lg font-medium text-gray-500 dark:text-gray-400">{{ __('message.no_books_found') }}
+              </h3>
               <p class="mt-1 text-sm text-gray-400">{{ __('message.upload_your_first_pdf_book_above') }}</p>
             </div>
           </div>
@@ -239,7 +241,8 @@
         @click.away="showDeleteModal = false"
         class="bg-white dark:bg-gray-800 p-8 rounded-[2rem] shadow-2xl border border-white/20 dark:border-gray-700 w-full max-w-md">
         <div class="text-center">
-          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
+          <div
+            class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
             <i class="fa-solid fa-trash text-red-600 dark:text-red-400 text-3xl"></i>
           </div>
           <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('message.delete_book') }}</h3>

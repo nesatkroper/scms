@@ -101,11 +101,11 @@
 
       {{-- Users Grid with Toggle Cards --}}
       <div id="usersGrid"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-2 max-h-96 overflow-y-auto ">
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-1 max-h-96 overflow-y-auto ">
 
         @forelse ($users as $u)
           <label for="user-{{ $u->id }}"
-            class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors user-item me-2">
+            class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors user-item">
 
             <div class="flex flex-col">
               <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $u->name }}</span>
@@ -113,7 +113,8 @@
             </div>
 
             <div class="relative inline-flex items-center">
-              <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}" class="sr-only peer" {{ in_array($u->id, old('user_ids', [])) ? 'checked' : '' }}>
+              <input type="checkbox" name="user_ids[]" value="{{ $u->id }}" id="user-{{ $u->id }}"
+                class="sr-only peer" {{ in_array($u->id, old('user_ids', [])) ? 'checked' : '' }}>
 
               <div
                 class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
@@ -155,7 +156,8 @@
           {{ __('message.cancel') }}
         </a>
 
-        <button type="submit" class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+        <button type="submit"
+          class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
           {{ __('message.send_notification') }}
         </button>
       </div>
@@ -166,7 +168,7 @@
 
 @push('scripts')
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       var $search = $('#searchUsers');
       var $reset = $('#resetUserSearch');
       var $items = $('.user-item');
@@ -178,27 +180,27 @@
           .filter(':checked').length);
       }
 
-      $search.on('keyup', function () {
+      $search.on('keyup', function() {
         var keyword = $(this).val().toLowerCase().trim();
-        $items.each(function () {
+        $items.each(function() {
           $(this).toggle($(this).text().toLowerCase().includes(keyword));
         });
         updateSelectAll();
       });
 
-      $reset.on('click', function (e) {
+      $reset.on('click', function(e) {
         e.preventDefault();
         $search.val('');
         $items.show();
         updateSelectAll();
       });
 
-      $checkAll.on('change', function () {
+      $checkAll.on('change', function() {
         var isChecked = $(this).prop('checked');
         $('.user-item:visible input[type="checkbox"]').prop('checked', isChecked);
       });
 
-      $('.user-item input[type="checkbox"]').on('change', function () {
+      $('.user-item input[type="checkbox"]').on('change', function() {
         updateSelectAll();
       });
 

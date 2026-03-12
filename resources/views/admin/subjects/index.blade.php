@@ -58,7 +58,7 @@
       </form>
 
       {{-- Subject Cards --}}
-      <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
         @if (count($subjects) > 0)
           @foreach ($subjects as $subject)
             <div
@@ -125,7 +125,7 @@
                   </a>
                 @endif
 
-                @if (Auth::user()->hasPermissionTo('delete_subject'))
+                {{-- @if (Auth::user()->hasPermissionTo('delete_subject'))
                   @if ($subject->deleted_at)
                     <form action="{{ route('admin.subjects.restore', $subject->id) }}" method="POST">
                       @csrf
@@ -150,7 +150,7 @@
                       </button>
                     </form>
                   @endif
-                @endif
+                @endif --}}
               </div>
             </div>
           @endforeach

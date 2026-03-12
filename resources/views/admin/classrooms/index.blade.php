@@ -75,10 +75,10 @@
       </form>
 
       {{-- Classroom Cards --}}
-      <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
         @forelse ($classrooms as $classroom)
           <div
-            class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($classroom->deleted_at) border-3 border-dashed border-red-400 dark:border-red-500 @endif">
+            class="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if ($classroom->deleted_at) border-3 border-dashed border-red-400 dark:border-red-500 @endif">
 
             <div class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700">
               <div class="flex justify-between items-start gap-2">
@@ -150,7 +150,7 @@
               @endif
 
               {{-- Delete Button (Full form submission) --}}
-              @if (Auth::user()->hasPermissionTo('delete_classroom'))
+              {{-- @if (Auth::user()->hasPermissionTo('delete_classroom'))
                 @if ($classroom->deleted_at)
                   <form action="{{ route('admin.classrooms.restore', $classroom->id) }}" method="POST">
                     @csrf
@@ -175,7 +175,7 @@
                     </button>
                   </form>
                 @endif
-              @endif
+              @endif --}}
 
             </div>
           </div>
@@ -219,8 +219,7 @@
         x-transition:leave-end="opacity-0 scale-95" @click.away="showDeleteModal = false"
         class="bg-white dark:bg-gray-800 p-4 rounded-[2rem] shadow-2xl border border-white/20 dark:border-gray-700 w-full max-w-md">
         <div class="text-center">
-          <div
-            class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
+          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-6">
             <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400 text-3xl"></i>
           </div>
           <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{{ __('message.confirm_deletion') }}</h3>

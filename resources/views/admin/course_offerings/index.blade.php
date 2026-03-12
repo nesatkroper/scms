@@ -25,11 +25,11 @@
       </div>
     @endif
 
-    <div x-data="{ 
-                                          showModal: false, 
-                                          actionUrl: '', 
-                                          courseName: ''
-                                      }" x-cloak>
+    <div x-data="{
+        showModal: false,
+        actionUrl: '',
+        courseName: ''
+    }" x-cloak>
       <form action="{{ route('admin.course_offerings.index') }}" method="GET">
         <div
           class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
@@ -47,7 +47,8 @@
               <input type="search" name="search" id="searchInput"
                 placeholder="{{ __('message.search_offerings_by_subject_teacher_or_time') }}"
                 class="w-full border border-gray-300 dark:border-gray-500 dark:bg-gray-700 text-sm rounded-lg pl-8 pr-2 py-1.5
-                                                                          focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100" value="{{ request('search') }}">
+                                                                          focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-gray-100"
+                value="{{ request('search') }}">
               <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
             </div>
 
@@ -65,10 +66,10 @@
         </div>
       </form>
 
-      <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div id="CardContainer" class="my-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         @forelse ($courseOfferings as $offering)
           <div
-            class="bg-white dark:bg-slate-800 rounded-lg shadow border-3 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-400 dark:border-red-400 @endif">
+            class="bg-white dark:bg-slate-800 rounded-lg shadow border-2 border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300 @if (\Carbon\Carbon::parse($offering->join_end)->isPast()) border-3 border-dashed border-red-400 dark:border-red-400 @endif">
 
             <div
               class="p-2 bg-slate-50 dark:bg-slate-700 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
@@ -77,8 +78,7 @@
                   <div>
                     <h4 class="font-bold text-lg text-gray-800 dark:text-gray-200">
                       {{ $offering->subject->name ?? __('message.subject_deleted') }}
-                      <span
-                        class="text-sm @if ($offering->students_count >= $offering->classroom?->capacity) dark:text-red-500 @endif">
+                      <span class="text-sm @if ($offering->students_count >= $offering->classroom?->capacity) dark:text-red-500 @endif">
                         @if ($offering->students_count >= $offering->classroom?->capacity)
                           {{ __('message.full_label') }}
                         @endif
@@ -106,7 +106,8 @@
 
               <div class="flex flex-col items-end">
                 @if ($offering->attendances_count)
-                  <a title="{{ __('message.export_score') }}" href="{{ route('admin.attendances.export', $offering->id) }}"
+                  <a title="{{ __('message.export_score') }}"
+                    href="{{ route('admin.attendances.export', $offering->id) }}"
                     class="btn p-2 rounded-full flex justify-center items-center cursor-pointer text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-slate-600 transition-colors mr-2"
                     title="{{ __('message.export_attendance') }}">
                     <i class="fa-solid fa-right-from-bracket me-2"></i>
@@ -136,7 +137,8 @@
                                                                                                                                                     {{ __('message.seats') }})"
                 icon="ri-door-open-fill text-xl" label="{{ __('message.classroom') }}"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
-              <x-info.item name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
+              <x-info.item
+                name="${{ number_format($offering->fee, 2) }} - ({{ ucfirst($offering->payment_type) }} Payment)"
                 icon="ri-currency-fill text-xl" label="{{ __('message.fee') }}"
                 labelcolor="text-gray-500 dark:text-gray-400" color="" position="left" />
             </div>
@@ -201,8 +203,6 @@
                   <i class="fa-regular fa-eye me-2"></i>
                   {{ __('message.detail') }}
                 </a>
-
-
 
                 @if (\Carbon\Carbon::parse($offering->join_end)->isFuture())
                   @if (Auth::user()->hasPermissionTo('update_course-offering'))
