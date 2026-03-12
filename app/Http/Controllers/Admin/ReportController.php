@@ -14,6 +14,7 @@ use App\Models\CourseOffering;
 use App\Models\Fee;
 use App\Models\FeeType;
 use App\Models\ExpenseCategory;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -41,6 +42,8 @@ class ReportController extends BaseController
         ]),
       'feeTypes' => FeeType::pluck('name', 'id'),
       'expenseCategories' => ExpenseCategory::pluck('name', 'id'),
+
+      'students' => User::role('student')->select(['id', 'name'])->get(),
 
       'reportType' => null,
       'data'       => null,
@@ -131,6 +134,7 @@ class ReportController extends BaseController
         ]),
       'feeTypes'          => FeeType::pluck('name', 'id'),
       'expenseCategories' => ExpenseCategory::pluck('name', 'id'),
+      'students'          => User::role('student')->select(['id', 'name'])->get(),
       'reportType'    => $type,
       'data'          => $response['data'],
       'title'         => $response['title'],
@@ -153,6 +157,10 @@ class ReportController extends BaseController
 
     if ($request->status) {
       $query->where('status', $request->status);
+    }
+
+    if ($request->student_id) {
+      $query->where('student_id', $request->student_id);
     }
 
     if ($request->start_date) {
@@ -245,6 +253,10 @@ class ReportController extends BaseController
       $query->where('status', $request->status);
     }
 
+    if ($request->student_id) {
+      $query->where('student_id', $request->student_id);
+    }
+
     if ($request->start_date) {
       $query->whereDate('date', '>=', $request->start_date);
     }
@@ -279,6 +291,9 @@ class ReportController extends BaseController
         fn($q) =>
         $q->where('type', $request->exam_type)
       );
+    }
+    if ($request->student_id) {
+      $query->where('student_id', $request->student_id);
     }
 
     return [

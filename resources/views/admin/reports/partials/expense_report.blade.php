@@ -29,7 +29,7 @@
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
           {{-- Date --}}
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-gray-200">
-            {{ $expense->date }}
+            {{ $expense->date->format('Y-m-d') ?? '-' }}
           </td>
           {{-- Title --}}
           <th scope="row" class="px-6 py-4 font-medium text-red-600 whitespace-nowrap dark:text-red-400">

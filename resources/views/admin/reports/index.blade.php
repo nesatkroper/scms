@@ -79,7 +79,8 @@
                  focus:ring-brand focus:border-brand
                  shadow-xs placeholder:text-body
                  dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                 @error('start_date') border-red-500 @enderror" placeholder="{{ __('message.select_start_date') }}">
+                 @error('start_date') border-red-500 @enderror"
+                placeholder="{{ __('message.select_start_date') }}">
             </div>
 
             @error('start_date')
@@ -111,7 +112,8 @@
                  focus:ring-brand focus:border-brand
                  shadow-xs placeholder:text-body
                  dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                 @error('end_date') border-red-500 @enderror" placeholder="{{ __('message.select_end_date') }}">
+                 @error('end_date') border-red-500 @enderror"
+                placeholder="{{ __('message.select_end_date') }}">
             </div>
 
             @error('end_date')
@@ -142,7 +144,7 @@
 
           {{-- Student Enrollment Filters --}}
           @if (request('report_type') == 'student_enrollment')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
               <!-- Course -->
               <div>
@@ -156,6 +158,55 @@
                     </option>
                   @endforeach
                 </select>
+              </div>
+
+              <!-- Student -->
+              <div x-data="{
+                  open: false,
+                  search: '',
+                  selectedId: '{{ request('student_id') }}',
+                  selectedName: '',
+                  students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
+              }" x-init="if (selectedId) {
+                  const s = students.find(i => i.id == selectedId);
+                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+              }" class="relative">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ __('message.student') }}
+                </label>
+
+                <!-- Hidden input for form submit -->
+                <input type="hidden" name="student_id" :value="selectedId">
+
+                <!-- Button -->
+                <button type="button" @click="open = !open"
+                  class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  <span x-text="selectedName || '{{ __('message.all') }}'"></span>
+                </button>
+
+                <!-- Dropdown -->
+                <div x-show="open" @click.outside="open = false"
+                  class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
+                  <!-- Search -->
+                  <input type="text" x-model="search" placeholder="Search student..."
+                    class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                  <!-- List -->
+                  <ul class="max-h-60 overflow-y-auto">
+                    <li @click="selectedId = ''; selectedName = ''; open = false;"
+                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                      {{ __('message.all') }}
+                    </li>
+                    <template x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                      :key="student.id">
+                      <li @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                        <span x-text="student.name"></span>
+                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span x-text="student.id"></span>)</span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
               </div>
 
               <!-- Status -->
@@ -176,7 +227,7 @@
 
             {{-- {{ __('message.attendance') }} Filters --}}
           @elseif (request('report_type') == 'attendance')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
               <div>
                 <label
@@ -189,6 +240,54 @@
                     </option>
                   @endforeach
                 </select>
+              </div>
+
+              <div x-data="{
+                  open: false,
+                  search: '',
+                  selectedId: '{{ request('student_id') }}',
+                  selectedName: '',
+                  students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
+              }" x-init="if (selectedId) {
+                  const s = students.find(i => i.id == selectedId);
+                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+              }" class="relative">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ __('message.student') }}
+                </label>
+
+                <!-- Hidden input for form submit -->
+                <input type="hidden" name="student_id" :value="selectedId">
+
+                <!-- Button -->
+                <button type="button" @click="open = !open"
+                  class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  <span x-text="selectedName || '{{ __('message.all') }}'"></span>
+                </button>
+
+                <!-- Dropdown -->
+                <div x-show="open" @click.outside="open = false"
+                  class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
+                  <!-- Search -->
+                  <input type="text" x-model="search" placeholder="Search student..."
+                    class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                  <!-- List -->
+                  <ul class="max-h-60 overflow-y-auto">
+                    <li @click="selectedId = ''; selectedName = ''; open = false;"
+                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                      {{ __('message.all') }}
+                    </li>
+                    <template x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                      :key="student.id">
+                      <li @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                        <span x-text="student.name"></span>
+                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span x-text="student.id"></span>)</span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
               </div>
 
               <div>
@@ -208,7 +307,7 @@
 
             {{-- Score Filters --}}
           @elseif (request('report_type') == 'scores')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
               <div>
                 <label
@@ -221,6 +320,54 @@
                     </option>
                   @endforeach
                 </select>
+              </div>
+
+              <div x-data="{
+                  open: false,
+                  search: '',
+                  selectedId: '{{ request('student_id') }}',
+                  selectedName: '',
+                  students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
+              }" x-init="if (selectedId) {
+                  const s = students.find(i => i.id == selectedId);
+                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+              }" class="relative">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ __('message.student') }}
+                </label>
+
+                <!-- Hidden input for form submit -->
+                <input type="hidden" name="student_id" :value="selectedId">
+
+                <!-- Button -->
+                <button type="button" @click="open = !open"
+                  class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  <span x-text="selectedName || '{{ __('message.all') }}'"></span>
+                </button>
+
+                <!-- Dropdown -->
+                <div x-show="open" @click.outside="open = false"
+                  class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
+                  <!-- Search -->
+                  <input type="text" x-model="search" placeholder="Search student..."
+                    class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                  <!-- List -->
+                  <ul class="max-h-60 overflow-y-auto">
+                    <li @click="selectedId = ''; selectedName = ''; open = false;"
+                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                      {{ __('message.all') }}
+                    </li>
+                    <template x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                      :key="student.id">
+                      <li @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                        <span x-text="student.name"></span>
+                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span x-text="student.id"></span>)</span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
               </div>
 
               <div>
@@ -363,11 +510,11 @@
 
 @push('scripts')
   <script>
-    document.getElementById('report_type').addEventListener('change', function () {
+    document.getElementById('report_type').addEventListener('change', function() {
       const url = new URL(window.location.href);
 
-      ['course_offering_id', 'status', 'exam_type', 'expense_category_id', 'fee_type_id']
-        .forEach(param => url.searchParams.delete(param));
+      ['course_offering_id', 'student_id', 'status', 'exam_type', 'expense_category_id', 'fee_type_id']
+      .forEach(param => url.searchParams.delete(param));
 
       url.searchParams.set('report_type', this.value);
       window.location.href = url.toString();
