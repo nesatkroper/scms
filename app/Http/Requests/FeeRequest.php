@@ -52,17 +52,18 @@ class FeeRequest extends FormRequest
         },
       ],
 
-      'enrollment_id' => ['required', 'exists:enrollments,id'],
+      'enrollment_id' => ['nullable', 'exists:enrollments,id'],
 
       'fee_type_id' => [
         'required',
         'exists:fee_types,id',
 
-        // prevent duplicate fee type per enrollment
+        // prevent duplicate fee type per enrollment or per student for general fees
         Rule::unique('fees')
           ->ignore($feeId)
           ->where(
             fn($q) => $q
+              ->where('student_id', $this->student_id)
               ->where('enrollment_id', $this->enrollment_id)
               ->whereNull('deleted_at')
           ),
@@ -91,6 +92,14 @@ class FeeRequest extends FormRequest
 
       'remarks' => ['nullable', 'string'],
     ];
+  }
+
+  protected function prepareForValidation(): void
+  {
+    $this->merge([
+      'due_date' => $this->due_date ? \Carbon\Carbon::parse($this->due_date)->format('Y-m-d') : null,
+      'payment_date' => $this->payment_date ? \Carbon\Carbon::parse($this->payment_date)->format('Y-m-d H:i:s') : null,
+    ]);
   }
 
 

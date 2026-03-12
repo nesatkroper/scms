@@ -28,6 +28,7 @@ class ExpenseRequest extends FormRequest
   {
     $this->merge([
       'amount' => str_replace(',', '', $this->input('amount')),
+      'date' => $this->date ? \Carbon\Carbon::parse($this->date)->format('Y-m-d') : null,
     ]);
   }
 }

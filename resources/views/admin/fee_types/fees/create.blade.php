@@ -22,6 +22,19 @@
       </a>
     </div>
 
+    {{-- Validation Error Message Display --}}
+    @if ($errors->any())
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Whoops!</strong>
+        <span class="block sm:inline">There were some problems with your input.</span>
+        <ul class="mt-2 text-sm list-disc list-inside">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
+
     {{-- Error Message Display --}}
     @if (session('error'))
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -58,7 +71,7 @@
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
         </div> --}}
-        <x-fields.select name="student" label="Student" :required="true" :options="$students" placeholder="Choose student"
+        <x-fields.select name="student_id" label="Student" :required="true" :options="$students" placeholder="Choose student"
           searchable="true" />
 
         {{-- 3. Amount Field --}}

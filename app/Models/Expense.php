@@ -18,6 +18,10 @@ class Expense extends Model
     'approved_by',
     'created_by',
   ];
+  
+  protected $casts = [
+    'date' => 'date',
+  ];
 
   public function category()
   {
