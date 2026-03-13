@@ -457,7 +457,7 @@
     <!-- SHOW REPORT RESULT -->
     @if (isset($reportView))
       <div
-        class="box p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg max-h-100 overflow-y-auto">
+        class="box p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg max-h-110 overflow-y-auto">
 
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">{{ $title }}</h3>

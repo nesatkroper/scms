@@ -99,6 +99,13 @@
         page-break-after: always;
       }
 
+      .text-green-600 { color: #16a34a !important; }
+      .text-red-600 { color: #dc2626 !important; }
+      .text-blue-600 { color: #2563eb !important; }
+      .text-green-700 { color: #15803d !important; }
+      .text-red-700 { color: #b91c1c !important; }
+      .bg-gray-50 { background-color: #f9fafb !important; }
+
       /* PDF Layout Helpers */
       .pdf-grid {
         width: 100% !important;
@@ -127,6 +134,7 @@
 
       .pdf-col-2:last-child {
         padding-right: 0 !important;
+        padding-left: 10px !important;
       }
 
       .pdf-box {
