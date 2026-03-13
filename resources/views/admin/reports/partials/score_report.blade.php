@@ -1,4 +1,4 @@
-<div class="overflow-x-auto">
+<div class="overflow-x-auto rounded-lg">
   <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
     <thead class="bg-gray-100 dark:bg-gray-700">
       <tr>
@@ -40,7 +40,8 @@
               $grade = $score >= 90 ? 'A' : ($score >= 80 ? 'B' : ($score >= 70 ? 'C' : ($score >= 60 ? 'D' : 'F')));
             @endphp
 
-            <span class="px-3 py-1 rounded-full text-sm
+            <span
+              class="px-3 py-1 rounded-full text-sm
                                                       @if ($grade === 'A') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200
                                                       @elseif($grade === 'B') bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200
                                                       @elseif($grade === 'C') bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200

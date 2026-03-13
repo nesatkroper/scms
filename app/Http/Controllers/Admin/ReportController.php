@@ -174,7 +174,7 @@ class ReportController extends BaseController
     return [
       'title' => 'Student Enrollment Report',
       'view'  => 'admin.reports.partials.enrollment_report',
-      'data'  => $query->paginate(50),
+      'data'  => $query->get(),
     ];
   }
 
@@ -200,7 +200,7 @@ class ReportController extends BaseController
       'title' => 'Financial Expense Report',
       'view'  => 'admin.reports.partials.expense_report',
       'data'  => [
-        'list' => $query->paginate(50),
+        'list' => $query->get(),
         'summary' => [
           'total_expenses' => (clone $query)->sum('amount'),
           'count' => (clone $query)->count(),
@@ -231,7 +231,7 @@ class ReportController extends BaseController
       'title' => 'Financial Income Report',
       'view'  => 'admin.reports.partials.income_report',
       'data'  => [
-        'list' => $query->paginate(50),
+        'list' => $query->get(),
         'summary' => [
           'total_income' => (clone $query)->sum('amount'),
           'count' => (clone $query)->count(),
@@ -268,7 +268,7 @@ class ReportController extends BaseController
     return [
       'title' => 'Attendance Report',
       'view'  => 'admin.reports.partials.attendance_report',
-      'data'  => $query->paginate(50),
+      'data'  => $query->get(),
     ];
   }
 
@@ -299,7 +299,7 @@ class ReportController extends BaseController
     return [
       'title' => 'Exam Score Report',
       'view'  => 'admin.reports.partials.score_report',
-      'data'  => $query->paginate(50)
+      'data'  => $query->get()
     ];
   }
 
@@ -347,7 +347,7 @@ class ReportController extends BaseController
     $reportType = request('report_type');
 
     if ($type === 'pdf') {
-      $orientation = in_array($reportType, ['financial_summary', 'expense_report', 'student_enrollment', 'attendance', 'scores']) ? 'landscape' : 'portrait';
+      $orientation = in_array($reportType, ['financial_summary', 'financial_expenses', 'financial_income', 'student_enrollment', 'attendance', 'scores']) ? 'landscape' : 'portrait';
 
       return Pdf::loadView('admin.reports.pdf.master', [
         'view'  => $view,

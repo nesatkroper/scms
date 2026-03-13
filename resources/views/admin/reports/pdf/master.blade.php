@@ -101,35 +101,32 @@
 
       /* PDF Layout Helpers */
       .pdf-grid {
-        width: 100%;
-        margin-bottom: 10px;
-        display: block;
-      }
-
-      .pdf-grid::after {
-        content: "";
-        clear: both;
-        display: table;
+        width: 100% !important;
+        margin-bottom: 15px !important;
+        display: table !important;
+        table-layout: fixed !important;
       }
 
       .pdf-col-3 {
-        width: 32%;
-        float: left;
-        margin-right: 2%;
+        display: table-cell !important;
+        width: 33.33% !important;
+        padding-right: 10px !important;
+        vertical-align: top !important;
       }
 
       .pdf-col-3:last-child {
-        margin-right: 0;
+        padding-right: 0 !important;
       }
 
       .pdf-col-2 {
-        width: 49%;
-        float: left;
-        margin-right: 2%;
+        display: table-cell !important;
+        width: 50% !important;
+        padding-right: 10px !important;
+        vertical-align: top !important;
       }
 
       .pdf-col-2:last-child {
-        margin-right: 0;
+        padding-right: 0 !important;
       }
 
       .pdf-box {

@@ -1,4 +1,4 @@
-<div class="overflow-x-auto">
+<div class="overflow-x-auto rounded-lg">
   <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
     <thead class="bg-gray-100 dark:bg-gray-700">
       <tr>
@@ -32,7 +32,8 @@
           </td>
           <td class="p-2 text-gray-700 dark:text-gray-300">{{ $row->date }}</td>
           <td class="p-2">
-            <span class="px-3 py-1 rounded-full text-sm
+            <span
+              class="px-3 py-1 rounded-full text-sm
                                 @if ($row->status === 'present') bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200
                                 @elseif($row->status === 'absent') bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200
                                 @else bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">

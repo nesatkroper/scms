@@ -13,7 +13,7 @@
     </h3>
 
     <!-- FILTER BOX -->
-    <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-8">
+    <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-4">
       <h4
         class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4 border-b pb-2 border-gray-200 dark:border-gray-600">
         {{ __('message.select_report_parameters') }}
@@ -197,12 +197,15 @@
                       class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                       {{ __('message.all') }}
                     </li>
-                    <template x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                    <template
+                      x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
                       :key="student.id">
-                      <li @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                      <li
+                        @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
                         class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                         <span x-text="student.name"></span>
-                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span x-text="student.id"></span>)</span>
+                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                            x-text="student.id"></span>)</span>
                       </li>
                     </template>
                   </ul>
@@ -278,12 +281,15 @@
                       class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                       {{ __('message.all') }}
                     </li>
-                    <template x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                    <template
+                      x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
                       :key="student.id">
-                      <li @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                      <li
+                        @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
                         class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                         <span x-text="student.name"></span>
-                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span x-text="student.id"></span>)</span>
+                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                            x-text="student.id"></span>)</span>
                       </li>
                     </template>
                   </ul>
@@ -358,12 +364,15 @@
                       class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                       {{ __('message.all') }}
                     </li>
-                    <template x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                    <template
+                      x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
                       :key="student.id">
-                      <li @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                      <li
+                        @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
                         class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
                         <span x-text="student.name"></span>
-                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span x-text="student.id"></span>)</span>
+                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                            x-text="student.id"></span>)</span>
                       </li>
                     </template>
                   </ul>
@@ -447,7 +456,8 @@
 
     <!-- SHOW REPORT RESULT -->
     @if (isset($reportView))
-      <div class="box p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg">
+      <div
+        class="box p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg max-h-100 overflow-y-auto">
 
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">{{ $title }}</h3>
@@ -456,13 +466,13 @@
 
             <!-- Export Excel -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}"
-              class="p-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+              class="p-2 px-4 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
               {{ __('message.excel') }}
             </a>
 
             <!-- Export PDF -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'pdf']) }}"
-              class="p-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+              class="p-2 px-4 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
               {{ __('message.pdf') }}
             </a>
 
