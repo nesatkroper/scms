@@ -274,30 +274,19 @@ class ReportController extends BaseController
 
   private function reportScores($request)
   {
-    $query = Score::with(['student', 'exam.courseOffering.subject'])
+    $query = Enrollment::with(['student', 'courseOffering.subject', 'courseOffering.teacher'])
       ->orderBy('created_at', 'desc');
 
     if ($request->course_offering_id) {
-      $query->whereHas(
-        'exam',
-        fn($q) =>
-        $q->where('course_offering_id', $request->course_offering_id)
-      );
+      $query->where('course_offering_id', $request->course_offering_id);
     }
 
-    if ($request->exam_type) {
-      $query->whereHas(
-        'exam',
-        fn($q) =>
-        $q->where('type', $request->exam_type)
-      );
-    }
     if ($request->student_id) {
       $query->where('student_id', $request->student_id);
     }
 
     return [
-      'title' => 'Exam Score Report',
+      'title' => 'Student Grade Report',
       'view'  => 'admin.reports.partials.score_report',
       'data'  => $query->get()
     ];
