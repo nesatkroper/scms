@@ -87,6 +87,12 @@
         vertical-align: top;
       }
 
+      /* Layout table cells should have no border */
+      td[style*="border: none"] {
+        border: none !important;
+        padding: 0 !important;
+      }
+
       .text-right {
         text-align: right;
       }

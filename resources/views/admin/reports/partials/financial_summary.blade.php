@@ -33,60 +33,69 @@
     </div>
   </div>
 
-  {{-- Breakdowns --}}
-  <div class="pdf-grid flex gap-4 mt-6">
-    {{-- Income Breakdown --}}
-    <div class="pdf-col-2">
-      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.income_breakdown') }}</h3>
-      <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
-          <thead class="bg-gray-100 dark:bg-gray-700">
-            <tr>
-              <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">{{ __('message.date') }}</th>
-              <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">{{ __('message.description') }}</th>
-              <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">{{ __('message.amount') }}</th>
+  {{-- Income Breakdown --}}
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.income_breakdown') }}</h3>
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">#</th>
+            <th scope="col" class="px-6 py-3">{{ __('message.date') }}</th>
+            <th scope="col" class="px-6 py-3">{{ __('message.description') }}</th>
+            <th scope="col" class="px-6 py-3">{{ __('message.amount') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse($data['income'] ?? [] as $index => $income)
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td class="px-6 py-2 text-gray-700 dark:text-gray-300">{{ $index + 1 }}</td>
+              <td class="px-6 py-2 text-gray-700 dark:text-gray-300">{{ date('Y-m-d', strtotime($income->payment_date)) ?? '-' }}</td>
+              <td class="px-6 py-2 text-gray-700 dark:text-gray-300">{{ $income->remarks ?? '-' }}</td>
+              <td class="px-6 py-2 text-green-600 dark:text-green-400 font-bold">${{ number_format($income->amount ?? 0, 2) }}</td>
             </tr>
-          </thead>
-          <tbody class="bg-white dark:bg-gray-800">
-            @forelse($data['income'] ?? [] as $income)
-              <tr class="border-b dark:border-gray-700">
-                <td class="p-2 text-gray-700 dark:text-gray-300">{{ date('Y-m-d', strtotime($income->payment_date)) ?? '-' }}</td>
-                <td class="p-2 text-gray-700 dark:text-gray-300">{{ $income->remarks ?? '-' }}</td>
-                <td class="p-2 text-green-600 dark:text-green-400 font-bold">${{ number_format($income->amount ?? 0, 2) }}</td>
-              </tr>
-            @empty
-              <tr><td colspan="3" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">{{ __('message.no_income_records_found') }}</td></tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
+          @empty
+            <tr>
+              <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 italic">
+                {{ __('message.no_income_records_found') }}
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    {{-- Expense Breakdown --}}
-    <div class="pdf-col-2">
-      <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.expense_breakdown') }}</h3>
-      <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
-          <thead class="bg-gray-100 dark:bg-gray-700">
-            <tr>
-              <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">{{ __('message.date') }}</th>
-              <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">{{ __('message.category') }}</th>
-              <th class="p-2 text-left border-b dark:border-gray-600 text-gray-700 dark:text-gray-200">{{ __('message.amount') }}</th>
+  {{-- Expense Breakdown --}}
+  <div class="mt-8">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ __('message.expense_breakdown') }}</h3>
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">#</th>
+            <th scope="col" class="px-6 py-3">{{ __('message.date') }}</th>
+            <th scope="col" class="px-6 py-3">{{ __('message.category') }}</th>
+            <th scope="col" class="px-6 py-3">{{ __('message.amount') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse($data['expenses'] ?? [] as $index => $expense)
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td class="px-6 py-2 text-gray-700 dark:text-gray-300">{{ $index + 1 }}</td>
+              <td class="px-6 py-2 text-gray-700 dark:text-gray-300">{{ $expense->date->format('Y-m-d') ?? '-' }}</td>
+              <td class="px-6 py-2 text-gray-700 dark:text-gray-300">{{ $expense->category->name ?? '-' }}</td>
+              <td class="px-6 py-2 text-red-600 dark:text-red-400 font-bold">${{ number_format($expense->amount ?? 0, 2) }}</td>
             </tr>
-          </thead>
-          <tbody class="bg-white dark:bg-gray-800">
-            @forelse($data['expenses'] ?? [] as $expense)
-              <tr class="border-b dark:border-gray-700">
-                <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->date->format('Y-m-d') ?? '-' }}</td>
-                <td class="p-2 text-gray-700 dark:text-gray-300">{{ $expense->category->name ?? '-' }}</td>
-                <td class="p-2 text-red-600 dark:text-red-400 font-bold">${{ number_format($expense->amount ?? 0, 2) }}</td>
-              </tr>
-            @empty
-              <tr><td colspan="3" class="px-4 py-3 text-center text-gray-500 dark:text-gray-400 italic">{{ __('message.no_expense_records_found') }}</td></tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
+          @empty
+            <tr>
+              <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 italic">
+                {{ __('message.no_expense_records_found') }}
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
     </div>
   </div>
 
