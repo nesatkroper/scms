@@ -5,7 +5,7 @@
 @section('content')
 
   <div
-    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
+    class="box px-2 py-4 md:p-4 bg-white dark:bg-gray-800 sm:rounded-base border border-gray-200 dark:border-gray-700 shadow-sm mb-10">
 
     <h3 class="text-lg mb-3 font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
       <i class="fa-solid fa-file-export"></i>
@@ -13,391 +13,396 @@
     </h3>
 
     <!-- FILTER BOX -->
-    <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mb-4">
+    <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-base border border-gray-200 dark:border-gray-700 shadow-sm mb-4">
       <h4
         class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4 border-b pb-2 border-gray-200 dark:border-gray-600">
         {{ __('message.select_report_parameters') }}
       </h4>
 
       <form method="GET" action="{{ route('admin.reports.generate') }}" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ __('message.report_type') }} <span class="text-red-500">*</span>
-            </label>
-            <select class="form-control-tailwind rounded-lg" id="report_type" name="report_type" required>
-              <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
-                {{ __('message.student_enrollment') }}
-              </option>
-              <option value="attendance" {{ request('report_type') == 'attendance' ? 'selected' : '' }}>
-                {{ __('message.attendance') }} {{ __('message.report') }}
-              </option>
-              <option value="scores" {{ request('report_type') == 'scores' ? 'selected' : '' }}>
-                {{ __('message.score_report') }}
-              </option>
-              <option value="financial_income" {{ request('report_type') == 'financial_income' ? 'selected' : '' }}>
-                {{ __('message.financial_income') }}
-              </option>
-              <option value="financial_expenses" {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
-                {{ __('message.financial_expenses') }}
-              </option>
-              <option value="financial_summary" {{ request('report_type') == 'financial_summary' ? 'selected' : '' }}>
-                {{ __('message.financial_summary') }}
-              </option>
-            </select>
-          </div>
-          {{-- Start Date --}}
-          <div>
-            <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ __('message.start_date') }}
-            </label>
 
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
-                </svg>
-              </div>
-              <input type="text" id="start_date" name="start_date" datepicker datepicker-format="yyyy-mm-dd"
-                min="{{ now()->toDateString() }}" max="2027-12-31"
-                value="{{ old('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '') }}"
-                class="block w-full ps-9 pe-3 py-2.5
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+
+          <div
+            class="col-span-12 md:col-span-5 grid grid-cols-1 md:grid-cols-3 gap-2 p-4 bg-white dark:bg-gray-800 rounded-base border border-gray-200 dark:border-gray-600">
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ __('message.report_type') }} <span class="text-red-500">*</span>
+              </label>
+              <select class="form-control-tailwind rounded-base" id="report_type" name="report_type" required>
+                <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
+                  {{ __('message.student_enrollment') }}
+                </option>
+                <option value="attendance" {{ request('report_type') == 'attendance' ? 'selected' : '' }}>
+                  {{ __('message.attendance') }} {{ __('message.report') }}
+                </option>
+                <option value="scores" {{ request('report_type') == 'scores' ? 'selected' : '' }}>
+                  {{ __('message.score_report') }}
+                </option>
+                <option value="financial_income" {{ request('report_type') == 'financial_income' ? 'selected' : '' }}>
+                  {{ __('message.financial_income') }}
+                </option>
+                <option value="financial_expenses"
+                  {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
+                  {{ __('message.financial_expenses') }}
+                </option>
+                <option value="financial_summary" {{ request('report_type') == 'financial_summary' ? 'selected' : '' }}>
+                  {{ __('message.financial_summary') }}
+                </option>
+              </select>
+            </div>
+            {{-- Start Date --}}
+            <div>
+              <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ __('message.start_date') }}
+              </label>
+
+              <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+                  </svg>
+                </div>
+                <input type="text" id="start_date" name="start_date" datepicker datepicker-format="yyyy-mm-dd"
+                  min="{{ now()->toDateString() }}" max="2027-12-31"
+                  value="{{ old('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '') }}"
+                  class="block w-full ps-9 pe-3 py-2.5
                  bg-neutral-secondary-medium border border-default-medium
                  text-heading text-sm rounded-base
                  focus:ring-brand focus:border-brand
                  shadow-xs placeholder:text-body
                  dark:bg-gray-700 dark:border-gray-600 dark:text-white
                  @error('start_date') border-red-500 @enderror"
-                placeholder="{{ __('message.select_start_date') }}">
-            </div>
-
-            @error('start_date')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
-          </div>
-
-          {{-- End Date --}}
-          <div>
-            <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ __('message.end_date') }}
-            </label>
-
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
-                </svg>
+                  placeholder="{{ __('message.select_start_date') }}">
               </div>
 
-              <input type="text" id="end_date" name="end_date" datepicker datepicker-format="yyyy-mm-dd"
-                min="{{ now()->toDateString() }}" max="2027-12-31"
-                value="{{ old('end_date', $defaultEnd ? \Carbon\Carbon::parse($defaultEnd)->format('Y-m-d') : '') }}"
-                class="block w-full ps-9 pe-3 py-2.5
+              @error('start_date')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+
+            {{-- End Date --}}
+            <div>
+              <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ __('message.end_date') }}
+              </label>
+
+              <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+                  </svg>
+                </div>
+
+                <input type="text" id="end_date" name="end_date" datepicker datepicker-format="yyyy-mm-dd"
+                  min="{{ now()->toDateString() }}" max="2027-12-31"
+                  value="{{ old('end_date', $defaultEnd ? \Carbon\Carbon::parse($defaultEnd)->format('Y-m-d') : '') }}"
+                  class="block w-full ps-9 pe-3 py-2.5
                  bg-neutral-secondary-medium border border-default-medium
                  text-heading text-sm rounded-base
                  focus:ring-brand focus:border-brand
                  shadow-xs placeholder:text-body
                  dark:bg-gray-700 dark:border-gray-600 dark:text-white
                  @error('end_date') border-red-500 @enderror"
-                placeholder="{{ __('message.select_end_date') }}">
-            </div>
+                  placeholder="{{ __('message.select_end_date') }}">
+              </div>
 
-            @error('end_date')
-              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-            @enderror
+              @error('end_date')
+                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+          </div>
+
+          <div
+            class="col-span-12 md:col-span-7 p-4 bg-white dark:bg-gray-800 rounded-base border border-gray-200 dark:border-gray-600">
+
+            {{-- Student Enrollment Filters --}}
+            @if (request('report_type') == 'student_enrollment')
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="course_offering_id">
+                    <option value="">{{ __('message.all_courses') }}</option>
+                    @foreach ($courses as $id => $name)
+                      <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
+                        {{ $name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+
+                <div x-data="{
+                    open: false,
+                    search: '',
+                    selectedId: '{{ request('student_id') }}',
+                    selectedName: '',
+                    students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
+                }" x-init="if (selectedId) {
+                    const s = students.find(i => i.id == selectedId);
+                    if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+                }" class="relative">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {{ __('message.student') }}
+                  </label>
+                  <input type="hidden" name="student_id" :value="selectedId">
+                  <button type="button" @click="open = !open"
+                    class="form-control-tailwind rounded-base text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white h-11">
+                    <span x-text="selectedName || '{{ __('message.all') }}'"></span>
+                  </button>
+                  <div x-show="open" @click.outside="open = false"
+                    class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-base shadow-lg">
+                    <input type="text" x-model="search" placeholder="Search student..."
+                      class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <ul class="max-h-60 overflow-y-auto">
+                      <li @click="selectedId = ''; selectedName = ''; open = false;"
+                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                        {{ __('message.all') }}
+                      </li>
+                      <template
+                        x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                        :key="student.id">
+                        <li
+                          @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                          class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                          <span x-text="student.name"></span>
+                          <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                              x-text="student.id"></span>)</span>
+                        </li>
+                      </template>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="status">
+                    <option value="">{{ __('message.all') }}</option>
+                    @foreach (['studying', 'suspended', 'dropped', 'completed'] as $status)
+                      <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                        {{ ucfirst($status) }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+
+              </div>
+
+              {{-- {{ __('message.attendance') }} Filters --}}
+            @elseif (request('report_type') == 'attendance')
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="course_offering_id">
+                    <option value="">{{ __('message.all_courses') }}</option>
+                    @foreach ($courses as $id => $name)
+                      <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
+                        {{ $name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+
+                <div x-data="{
+                    open: false,
+                    search: '',
+                    selectedId: '{{ request('student_id') }}',
+                    selectedName: '',
+                    students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
+                }" x-init="if (selectedId) {
+                    const s = students.find(i => i.id == selectedId);
+                    if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+                }" class="relative">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {{ __('message.student') }}
+                  </label>
+
+                  <input type="hidden" name="student_id" :value="selectedId">
+
+                  <button type="button" @click="open = !open"
+                    class="form-control-tailwind rounded-base text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white h-11">
+                    <span x-text="selectedName || '{{ __('message.all') }}'"></span>
+                  </button>
+
+                  <div x-show="open" @click.outside="open = false"
+                    class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-base shadow-lg">
+                    <input type="text" x-model="search" placeholder="Search student..."
+                      class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                    <ul class="max-h-60 overflow-y-auto">
+                      <li @click="selectedId = ''; selectedName = ''; open = false;"
+                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                        {{ __('message.all') }}
+                      </li>
+                      <template
+                        x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                        :key="student.id">
+                        <li
+                          @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                          class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                          <span x-text="student.name"></span>
+                          <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                              x-text="student.id"></span>)</span>
+                        </li>
+                      </template>
+                    </ul>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="status">
+                    <option value="">{{ __('message.all') }}</option>
+                    @foreach (['present', 'absent', 'late'] as $status)
+                      <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                        {{ ucfirst($status) }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+
+              </div>
+
+              {{-- Score Filters --}}
+            @elseif (request('report_type') == 'scores')
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="course_offering_id">
+                    <option value="">{{ __('message.all_courses') }}</option>
+                    @foreach ($courses as $id => $name)
+                      <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
+                        {{ $name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+
+                <div x-data="{
+                    open: false,
+                    search: '',
+                    selectedId: '{{ request('student_id') }}',
+                    selectedName: '',
+                    students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
+                }" x-init="if (selectedId) {
+                    const s = students.find(i => i.id == selectedId);
+                    if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
+                }" class="relative">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {{ __('message.student') }}
+                  </label>
+
+                  <input type="hidden" name="student_id" :value="selectedId">
+
+                  <button type="button" @click="open = !open"
+                    class="form-control-tailwind rounded-base text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white h-11">
+                    <span x-text="selectedName || '{{ __('message.all') }}'"></span>
+                  </button>
+
+                  <div x-show="open" @click.outside="open = false"
+                    class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-base shadow-lg">
+                    <input type="text" x-model="search" placeholder="Search student..."
+                      class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+
+                    <ul class="max-h-60 overflow-y-auto">
+                      <li @click="selectedId = ''; selectedName = ''; open = false;"
+                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                        {{ __('message.all') }}
+                      </li>
+                      <template
+                        x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
+                        :key="student.id">
+                        <li
+                          @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
+                          class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
+                          <span x-text="student.name"></span>
+                          <span class="text-xs text-gray-500">({{ __('message.id') }} <span
+                              x-text="student.id"></span>)</span>
+                        </li>
+                      </template>
+                    </ul>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam Type</label>
+                  <select class="form-control-tailwind rounded-base" name="exam_type">
+                    <option value="">{{ __('message.all') }}</option>
+                    @foreach (['quiz', 'midterm', 'final'] as $type)
+                      <option value="{{ $type }}" {{ request('exam_type') == $type ? 'selected' : '' }}>
+                        {{ ucfirst($type) }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+
+              </div>
+
+              {{-- Financial Income Filters --}}
+            @elseif (request('report_type') == 'financial_income')
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.fee_type') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="fee_type_id">
+                    <option value="">{{ __('message.all_types') }}</option>
+                    @foreach ($feeTypes as $id => $name)
+                      <option value="{{ $id }}" {{ request('fee_type_id') == $id ? 'selected' : '' }}>
+                        {{ $name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+              {{-- Financial Expense Filters --}}
+            @elseif (request('report_type') == 'financial_expenses')
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.expense_category') }}</label>
+                  <select class="form-control-tailwind rounded-base" name="expense_category_id">
+                    <option value="">{{ __('message.all_categories') }}</option>
+                    @foreach ($expenseCategories as $id => $name)
+                      <option value="{{ $id }}"
+                        {{ request('expense_category_id') == $id ? 'selected' : '' }}>
+                        {{ $name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+              {{-- No filters --}}
+            @else
+              <p class="text-sm text-gray-500 dark:text-gray-400 italic">
+                {{ __('message.select_a_report_type_to_show_specific_filters') }}
+              </p>
+            @endif
+
           </div>
         </div>
 
-        <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
-
-          <h5 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-            {{ __('message.report_specific_filters') }}
-          </h5>
-
-          {{-- Student Enrollment Filters --}}
-          @if (request('report_type') == 'student_enrollment')
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="course_offering_id">
-                  <option value="">{{ __('message.all_courses') }}</option>
-                  @foreach ($courses as $id => $name)
-                    <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-
-              <div x-data="{
-                  open: false,
-                  search: '',
-                  selectedId: '{{ request('student_id') }}',
-                  selectedName: '',
-                  students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
-              }" x-init="if (selectedId) {
-                  const s = students.find(i => i.id == selectedId);
-                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
-              }" class="relative">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ __('message.student') }}
-                </label>
-                <input type="hidden" name="student_id" :value="selectedId">
-                <button type="button" @click="open = !open"
-                  class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                  <span x-text="selectedName || '{{ __('message.all') }}'"></span>
-                </button>
-                <div x-show="open" @click.outside="open = false"
-                  class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
-                  <input type="text" x-model="search" placeholder="Search student..."
-                    class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                  <ul class="max-h-60 overflow-y-auto">
-                    <li @click="selectedId = ''; selectedName = ''; open = false;"
-                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
-                      {{ __('message.all') }}
-                    </li>
-                    <template
-                      x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
-                      :key="student.id">
-                      <li
-                        @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
-                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
-                        <span x-text="student.name"></span>
-                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span
-                            x-text="student.id"></span>)</span>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
-              </div>
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="status">
-                  <option value="">{{ __('message.all') }}</option>
-                  @foreach (['studying', 'suspended', 'dropped', 'completed'] as $status)
-                    <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
-                      {{ ucfirst($status) }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-
-            </div>
-
-            {{-- {{ __('message.attendance') }} Filters --}}
-          @elseif (request('report_type') == 'attendance')
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="course_offering_id">
-                  <option value="">{{ __('message.all_courses') }}</option>
-                  @foreach ($courses as $id => $name)
-                    <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-
-              <div x-data="{
-                  open: false,
-                  search: '',
-                  selectedId: '{{ request('student_id') }}',
-                  selectedName: '',
-                  students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
-              }" x-init="if (selectedId) {
-                  const s = students.find(i => i.id == selectedId);
-                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
-              }" class="relative">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ __('message.student') }}
-                </label>
-
-                <input type="hidden" name="student_id" :value="selectedId">
-
-                <button type="button" @click="open = !open"
-                  class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                  <span x-text="selectedName || '{{ __('message.all') }}'"></span>
-                </button>
-
-                <div x-show="open" @click.outside="open = false"
-                  class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
-                  <input type="text" x-model="search" placeholder="Search student..."
-                    class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-
-                  <ul class="max-h-60 overflow-y-auto">
-                    <li @click="selectedId = ''; selectedName = ''; open = false;"
-                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
-                      {{ __('message.all') }}
-                    </li>
-                    <template
-                      x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
-                      :key="student.id">
-                      <li
-                        @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
-                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
-                        <span x-text="student.name"></span>
-                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span
-                            x-text="student.id"></span>)</span>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="status">
-                  <option value="">{{ __('message.all') }}</option>
-                  @foreach (['present', 'absent', 'late'] as $status)
-                    <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
-                      {{ ucfirst($status) }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-
-            </div>
-
-            {{-- Score Filters --}}
-          @elseif (request('report_type') == 'scores')
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="course_offering_id">
-                  <option value="">{{ __('message.all_courses') }}</option>
-                  @foreach ($courses as $id => $name)
-                    <option value="{{ $id }}" {{ request('course_offering_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-
-              <div x-data="{
-                  open: false,
-                  search: '',
-                  selectedId: '{{ request('student_id') }}',
-                  selectedName: '',
-                  students: @js($students->map(fn($s) => ['id' => $s->id, 'name' => $s->name]))
-              }" x-init="if (selectedId) {
-                  const s = students.find(i => i.id == selectedId);
-                  if (s) selectedName = s.name + ' (ID: ' + s.id + ')';
-              }" class="relative">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ __('message.student') }}
-                </label>
-
-                <input type="hidden" name="student_id" :value="selectedId">
-
-                <button type="button" @click="open = !open"
-                  class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                  <span x-text="selectedName || '{{ __('message.all') }}'"></span>
-                </button>
-
-                <div x-show="open" @click.outside="open = false"
-                  class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
-                  <input type="text" x-model="search" placeholder="Search student..."
-                    class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-
-                  <ul class="max-h-60 overflow-y-auto">
-                    <li @click="selectedId = ''; selectedName = ''; open = false;"
-                      class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
-                      {{ __('message.all') }}
-                    </li>
-                    <template
-                      x-for="student in students.filter(s => (s.name + s.id).toLowerCase().includes(search.toLowerCase()))"
-                      :key="student.id">
-                      <li
-                        @click="selectedId = student.id; selectedName = student.name + ' (ID: ' + student.id + ')'; open = false;"
-                        class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
-                        <span x-text="student.name"></span>
-                        <span class="text-xs text-gray-500">({{ __('message.id') }} <span
-                            x-text="student.id"></span>)</span>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam Type</label>
-                <select class="form-control-tailwind rounded-lg" name="exam_type">
-                  <option value="">{{ __('message.all') }}</option>
-                  @foreach (['quiz', 'midterm', 'final'] as $type)
-                    <option value="{{ $type }}" {{ request('exam_type') == $type ? 'selected' : '' }}>
-                      {{ ucfirst($type) }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-
-            </div>
-
-            {{-- Financial Income Filters --}}
-          @elseif (request('report_type') == 'financial_income')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.fee_type') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="fee_type_id">
-                  <option value="">{{ __('message.all_types') }}</option>
-                  @foreach ($feeTypes as $id => $name)
-                    <option value="{{ $id }}" {{ request('fee_type_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-
-            {{-- Financial Expense Filters --}}
-          @elseif (request('report_type') == 'financial_expenses')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.expense_category') }}</label>
-                <select class="form-control-tailwind rounded-lg" name="expense_category_id">
-                  <option value="">{{ __('message.all_categories') }}</option>
-                  @foreach ($expenseCategories as $id => $name)
-                    <option value="{{ $id }}" {{ request('expense_category_id') == $id ? 'selected' : '' }}>
-                      {{ $name }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-
-            {{-- No filters --}}
-          @else
-            <p class="text-sm text-gray-500 dark:text-gray-400 italic">
-              {{ __('message.select_a_report_type_to_show_specific_filters') }}
-            </p>
-          @endif
-
-        </div>
-
         <!-- GENERATE BUTTON -->
-        <div class="flex justify-end gap-4">
+        <div class="flex justify-end gap-2">
           <a href="{{ route('admin.reports') }}"
-            class="p-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 text-white rounded-base focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-rotate"></i>
             {{ __('message.refresh') }}
           </a>
 
           <button type="submit"
-            class="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 bg-red-600 text-white rounded-base hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
             {{ __('message.generate_report') }}
           </button>
@@ -409,7 +414,7 @@
     <!-- SHOW REPORT RESULT -->
     @if (isset($reportView))
       <div
-        class="box p-4 bg-white dark:bg-gray-800 sm:rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg max-h-110 overflow-y-auto">
+        class="box p-4 bg-white dark:bg-gray-800 sm:rounded-base border border-gray-200 dark:border-gray-700 shadow-lg max-h-130 overflow-y-auto">
 
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">{{ $title }}</h3>
@@ -418,13 +423,13 @@
 
             <!-- Export Excel -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}"
-              class="p-2 px-4 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+              class="p-2 px-4 bg-green-600 text-white rounded-base text-sm hover:bg-green-700">
               {{ __('message.excel') }}
             </a>
 
             <!-- Export PDF -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'pdf']) }}"
-              class="p-2 px-4 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+              class="p-2 px-4 bg-blue-600 text-white rounded-base text-sm hover:bg-blue-700">
               {{ __('message.pdf') }}
             </a>
 

@@ -23,6 +23,17 @@
     @stack('styles')
     @stack('style')
 
+    <style>
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      *::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+
   </head>
 
   <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-sm">
