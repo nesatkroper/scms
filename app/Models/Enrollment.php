@@ -42,6 +42,35 @@ class Enrollment extends Model
     return $this->hasOne(Fee::class, 'enrollment_id');
   }
 
+  public function fees()
+  {
+    return $this->hasMany(Fee::class, 'enrollment_id');
+  }
+
+  public function getPaymentStatusAttribute()
+  {
+    $fees = $this->fees;
+    if ($fees->isEmpty()) return 'no_fees';
+
+    $allPaid = $fees->every(fn($f) => $f->payment_date !== null);
+    if ($allPaid) return 'paid';
+
+    $anyPaid = $fees->contains(fn($f) => $f->payment_date !== null);
+    if ($anyPaid) return 'partially_paid';
+
+    return 'unpaid';
+  }
+
+  public function getPaymentColorAttribute()
+  {
+    return [
+      'paid' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+      'partially_paid' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+      'unpaid' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+      'no_fees' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+    ][$this->payment_status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+  }
+
   public function student()
   {
     return $this->belongsTo(User::class, 'student_id');

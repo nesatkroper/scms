@@ -148,7 +148,7 @@ class ReportController extends BaseController
 
   private function reportStudentEnrollment($request)
   {
-    $query = Enrollment::with(['student', 'courseOffering.subject'])
+    $query = Enrollment::with(['student', 'courseOffering.subject', 'fees'])
       ->orderBy('created_at', 'desc');
 
     if ($request->course_offering_id) {

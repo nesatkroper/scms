@@ -8,6 +8,7 @@
         <th scope="col" class="px-6 py-3">{{ __('message.time_slot') }}</th>
         <th scope="col" class="px-6 py-3">{{ __('message.enroll_date') }}</th>
         <th scope="col" class="px-6 py-3">{{ __('message.status') }}</th>
+        <th scope="col" class="px-6 py-3">{{ __('message.payment_status') }}</th>
         <th scope="col" class="px-6 py-3">{{ __('message.final_grade') }}</th>
       </tr>
     </thead>
@@ -41,6 +42,11 @@
             @endphp
             <span class="font-medium px-2.5 py-0.5 rounded-full text-xs {{ $statusClass }}">
               {{ ucfirst($enrollment->status) }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="font-medium px-2.5 py-0.5 rounded-full text-xs {{ $enrollment->payment_color }}">
+              {{ ucfirst(str_replace('_', ' ', $enrollment->payment_status)) }}
             </span>
           </td>
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-gray-200">
