@@ -69,7 +69,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 italic">
+                <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 italic">
                   {{ __('message.no_income_records_found') }}
                 </td>
               </tr>
@@ -108,7 +108,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 italic">
+                <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 italic">
                   {{ __('message.no_expense_records_found') }}
                 </td>
               </tr>

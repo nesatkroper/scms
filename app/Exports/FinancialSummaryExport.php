@@ -11,16 +11,19 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class FinancialSummaryExport implements FromView, ShouldAutoSize, WithStyles
 {
   protected $data;
+  protected $title;
 
-  public function __construct($data)
+  public function __construct($data, $title = 'Financial Summary Report')
   {
     $this->data = $data;
+    $this->title = $title;
   }
 
   public function view(): View
   {
     return view('admin.reports.exports.financial_summary_excel', [
-      'data' => $this->data
+      'data' => $this->data,
+      'title' => $this->title
     ]);
   }
 
