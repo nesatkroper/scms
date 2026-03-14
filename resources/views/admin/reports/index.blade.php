@@ -396,13 +396,13 @@
         <!-- GENERATE BUTTON -->
         <div class="flex justify-end gap-2">
           <a href="{{ route('admin.reports') }}"
-            class="p-2 text-white rounded-base w-40 text-center focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 text-white w-32 text-center focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-rotate"></i>
             {{ __('message.refresh') }}
           </a>
 
           <button type="submit"
-            class="p-2 bg-red-600 text-white rounded-base w-40 text-center hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 bg-red-600 text-white rounded-base w-32 text-center hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
             {{ __('message.generate_report') }}
           </button>

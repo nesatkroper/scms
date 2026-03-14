@@ -295,7 +295,7 @@ class ReportController extends BaseController
 
   private function reportFinancialSummary($request)
   {
-    $incomeQuery = Fee::query()->whereNotNull('payment_date');
+    $incomeQuery = Fee::with('feeType')->whereNotNull('payment_date');
     $expenseQuery = Expense::with('category')->whereNotNull('approved_by');
 
     if ($request->start_date) {
@@ -310,8 +310,6 @@ class ReportController extends BaseController
 
     $incomeList = $incomeQuery->orderBy('payment_date')->get();
     $expenseList = $expenseQuery->orderBy('date')->get();
-
-    // dd($incomeList, $expenseList);
 
     $totalIncome = $incomeList->sum('amount');
     $totalExpenses = $expenseList->sum('amount');
