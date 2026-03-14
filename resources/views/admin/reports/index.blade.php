@@ -396,13 +396,13 @@
         <!-- GENERATE BUTTON -->
         <div class="flex justify-end gap-2">
           <a href="{{ route('admin.reports') }}"
-            class="p-2 text-white rounded-base focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 text-white rounded-base w-40 text-center focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-rotate"></i>
             {{ __('message.refresh') }}
           </a>
 
           <button type="submit"
-            class="p-2 bg-red-600 text-white rounded-base hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
+            class="p-2 bg-red-600 text-white rounded-base w-40 text-center hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2 transition-colors">
             <i class="fa-solid fa-file-export"></i>
             {{ __('message.generate_report') }}
           </button>
@@ -414,22 +414,22 @@
     <!-- SHOW REPORT RESULT -->
     @if (isset($reportView))
       <div
-        class="box p-4 bg-white dark:bg-gray-800 sm:rounded-base border border-gray-200 dark:border-gray-700 shadow-lg max-h-130 overflow-y-auto">
+        class="box py-4 bg-white dark:bg-gray-800 sm:rounded-base border border-gray-200 dark:border-gray-700 shadow-lg max-h-130 overflow-y-auto">
 
-        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">
           <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">{{ $title }}</h3>
 
           <div class="flex gap-2">
 
             <!-- Export Excel -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}"
-              class="p-2 px-4 bg-green-600 text-white rounded-base text-sm hover:bg-green-700">
+              class="p-2 px-4 bg-green-600 text-white rounded-base w-20 text-center text-sm hover:bg-green-700">
               {{ __('message.excel') }}
             </a>
 
             <!-- Export PDF -->
             <a href="{{ request()->fullUrlWithQuery(['export' => 'pdf']) }}"
-              class="p-2 px-4 bg-blue-600 text-white rounded-base text-sm hover:bg-blue-700">
+              class="p-2 px-4 bg-blue-600 text-white rounded-base w-20 text-center text-sm hover:bg-blue-700">
               {{ __('message.pdf') }}
             </a>
 

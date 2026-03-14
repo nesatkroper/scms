@@ -357,6 +357,7 @@ class ReportController extends BaseController
         ]),
         'financial_summary'  => new \App\Exports\FinancialSummaryExport($data),
         'student_enrollment' => new \App\Exports\EnrollmentReportExport($data),
+        'attendance'         => new \App\Exports\AttendanceReportExport($data, $title),
         default              => new GenericReportExport($data, ['ID' => 'id', 'Date' => 'created_at']),
       };
 

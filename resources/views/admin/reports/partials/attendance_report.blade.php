@@ -1,4 +1,4 @@
-<div class="overflow-x-auto rounded-lg">
+<div class="overflow-x-auto">
   <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg">
     <thead class="bg-gray-100 dark:bg-gray-700">
       <tr>
