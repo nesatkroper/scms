@@ -67,8 +67,8 @@
                   </svg>
                 </div>
                 <input type="text" id="start_date" name="start_date" datepicker datepicker-format="yyyy-mm-dd"
-                  min="{{ now()->toDateString() }}" max="2027-12-31"
-                  value="{{ old('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '') }}"
+                  max="2027-12-31"
+                  value="{{ old('start_date', request('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '')) }}"
                   class="block w-full ps-9 pe-3 py-2.5
                  bg-neutral-secondary-medium border border-default-medium
                  text-heading text-sm rounded-base
@@ -100,8 +100,8 @@
                 </div>
 
                 <input type="text" id="end_date" name="end_date" datepicker datepicker-format="yyyy-mm-dd"
-                  min="{{ now()->toDateString() }}" max="2027-12-31"
-                  value="{{ old('end_date', $defaultEnd ? \Carbon\Carbon::parse($defaultEnd)->format('Y-m-d') : '') }}"
+                  max="2027-12-31"
+                  value="{{ old('end_date', request('end_date', $defaultEnd ? \Carbon\Carbon::parse($defaultEnd)->format('Y-m-d') : '')) }}"
                   class="block w-full ps-9 pe-3 py-2.5
                  bg-neutral-secondary-medium border border-default-medium
                  text-heading text-sm rounded-base
