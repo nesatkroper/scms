@@ -38,7 +38,7 @@ class AttendanceExport implements FromView, WithColumnWidths, WithStyles, WithEv
       ->get()
       ->groupBy('student_id');
 
-    return view('exports.attendance_sheet', [
+    return view('admin.reports.exports.attendance_sheet', [
       'course' => $course,
       'records' => $records,
       'dates' => $dates,

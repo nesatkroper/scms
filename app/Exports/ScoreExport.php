@@ -29,7 +29,7 @@ class ScoreExport implements FromView, WithColumnWidths, WithStyles
       ->orderBy('student_id')
       ->get();
 
-    return view('exports.score_sheet', [
+    return view('admin.reports.exports.score_sheet', [
       'exam' => $exam,
       'scores' => $scores
     ]);

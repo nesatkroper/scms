@@ -32,7 +32,7 @@ class ExportCourseScore implements FromView, WithColumnWidths, WithStyles
         return $enrollment->student->name;
       });
 
-    return view('exports.course_score_sheet', [
+    return view('admin.reports.exports.course_score_sheet', [
       'course' => $course,
       'enrollments' => $enrollments,
     ]);

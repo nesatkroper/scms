@@ -19,7 +19,7 @@ class FinancialSummaryExport implements FromView, ShouldAutoSize, WithStyles
 
   public function view(): View
   {
-    return view('exports.financial_summary_excel', [
+    return view('admin.reports.exports.financial_summary_excel', [
       'data' => $this->data
     ]);
   }

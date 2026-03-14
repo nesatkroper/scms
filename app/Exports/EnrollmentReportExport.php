@@ -19,7 +19,7 @@ class EnrollmentReportExport implements FromView, ShouldAutoSize
 
   public function view(): View
   {
-    return view('exports.enrollment_report', [
+    return view('admin.reports.exports.enrollment_report', [
       'data' => $this->data
     ]);
   }
