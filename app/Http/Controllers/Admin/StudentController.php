@@ -38,7 +38,7 @@ class StudentController extends BaseController
   {
     $user = Auth::user();
     $search = $request->input('search');
-    $perPage = $request->input('per_page', 20);
+    $perPage = $request->input('per_page', 6);
 
     $query = User::role('student')
       ->select(['id', 'name', 'email', 'avatar', 'admission_date', 'created_at', 'deleted_at'])

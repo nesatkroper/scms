@@ -158,7 +158,7 @@
                 {{ __('message.phone_number') }}
               </label>
               <input type="tel" id="phone" name="phone" placeholder="{{ __('message.enter_phone_number') }}"
-                value="{{ old('phone', $user->phone) }}"
+                value="{{ old('phone', $user->phone) }}" maxlength="10"
                 class="{{ $inputClasses }} @error('phone') border-red-500 @enderror">
               @error('phone')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
