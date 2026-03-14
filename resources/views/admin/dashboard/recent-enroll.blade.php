@@ -22,7 +22,9 @@
           <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs text-gray-700 dark:text-gray-400 uppercase">
             <tr>
               <th scope="col" class="px-6 py-3">{{ __('message.student') }}</th>
+              <th scope="col" class="px-6 py-3">{{ __('message.subject') }}</th>
               <th scope="col" class="px-6 py-3">{{ __('message.status') }}</th>
+              <th scope="col" class="px-6 py-3">{{ __('message.payment') }}</th>
               <th scope="col" class="px-6 py-3">{{ __('message.join_date') }}</th>
               <th scope="col" class="px-6 py-3"><span class="sr-only">{{ __('message.actions') }}</span></th>
             </tr>
@@ -46,6 +48,14 @@
                   </div>
                 </td>
                 <td class="px-6 py-4">
+                  <div class="font-medium text-gray-900 dark:text-white">
+                    {{ $recent->courseOffering->subject->name ?? __('message.unknown') }}
+                  </div>
+                  <div class="text-xs text-gray-500">
+                    {{ $recent->courseOffering->classroom->name ?? '' }}
+                  </div>
+                </td>
+                <td class="px-6 py-4">
                   @php
                     $statusColors = [
                         'studying' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
@@ -62,6 +72,11 @@
                   </span>
                 </td>
                 <td class="px-6 py-4">
+                  <span class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $recent->payment_color }}">
+                    {{ ucfirst(str_replace('_', ' ', $recent->payment_status)) }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
                   {{ \Carbon\Carbon::parse($recent->created_at)->format('Y-m-d') }}</td>
                 <td class="px-6 py-4 text-right">
                   <a href="{{ route('admin.students.show', $recent->student->id) }}"
@@ -70,7 +85,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="4" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
+                <td colspan="6" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
                   {{ __('message.no_recent_students_found') }}
                 </td>
               </tr>

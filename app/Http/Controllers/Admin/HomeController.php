@@ -41,7 +41,7 @@ class HomeController extends BaseController
     $pendingExpense = Expense::whereNull('approved_by')->sum('amount');
 
     $recentEnrollments = Enrollment::latest()
-      ->with(['student', 'courseOffering', 'fee'])
+      ->with(['student', 'courseOffering.subject', 'courseOffering.classroom', 'fee'])
       ->take(5)
       ->get();
 
