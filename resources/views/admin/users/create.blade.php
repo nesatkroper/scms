@@ -127,7 +127,7 @@
            border-gray-300 dark:border-gray-600 cursor-pointer
            bg-white dark:bg-gray-800
            hover:border-indigo-400 dark:hover:border-indigo-500
-           hover:bg-indigo-50 dark:hover:bg-gray-700 shadow-sm">
+           hover:bg-indigo-50 dark:hover:bg-gray-700 shadow-sm capitalize">
 
                     <input type="checkbox" name="type[]" value="{{ $role->name }}" @checked(in_array($role->name, $oldRoleNames))
                       x-model="selectedRoles"

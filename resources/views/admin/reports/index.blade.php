@@ -20,41 +20,32 @@
       </h4>
 
       <form method="GET" action="{{ route('admin.reports.generate') }}" class="space-y-4">
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {{ __('message.report_type') }} <span class="text-red-500">*</span>
             </label>
             <select class="form-control-tailwind rounded-lg" id="report_type" name="report_type" required>
-
               <option value="student_enrollment" {{ request('report_type') == 'student_enrollment' ? 'selected' : '' }}>
                 {{ __('message.student_enrollment') }}
               </option>
-
               <option value="attendance" {{ request('report_type') == 'attendance' ? 'selected' : '' }}>
                 {{ __('message.attendance') }} {{ __('message.report') }}
               </option>
-
               <option value="scores" {{ request('report_type') == 'scores' ? 'selected' : '' }}>
                 {{ __('message.score_report') }}
               </option>
-
               <option value="financial_income" {{ request('report_type') == 'financial_income' ? 'selected' : '' }}>
                 {{ __('message.financial_income') }}
               </option>
-
               <option value="financial_expenses" {{ request('report_type') == 'financial_expenses' ? 'selected' : '' }}>
                 {{ __('message.financial_expenses') }}
               </option>
-
               <option value="financial_summary" {{ request('report_type') == 'financial_summary' ? 'selected' : '' }}>
                 {{ __('message.financial_summary') }}
               </option>
             </select>
           </div>
-
           {{-- Start Date --}}
           <div>
             <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -69,7 +60,6 @@
                     d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
                 </svg>
               </div>
-
               <input type="text" id="start_date" name="start_date" datepicker datepicker-format="yyyy-mm-dd"
                 min="{{ now()->toDateString() }}" max="2027-12-31"
                 value="{{ old('start_date', $defaultStart ? \Carbon\Carbon::parse($defaultStart)->format('Y-m-d') : '') }}"
@@ -120,20 +110,6 @@
               <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
             @enderror
           </div>
-
-          {{-- <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
-            <input type="date" class="form-control-tailwind rounded-lg" name="start_date"
-              value="{{ request('start_date') ?? ($defaultStart ? date('Y-m-d', strtotime($defaultStart)) : '') }}">
-
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
-            <input type="date" class="form-control-tailwind rounded-lg" name="end_date"
-              value="{{ request('end_date') ?? ($defaultEnd ? date('Y-m-d', strtotime($defaultEnd)) : '') }}">
-          </div> --}}
-
         </div>
 
         <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -145,8 +121,6 @@
           {{-- Student Enrollment Filters --}}
           @if (request('report_type') == 'student_enrollment')
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-              <!-- Course -->
               <div>
                 <label
                   class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.course_offering') }}</label>
@@ -160,7 +134,6 @@
                 </select>
               </div>
 
-              <!-- Student -->
               <div x-data="{
                   open: false,
                   search: '',
@@ -174,24 +147,15 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {{ __('message.student') }}
                 </label>
-
-                <!-- Hidden input for form submit -->
                 <input type="hidden" name="student_id" :value="selectedId">
-
-                <!-- Button -->
                 <button type="button" @click="open = !open"
                   class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                   <span x-text="selectedName || '{{ __('message.all') }}'"></span>
                 </button>
-
-                <!-- Dropdown -->
                 <div x-show="open" @click.outside="open = false"
                   class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
-                  <!-- Search -->
                   <input type="text" x-model="search" placeholder="Search student..."
                     class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-
-                  <!-- List -->
                   <ul class="max-h-60 overflow-y-auto">
                     <li @click="selectedId = ''; selectedName = ''; open = false;"
                       class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
@@ -211,8 +175,6 @@
                   </ul>
                 </div>
               </div>
-
-              <!-- Status -->
               <div>
                 <label
                   class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('message.status') }}</label>
@@ -259,23 +221,18 @@
                   {{ __('message.student') }}
                 </label>
 
-                <!-- Hidden input for form submit -->
                 <input type="hidden" name="student_id" :value="selectedId">
 
-                <!-- Button -->
                 <button type="button" @click="open = !open"
                   class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                   <span x-text="selectedName || '{{ __('message.all') }}'"></span>
                 </button>
 
-                <!-- Dropdown -->
                 <div x-show="open" @click.outside="open = false"
                   class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
-                  <!-- Search -->
                   <input type="text" x-model="search" placeholder="Search student..."
                     class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 
-                  <!-- List -->
                   <ul class="max-h-60 overflow-y-auto">
                     <li @click="selectedId = ''; selectedName = ''; open = false;"
                       class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">
@@ -342,23 +299,18 @@
                   {{ __('message.student') }}
                 </label>
 
-                <!-- Hidden input for form submit -->
                 <input type="hidden" name="student_id" :value="selectedId">
 
-                <!-- Button -->
                 <button type="button" @click="open = !open"
                   class="form-control-tailwind rounded-lg text-left bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                   <span x-text="selectedName || '{{ __('message.all') }}'"></span>
                 </button>
 
-                <!-- Dropdown -->
                 <div x-show="open" @click.outside="open = false"
                   class="absolute z-50 mt-1 w-full bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-lg shadow-lg">
-                  <!-- Search -->
                   <input type="text" x-model="search" placeholder="Search student..."
                     class="w-full p-2 border-b dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 
-                  <!-- List -->
                   <ul class="max-h-60 overflow-y-auto">
                     <li @click="selectedId = ''; selectedName = ''; open = false;"
                       class="p-2 cursor-pointer hover:bg-indigo-100 dark:hover:bg-gray-600">

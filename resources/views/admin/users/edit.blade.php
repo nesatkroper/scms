@@ -37,10 +37,10 @@
       $initialSelectedRolesJson = json_encode($selectedRoles);
 
       $inputClasses =
-          'form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
+          'capitalize form-control w-full p-2 border px-4 rounded-lg focus:outline focus:outline-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:bg-slate-100 dark:focus:bg-slate-700 border-slate-300';
 
       $fileClasses =
-          'form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600';
+          'capitalize form-control w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-white dark:hover:file:bg-gray-600';
     @endphp
 
     <form id="Formedit" action="{{ route('admin.users.update', $user) }}" method="POST"
@@ -136,10 +136,10 @@
            border-gray-300 dark:border-gray-600 cursor-pointer
            bg-white dark:bg-gray-800
            hover:border-indigo-400 dark:hover:border-indigo-500
-           hover:bg-indigo-50 dark:hover:bg-gray-700 shadow-sm">
+           hover:bg-indigo-50 dark:hover:bg-gray-700 shadow-sm capitalize">
                     <input type="checkbox" name="type[]" value="{{ $role->name }}" @checked(in_array($role->name, $selectedRoles))
                       x-model="selectedRoles"
-                      class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-offset-gray-800">
+                      class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-offset-gray-800 capitalize">
                     <span class="ml-2">{{ $role->name }}</span>
                   </label>
                 @endforeach
