@@ -347,16 +347,11 @@ class ReportController extends BaseController
 
     if ($type === 'excel') {
       $export = match ($reportType) {
-        'financial_income'   => new GenericReportExport($data, [
-          'Payment Date' => 'payment_date',
-          'Student'      => 'student.name',
-          'Amount'       => 'amount',
-          'Fee Type'     => 'feeType.name',
-          'Method'       => 'payment_method',
-          'Received By'  => 'receiver.name',
-        ]),
+        'financial_income'   => new \App\Exports\IncomeReportExport($data, $title),
+        'financial_expenses' => new \App\Exports\ExpenseReportExport($data, $title),
+        'scores'             => new \App\Exports\ScoreReportExport($data, $title),
         'financial_summary'  => new \App\Exports\FinancialSummaryExport($data),
-        'student_enrollment' => new \App\Exports\EnrollmentReportExport($data),
+        'student_enrollment' => new \App\Exports\EnrollmentReportExport($data, $title),
         'attendance'         => new \App\Exports\AttendanceReportExport($data, $title),
         default              => new GenericReportExport($data, ['ID' => 'id', 'Date' => 'created_at']),
       };
