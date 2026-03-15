@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 15, 2026 at 10:41 AM
+-- Generation Time: Mar 15, 2026 at 10:47 AM
 -- Server version: 8.0.45-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -870,9 +870,9 @@ CREATE TABLE `expense_categories` (
 --
 
 INSERT INTO `expense_categories` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Maintenance', 'Maintenance expenses', '2026-03-12 05:39:01', '2026-03-12 05:39:01', NULL),
-(2, 'Supplies', 'Supplies expenses', '2026-03-12 05:39:01', '2026-03-12 05:39:01', NULL),
-(3, 'Utilities', 'Utilities expenses', '2026-03-12 05:39:01', '2026-03-12 05:39:01', NULL);
+(1, 'ការថែទាំ', 'Maintenance expenses', '2026-03-12 05:39:01', '2026-03-15 10:41:44', NULL),
+(2, 'សម្ភារៈ', 'Supplies expenses', '2026-03-12 05:39:01', '2026-03-15 10:41:52', NULL),
+(3, 'សេវាប្រើប្រាស់', 'Utilities expenses', '2026-03-12 05:39:01', '2026-03-15 10:42:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -982,9 +982,9 @@ CREATE TABLE `fee_types` (
 --
 
 INSERT INTO `fee_types` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Tuition', 'Tuition fee', '2026-03-12 05:39:01', '2026-03-12 05:39:01', NULL),
-(2, 'Lab', 'Lab fee', '2026-03-12 05:39:01', '2026-03-12 05:39:01', NULL),
-(5, 'Book', NULL, '2026-03-14 04:12:45', '2026-03-14 04:12:45', NULL);
+(1, 'ថ្លៃសិក្សា', 'Tuition fee', '2026-03-12 05:39:01', '2026-03-15 10:42:20', NULL),
+(2, 'ពិសោធន៍', 'Lab fee', '2026-03-12 05:39:01', '2026-03-15 10:42:31', NULL),
+(5, 'សៀវភៅ', NULL, '2026-03-14 04:12:45', '2026-03-15 10:42:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -1618,7 +1618,7 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('gjv4t8lSGSYeJfTcV6uScHCvgX7vK24H1U9QTVKN', 2, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSjJUOTdqaFFHd0NkdG1VNGJkZkd6MzB0d1BSU2dSZUt3ZnFKWTJwWiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODEwMi9hZG1pbi9wcm9maWxlIjtzOjU6InJvdXRlIjtzOjE4OiJhZG1pbi5wcm9maWxlLnNob3ciO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=', 1773477702),
-('jKC3I197GMZr1HWBT9QjXkdPJ93hmnXNopmuWCb7', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoicnNlYXlHOE9JSjBVbEFNQjNnMnAwaWZDdUVoUE16cUU3S2RHVXRNTCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjQ2OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4vZXhwZW5zZV9jYXRlZ29yaWVzIjtzOjU6InJvdXRlIjtzOjMwOiJhZG1pbi5leHBlbnNlX2NhdGVnb3JpZXMuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1773571214),
+('jKC3I197GMZr1HWBT9QjXkdPJ93hmnXNopmuWCb7', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoicnNlYXlHOE9JSjBVbEFNQjNnMnAwaWZDdUVoUE16cUU3S2RHVXRNTCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgxMDIvYWRtaW4iO3M6NToicm91dGUiO3M6MTU6ImFkbWluLmRlc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo2OiJsb2NhbGUiO3M6MjoiZW4iO30=', 1773571608),
 ('rKj9EDdx3mkOMSTdSAsbW0SNTjwUDUfaLHy7tySt', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQm9qSWR4OFNOd1JVRThRd3NPUk5pMlJtRkw2Z2JoUGlOOUVYbEt4cCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly9zY21zLmxvY2FsL2FkbWluL3N0dWRlbnRzLzQ4L2VkaXQiO3M6NToicm91dGUiO3M6MTk6ImFkbWluLnN0dWRlbnRzLmVkaXQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1773477978);
 
 -- --------------------------------------------------------
