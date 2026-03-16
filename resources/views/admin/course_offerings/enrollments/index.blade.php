@@ -29,7 +29,7 @@
     @endif
 
     {{-- Search Form --}}
-    <form action="{{ route('admin.enrollments.index') }}" method="GET">
+    <form action="{{ route('admin.enrollments.index', ['course_offering_id' => $courseOffering->id]) }}" method="GET">
       <div
         class="p-2 md:flex gap-2 justify-between items-center border rounded-lg border-gray-200 dark:border-gray-700 bg-violet-50 dark:bg-slate-800">
 

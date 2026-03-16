@@ -208,8 +208,8 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {{ $offering->teacher->name ?? __('message.unassigned') }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {{ $offering?->enrollment?->status ? ucfirst(str_replace('_', ' ', $offering->enrollment->status)) : __('message.n/a') }}
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">
+                      {{ $offering?->enrollment?->status ?? __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <span
@@ -351,7 +351,8 @@
               <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach ($student->scores as $score)
                   <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 capitalize">
                       <span class="font-bold">{{ $score->exam->type ?? __('message.n/a') }}</span>
                       <p class="text-xs text-gray-500 dark:text-gray-400">
                         ({{ $score->exam->courseOffering->subject->name ?? __('message.unknown_course') }})
