@@ -170,7 +170,7 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
           {{ __('message.details_about_courses_this_student_is_currently_enrolled_in') }}
         </p>
-        @if ($student->courseOfferings->isEmpty())
+        @if ($student->enrollments->isEmpty())
           <p class="text-gray-500 dark:text-gray-400">This student is not currently enrolled in any courses.</p>
         @else
           <div class="overflow-x-auto">
@@ -200,7 +200,8 @@
                 </tr>
               </thead>
               <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach ($student->courseOfferings as $offering)
+                @foreach ($student->enrollments as $enrollment)
+                  @php $offering = $enrollment->courseOffering; @endphp
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                       {{ $offering->subject->name ?? __('message.n/a') }}
@@ -209,12 +210,12 @@
                       {{ $offering->teacher->name ?? __('message.unassigned') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">
-                      {{ $offering?->enrollment?->status ?? __('message.n/a') }}
+                      {{ $enrollment->status ?? __('message.n/a') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <span
                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-100">
-                        {{ $offering->enrollment->grade_final ?? __('message.n/a') }}
+                        {{ $enrollment->grade_final ?? __('message.n/a') }}
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">

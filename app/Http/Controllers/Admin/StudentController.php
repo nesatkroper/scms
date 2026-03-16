@@ -239,13 +239,13 @@ class StudentController extends BaseController
     $student->loadCount(['fees', 'attendances', 'scores']);
 
     $student->load([
-      'courseOfferings' => function ($query) {
-        $query->select(['course_offerings.id', 'course_offerings.subject_id', 'course_offerings.teacher_id', 'course_offerings.schedule'])
-          ->with([
-            'subject:id,name,code',
-            'teacher:id,name'
-          ])
-          ->limit(10); // Limit to recent 10 courses
+      'enrollments' => function ($query) {
+        $query->with([
+          'courseOffering.subject:id,name,code',
+          'courseOffering.teacher:id,name'
+        ])
+          ->latest()
+          ->limit(10); // Limit to recent 10 enrollments
       },
       'fees' => function ($query) {
         $query->select(['id', 'student_id', 'fee_type_id', 'amount', 'payment_date', 'due_date'])
@@ -254,10 +254,10 @@ class StudentController extends BaseController
           ->limit(10); // Limit to recent 10 fees
       },
       'scores' => function ($query) {
-        $query->select(['id', 'student_id', 'exam_id', 'score'])
+        $query->select(['id', 'student_id', 'exam_id', 'score', 'grade', 'remarks'])
           ->with([
             'exam' => function ($q) {
-              $q->select(['id', 'course_offering_id', 'type', 'date'])
+              $q->select(['id', 'course_offering_id', 'type', 'date', 'total_marks'])
                 ->with('courseOffering.subject:id,name');
             }
           ])

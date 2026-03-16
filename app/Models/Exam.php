@@ -17,6 +17,10 @@ class Exam extends Model
     'total_marks',
     'passing_marks'
   ];
+  
+  protected $casts = [
+    'date' => 'date',
+  ];
 
   public function courseOffering()
   {
