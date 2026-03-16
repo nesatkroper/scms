@@ -1,7 +1,7 @@
 <div class="space-y-6">
 
   {{-- Summary Cards --}}
-  <div class="pdf-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="pdf-grid grid grid-cols-1 md:grid-cols-3 gap-4 m-6">
     <div class="pdf-col-3">
       <div
         class="pdf-box p-4 rounded-lg border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 shadow-sm">

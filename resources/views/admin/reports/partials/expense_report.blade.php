@@ -1,6 +1,6 @@
 @if (isset($data['summary']))
   <div
-    class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 pdf-grid pdf-box">
+    class="m-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 pdf-grid pdf-box">
     <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2 pdf-title">{{ __('message.financial_summary') }}
     </h4>
     <p class="text-sm text-gray-600 dark:text-gray-300">
@@ -12,7 +12,7 @@
   </div>
 @endif
 
-<div class="overflow-x-auto shadow-md sm:rounded-lg">
+<div class="overflow-x-auto">
   <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>

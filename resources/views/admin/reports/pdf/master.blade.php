@@ -11,22 +11,8 @@
         -webkit-box-sizing: border-box;
       }
 
-      @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url("{{ public_path('fonts/KantumruyPro-Regular.ttf') }}") format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-
-      @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url("{{ public_path('fonts/KantumruyPro-Bold.ttf') }}") format('truetype');
-        font-weight: bold;
-        font-style: normal;
-      }
-
       body {
-        font-family: 'Kantumruy Pro', 'Helvetica', sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: #333;
         line-height: 1.1;
         margin: 0;
@@ -119,12 +105,29 @@
         page-break-after: always;
       }
 
-      .text-green-600 { color: #16a34a !important; }
-      .text-red-600 { color: #dc2626 !important; }
-      .text-blue-600 { color: #2563eb !important; }
-      .text-green-700 { color: #15803d !important; }
-      .text-red-700 { color: #b91c1c !important; }
-      .bg-gray-50 { background-color: #f9fafb !important; }
+      .text-green-600 {
+        color: #16a34a !important;
+      }
+
+      .text-red-600 {
+        color: #dc2626 !important;
+      }
+
+      .text-blue-600 {
+        color: #2563eb !important;
+      }
+
+      .text-green-700 {
+        color: #15803d !important;
+      }
+
+      .text-red-700 {
+        color: #b91c1c !important;
+      }
+
+      .bg-gray-50 {
+        background-color: #f9fafb !important;
+      }
 
       /* PDF Layout Helpers */
       .pdf-grid {
