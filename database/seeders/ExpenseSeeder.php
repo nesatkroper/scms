@@ -13,11 +13,11 @@ class ExpenseSeeder extends Seeder
     $userIds = DB::table('users')->pluck('id')->toArray();
     $expenses = [];
 
-    for ($i = 0; $i < 250; $i++) {
+    for ($i = 0; $i < 100; $i++) {
       $expenses[] = [
         'title' => "Expense {$i}",
         'description' => "Description for expense {$i}",
-        'amount' => rand(5, 50),
+        'amount' => rand(5, 30),
         'date' => now()->subDays(rand(0, 30)),
         'expense_category_id' => $categoryIds[array_rand($categoryIds)],
         'approved_by' => $userIds[array_rand($userIds)],

@@ -24,7 +24,7 @@ class CourseDataSeeder extends Seeder
 
     $this->command->info('Seeding 5 Classrooms...');
     $classroomRoomNumbers = [];
-    for ($i = 1; $i <= 5; $i++) $classroomRoomNumbers[] = 'R' . (5 + $i);
+    for ($i = 1; $i <= 3; $i++) $classroomRoomNumbers[] = 'R' . (3 + $i);
     $faker->unique(true);
     $classroomIds = [];
 
@@ -32,7 +32,7 @@ class CourseDataSeeder extends Seeder
       $classroom = Classroom::updateOrCreate(
         ['room_number' => $roomNumber],
         [
-          'name' => 'Room ' . ($index + 5),
+          'name' => 'Room ' . ($index + 3),
           'capacity' => 30,
         ]
       );

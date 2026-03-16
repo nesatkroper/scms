@@ -11,8 +11,22 @@
         -webkit-box-sizing: border-box;
       }
 
+      @font-face {
+        font-family: 'Kantumruy Pro';
+        src: url("{{ public_path('fonts/KantumruyPro-Regular.ttf') }}") format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'Kantumruy Pro';
+        src: url("{{ public_path('fonts/KantumruyPro-Bold.ttf') }}") format('truetype');
+        font-weight: bold;
+        font-style: normal;
+      }
+
       body {
-        font-family: 'Helvetica', sans-serif;
+        font-family: 'Kantumruy Pro', 'Helvetica', sans-serif;
         color: #333;
         line-height: 1.1;
         margin: 0;

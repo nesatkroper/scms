@@ -32,10 +32,12 @@
         </a>
       </div>
 
-      <form action="{{ route('admin.enrollments.update', [
-    'student_id' => $enrollment->student_id,
-    'course_offering_id' => $courseOfferingId,
-  ]) }}" method="POST" class="p-0" enctype="multipart/form-data">
+      <form
+        action="{{ route('admin.enrollments.update', [
+            'student_id' => $enrollment->student_id,
+            'course_offering_id' => $courseOfferingId,
+        ]) }}"
+        method="POST" class="p-0" enctype="multipart/form-data">
 
         @csrf
         @method('PUT')
@@ -52,7 +54,8 @@
             <select name="status" id="status" required
               class="w-full p-2 border px-4 rounded-lg focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white border-slate-300 @error('status') border-red-500 @enderror">
               @foreach ($statuses as $status)
-                <option value="{{ $status }}" {{ old('status', $enrollment->status) == $status ? 'selected' : '' }}>
+                <option value="{{ $status }}"
+                  {{ old('status', $enrollment->status) == $status ? 'selected' : '' }}>
                   {{ ucfirst($status) }}
                 </option>
               @endforeach
@@ -88,7 +91,7 @@
               </div>
 
               {{-- Preview Container --}}
-              <div id="cert-preview-container" class="shrink-0">
+              <div id="cert-preview-container" class="shrink-0 min-w-96">
                 <div
                   class="relative h-96 bg-gray-100 dark:bg-gray-900 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center overflow-hidden">
                   <img id="cert-preview-img" src="{{ $enrollment->certificate ? asset($enrollment->certificate) : '' }}"
@@ -149,18 +152,18 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const certInput = document.getElementById('certificate');
       const previewImg = document.getElementById('cert-preview-img');
       const placeholder = document.getElementById('cert-preview-placeholder');
 
-      certInput.addEventListener('change', function () {
+      certInput.addEventListener('change', function() {
         const file = this.files[0];
 
         if (file) {
           if (file.type.startsWith('image/')) {
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
               previewImg.src = e.target.result;
               previewImg.classList.remove('hidden');
               placeholder.classList.add('hidden');
@@ -177,7 +180,7 @@
           }
         } else {
           // If no file selected, show the current one if it exists
-          @if($enrollment->certificate)
+          @if ($enrollment->certificate)
             previewImg.src = "{{ asset($enrollment->certificate) }}";
             previewImg.classList.remove('hidden');
             placeholder.classList.add('hidden');
@@ -186,10 +189,10 @@
             placeholder.classList.remove('hidden');
             placeholder.textContent = "No Preview";
           @endif
-          }
+        }
       });
 
-      previewImg.onerror = function () {
+      previewImg.onerror = function() {
         this.classList.add('hidden');
         placeholder.classList.remove('hidden');
         placeholder.textContent = "Invalid File/Link";

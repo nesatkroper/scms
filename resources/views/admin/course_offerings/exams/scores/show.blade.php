@@ -114,8 +114,8 @@
               <div>
                 <p class="text-xs text-gray-500">{{ __('message.status') }}</p>
                 <span
-                  class="px-2 py-0.5 text-xs font-bold rounded-full {{ $enrollment->manual_sum >= 50 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                  {{ $enrollment->manual_sum >= 50 ? __('message.passed') : __('message.failed') }}
+                  class="px-2 py-0.5 text-xs font-bold rounded-full {{ $enrollment->manual_sum >= 60 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                  {{ $enrollment->manual_sum >= 60 ? __('message.passed') : __('message.failed') }}
                 </span>
               </div>
             </div>
@@ -141,8 +141,7 @@
                 <div class="flex justify-between items-end">
                   <span class="text-sm font-bold text-gray-700 dark:text-gray-300">{{ $item['label'] }}</span>
                   <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    <span
-                      class="text-gray-900 dark:text-white font-bold">{{ number_format($displayVal, 1) }}</span> /
+                    <span class="text-gray-900 dark:text-white font-bold">{{ number_format($displayVal, 1) }}</span> /
                     {{ $item['max'] }}
                   </span>
                 </div>

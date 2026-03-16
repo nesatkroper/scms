@@ -48,7 +48,7 @@
             @yield('content')
           </div>
         </main>
-        @include('admin.partials.footer')
+        {{-- @include('admin.partials.footer') --}}
       </div>
     </div>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
